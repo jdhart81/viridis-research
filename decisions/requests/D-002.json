@@ -1,0 +1,13 @@
+{
+  "body_md": "Turns the engine on. From the next UTC day an outcome is owed every night (07:17 UTC run), the watchdog marks\nmissed nights FAILED, and the week is published every Monday from 01:00 New York time (GitHub Release, Zenodo\nversions for approved projects, at most one LinkedIn post that clears the announcement bar).\n\nBefore answering yes, it is worth running one nightly **drill** (Actions → nightly → Run workflow → drill) and\nchecking its `drill-verify` artifact. Pausing later is one more decision (`pause_schedule`).",
+  "created_at": "2026-10-25T21:53:33Z",
+  "created_by": "setup",
+  "effect": {
+    "type": "activate_schedule"
+  },
+  "id": "D-002",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Activate the nightly schedule and weekly publication"
+}

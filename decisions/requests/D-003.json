@@ -1,0 +1,14 @@
+{
+  "body_md": "Creates a **new** Zenodo concept record for the P1 living paper (*A machine-checked raster bridge for Trees Cannot\nCut*) at the first weekly publication with a compiled P1 paper, then adds one version per week. Creator: Hart, Justin\n(Viridis LLC, ORCID 0009-0008-3082-2482); AI assistance disclosed in the description; linked to the TCC concept DOI\n10.5281/zenodo.21686446 as `isSupplementTo`. Zenodo DOIs cannot be deleted. This does **not** touch the existing TCC\nrecord.",
+  "created_at": "2026-10-25T21:53:33Z",
+  "created_by": "setup",
+  "effect": {
+    "project": "P1",
+    "type": "zenodo_concept"
+  },
+  "id": "D-003",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Create a Zenodo record for project P1"
+}

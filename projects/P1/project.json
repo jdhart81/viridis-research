@@ -1,0 +1,21 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P1/README.md",
+    "projects/P1/context/STATEMENT_PROPOSAL.md",
+    "projects/P1/context/DualCorridor.lean"
+  ],
+  "id": "P1",
+  "priority": 1,
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21686446",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Remove the assumed topological bridge from the machine-checked core of 'Trees Cannot Cut' by proving, on finite rasters, that enclosed non-barrier 4-components equal C8(B) minus the Euler characteristic of the barrier's cubical complex.",
+  "title": "A machine-checked raster bridge for Trees Cannot Cut"
+}

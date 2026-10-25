@@ -1,0 +1,65 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "brief": "Prove the sealed statement P1.BitQuad (lemma L1): for every finite raster B, 4 * euler B = Q1 B - Q3 B - 2 * QD B. A workable route is double counting over the 2x2 windows centred on the vertices of K(B). Show that 4F, 2E and V are sums over `vertices B` of local window quantities (pixel count, arm count, 1). Then evaluate the 16 window patterns, which `decide` can do once the sum is split by pattern. Use Aristotle for any lemma that resists, and keep its project IDs in notes.md. The paper should present the formula, the proof architecture, what the Lean development establishes, and how L1 serves the L2/L3 bridge.",
+      "complete_when": "proven",
+      "depends_on": [],
+      "id": "P1-T001",
+      "kind": "formal",
+      "max_runs": 14,
+      "statement_id": "P1.BitQuad",
+      "title": "Prove the bit-quad Euler formula (L1)"
+    },
+    {
+      "after_stall_of": "P1-T001",
+      "brief": "P1-T001 stalled. Propose a ladder of narrower sealed statements that would let L1 be proved one rung at a time. For example: local counting identities for 4F, 2E and V separately, or the formula for rasters inside a fixed n-by-n box. Write each one as a statement module in proposals/ with sanity examples proved by `decide`. Explain why each is narrower and how the rungs compose back into P1.BitQuad. Do not claim a proof.",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "id": "P1-T001N",
+      "kind": "proposal",
+      "max_runs": 3,
+      "produces_prefix": "P1.",
+      "title": "Narrower lemmas for L1 (only after a stall)"
+    },
+    {
+      "brief": "Draft sealed statements for L2 and L3. L2 (P1.Insertion): adding one barrier pixel leaves enclosed - C8 + euler unchanged under (8,4) connectivity, with every configuration of the 3x3 neighbourhood accounted for. L3 (P1.Bridge): for every finite raster, the number of enclosed non-barrier 4-components equals C8(B) - euler B. Fix the exterior convention: the complement is taken in Z^2, and a component is enclosed when it is finite. Reuse the definitions of P1.BitQuad by importing ViridisStatements.P1.BitQuad only once that module is sealed; otherwise restate them identically. Include the witness (3x3 ring: one enclosed component) and both negative controls (2x2 block: none enclosed; 4-cell diamond: one enclosed under (8,4)) as `decide` examples where computable. Each module goes in proposals/ with a short rationale file.",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P1-T001"
+      ],
+      "id": "P1-T002",
+      "kind": "proposal",
+      "max_runs": 3,
+      "produces": [
+        "P1.Insertion",
+        "P1.Bridge"
+      ],
+      "title": "Propose sealed statements for L2 and L3"
+    },
+    {
+      "brief": "Prove the sealed statement P1.Insertion (lemma L2).",
+      "complete_when": "proven",
+      "depends_on": [
+        "P1-T002"
+      ],
+      "id": "P1-T003",
+      "kind": "formal",
+      "max_runs": 21,
+      "statement_id": "P1.Insertion",
+      "title": "Prove the insertion invariant (L2)"
+    },
+    {
+      "brief": "Prove the sealed statement P1.Bridge (lemma L3), the raster form of the bridge that DualCorridor.lean assumes as FaceCount. In the paper, explain exactly which assumption of 'Trees Cannot Cut' this result discharges and which it does not.",
+      "complete_when": "proven",
+      "depends_on": [
+        "P1-T003"
+      ],
+      "id": "P1-T004",
+      "kind": "formal",
+      "max_runs": 21,
+      "statement_id": "P1.Bridge",
+      "title": "Prove the raster bridge (L3)"
+    }
+  ]
+}

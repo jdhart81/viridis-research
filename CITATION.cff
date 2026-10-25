@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Cite the individual run or its Zenodo record; this entry cites the research engine."
+title: "Viridis Research: a nightly machine-verified research engine"
+authors:
+  - family-names: Hart
+    given-names: Justin
+    affiliation: Viridis LLC
+    orcid: "https://orcid.org/0009-0008-3082-2482"
+license: MIT
+repository-code: "https://github.com/jdhart81/viridis-research"
+version: "3.0.0"

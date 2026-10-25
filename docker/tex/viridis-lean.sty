@@ -1,0 +1,174 @@
+% viridis-lean.sty: Lean 4 listings and Unicode symbols under pdflatex.
+% Trusted: the verifier puts this file on TEXINPUTS; agents cannot ship their own .sty files.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{viridis-lean}[2026/10/25 Viridis Lean listings]
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{amsmath,amssymb}
+\RequirePackage{newunicodechar}
+\RequirePackage{listings}
+\RequirePackage{xcolor}
+
+% Symbols in running text.
+\newunicodechar{ℕ}{\ensuremath{\mathbb{N}}}
+\newunicodechar{ℤ}{\ensuremath{\mathbb{Z}}}
+\newunicodechar{ℚ}{\ensuremath{\mathbb{Q}}}
+\newunicodechar{ℝ}{\ensuremath{\mathbb{R}}}
+\newunicodechar{ℂ}{\ensuremath{\mathbb{C}}}
+\newunicodechar{→}{\ensuremath{\to}}
+\newunicodechar{←}{\ensuremath{\leftarrow}}
+\newunicodechar{↔}{\ensuremath{\leftrightarrow}}
+\newunicodechar{↦}{\ensuremath{\mapsto}}
+\newunicodechar{∀}{\ensuremath{\forall}}
+\newunicodechar{∃}{\ensuremath{\exists}}
+\newunicodechar{λ}{\ensuremath{\lambda}}
+\newunicodechar{≤}{\ensuremath{\le}}
+\newunicodechar{≥}{\ensuremath{\ge}}
+\newunicodechar{≠}{\ensuremath{\ne}}
+\newunicodechar{¬}{\ensuremath{\neg}}
+\newunicodechar{∧}{\ensuremath{\wedge}}
+\newunicodechar{∨}{\ensuremath{\vee}}
+\newunicodechar{×}{\ensuremath{\times}}
+\newunicodechar{·}{\ensuremath{\cdot}}
+\newunicodechar{∘}{\ensuremath{\circ}}
+\newunicodechar{∈}{\ensuremath{\in}}
+\newunicodechar{∉}{\ensuremath{\notin}}
+\newunicodechar{⊆}{\ensuremath{\subseteq}}
+\newunicodechar{⊂}{\ensuremath{\subset}}
+\newunicodechar{∪}{\ensuremath{\cup}}
+\newunicodechar{∩}{\ensuremath{\cap}}
+\newunicodechar{∅}{\ensuremath{\emptyset}}
+\newunicodechar{⟨}{\ensuremath{\langle}}
+\newunicodechar{⟩}{\ensuremath{\rangle}}
+\newunicodechar{∑}{\ensuremath{\sum}}
+\newunicodechar{∏}{\ensuremath{\prod}}
+\newunicodechar{∞}{\ensuremath{\infty}}
+\newunicodechar{χ}{\ensuremath{\chi}}
+\newunicodechar{α}{\ensuremath{\alpha}}
+\newunicodechar{β}{\ensuremath{\beta}}
+\newunicodechar{γ}{\ensuremath{\gamma}}
+\newunicodechar{δ}{\ensuremath{\delta}}
+\newunicodechar{ε}{\ensuremath{\varepsilon}}
+\newunicodechar{μ}{\ensuremath{\mu}}
+\newunicodechar{ρ}{\ensuremath{\rho}}
+\newunicodechar{σ}{\ensuremath{\sigma}}
+\newunicodechar{φ}{\ensuremath{\varphi}}
+\newunicodechar{ψ}{\ensuremath{\psi}}
+\newunicodechar{ω}{\ensuremath{\omega}}
+\newunicodechar{Σ}{\ensuremath{\Sigma}}
+\newunicodechar{Π}{\ensuremath{\Pi}}
+\newunicodechar{⊢}{\ensuremath{\vdash}}
+\newunicodechar{⊤}{\ensuremath{\top}}
+\newunicodechar{⊥}{\ensuremath{\bot}}
+\newunicodechar{≃}{\ensuremath{\simeq}}
+\newunicodechar{≅}{\ensuremath{\cong}}
+\newunicodechar{∣}{\ensuremath{\mid}}
+\newunicodechar{⌊}{\ensuremath{\lfloor}}
+\newunicodechar{⌋}{\ensuremath{\rfloor}}
+\newunicodechar{⌈}{\ensuremath{\lceil}}
+\newunicodechar{⌉}{\ensuremath{\rceil}}
+\newunicodechar{▸}{\ensuremath{\triangleright}}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{₄}{\ensuremath{_4}}
+\newunicodechar{ᵢ}{\ensuremath{_i}}
+\newunicodechar{ⱼ}{\ensuremath{_j}}
+\newunicodechar{⁻}{\ensuremath{^{-}}}
+\newunicodechar{¹}{\ensuremath{^{1}}}
+\newunicodechar{²}{\ensuremath{^{2}}}
+\newunicodechar{«}{\guillemotleft}
+\newunicodechar{»}{\guillemotright}
+\newunicodechar{…}{\ldots}
+\newunicodechar{—}{---}
+\newunicodechar{–}{--}
+
+\newunicodechar{−}{\ensuremath{-}}
+\newunicodechar{′}{\ensuremath{'}}
+\newunicodechar{≡}{\ensuremath{\equiv}}
+\newunicodechar{≈}{\ensuremath{\approx}}
+\newunicodechar{∼}{\ensuremath{\sim}}
+\newunicodechar{⊗}{\ensuremath{\otimes}}
+\newunicodechar{⊕}{\ensuremath{\oplus}}
+\newunicodechar{∂}{\ensuremath{\partial}}
+\newunicodechar{∇}{\ensuremath{\nabla}}
+\newunicodechar{√}{\ensuremath{\surd}}
+\newunicodechar{∫}{\ensuremath{\int}}
+\newunicodechar{⇒}{\ensuremath{\Rightarrow}}
+\newunicodechar{⇔}{\ensuremath{\Leftrightarrow}}
+\newunicodechar{↑}{\ensuremath{\uparrow}}
+\newunicodechar{↓}{\ensuremath{\downarrow}}
+\newunicodechar{⟶}{\ensuremath{\longrightarrow}}
+\newunicodechar{∖}{\ensuremath{\setminus}}
+\newunicodechar{⋃}{\ensuremath{\bigcup}}
+\newunicodechar{⋂}{\ensuremath{\bigcap}}
+\newunicodechar{∗}{\ensuremath{\ast}}
+\newunicodechar{⋯}{\ensuremath{\cdots}}
+\newunicodechar{‖}{\ensuremath{\|}}
+\newunicodechar{ℓ}{\ensuremath{\ell}}
+\newunicodechar{θ}{\ensuremath{\theta}}
+\newunicodechar{τ}{\ensuremath{\tau}}
+\newunicodechar{π}{\ensuremath{\pi}}
+\newunicodechar{κ}{\ensuremath{\kappa}}
+\newunicodechar{ν}{\ensuremath{\nu}}
+\newunicodechar{η}{\ensuremath{\eta}}
+\newunicodechar{ζ}{\ensuremath{\zeta}}
+\newunicodechar{ξ}{\ensuremath{\xi}}
+\newunicodechar{Δ}{\ensuremath{\Delta}}
+\newunicodechar{Γ}{\ensuremath{\Gamma}}
+\newunicodechar{Λ}{\ensuremath{\Lambda}}
+\newunicodechar{Ω}{\ensuremath{\Omega}}
+\newunicodechar{Φ}{\ensuremath{\Phi}}
+\newunicodechar{‹}{\guilsinglleft}
+\newunicodechar{›}{\guilsinglright}
+\newunicodechar{“}{``}
+\newunicodechar{”}{''}
+\newunicodechar{‘}{`}
+\newunicodechar{’}{'}
+
+% Any other undeclared character renders as a boxed ? instead of stopping the build.
+\makeatletter
+\def\UTFviii@undefined@err#1{\fbox{\scriptsize ?}}
+\makeatother
+
+% Lean 4 listings. Unicode is mapped to math so pdflatex can typeset it.
+\lstdefinelanguage{Lean}{
+  morekeywords={import,namespace,end,open,section,variable,theorem,lemma,def,abbrev,example,instance,
+    structure,inductive,where,with,match,fun,let,have,show,from,by,at,calc,if,then,else,do,
+    noncomputable,private,protected,universe,class,deriving,termination_by,decreasing_by},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[n]{/-}{-/},
+  morestring=[b]",
+}
+\lstset{
+  language=Lean,
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{blue!55!black},
+  commentstyle=\itshape\color{black!55},
+  stringstyle=\color{green!35!black},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  extendedchars=true,
+  literate=
+    {ℕ}{{$\mathbb{N}$}}1 {ℤ}{{$\mathbb{Z}$}}1 {ℚ}{{$\mathbb{Q}$}}1 {ℝ}{{$\mathbb{R}$}}1 {ℂ}{{$\mathbb{C}$}}1
+    {→}{{$\to$}}1 {←}{{$\leftarrow$}}1 {↔}{{$\leftrightarrow$}}1 {↦}{{$\mapsto$}}1
+    {∀}{{$\forall$}}1 {∃}{{$\exists$}}1 {λ}{{$\lambda$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {≠}{{$\ne$}}1
+    {¬}{{$\neg$}}1 {∧}{{$\wedge$}}1 {∨}{{$\vee$}}1 {×}{{$\times$}}1 {·}{{$\cdot$}}1 {∘}{{$\circ$}}1
+    {∈}{{$\in$}}1 {∉}{{$\notin$}}1 {⊆}{{$\subseteq$}}1 {⊂}{{$\subset$}}1 {∪}{{$\cup$}}1 {∩}{{$\cap$}}1
+    {∅}{{$\emptyset$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {∑}{{$\sum$}}1 {∏}{{$\prod$}}1 {∞}{{$\infty$}}1
+    {χ}{{$\chi$}}1 {α}{{$\alpha$}}1 {β}{{$\beta$}}1 {γ}{{$\gamma$}}1 {δ}{{$\delta$}}1 {ε}{{$\varepsilon$}}1
+    {μ}{{$\mu$}}1 {ρ}{{$\rho$}}1 {σ}{{$\sigma$}}1 {φ}{{$\varphi$}}1 {ψ}{{$\psi$}}1 {ω}{{$\omega$}}1
+    {Σ}{{$\Sigma$}}1 {Π}{{$\Pi$}}1 {⊢}{{$\vdash$}}1 {⊤}{{$\top$}}1 {⊥}{{$\bot$}}1 {≃}{{$\simeq$}}1
+    {≅}{{$\cong$}}1 {∣}{{$\mid$}}1 {⌊}{{$\lfloor$}}1 {⌋}{{$\rfloor$}}1 {⌈}{{$\lceil$}}1 {⌉}{{$\rceil$}}1
+    {▸}{{$\triangleright$}}1 {₀}{{$_0$}}1 {₁}{{$_1$}}1 {₂}{{$_2$}}1 {₃}{{$_3$}}1 {₄}{{$_4$}}1
+    {ᵢ}{{$_i$}}1 {ⱼ}{{$_j$}}1 {⁻}{{$^{-}$}}1 {¹}{{$^1$}}1 {²}{{$^2$}}1
+    {«}{{\guillemotleft}}1 {»}{{\guillemotright}}1 {…}{{\ldots}}1
+    {−}{{$-$}}1 {′}{{$'$}}1 {≡}{{$\equiv$}}1 {≈}{{$\approx$}}1 {∼}{{$\sim$}}1 {⇒}{{$\Rightarrow$}}1 {⇔}{{$\Leftrightarrow$}}1
+    {∖}{{$\setminus$}}1 {⋃}{{$\bigcup$}}1 {⋂}{{$\bigcap$}}1 {∗}{{$\ast$}}1 {‖}{{$\|$}}1 {ℓ}{{$\ell$}}1 {θ}{{$\theta$}}1
+    {τ}{{$\tau$}}1 {π}{{$\pi$}}1 {Δ}{{$\Delta$}}1 {Γ}{{$\Gamma$}}1 {Ω}{{$\Omega$}}1 {⟶}{{$\longrightarrow$}}1
+    {“}{{``}}1 {”}{{''}}1 {‘}{{`}}1 {’}{{'}}1,
+}
+\endinput
