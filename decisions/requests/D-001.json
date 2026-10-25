@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-001",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-25T23:25:48Z",
+  "posted_comment_id": 6404861733,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6404861733",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P1.BitQuad (lemma L1)"
 }

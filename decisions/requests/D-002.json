@@ -6,8 +6,9 @@
     "type": "activate_schedule"
   },
   "id": "D-002",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-25T23:25:49Z",
+  "posted_comment_id": 6404861874,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6404861874",
   "schema": "viridis-decision-request-v1",
   "title": "Activate the nightly schedule and weekly publication"
 }
