@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-25",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "d162882048275dc85fc31ba53ac609eb3e378214",
+    "run_attempt": 1,
+    "run_id": 40245218912,
+    "run_started_at": "2026-10-25T23:32:20Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40245218912",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": null,
+  "paper_built": false,
+  "project": null,
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "no eligible task",
+  "run_dir": null,
+  "schema": "viridis-outcome-v1",
+  "status": "IDLE",
+  "task": null,
+  "written_at": "2026-10-25T23:32:41Z",
+  "written_by": "verify",
+  "zip_sha256": null
+}
