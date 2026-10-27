@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-27",
+  "failure_category": "no_artifact",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "3f1dd0fadb2c91a456ee35da19856bc1bcd258a6",
+    "run_attempt": 1,
+    "run_id": 40599538726,
+    "run_started_at": "2026-10-27T23:04:38Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40599538726",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": null,
+  "paper_built": false,
+  "project": "P1",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "the research job produced no artifact (job result: failure)",
+  "run_dir": null,
+  "schema": "viridis-outcome-v1",
+  "status": "FAILED",
+  "task": "P1-T001",
+  "written_at": "2026-10-27T23:16:19Z",
+  "written_by": "verify",
+  "zip_sha256": null
+}
