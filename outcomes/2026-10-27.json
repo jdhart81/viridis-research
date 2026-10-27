@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-27",
+  "failure_category": "run_json",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "d9f62fccb3a196f262aab48d114c3d976008f076",
+    "run_attempt": 1,
+    "run_id": 40602739196,
+    "run_started_at": "2026-10-27T23:31:45Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40602739196",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": null,
+  "paper_built": false,
+  "project": "P1",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "run.json rejected: C2: evidence 'code/bitquad_check.py' is not a results/ file",
+  "run_dir": null,
+  "schema": "viridis-outcome-v1",
+  "status": "FAILED",
+  "task": "P1-T001",
+  "written_at": "2026-10-27T23:51:43Z",
+  "written_by": "verify",
+  "zip_sha256": null
+}
