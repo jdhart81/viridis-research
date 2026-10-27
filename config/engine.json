@@ -39,6 +39,7 @@
     "agent_timeout_minutes": 140,
     "aristotlelib_version": "2.1.0",
     "claude_code_version": "2.1.308",
+    "effort": "medium",
     "max_turns": 400,
     "model": "opus",
     "prior_runs_in_context": 3
