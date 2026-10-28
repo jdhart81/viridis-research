@@ -1,0 +1,14 @@
+{
+  "body_md": "This creates a **new** Zenodo concept record for the P2 living paper, *Re-certifying the live Viridis OS decision kernels*. The record is created at the first weekly publication that has a compiled P2 paper, and gets one new version each week after that.\n\n- **Creator:** Hart, Justin (Viridis LLC, ORCID 0009-0008-3082-2482). AI assistance is disclosed in the description.\n- **Links:** `isSupplementTo` the canon records of the kernels it re-certifies, starting with Carbon Continuity (10.5281/zenodo.21855690).\n- **Existing records:** this does not touch any of them.\n\nZenodo DOIs cannot be deleted.\n",
+  "created_at": "2026-10-28T22:50:10Z",
+  "created_by": "pull-request",
+  "effect": {
+    "project": "P2",
+    "type": "zenodo_concept"
+  },
+  "id": "D-005",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Create a Zenodo record for project P2"
+}
