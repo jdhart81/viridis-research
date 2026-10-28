@@ -52,6 +52,6 @@
     "tex_dockerfile": "docker/tex/Dockerfile",
     "tex_timeout_seconds": 600
   },
-  "schedule_activated_at": null,
+  "schedule_activated_at": "2026-10-28T00:43:55Z",
   "schema": "viridis-engine-config-v1"
 }

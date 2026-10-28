@@ -1,0 +1,17 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-10-28T00:43:55Z",
+  "author": "jdhart81",
+  "body": "yes D-002",
+  "comment_id": 6457567262,
+  "comment_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6457567262",
+  "effect": {
+    "type": "activate_schedule"
+  },
+  "effect_result": {
+    "applied": true
+  },
+  "id": "D-002",
+  "recorded_at": "2026-10-28T00:44:07Z",
+  "schema": "viridis-decision-record-v1"
+}
