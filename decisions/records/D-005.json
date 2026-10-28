@@ -1,0 +1,18 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-10-28T23:30:23Z",
+  "author": "jdhart81",
+  "body": "yes D-005",
+  "comment_id": 6483444560,
+  "comment_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6483444560",
+  "effect": {
+    "project": "P2",
+    "type": "zenodo_concept"
+  },
+  "effect_result": {
+    "applied": true
+  },
+  "id": "D-005",
+  "recorded_at": "2026-10-28T23:30:35Z",
+  "schema": "viridis-decision-record-v1"
+}

@@ -30,6 +30,11 @@
         "approved_by": "D-003",
         "concept_recid": null,
         "latest_deposition_id": null
+      },
+      "P2": {
+        "approved_by": "D-005",
+        "concept_recid": null,
+        "latest_deposition_id": null
       }
     },
     "sandbox_base_url": "https://sandbox.zenodo.org/api"
