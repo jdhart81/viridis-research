@@ -42,7 +42,8 @@
     "effort": "medium",
     "max_turns": 400,
     "model": "opus",
-    "prior_runs_in_context": 3
+    "prior_runs_in_context": 3,
+    "weekly_agent_minutes_cap": 600
   },
   "owner_login": "jdhart81",
   "pauses": [],
