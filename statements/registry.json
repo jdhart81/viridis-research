@@ -22,6 +22,28 @@
       "sealed_at": "2026-10-27T23:03:28Z",
       "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
       "task": "P1-T001"
+    },
+    "P2.CarbonContinuity": {
+      "constant": "ViridisStatements.P2.CarbonContinuity.Statement",
+      "decision": "D-004",
+      "module": "ViridisStatements.P2.CarbonContinuity",
+      "path": "lean/ViridisStatements/P2/CarbonContinuity.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P2",
+      "sealed_at": "2026-10-28T23:29:57Z",
+      "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+      "task": "P2-T001"
     }
   }
 }
