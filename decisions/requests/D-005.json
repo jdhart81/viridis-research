@@ -7,8 +7,9 @@
     "type": "zenodo_concept"
   },
   "id": "D-005",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-28T22:50:22Z",
+  "posted_comment_id": 6482726962,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6482726962",
   "schema": "viridis-decision-request-v1",
   "title": "Create a Zenodo record for project P2"
 }
