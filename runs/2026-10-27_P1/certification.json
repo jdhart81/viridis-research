@@ -1,0 +1,67 @@
+{
+  "date": "2026-10-27",
+  "engine_sha": "6441f38ed19c2a652e303888ed10cba6e840bfd1",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "82dc3598b4fab8a6c72fc6fe4021eef1ede516530d2cc28b077a4acf0003c056",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P1.BitQuad",
+      "statement_sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+      "text": "For every finite set B of pixels in Z x Z, 4 * euler B = Q1 B - Q3 B - 2 * QD B (in Z), where euler B = V - E + F of the cubical complex of B and Q1, Q3, QD count 2x2 windows centred on vertices of K(B) with one pixel, three pixels, or a diagonal pair.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "82dc3598b4fab8a6c72fc6fe4021eef1ede516530d2cc28b077a4acf0003c056",
+      "durations": {
+        "check": 4.924,
+        "compile": 10.544,
+        "replay": 7.075
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P1.BitQuad",
+      "statement_sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "project": "P1",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-10-27_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

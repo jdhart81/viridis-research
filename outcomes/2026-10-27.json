@@ -1,0 +1,38 @@
+{
+  "date": "2026-10-27",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "02f355fcc1f9d203685bad92d809438c34854efb",
+    "run_attempt": 1,
+    "run_id": 40605294004,
+    "run_started_at": "2026-10-27T23:54:33Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40605294004",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P1.BitQuad",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "984ed411a5e7c9bdc74b9b97774ea1541c999c901da8dc9a98eda5bc56853c73",
+  "paper_built": true,
+  "project": "P1",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P1.BitQuad"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-10-27_P1",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P1-T001",
+  "title": "A Lean Proof of the Bit-Quad Euler Formula for 8-Connected Rasters: the First Rung of a Raster Bridge for Trees Cannot Cut",
+  "written_at": "2026-10-28T00:16:20Z",
+  "written_by": "verify",
+  "zip_sha256": "518a12f04dedf5e97a9526e0148d694eff62238b1e2efddd5330ef4181003a60"
+}

@@ -1,0 +1,300 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinelanguage{lean}{
+  morekeywords={theorem,lemma,def,abbrev,namespace,end,open,import,by,fun,
+    have,show,intro,exact,apply,rw,simp,simp_all,unfold,rintro,obtain,
+    constructor,left,right,subst,rcases,by_cases,set,with,at,only,ring,
+    if,then,else,rfl},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{green!40!black}\itshape,
+  columns=fullflexible,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {∈}{{$\in$}}1 {ℤ}{{$\mathbb{Z}$}}1 {ℕ}{{$\mathbb{N}$}}1
+    {·}{{$\cdot$}}1 {×}{{$\times$}}1 {∑}{{$\sum$}}1
+    {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {∀}{{$\forall$}}1
+    {∨}{{$\vee$}}1 {←}{{$\leftarrow$}}1 {→}{{$\rightarrow$}}1
+    {↔}{{$\leftrightarrow$}}1
+}
+
+\title{A Lean Proof of the Bit-Quad Euler Formula for 8-Connected Rasters:\\
+the First Rung of a Raster Bridge for \emph{Trees Cannot Cut}}
+\author{Justin Hart\\Viridis LLC}
+\date{October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Trees Cannot Cut} argues that fuel breaks and habitat corridors split a
+landscape into compartments only through their cycles. Its machine-checked core
+carries the topological step (compartments equal circuit rank plus one) as an
+explicit hypothesis. Project P1 aims to replace that hypothesis, on finite
+rasters, with a proved identity: enclosed non-barrier 4-components equal
+$C_8(B) - \chi(K B)$, where $K B$ is the cubical complex of the barrier raster
+$B$. This paper does the first rung of that ladder. We give a Lean~4/Mathlib
+proof of Gray's bit-quad formula in its 8-connected form: for every finite
+raster $B \subset \mathbb{Z}^2$,
+$4\chi(K B) = Q_1 - Q_3 - 2Q_D$, where $Q_1$, $Q_3$ and $Q_D$ count the
+$2\times2$ windows holding exactly one pixel, exactly three pixels, or exactly
+two diagonally opposite pixels of $B$. The proof double-counts over the vertices
+of $K B$. Shift bijections show that $4F$, $2E$ and $V$ are sums of local window
+quantities. A 16-case analysis then settles the pointwise identity
+$4 - 2\,\mathrm{arms}(v) + n(v) = [n=1] - [n=3] - 2[\mathrm{diag}]$, which holds on
+every non-empty window (it fails on the empty window, which never sits at a
+vertex). The development is about 160 lines, uses no custom axioms, and
+type-checks against a sealed statement module.
+We explain how L1 feeds the single-pixel insertion lemma (L2) and the bridge (L3).
+\end{abstract}
+
+\section{Introduction}
+
+Hart's \emph{Trees Cannot Cut}~\citep{Hart2026} makes a structural claim about
+managed forest landscapes. A corridor or fuel-break network separates the fuel
+matrix into compartments only through its cycles, so an acyclic network
+(a ``tree'') cannot cut. The manuscript's Lean core proves the graph-theoretic
+consequences of this claim. The topological input is assumed as a hypothesis,
+\texttt{FaceCount}: the number of compartments is circuit rank plus one. It is
+justified informally by Alexander duality, which Mathlib does not have.
+
+Fire and fuel data usually come as rasters, and on rasters the topology is
+finite and combinatorial. Project P1 therefore aims to prove the following
+identity for every finite barrier raster $B$, read with 8-connected barriers
+and a 4-connected complement:
+\[
+  \#\{\text{enclosed 4-components of } \mathbb{Z}^2\setminus B\}
+  \;=\; C_8(B) - \chi(K B).
+\]
+The plan is a three-rung ladder. L1 (this paper) is a local formula for
+$\chi(K B)$. L2 shows that adding one pixel preserves
+$\text{enclosed} - C_8 + \chi$. L3 obtains the bridge by induction on $|B|$.
+L1 is what makes the change in $\chi$ under a single insertion computable from
+the four windows around the new pixel.
+
+\section{Background and related work}
+
+Gray~\citep{Gray1971} introduced \emph{bit-quads}: the $2\times2$ windows of a
+binary image. He showed that area, perimeter and the Euler number are
+``locally countable'' from bit-quad statistics. For 8-connected foreground the
+Euler number is $(Q_1 - Q_3 - 2Q_D)/4$. Reading the foreground as 4-connected
+flips the sign of the diagonal term: two pixels that touch only at a corner then
+form two components, and $(6 - 0 + 2)/4 = 2$. In the 8-connected reading the two pixels meet at a corner of the closed
+squares, which is exactly the cubical complex $K B$ used here. The (8,4)
+pairing of foreground and background connectivity is standard in digital
+topology, where it is the pairing under which a digital Jordan curve property
+holds; see the survey of Kong and Rosenfeld~\citep{KongRosenfeld1989}.
+
+The formal development uses Lean~4~\citep{deMouraUllrich2021} and
+Mathlib~\citep{Mathlib2020}. We know of no prior machine-checked proof of the
+bit-quad formula, but we have not searched exhaustively, and we make no claim
+of novelty.
+
+\section{The sealed statement}
+
+A pixel $(i,j)\in\mathbb{Z}^2$ denotes the closed square
+$[i,i+1]\times[j,j+1]$. For a finite set $B$ of pixels the sealed module
+\texttt{ViridisStatements.P1.BitQuad} defines:
+\begin{itemize}
+  \item \texttt{vertices B}: the union of the four corners of every pixel;
+  \item \texttt{hEdges B}: horizontal unit edges, named by their left end. Pixel
+        $(i,j)$ contributes $(i,j)$ and $(i,j+1)$;
+  \item \texttt{vEdges B}: vertical unit edges, named by their lower end. Pixel
+        $(i,j)$ contributes $(i,j)$ and $(i+1,j)$;
+  \item $\chi = |V| - (|E_h| + |E_v|) + |B|$, computed in $\mathbb{Z}$;
+  \item the window at lattice point $v=(x,y)$, the bits
+        $(a,b,c,d) = ([(x{-}1,y{-}1)\in B], [(x,y{-}1)\in B], [(x{-}1,y)\in B], [(x,y)\in B])$;
+  \item $Q_1$, $Q_3$, $Q_D$: the number of $v\in$ \texttt{vertices B} whose window
+        has one pixel, three pixels, or is a diagonal pair.
+\end{itemize}
+Every window that meets $B$ is centred on a vertex, so counting over
+\texttt{vertices B} counts all non-empty windows.
+
+\begin{theorem}[L1, \texttt{P1.BitQuad}]\label{thm:main}
+For every finite $B\subset\mathbb{Z}^2$,
+$4\,\chi(K B) = Q_1(B) - Q_3(B) - 2\,Q_D(B)$.
+\end{theorem}
+
+\section{Proof architecture}
+
+\subsection{Double counting by shifts}
+The only counting tool we need is the following lemma.
+
+\begin{lemma}[\texttt{card\_filter\_shift}]
+Let $V,S$ be finite subsets of $\mathbb{Z}^2$, and let $i,j$ be mutually inverse
+maps of $\mathbb{Z}^2$ with $j(S)\subseteq V$. Then
+$|\{v\in V : i(v)\in S\}| = |S|$.
+\end{lemma}
+Indicator sums are filter cardinalities (Mathlib's \texttt{Finset.sum\_boole}),
+so with $V=\texttt{vertices B}$ the lemma gives:
+\begin{align*}
+  4|B| &= \sum_{v\in V} \big([a]+[b]+[c]+[d]\big)
+  && \text{(each pixel is a window entry at each of its 4 corners)},\\
+  2|E_h| &= \sum_{v\in V} \big([v\in E_h] + [(x{-}1,y)\in E_h]\big)
+  && \text{(right and left arms)},\\
+  2|E_v| &= \sum_{v\in V} \big([v\in E_v] + [(x,y{-}1)\in E_v]\big)
+  && \text{(up and down arms)},\\
+  |V| &= \sum_{v\in V} 1.
+\end{align*}
+Each line uses four (or two) shift bijections. The side condition
+$j(S)\subseteq V$ says that every pixel's corners, and both endpoints of every
+edge, are vertices. Each of these is a small membership lemma.
+
+\subsection{Arms in terms of window bits}
+Unfolding the edge sets gives $e\in E_h \iff e\in B \lor (e_1,e_2-1)\in B$ and
+$e\in E_v \iff e\in B \lor (e_1-1,e_2)\in B$. At $v$ the four arms are therefore
+$d\lor b$ (right), $c\lor a$ (left), $d\lor c$ (up) and $b\lor a$ (down).
+
+\subsection{The local identity}
+Summing the displays,
+$4\chi = \sum_{v\in V} \big(4 - 2\,\mathrm{arms}(v) + n(v)\big)$ with
+$n = [a]+[b]+[c]+[d]$. So it suffices to show, for each vertex,
+\[
+  4 - 2\,\mathrm{arms}(v) + n(v) = [n=1] - [n=3] - 2[\mathrm{diag}].
+\]
+Table~\ref{tab:local} lists the pattern classes. The identity \emph{fails} on
+the empty window ($4\neq0$). We therefore use a lemma
+(\texttt{window\_nonempty}): each vertex is a corner of some pixel of $B$, so
+its window is non-empty. In Lean we split on the four membership propositions
+(16 cases) and close each case with \texttt{simp\_all}. The brief suggested
+\texttt{decide} on Booleans. Our first draft took that route, and its
+\texttt{decide} correctly reported the unrestricted identity false. That is how
+we found the empty-window case.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccccc}
+\toprule
+Pattern class & $n$ & arms & $4-2\,\mathrm{arms}+n$ & $[n{=}1]-[n{=}3]-2[\mathrm{diag}]$\\
+\midrule
+empty (never at a vertex) & 0 & 0 & 4 & 0\\
+one pixel & 1 & 2 & 1 & 1\\
+adjacent pair & 2 & 3 & 0 & 0\\
+diagonal pair & 2 & 4 & $-2$ & $-2$\\
+three pixels & 3 & 4 & $-1$ & $-1$\\
+full & 4 & 4 & 0 & 0\\
+\bottomrule
+\end{tabular}
+\caption{Local summand by window pattern class.}
+\label{tab:local}
+\end{table}
+
+\section{Results: the Lean development}
+
+The file \texttt{proofs/P1.BitQuad.lean} proves
+\texttt{Candidate.main : ViridisStatements.P1.BitQuad.Statement}. It has 159
+lines and imports only Mathlib and the sealed module. The project's local
+checker (denylist, compile, statement match, axioms, kernel replay) reported
+that it passed, with axioms \texttt{propext}, \texttt{Classical.choice} and
+\texttt{Quot.sound}. The authoritative judgement is the verifier's
+certification page. No Aristotle job was needed. The key lemmas follow.
+
+\begin{lstlisting}
+theorem card_filter_shift (V S : Finset (ℤ × ℤ)) (i j : ℤ × ℤ → ℤ × ℤ)
+    (hij : ∀ p, i (j p) = p) (hji : ∀ v, j (i v) = v)
+    (hS : ∀ p ∈ S, j p ∈ V) :
+    (V.filter fun v => i v ∈ S).card = S.card := by
+  apply Finset.card_nbij' i j
+  · intro v hv
+    simp only [Finset.coe_filter, Set.mem_setOf_eq] at hv
+    exact hv.2
+  · intro p hp
+    simp only [Finset.coe_filter, Set.mem_setOf_eq]
+    exact ⟨hS p hp, by rw [hij]; exact hp⟩
+  · intro v _; exact hji v
+  · intro p _; exact hij p
+
+theorem mem_hEdges (B : Finset Pixel) (e : ℤ × ℤ) :
+    e ∈ hEdges B ↔ e ∈ B ∨ (e.1, e.2 - 1) ∈ B
+
+theorem window_nonempty (B : Finset Pixel) (v : ℤ × ℤ) (hv : v ∈ vertices B) :
+    (v.1 - 1, v.2 - 1) ∈ B ∨ (v.1, v.2 - 1) ∈ B ∨ (v.1 - 1, v.2) ∈ B ∨ (v.1, v.2) ∈ B
+\end{lstlisting}
+The end of the main proof turns the global identity into the pointwise one:
+\begin{lstlisting}
+  rw [key, hQ1, hQ3, hQD, Finset.mul_sum, ← Finset.sum_sub_distrib,
+      ← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro v hv
+  have hne := window_nonempty B v hv
+  simp only [mem_hEdges, mem_vEdges]
+  unfold windowCount isDiagonal bits
+  by_cases h1 : (v.1 - 1, v.2 - 1) ∈ B <;> by_cases h2 : (v.1, v.2 - 1) ∈ B <;>
+    by_cases h3 : (v.1 - 1, v.2) ∈ B <;> by_cases h4 : (v.1, v.2) ∈ B <;>
+    simp_all
+\end{lstlisting}
+Here \texttt{key} rewrites $4\,\chi$ as the sum of the local summand over
+\texttt{vertices B}. It is obtained by distributing the sum and substituting
+the eight shift identities. The proof concludes with \texttt{ring}.
+
+\section{How L1 serves the bridge}
+
+L2 asks that inserting a pixel $p\notin B$ preserve
+$\text{enclosed} - C_8 + \chi$. By Theorem~\ref{thm:main}, $\Delta\chi$ is
+determined by the four windows centred on the corners of $p$. Only those
+windows change, so
+$4\,\Delta\chi = \Delta Q_1 - \Delta Q_3 - 2\,\Delta Q_D$ is a finite local
+computation over $2^{8}$ neighbourhood patterns of $p$. The non-local part of
+L2 is the change in $C_8$ and in the number of enclosed components. Two
+8-components merging through $p$ can close off a new region. That part is not
+touched here. We expect that the natural Lean statement of L2 will be phrased
+in terms of the local $\Delta\chi$ that L1 supplies. The three controls listed
+in the project README (the 3$\times$3 ring witness, the 2$\times$2 block and
+the four-arm plus) give concrete checks: the sealed module verifies
+$\chi=1$ for the 2$\times$2 block and $\chi=0$ for the ring by computation.
+
+\section{Limitations}
+
+\begin{itemize}
+  \item L1 is a statement about the cubical complex counted combinatorially. It
+        says nothing about connected components or enclosure. The topological
+        content of the bridge sits entirely in L2.
+  \item The statement fixes the 8-connected reading of the foreground. The
+        4-connected variant ($+2Q_D$) is not formalised here.
+  \item L1 by itself does not discharge the \texttt{FaceCount} hypothesis of
+        \emph{Trees Cannot Cut}. It also does not address the raster-to-graph
+        correspondence, whose gap the 2$\times$2 block control exposes
+        (circuit rank 3, nothing enclosed).
+\end{itemize}
+
+\section{Reproducibility}
+
+Toolchain \texttt{leanprover/lean4:v4.28.0}; Mathlib commit
+\texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. The sealed statement is
+\texttt{P1.BitQuad.lean} (SHA-256 \texttt{cd3cdeba48f67f95\allowbreak45fb6945c87037893aa98b018922d3d0b7220cc389c98e23}).
+To reproduce, run
+\texttt{lean proofs/P1.BitQuad.lean} with \texttt{LEAN\_PATH} including Mathlib
+and the sealed modules. Compilation takes about 10~s on the session machine. The
+proof contains no \texttt{sorry}, \texttt{native\_decide} or custom axioms.
+
+\section{Changelog}
+\begin{itemize}
+  \item 2026-10-27 (P1-T001): first version. Lean proof of L1 (\texttt{P1.BitQuad});
+        proof architecture; role of L1 in the L2/L3 ladder.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

@@ -1,0 +1,13 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P1",
+  "task": "P1-T001",
+  "title": "A Lean Proof of the Bit-Quad Euler Formula for 8-Connected Rasters: the First Rung of a Raster Bridge for Trees Cannot Cut",
+  "abstract": "Trees Cannot Cut argues that fuel breaks and habitat corridors split a landscape into compartments only through their cycles; its machine-checked core assumes the topological step as a hypothesis. Project P1 aims to replace that hypothesis on finite rasters by proving that enclosed non-barrier 4-components equal C8(B) minus the Euler characteristic of the barrier's cubical complex K(B). This paper does the first rung. We give a Lean 4/Mathlib proof of Gray's bit-quad formula in its 8-connected form: for every finite raster B in Z^2, 4*chi(K B) = Q1 - Q3 - 2*QD, where Q1, Q3 and QD count 2x2 windows with exactly one pixel, exactly three pixels, or exactly two diagonally opposite pixels of B. The proof double-counts over the vertices of K(B). Shift bijections express 4F, 2E and V as sums of local window quantities, and a 16-case analysis settles the pointwise identity 4 - 2*arms(v) + n(v) = [n=1] - [n=3] - 2[diag]. That identity holds on every non-empty window and fails on the empty one, which never sits at a vertex. We explain how L1 feeds the single-pixel insertion lemma (L2) and the bridge (L3).",
+  "claims": [
+    {"id": "C1", "kind": "formal", "statement_id": "P1.BitQuad", "proof_file": "proofs/P1.BitQuad.lean",
+     "text": "For every finite set B of pixels in Z x Z, 4 * euler B = Q1 B - Q3 B - 2 * QD B (in Z), where euler B = V - E + F of the cubical complex of B and Q1, Q3, QD count 2x2 windows centred on vertices of K(B) with one pixel, three pixels, or a diagonal pair."}
+  ],
+  "proposals": [],
+  "next_steps": "L1 (P1.BitQuad) has a candidate proof that passed viridis-lean-check locally. Next is P1-T002: propose sealed statements for L2 (P1.Insertion: inserting p not in B preserves enclosed - C8 + euler) and L3 (P1.Bridge). Reuse the shift-bijection lemma and the window_nonempty lemma from proofs/P1.BitQuad.lean. A useful first step is a local corollary of L1: 4*(euler (insert p B) - euler B) depends only on the 3x3 neighbourhood of p and can be checked over its 2^8 patterns. Define C8 and enclosed components on Finsets carefully, and check the three README controls (3x3 ring, 2x2 block, plus shape) by decide inside the proposed module."
+}
