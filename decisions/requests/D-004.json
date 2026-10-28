@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-004",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-28T22:50:02Z",
+  "posted_comment_id": 6482721164,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6482721164",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.CarbonContinuity (re-certify the Carbon Continuity kernel)"
 }
