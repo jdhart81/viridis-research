@@ -1,0 +1,65 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "brief": "Prove the sealed statement P2.CarbonContinuity: for retention fractions a, d in [0,1) and transfer rates r, p > 0, a strictly positive two-pool portfolio that one disturbance-recovery cycle does not shrink exists exactly when (1 - a)(1 - d) <= r p. The archived canon proof is in context/CarbonContinuity_canon.lean (sha256 in SOURCES.sha256); port it to the sealed definitions, keeping it short and readable. The paper is a re-certification note for the live Carbon Continuity kernel: state the model and the threshold, give the proof, and say exactly what the theorem settles and what it does not. It settles the threshold logic the kernel applies; it does not settle any coefficient value, which comes from field evidence. Cite the canon record DOI 10.5281/zenodo.21855690.",
+      "complete_when": "proven",
+      "depends_on": [],
+      "id": "P2-T001",
+      "kind": "formal",
+      "max_runs": 7,
+      "statement_id": "P2.CarbonContinuity",
+      "title": "Re-certify the Carbon Continuity threshold"
+    },
+    {
+      "brief": "Draft sealed statements for the next three live kernels, one module each in proposals/: P2.Restoration (context/ForestNucleation.lean: the critical-nucleus go/no-go the Restoration kernel uses, with critical_nucleus and barrier_half_identity as the core), P2.Afforestation (context/AfforestationStewardship.lean: establishment_efficiency_cubic_in_drive_over_tension and seeding_efficiency_eq_cos2_theta) and P2.Harmonization (context/GaianHarmonization.lean: ght_market_clears and ght_strong_duality_decentralized_eq_centralized). Each Statement must say what the canon theorem says, over the same definitions, restated self-contained (Mathlib only). Do not weaken it, and do not strengthen it beyond what the kernel needs. Include sanity examples with concrete numbers (norm_num or decide) showing the definitions mean what their comments say, including one negative control. The rationale file names the canon theorem and file hash it restates and the kernel decision it backs, and lists every hypothesis.",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "id": "P2-T002",
+      "kind": "proposal",
+      "max_runs": 3,
+      "produces": [
+        "P2.Restoration",
+        "P2.Afforestation",
+        "P2.Harmonization"
+      ],
+      "title": "Propose sealed statements for Restoration, Afforestation and Harmonization"
+    },
+    {
+      "brief": "Prove the sealed statement P2.Restoration. Port the canon proof in context/ForestNucleation.lean. The paper is the re-certification note for the live Restoration kernel: what the theorem settles and what field inputs it does not.",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T002"
+      ],
+      "id": "P2-T003",
+      "kind": "formal",
+      "max_runs": 7,
+      "statement_id": "P2.Restoration",
+      "title": "Re-certify the Restoration nucleation core"
+    },
+    {
+      "brief": "Prove the sealed statement P2.Afforestation. Port the canon proof in context/AfforestationStewardship.lean. The paper is the re-certification note for the live Afforestation kernel.",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T002"
+      ],
+      "id": "P2-T004",
+      "kind": "formal",
+      "max_runs": 7,
+      "statement_id": "P2.Afforestation",
+      "title": "Re-certify the Afforestation seeding core"
+    },
+    {
+      "brief": "Prove the sealed statement P2.Harmonization. Port the canon proof in context/GaianHarmonization.lean. The paper is the re-certification note for the live Harmonization kernel.",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T002"
+      ],
+      "id": "P2-T005",
+      "kind": "formal",
+      "max_runs": 7,
+      "statement_id": "P2.Harmonization",
+      "title": "Re-certify the Harmonization market-clearing core"
+    }
+  ]
+}

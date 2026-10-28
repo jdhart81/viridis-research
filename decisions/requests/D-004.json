@@ -1,0 +1,30 @@
+{
+  "body_md": "First re-certification target for P2. It covers the formal core of the live **Carbon Continuity** kernel, the paid wildfire recovery threshold diagnostic: a strictly positive two-pool carbon portfolio that a disturbance-recovery cycle never shrinks exists **exactly when** `(1 − a)(1 − d) ≤ r·p`, for retention fractions `a, d ∈ [0, 1)` and transfer rates `r, p > 0`.\n\n- **File:** [`lean/ViridisStatements/P2/CarbonContinuity.lean`](https://github.com/jdhart81/viridis-research/blob/main/lean/ViridisStatements/P2/CarbonContinuity.lean)\n- **Restates:** `Viridis.CarbonContinuity.carbon_continuity_threshold_iff` from the archived canon release (Zenodo 10.5281/zenodo.21855690, source sha256 `899d3bb1…`). Its earlier certificate came from the retired Comparator.\n- **Checked:** compiles with Lean v4.28.0 and Mathlib 8f9d9cff in the sandbox, including three sanity checks (the canon's strict witness, a `Sustainable` witness, and a below-threshold negative control).\n- **Not closed** by any probe tactic: rfl, trivial, decide, simp, simp_all, omega, norm_num, linarith, aesop, tauto.\n\nIf you answer yes, the engine proves it on the next night and the kernel's badge can move to PROVEN. This certifies the threshold logic only; the coefficient values stay field evidence.\n\nRead the definitions (`stepLiving`, `stepDurable`, `Sustainable`), not just `Statement`.\n",
+  "created_at": "2026-10-28T22:49:41Z",
+  "created_by": "pull-request",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P2",
+    "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+    "source_path": "lean/ViridisStatements/P2/CarbonContinuity.lean",
+    "statement_id": "P2.CarbonContinuity",
+    "task": "P2-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-004",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P2.CarbonContinuity (re-certify the Carbon Continuity kernel)"
+}

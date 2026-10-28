@@ -1,0 +1,39 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P2/README.md",
+    "projects/P2/context/SOURCES.sha256",
+    "projects/P2/context/CarbonContinuity_canon.lean",
+    "projects/P2/context/ForestNucleation.lean",
+    "projects/P2/context/AfforestationStewardship.lean",
+    "projects/P2/context/GaianHarmonization.lean"
+  ],
+  "id": "P2",
+  "priority": 1,
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21855690",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20982979",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21168224",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.21168212",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Bring every live Viridis OS decision kernel up to the engine's standard: restate each kernel's formal core as a sealed statement and re-prove it under the pinned Lean toolchain, so the kernel's assurance no longer rests on the retired Comparator, historical Aristotle runs or the old canon gate.",
+  "title": "Re-certifying the live Viridis OS decision kernels"
+}
