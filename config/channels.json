@@ -27,7 +27,7 @@
     "license": "cc-by-4.0",
     "projects": {
       "P1": {
-        "approved_by": null,
+        "approved_by": "D-003",
         "concept_recid": null,
         "latest_deposition_id": null
       }
