@@ -1,0 +1,27 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P1",
+  "task": "P1-T001",
+  "title": "The 8-connected bit-quad Euler formula for finite rasters: a Lean proof by vertex double counting",
+  "abstract": "For a finite set B of pixels in Z^2, let K(B) be the union of the closed unit squares of B, regarded as a cubical complex with Euler characteristic V - E + F. Gray's bit-quad formula in its 8-connected form states 4*chi(K(B)) = Q1 - Q3 - 2*QD, where Q1, Q3 and QD count the 2x2 windows holding exactly one pixel, exactly three pixels, and exactly two diagonally opposite pixels of B. We give a Lean 4 proof, against Mathlib, of the sealed statement P1.BitQuad, which states this identity for every finite raster. The proof is a double count over the vertices of K(B). Each of F, E and V is written as a sum over vertices of indicators of translated sets. A single shift-counting lemma evaluates all eight such sums, and a pointwise identity is closed by a case split on the window patterns; only the 15 non-empty patterns can occur at a vertex. This is the first rung (L1) of a lemma ladder whose goal is to replace the topological hypothesis assumed in the machine-checked core of Trees Cannot Cut with a theorem about rasters. We also explain how L1 makes the change in chi under a single-pixel insertion local, which is the local half of the next rung, L2.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P1.BitQuad",
+      "proof_file": "proofs/P1.BitQuad.lean",
+      "text": "For every finite raster B (a Finset of Z x Z), 4 * euler B = Q1 B - Q3 B - 2 * QD B, where euler B = |vertices| - (|hEdges| + |vEdges|) + |B| for the cubical complex K(B), and Q1, Q3, QD count the vertex-centred 2x2 windows with one pixel, three pixels, and a diagonal pair."
+    },
+    {
+      "id": "C2",
+      "kind": "empirical",
+      "text": "A brute-force recomputation of both sides of the bit-quad identity over all 65,536 subsets of a 4x4 box finds no counterexample.",
+      "evidence": [
+        "results/bitquad_4x4.json",
+        "code/bitquad_check.py"
+      ]
+    }
+  ],
+  "proposals": [],
+  "next_steps": "L1 (P1.BitQuad) has a candidate proof that passes viridis-lean-check. Next is P1-T002: propose sealed statements P1.Insertion (L2) and P1.Bridge (L3). Suggested first step: derive from L1 a Lean lemma giving 4*(euler (insert p B) - euler B) as a function of the 3x3 neighbourhood of p (only the four windows at the corners of p change). Then define C8 and enclosed 4-components on finite rasters, and check the proposed L2/L3 statements against the witness (3x3 ring) and both negative controls (2x2 block, N/S/E/W cross) with decide before sealing. The non-local change in C8 and in enclosed components is the hard part."
+}

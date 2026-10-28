@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-28",
+  "engine_sha": "9ecce251ddf14adbca96a32054bc6f1f3997c2f4",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "328a9a292c6c09accf3439cb81f2fce20d97efa7ee1eeb8a9acc9d72e6d3c77f",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P1.BitQuad",
+      "statement_sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+      "text": "For every finite raster B (a Finset of Z x Z), 4 * euler B = Q1 B - Q3 B - 2 * QD B, where euler B = |vertices| - (|hEdges| + |vEdges|) + |B| for the cubical complex K(B), and Q1, Q3, QD count the vertex-centred 2x2 windows with one pixel, three pixels, and a diagonal pair.",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "empirical",
+      "label": "ASSUMED",
+      "reason": "verifier re-execution is not enabled yet; TESTED requires it",
+      "text": "A brute-force recomputation of both sides of the bit-quad identity over all 65,536 subsets of a 4x4 box finds no counterexample."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "328a9a292c6c09accf3439cb81f2fce20d97efa7ee1eeb8a9acc9d72e6d3c77f",
+      "durations": {
+        "check": 5.73,
+        "compile": 7.407,
+        "replay": 7.884
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P1.BitQuad",
+      "statement_sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 10,
+  "project": "P1",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-10-28_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}
