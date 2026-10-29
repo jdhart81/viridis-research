@@ -1,0 +1,43 @@
+{
+  "agent_minutes": 2.4,
+  "date": "2026-10-29",
+  "github": {
+    "event": "schedule",
+    "head_sha": "7a275da5725225108e057d0f89f28745b7b71336",
+    "run_attempt": 1,
+    "run_id": 40889395791,
+    "run_started_at": "2026-10-29T14:13:47Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40889395791",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P2.CarbonContinuity",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "c07fec1a5c4595705519175639e713f1d5ba2575251c57cc7ae249f30218f25c",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P2.CarbonContinuity"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-10-29_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T001",
+  "title": "Re-certifying the Carbon Continuity Threshold: A Lean Proof of the Two-Pool Regenerative Coupling Condition under a Pinned Toolchain",
+  "written_at": "2026-10-29T14:32:24Z",
+  "written_by": "verify",
+  "zip_sha256": "149a57d73750c88fa13cda49c5713ba61ee2572b7f400ef2cbafab70789f8190"
+}
