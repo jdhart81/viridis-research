@@ -46,6 +46,32 @@ the private code. `docs/CERTIFICATION.md` defines the labels, and
 Everything in `runs/`, `projects/` and `lean/` is open for others to build on,
 with attribution, under CC BY 4.0.
 
+## Part of the Viridis open-source commons
+
+For the curated collection of machine-checked results, see [Viridis Canon](https://github.com/jdhart81/viridis-canon). [ViridisOS](https://github.com/jdhart81/viridisos) runs DOI-backed decision modules you can recompute.
+
+This project is one of a connected set of open tools from Viridis. Each stands on its own; together they run from field evidence to checked decisions.
+
+**Conservation commons**
+
+- [VergeCommon](https://github.com/jdhart81/verge-common): community conservation co-ops with consent-based land mapping, field evidence and group decisions
+- [Dendritic Forest Management (DFM)](https://github.com/jdhart81/hdfm-framework): compare forest-retention options around roads and waterways, with traceable inputs and portable reports
+- [Global Soil Intelligence Project (GSIP)](https://github.com/global-soil-intelligence/gsip): contribute soil observations and explore open soil maps with explicit uncertainty
+
+**Verifiable science**
+
+- [Viridis Canon](https://github.com/jdhart81/viridis-canon): machine-checked Lean 4 mathematics for ecological decisions, with a DOI for every result
+- [ViridisOS](https://github.com/jdhart81/viridisos): open reference runtime for DOI-backed decision modules and recomputable results
+- **Viridis Research** (this repository): the nightly public research record, each claim labeled by what a verifier actually checked
+- [ProofLens](https://github.com/jdhart81/prooflens): see what a Lean statement means before reading the proof
+
+**Agent tools**
+
+- [Viridis Agent Fleet](https://github.com/jdhart81/viridis-agent-fleet): open-source MCP agents with deterministic, auditable cores
+- [EnergyAI MCP](https://github.com/jdhart81/energyai-mcp): energy-planning estimates and incentive sources for AI agents
+
+Browse every project on the [Viridis profile](https://github.com/jdhart81). If this one is useful to you, a star helps other people find it.
+
 ## Credit and disclosure
 
 The research program is directed by Justin Hart (Viridis LLC,
