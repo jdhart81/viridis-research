@@ -1,5 +1,9 @@
 # Viridis Research
 
+**Working papers, not peer reviewed. Nothing here is field-validated.** A PROVEN
+label means a Lean 4 proof of a statement sealed in advance; it does not mean a
+result is new, and several results are formalizations of known mathematics.
+
 This is the public research record of Viridis LLC. Every night an AI research
 agent works on one task from a project. It writes a full paper and a
 reproducible package. An automated verifier then decides what that paper has
@@ -74,9 +78,15 @@ Browse every project on the [Viridis profile](https://github.com/jdhart81). If t
 
 ## Credit and disclosure
 
-The research program is directed by Justin Hart (Viridis LLC,
-ORCID 0009-0008-3082-2482). Papers are drafted by an AI research agent (Claude,
-by Anthropic). Formal proof search may use Aristotle (Harmonic). No AI system is
-listed as an author.
+The research program is directed by Justin D. Hart (Viridis LLC,
+ORCID 0009-0008-3082-2482), who approves every sealed statement and is the
+accountable author. Papers and proofs are drafted by an AI research agent (Claude,
+by Anthropic, run through Claude Code; the version is pinned in
+`config/engine.json` and each run's `provenance.json` records the session).
+Formal proof search may use Aristotle (Harmonic); each run says whether it did.
+Labels come from the automated verifier, not the agent. No AI system is listed
+as an author.
 
-Code is under the MIT license. Papers and data are under CC BY 4.0.
+Code is under the MIT license ([LICENSE](LICENSE)). Papers and data are under CC BY 4.0.
+Each project's living paper gets its own Zenodo concept DOI at its first weekly
+publication; cite the run's Zenodo record, or this engine via [CITATION.cff](CITATION.cff).
