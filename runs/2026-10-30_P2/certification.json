@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-30",
+  "engine_sha": "fd227d5c3af7f66b3cc53f74500f88ec830a8be1",
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Observation from a private local check, not a sealed claim: P2.Restoration, P2.Afforestation and P2.Harmonization, as proposed, are each provable in Lean v4.28.0 with pinned Mathlib using only propext, Classical.choice and Quot.sound, by porting the canon proofs."
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Observation, not a sealed claim: in Lean's division convention, the positivity hypotheses of the cubic efficiency law and the nonzero hypotheses of the alignment bound in P2.Afforestation are not needed for the conclusions; they are kept to match the canon and the kernel's parameter domain."
+    }
+  },
+  "lean": {},
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 7,
+  "project": "P2",
+  "proposals": [
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+      "statement_id": "P2.Restoration",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+      "statement_id": "P2.Afforestation",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
+      "statement_id": "P2.Harmonization",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    }
+  ],
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1016/B978-0-7506-4682-6.X5000-8",
+      "10.1017/CBO9780511804441",
+      "10.1137/1.9781611971262",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21855690"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-10-30_P2",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P2-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

@@ -1,0 +1,154 @@
+@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\c@lstlisting=\count303
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count304
+\scratchdimen=\dimen179
+\scratchbox=\box56
+\nofMPsegments=\count305
+\nofMParguments=\count306
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count307
+\MPscratchDim=\dimen180
+\MPnumerator=\count308
+\makeMPintoPDFobject=\count309
+\everyMPtoPDFconversion=\toks32
+)
+Package hyperref Info: Link coloring OFF on input line 33.
+ (./main.out) (./main.out)
+\@outlinefile=\write3
+\openout3 = `main.out'.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 35.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 35.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 105--107
+[]\OT1/cmr/m/n/10.95 The pre-vi-ous re-vi-sion gave a Lean proof of this state-
+ment (file
+ []
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 108.
+[2]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 137.
+ [3]
+Overfull \hbox (4.14178pt too wide) in paragraph at lines 217--217
+[]\OT1/cmtt/m/n/10 P2.Afforestation| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 217--217
+[]\OT1/cmtt/m/n/10 establishment[]efficiency[]...\OT1/cmr/m/n/10 ,
+ []
+
+
+Overfull \hbox (4.14178pt too wide) in paragraph at lines 218--218
+[]\OT1/cmtt/m/n/10 P2.Harmonization| 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 218--218
+[]\OT1/cmtt/m/n/10 ght[]market[]clears\OT1/cmr/m/n/10 ,
+ []
+
+
+Overfull \hbox (15.98239pt too wide) in paragraph at lines 212--222
+ [][] 
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[4]
+Overfull \hbox (34.67116pt too wide) in paragraph at lines 259--265
+\OT1/cmr/m/n/10.95 Toolchain \OT1/cmtt/m/n/10.95 leanprover/lean4:v4.28.0\OT1/c
+mr/m/n/10.95 , Math-lib com-mit \OT1/cmtt/m/n/10.95 8f9d9cff6bd728b17a24e163c94
+02775d9e6a365\OT1/cmr/m/n/10.95 .
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 259--265
+\OT1/cmr/m/n/10.95 Canon repos-i-tory com-mit \OT1/cmtt/m/n/10.95 80d32904d751b
+45f415e23f872510cc2eddca3ff\OT1/cmr/m/n/10.95 . The
+ []
+
+
+Underfull \hbox (badness 4156) in paragraph at lines 259--265
+\OT1/cmr/m/n/10.95 canon file hashes are listed in the pro-pos-als' ra-tio-nale
+ files. Each pro-posal com-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 259--265
+\OT1/cmr/m/n/10.95 piles with \OT1/cmtt/m/n/10.95 lean proposals/P2.\OT1/cmr/m/
+it/10.95 Name\OT1/cmtt/m/n/10.95 .lean\OT1/cmr/m/n/10.95 . The sealed Car-bon C
+on-ti-nu-ity state-
+ []
+
+
+Underfull \hbox (badness 4048) in paragraph at lines 259--265
+\OT1/cmr/m/n/10.95 ment has sha256 \OT1/cmtt/m/n/10.95 a5a6e8c6...ffded\OT1/cmr
+/m/n/10.95 . To check its proof, run \OT1/cmtt/m/n/10.95 viridis-lean-check
+ []
+
+[5] (./main.bbl) [6] (./main.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: DB7B5C2140A37A5CCEBA3EC87CDB766D;2445.
+ ) 
+Here is how much of TeX's memory you used:
+ 12496 strings out of 476106
+ 183357 string characters out of 5793932
+ 2138975 words of memory out of 5000000
+ 34308 multiletter control sequences out of 15000+600000
+ 571038 words of font info for 87 fonts, out of 8000000 for 9000
+ 59 hyphenation exceptions out of 8191
+ 75i,11n,79p,541b,1212s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </tmp/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cmextra/cmex9.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+mi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt9.pfb></u
+sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (6 pages, 287376 bytes).
+PDF statistics:
+ 271 PDF objects out of 1000 (max. 8388607)
+ 213 compressed objects within 3 object streams
+ 65 named destinations out of 1000 (max. 500000)
+ 105 words of extra memory for PDF output out of 10000 (max. 10000000)
+

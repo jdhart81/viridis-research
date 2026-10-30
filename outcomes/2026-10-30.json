@@ -1,0 +1,48 @@
+{
+  "agent_minutes": 12.02,
+  "date": "2026-10-30",
+  "decision_requests": [
+    "D-006",
+    "D-007",
+    "D-008"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "7a275da5725225108e057d0f89f28745b7b71336",
+    "run_attempt": 1,
+    "run_id": 41068705066,
+    "run_started_at": "2026-10-30T14:05:01Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41068705066",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "3e181f13f2ed1b9aee453ce66854503f3644fd08f7475bd3763405e4f1aaf4a9",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [
+    "P2.Afforestation",
+    "P2.Harmonization",
+    "P2.Restoration"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-10-30_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T002",
+  "title": "Sealed Statements for the Restoration, Afforestation and Harmonization Kernels: Faithful Lean Restatements of the Canon Formal Cores",
+  "written_at": "2026-10-30T14:33:08Z",
+  "written_by": "verify",
+  "zip_sha256": "66e25115c007116214697eddd48bcdf5786b0c03afe2142ea6885fe70c5e75a0"
+}
