@@ -1,0 +1,1 @@
+We re-proved, in Lean under a pinned toolchain, the rule behind the Viridis OS Carbon Continuity kernel. A positive two-pool carbon portfolio can be kept from shrinking over a disturbance-recovery cycle exactly when (1-a)(1-d) <= rp. The proof covers the threshold logic only. Coefficient values, and whether the model fits real forests, still depend on field evidence.

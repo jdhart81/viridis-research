@@ -1,0 +1,185 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinelanguage{lean}{
+  morekeywords={theorem,def,import,namespace,end,open,by,intro,exact,obtain,refine,have,simp,only,at,fun},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"}
+\lstset{language=lean, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{green!40!black}, columns=fullflexible, breaklines=true, frame=single,
+  extendedchars=true, inputencoding=utf8,
+  literate={≤}{{$\le$}}1 {≥}{{$\ge$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {ℝ}{{$\mathbb{R}$}}1
+           {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {∃}{{$\exists$}}1 {∀}{{$\forall$}}1 {∧}{{$\wedge$}}1
+           {·}{{$\cdot$}}1 {−}{{$-$}}1}
+
+\title{Re-certifying the Carbon Continuity Threshold:\\ A Lean Proof of the Two-Pool Regenerative Coupling Condition\\ under a Pinned Toolchain}
+\author{Justin Hart\\ Viridis LLC}
+\date{29 October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The live Viridis OS kernel \emph{Carbon Continuity} decides whether a two-pool carbon portfolio,
+made of a living pool and a durable pool, can be kept from shrinking across disturbance-recovery cycles.
+One cycle maps $(L,D)$ to $(aL+rD,\ pL+dD)$, with retention fractions $a,d\in[0,1)$ and transfer rates $r,p>0$.
+The kernel's formal core states that a strictly positive portfolio that one cycle does not shrink in either pool
+exists exactly when $(1-a)(1-d)\le rp$.
+Until now this result rested on a certificate issued by a checker that has since been retired.
+We restate the theorem as the sealed statement \texttt{P2.CarbonContinuity}
+and give a short Lean~4 proof of it under Lean v4.28.0 with a pinned Mathlib.
+The proof is ported from the archived canon release~\cite{HartCanon2026}.
+We say exactly what the theorem settles, namely the threshold logic the kernel applies.
+We also say what it does not settle: any coefficient value, the adequacy of the linear model,
+and any ecological or carbon-credit outcome.
+\end{abstract}
+
+\section{Introduction}
+Viridis OS runs a set of decision kernels. Each one is a small piece of software that turns ecological
+parameters into a decision. The Carbon Continuity kernel
+(runtime \texttt{viridis.carbon-continuity-threshold.v1}) answers one question: after a wildfire or a similar
+disturbance, can a carbon portfolio be kept from shrinking cycle after cycle?
+It answers by comparing a \emph{leakage product} $(1-a)(1-d)$ with a \emph{regenerative loop gain} $rp$.
+
+The rule is only as trustworthy as the mathematics behind it. The canon release~\cite{HartCanon2026}
+proved the rule in Lean, but the certificate came from tooling that can no longer be re-run.
+This note re-proves the rule against a sealed restatement, so the kernel's mathematical assurance
+can be re-checked with the current toolchain.
+The question is narrow on purpose. We ask whether the threshold rule is a correct consequence of the stated model.
+We do not ask whether the model or its coefficients describe any real forest.
+
+\section{Background and related work}
+The cycle map is the linear map $x\mapsto Mx$ with the nonnegative matrix
+\[
+M=\begin{pmatrix} a & r\\ p & d\end{pmatrix},\qquad x=\begin{pmatrix}L\\ D\end{pmatrix}.
+\]
+Since $r,p>0$, the matrix $M$ is irreducible.
+By the Collatz--Wielandt characterisation in Perron--Frobenius theory~\cite{BermanPlemmons1994},
+the spectral radius satisfies $\rho(M)\ge 1$ exactly when some $x>0$ has $Mx\ge x$.
+In addition, $\rho(M)\ge 1$ holds, given $a,d<1$, exactly when $\det(I-M)=(1-a)(1-d)-rp\le 0$.
+The theorem proved here is therefore a two-dimensional instance of classical theory.
+We claim no novelty for the mathematics. The contribution is a re-checkable machine proof
+tied to a live decision kernel.
+The canon release~\cite{HartCanon2026} gives the ecological framing and the original Lean development,
+including corollaries that the sealed statement does not include (boundary stationarity, strict growth above threshold).
+
+\section{Model and statement}
+The sealed module defines
+\begin{align*}
+\mathrm{stepLiving}(a,r,L,D) &= aL+rD, \qquad \mathrm{stepDurable}(d,p,L,D) = pL+dD,\\
+\mathrm{Sustainable}(a,d,r,p) &:\iff \exists L,D,\ 0<L,\ 0<D,\ L\le aL+rD,\ D\le pL+dD.
+\end{align*}
+
+\begin{theorem}[\texttt{P2.CarbonContinuity}]
+For all real $a,d,r,p$ with $0\le a<1$, $0\le d<1$, $r>0$ and $p>0$,
+\[
+\mathrm{Sustainable}(a,d,r,p)\iff (1-a)(1-d)\le rp .
+\]
+\end{theorem}
+
+\section{Proof}
+\begin{lemma}[Sufficiency]
+If $a<1$, $r>0$ and $(1-a)(1-d)\le rp$, then $(L,D)=(r,1-a)$ is a witness.
+\end{lemma}
+\begin{proof}
+Both components are positive. For the living pool, $ar+r(1-a)=r$, so the inequality holds with equality.
+For the durable pool, $pr+d(1-a)-(1-a)=rp-(1-a)(1-d)\ge 0$.
+\end{proof}
+
+\begin{lemma}[Necessity]
+If $a<1$, $d<1$ and $(L,D)$ is a witness, then $(1-a)(1-d)\le rp$.
+\end{lemma}
+\begin{proof}
+The two inequalities rearrange to $(1-a)L\le rD$ and $(1-d)D\le pL$.
+Both left-hand sides are positive, so we can multiply the inequalities:
+$(1-a)(1-d)\,LD\le rp\,LD$. Cancelling $LD>0$ gives the threshold.
+\end{proof}
+
+\paragraph{Lean development.}
+The proof file \texttt{proofs/P2.CarbonContinuity.lean} follows the canon proof almost line for line.
+It is restated against the sealed definitions, and the heavier \texttt{nlinarith} calls are replaced
+by \texttt{linarith} where the goal is linear after normalisation.
+\begin{lstlisting}
+theorem sufficient (a d r p : ℝ) (ha1 : a < 1) (hr : 0 < r)
+    (h : (1 - a) * (1 - d) ≤ r * p) : Sustainable a d r p := by
+  refine ⟨r, 1 - a, hr, by linarith, ?_, ?_⟩
+  · simp only [stepLiving]; nlinarith
+  · simp only [stepDurable]; nlinarith
+
+theorem necessary (a d r p : ℝ) (ha1 : a < 1) (hd1 : d < 1)
+    (hs : Sustainable a d r p) : (1 - a) * (1 - d) ≤ r * p := by
+  obtain ⟨L, D, hL, hD, hliv, hdur⟩ := hs
+  simp only [stepLiving] at hliv
+  simp only [stepDurable] at hdur
+  have h1 : (1 - a) * L ≤ r * D := by linarith
+  have h2 : (1 - d) * D ≤ p * L := by linarith
+  have h3 : ((1 - a) * L) * ((1 - d) * D) ≤ (r * D) * (p * L) :=
+    mul_le_mul h1 h2 (by nlinarith) (by nlinarith)
+  have h4 : ((1 - a) * (1 - d)) * (L * D) ≤ (r * p) * (L * D) := by linarith
+  exact le_of_mul_le_mul_right h4 (mul_pos hL hD)
+
+theorem main : ViridisStatements.P2.CarbonContinuity.Statement := by
+  intro a d r p _ ha1 _ hd1 hr _
+  exact ⟨necessary a d r p ha1 hd1, sufficient a d r p ha1 hr⟩
+\end{lstlisting}
+
+\section{Results}
+We give a Lean proof of the sealed statement \texttt{P2.CarbonContinuity}.
+The local pre-check tool reports that the file compiles under the pinned toolchain,
+matches the sealed statement, and depends only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+The labels are awarded by the independent verifier, whose certification page comes before this paper.
+
+\begin{remark}
+We observe that the helper lemmas use only $a<1$, $d<1$ and $r>0$.
+The hypotheses $0\le a$, $0\le d$ and $p>0$ are part of the kernel's parameter domain,
+but the proof does not need them.
+\end{remark}
+
+\section{What the theorem settles and what it does not}
+\begin{itemize}
+\item \textbf{Settled (subject to verification):} inside the stated linear two-pool model, the kernel's rule
+``sustainable iff $(1-a)(1-d)\le rp$'' is a correct decision procedure, including at the boundary.
+\item \textbf{Not settled:} the values of $a,d,r,p$ for any site. These come from field evidence and stay ASSUMED
+until a TESTED lane or a human review covers them.
+\item \textbf{Not settled:} whether a linear, time-invariant two-pool cycle model describes post-fire carbon
+dynamics. The theorem also says nothing about uncertainty in the coefficients, about stochastic disturbance,
+or about any carbon-credit or treatment outcome.
+\item \textbf{Not settled:} the statement is about one cycle. Persistence over many cycles follows informally
+because $M$ is monotone on nonnegative vectors, so $Mx\ge x$ implies $M^{k}x\ge x$. That fact is not part of the
+sealed statement.
+\item \textbf{Not settled:} that the TypeScript implementation (\texttt{src/lib/carbonContinuity.ts})
+implements this rule faithfully. Code conformance has not been checked here.
+\end{itemize}
+
+\section{Limitations}
+The result is mathematically elementary. Its value lies in being re-checkable and tied to a deployed kernel,
+not in its depth. The canon corollaries (boundary stationarity, strict growth, nonvacuity) were not re-proved
+as sealed statements. The sealed module includes concrete sanity examples that pin the meaning of the definitions.
+
+\section{Reproducibility}
+Toolchain \texttt{leanprover/lean4:v4.28.0}, Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}.
+Sealed statement source sha256 \texttt{a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded}.
+Canon source sha256 \texttt{899d3bb1929bac8d1ab6b760caffac428de115489e6fc7c1b2752e0769a77fc1}
+(canon repository commit \texttt{80d32904d751b45f415e23f872510cc2eddca3ff}).
+To check the proof, run \texttt{viridis-lean-check proofs/P2.CarbonContinuity.lean P2.CarbonContinuity}.
+No automated prover jobs and no external data were used.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-10-29 (P2-T001): First version. Ported the canon threshold proof to the sealed statement
+\texttt{P2.CarbonContinuity}, and wrote the scope statement.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

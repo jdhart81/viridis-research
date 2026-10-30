@@ -1,0 +1,14 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P2",
+  "task": "P2-T001",
+  "title": "Re-certifying the Carbon Continuity Threshold: A Lean Proof of the Two-Pool Regenerative Coupling Condition under a Pinned Toolchain",
+  "abstract": "The live Viridis OS kernel Carbon Continuity decides whether a two-pool carbon portfolio (a living pool and a durable pool) can be kept from shrinking across disturbance-recovery cycles. One cycle maps (L, D) to (aL + rD, pL + dD), with retention fractions a, d in [0,1) and transfer rates r, p > 0. The kernel's formal core states that a strictly positive portfolio that one cycle does not shrink in either pool exists exactly when (1 - a)(1 - d) <= rp. Until now this rested on a certificate from a retired checker. We restate the theorem as the sealed statement P2.CarbonContinuity and give a short Lean 4 proof under Lean v4.28.0 and a pinned Mathlib. The proof is ported from the archived canon release (Zenodo 10.5281/zenodo.21855690). Sufficiency uses the explicit witness (r, 1 - a). Necessity multiplies the two leakage inequalities and cancels the positive product LD. We say exactly what the theorem settles: the threshold logic the kernel applies. We also say what it does not settle: any coefficient value, the adequacy of the linear two-pool model, or any ecological or carbon-credit outcome. Those depend on field evidence.",
+  "claims": [
+    {"id": "C1", "kind": "formal", "statement_id": "P2.CarbonContinuity", "proof_file": "proofs/P2.CarbonContinuity.lean",
+     "text": "For all real a, d, r, p with 0 <= a < 1, 0 <= d < 1, r > 0 and p > 0, there exist L > 0 and D > 0 with L <= aL + rD and D <= pL + dD if and only if (1 - a)(1 - d) <= rp."},
+    {"id": "C2", "kind": "conjecture", "text": "Observation about the proof, not a sealed claim: the equivalence still holds without the hypotheses 0 <= a, 0 <= d and p > 0. The helper lemmas in the proof file use only a < 1, d < 1 and r > 0."}
+  ],
+  "proposals": [],
+  "next_steps": "P2-T001 is done pending the verifier. Next in P2 order: Restoration, then Afforestation (context/AfforestationStewardship.lean), then Harmonization. Possible follow-up statement: multi-cycle persistence of a non-shrinking portfolio under iteration of the monotone step map."
+}

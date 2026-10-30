@@ -1,0 +1,70 @@
+{
+  "date": "2026-10-29",
+  "engine_sha": "b6b87d8bd2c049d1ba950f2c0a94cf571f6b666b",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "bfced37f622d1ab9921f2fe7bf02ffa7c88dbdeb1e53d3a250df0ff8f0f94f44",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P2.CarbonContinuity",
+      "statement_sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+      "text": "For all real a, d, r, p with 0 <= a < 1, 0 <= d < 1, r > 0 and p > 0, there exist L > 0 and D > 0 with L <= aL + rD and D <= pL + dD if and only if (1 - a)(1 - d) <= rp.",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Observation about the proof, not a sealed claim: the equivalence still holds without the hypotheses 0 <= a, 0 <= d and p > 0. The helper lemmas in the proof file use only a < 1, d < 1 and r > 0."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "bfced37f622d1ab9921f2fe7bf02ffa7c88dbdeb1e53d3a250df0ff8f0f94f44",
+      "durations": {
+        "check": 5.477,
+        "compile": 6.028,
+        "replay": 7.432
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P2.CarbonContinuity",
+      "statement_sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 6,
+  "project": "P2",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 2,
+    "entries": 2,
+    "resolved": [
+      "10.1137/1.9781611971262",
+      "10.5281/zenodo.21855690"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-10-29_P2",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P2-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

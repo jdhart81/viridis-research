@@ -1,0 +1,31 @@
+{
+  "body_md": "The run [`runs/2026-10-30_P2`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-10-30_P2) (task P2-T002) proposes a new formal target `P2.Restoration`.\n\n- File: [`runs/2026-10-30_P2/proposals/P2.Restoration.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-10-30_P2/proposals/P2.Restoration.lean), sha256 `fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18`\n- Rationale: [`runs/2026-10-30_P2/proposals/P2.Restoration.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-10-30_P2/proposals/P2.Restoration.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P2 · re-certification: the Restoration critical-nucleus go/no-go\n\nThe live Viridis OS Restoration kernel decides whether a planted cluster on degraded land is\nlarge enough to grow into forest (go) or will dissolve back into the degraded state (no-go).\nIts formal backing is the Forest Nucleation Theorem clean core,\n`Viridis.Afforestation.ForestNucleation.critical_nucleus` and\n`Viridis.Afforestation.ForestNucleation.barrier_half_identity`, in the archived canon\n(github.com/jdhart81/viridis-canon, commit 80d32904d751b45f415e23f872510cc2eddca3ff,\nfile `ForestNucleation.lean`, sha256\n667a826a2e5befac67964b69670435362de2d3d792e163807c3bb7c2aec28132).\nThis module restates those two theorems, over the same definitions, as one sealed target.\n\nModel (classical nucleation in the cube-root order parameter `r = n^(1/3)`): a cluster of\n`n = r^3` trees has free energy `G(r) = -Δμ·r^3 + a·σ·r^2`, where `Δμ` is the per-tree driving\nforce, `σ` the edge \"surface tension\" and `a` a shape factor. The critical radius is\n`rStar = 2aσ/(3Δμ)` and the critical nucleus is `n* = rStar^3`.\n\n`Statement`, part 1 (`critical_nucleus`): for `Δμ, a, σ > 0`, `rStar > 0` and `rStar` is the\nunique global maximiser of `G` over `r ≥ 0` (the top of the nucleation barrier).\n`Statement`, part 2 (`barrier_half_identity`): for `Δμ > 0`, the barrier height is\n`G(rStar) = ½·Δμ·rStar^3`, i.e. `ΔG* = ½·Δμ·n*`.\n-/\n\nnamespace ViridisStatements.P2.Restoration\n\n/-- Critical radius (cube-root order parameter) `rStar = 2aσ/(3Δμ)`;\nthe critical nucleus is `n* = rStar ^ 3`. -/\nnoncomputable def rStar (Δμ a σ : ℝ) : ℝ := 2 * a * σ / (3 * Δμ)\n\n/-- Nucleation free energy in the cube-root order parameter `r` (with `n = r^3`,\n`n^(2/3) = r^2`): `G(r) = -Δμ·r^3 + a·σ·r^2`. -/\nnoncomputable def G (Δμ a σ r : ℝ) : ℝ := -Δμ * r ^ 3 + a * σ * r ^ 2\n\n/-- **Sealed target `P2.Restoration`.**\n(1) For positive driving force, shape factor and surface tension, the critical radius is\npositive and is the unique maximiser of `G` on `r ≥ 0`.\n(2) For positive driving force, the barrier height is half the driving energy stored in the\ncritical nucleus: `G(rStar) = ½·Δμ·rStar^3`. -/\ndef Statement : Prop :=\n  (∀ Δμ a σ : ℝ, 0 < Δμ → 0 < a → 0 < σ →\n    0 < rStar Δμ a σ ∧\n    (∀ r : ℝ, 0 ≤ r → G Δμ a σ r ≤ G Δμ a σ (rStar Δμ a σ)) ∧\n    (∀ r : ℝ, 0 ≤ r → G Δμ a σ r = G Δμ a σ (rStar Δμ a σ) → r = rStar Δμ a σ)) ∧\n  (∀ Δμ a σ : ℝ, 0 < Δμ →\n    G Δμ a σ (rStar Δμ a σ) = (1 / 2) * Δμ * (rStar Δμ a σ) ^ 3)\n\n/-! ## Sanity checks\n\nThese pin the meaning of the definitions with concrete numbers. -/\n\n/-- The canon's non-vacuity witness `(Δμ, a, σ) = (1, 1, 3/2)`: `rStar = 1`, so `n* = 1`,\nand the barrier is `G(1) = 1/2 = ½·1·1^3 > 0`. -/\nexample : rStar 1 1 (3/2) = 1 ∧ G 1 1 (3/2) 1 = 1/2 ∧ (1/2 : ℝ) = (1/2) * 1 * 1 ^ 3 := by\n  norm_num [rStar, G]\n\n/-- Below the critical radius the free energy is lower than at the barrier top\n(a sub-critical cluster sits on the uphill side): `G(1/2) = 1/4 < 1/2 = G(1)`. -/\nexample : G 1 1 (3/2) (1/2) = 1/4 ∧ G 1 1 (3/2) (1/2) < G 1 1 (3/2) 1 := by\n  norm_num [G]\n\n/-- Above the critical radius the free energy falls again (a super-critical cluster grows\ndownhill): `G(2) = -2 < 1/2 = G(1)`. -/\nexample : G 1 1 (3/2) 2 = -2 ∧ G 1 1 (3/2) 2 < G 1 1 (3/2) 1 := by\n  norm_num [G]\n\n/-- Negative control: the restriction `r ≥ 0` is needed. At the unphysical `r = -1` the cubic\nexceeds the barrier, `G(-1) = 5/2 > 1/2 = G(rStar)`, so maximality fails off `r ≥ 0`. -/\nexample : G 1 1 (3/2) (rStar 1 1 (3/2)) < G 1 1 (3/2) (-1) := by\n  norm_num [G, rStar]\n\n/-- Negative control: the barrier is half, not all, of `Δμ·n*`:\n`G(rStar) = 1/2 ≠ 1 = Δμ·rStar^3` at the witness. -/\nexample : G 1 1 (3/2) (rStar 1 1 (3/2)) ≠ 1 * (rStar 1 1 (3/2)) ^ 3 := by\n  norm_num [G, rStar]\n\n/-- Negative control: with negative driving force (`Δμ = -1`, degraded state favoured) the\ncritical radius is negative, so part 1 genuinely needs `0 < Δμ`. -/\nexample : rStar (-1) 1 (3/2) < 0 := by\n  norm_num [rStar]\n\nend ViridisStatements.P2.Restoration\n\n```\n</details>",
+  "created_at": "2026-10-30T14:33:09Z",
+  "created_by": "verify:41068705066",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P2",
+    "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+    "source_path": "runs/2026-10-30_P2/proposals/P2.Restoration.lean",
+    "statement_id": "P2.Restoration",
+    "task": "P2-T002",
+    "type": "seal_statement"
+  },
+  "id": "D-006",
+  "posted_at": "2026-10-30T14:33:11Z",
+  "posted_comment_id": 6525297672,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6525297672",
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P2.Restoration proposed by runs/2026-10-30_P2"
+}

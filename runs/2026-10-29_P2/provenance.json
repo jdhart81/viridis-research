@@ -1,0 +1,74 @@
+{
+  "agent": {
+    "duration_api_ms": 108366,
+    "duration_ms": 143998,
+    "final_message": "I've written a Lean proof of the sealed statement `P2.CarbonContinuity`. The local `viridis-lean-check` passes all five stages, and the proof uses only `propext`, `Classical.choice` and `Quot.sound`. That check is a preview: the PROVEN label comes from the verifier after the session.\n\n**The proof** (`out/proofs/P2.CarbonContinuity.lean`) is a short port of the archived canon proof to the sealed definitions:\n- **Sufficiency:** the portfolio (L, D) = (r, 1 − a) is a positive witness. It holds the living pool exactly, and the durable pool does not shrink when (1 − a)(1 − d) ≤ rp.\n- **Necessity:** rearranging the two inequalities gives (1 − a)L ≤ rD and (1 − d)D ≤ pL. Multiplying them and cancelling LD > 0 gives the threshold.\n- **Unused assumptions:** the proof never uses 0 ≤ a, 0 ≤ d or p > 0. I recorded this in `run.json` as a separate unsealed observation (C2), not as part of the formal claim.\n\n**The paper** (`out/paper/main.tex`) compiles with `latexmk -pdf`. It states the model and the threshold, gives the proof with a Lean listing, and has a section on what the theorem settles and what it does not:\n- **Settles:** the threshold logic the kernel applies.\n- **Does not settle:**\n  - any coefficient value;\n  - whether the linear model fits real forests;\n  - what happens over many cycles;\n  - whether the TypeScript implementation matches the rule.\n\nIt cites the canon record (10.5281/zenodo.21855690) and Berman & Plemmons for the Perron–Frobenius background; I checked that both DOIs resolve.\n\n**Other outputs:** `out/notes.md`, `out/run.json` (one formal claim plus the observation) and a 370-character `out/announcement.md`. I removed the LaTeX build artifacts so `out/` holds only files the contract allows. I didn't use Aristotle, so there are no project IDs. There were no prior runs, so nothing was pending.\n\n**Not covered:** the canon's extra results (exact balance at the threshold, strict growth above it, a worked numeric example) aren't part of the sealed statement, so I didn't port them.\n\nSources:\n- [Zenodo record 10.5281/zenodo.21855690](https://zenodo.org/doi/10.5281/zenodo.21855690)\n- [Berman & Plemmons, Nonnegative Matrices in the Mathematical Sciences (SIAM)](https://epubs.siam.org/doi/book/10.1137/1.9781611971262)\n- [Semantic Scholar entry for Berman & Plemmons](https://www.semanticscholar.org/paper/Nonnegative-Matrices-in-the-Mathematical-Sciences-Berman-Plemmons/099e9af1b8f874457dea9526516ce8c8dcb93662)",
+    "is_error": false,
+    "num_turns": 12,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "4f46520d-1185-4947-ad12-0d3e83b37dc6",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.5725353,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 28931,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 28931,
+      "cache_read_input_tokens": 183327,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 20,
+      "iterations": [],
+      "output_tokens": 10616,
+      "output_tokens_details": {
+        "thinking_tokens": 613
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 6,
+      "doi.org": 2,
+      "zenodo.org": 2
+    },
+    "bytes_down": 177770,
+    "bytes_up": 600978,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "7a275da5725225108e057d0f89f28745b7b71336",
+    "run_attempt": 1,
+    "run_id": 40889395791,
+    "run_started_at": "2026-10-29T14:13:47Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/40889395791",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-10-29",
+    "prior_runs": [],
+    "project": "P2",
+    "run_started_at": "2026-10-29T14:13:47Z",
+    "task": "P2-T001",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}
