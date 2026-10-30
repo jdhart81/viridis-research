@@ -48,3 +48,27 @@ workflow for that week.
 - Listing an AI system as an author.
 - Announcing an ASSUMED or TRIVIAL result.
 - Reposting after an unconfirmed post.
+
+## Record text (Viridis science release standard, S2 and S5 to S9)
+
+Every Zenodo description, release-notes header and LinkedIn post built from a run
+must contain, in the record text itself and not only in the PDF:
+
+1. **Status first.** The first sentence is "Working paper, not peer reviewed." It
+   also says that nothing is field-validated, unless a recorded decision says
+   otherwise.
+2. **Novelty, honestly.** When the paper says it claims no novelty, or the result is
+   a known theorem (for example Gray 1971, or a 2×2 Perron–Frobenius case), the
+   record says so in its first paragraph: "a formalization of a known result, not
+   a new result".
+3. **Assumptions and limits.** The paper's stated limits (model scope, what the
+   sealed statement does not cover, ASSUMED claims) appear in the description.
+4. **AI use.** The tools and their roles (the research agent and its model, whether
+   Aristotle was used in that run), that labels come from the automated verifier,
+   and that Justin D. Hart is the accountable author. No AI system is a creator.
+5. **Exact source.** A related identifier `isSupplementTo` the GitHub Release tag
+   `week-YYYY-Www` (or the commit) the record was built from, plus the run folder.
+6. **Citations.** Only DOIs the verifier resolved. The agent's own statement that it
+   checked references is never repeated as evidence.
+7. **Creator.** `Hart, Justin D.`, ORCID 0009-0008-3082-2482, matching every other
+   Viridis record and CITATION.cff.
