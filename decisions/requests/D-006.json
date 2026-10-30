@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-006",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-30T14:33:11Z",
+  "posted_comment_id": 6525297672,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6525297672",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.Restoration proposed by runs/2026-10-30_P2"
 }

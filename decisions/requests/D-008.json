@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-008",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-30T14:33:13Z",
+  "posted_comment_id": 6525298157,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6525298157",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.Harmonization proposed by runs/2026-10-30_P2"
 }

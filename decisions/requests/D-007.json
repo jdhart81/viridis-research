@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-007",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-10-30T14:33:12Z",
+  "posted_comment_id": 6525297932,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6525297932",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.Afforestation proposed by runs/2026-10-30_P2"
 }
