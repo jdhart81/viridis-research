@@ -1,0 +1,75 @@
+{
+  "agent": {
+    "duration_api_ms": 132419,
+    "duration_ms": 183115,
+    "final_message": "I've written a Lean proof of the sealed statement `P2.Restoration`, and the local checker `viridis-lean-check` passes it. Only the verifier awards the PROVEN label. The only axioms it uses are `propext`, `Classical.choice` and `Quot.sound`.\n\n**The proof** (`out/proofs/P2.Restoration.lean`) is a cleaned-up port of the canon proof. Both parts of the statement come from one algebraic fact, G(r*) − G(r) = Δμ·(r − r*)²·(r + r*/2):\n- **Part 1:** for r ≥ 0 every factor is non-negative, so r* is the maximum. If G(r) equals the maximum, the product is zero and the only possibility is r = r*.\n- **Part 2:** substituting aσ = (3/2)Δμ·r* gives the half-barrier identity directly.\n\n**Two extra findings from scratch checks:**\n- The archived canon proof, pasted unchanged, also passes the checker under the pinned toolchain, so the old proof still replays.\n- Part 2 holds for every Δμ, so its hypothesis 0 < Δμ isn't actually needed. The sealed statement keeps it to match the canon. I recorded this as a conjecture claim (C2), not a formal one.\n\n**The paper** builds on the 10-30 version and compiles cleanly with `latexmk -pdf`. It adds a Restoration section with the proof, the key Lean lemmas, and how it compares to the canon proof. A new section lists what the theorem does not settle, which all stays ASSUMED:\n- the field values of Δμ, σ and a (errors in these are roughly tripled in the critical cluster size n*);\n- whether classical nucleation theory fits tree clusters at all;\n- nucleation rates and random establishment;\n- the separate seed-allocation result (`broadcast_suboptimal`), which is in the canon file but not in the sealed statement;\n- the step from the cube-root variable r to the tree count n, which is argued only informally;\n- whether the deployed code actually implements this rule.\n\nIt also has a status table for the project and a changelog entry for tonight.\n\n**Other notes:** I didn't use Aristotle, and no jobs were pending from earlier runs. `STATEMENT_PROPOSAL.md` is still missing from `inputs/context/`.\n\nFiles are in `out/`:\n- `notes.md`\n- `run.json` (C1 is the formal claim)\n- `proofs/P2.Restoration.lean`\n- `paper/main.tex`\n- `paper/refs.bib`\n- `announcement.md` (432 characters)",
+    "is_error": false,
+    "num_turns": 26,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "8e2eb5e7-51f3-4e0a-9a82-7dd3b708bab3",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.8606466000000002,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 52480,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 52480,
+      "cache_read_input_tokens": 620753,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 34,
+      "iterations": [],
+      "output_tokens": 15826,
+      "output_tokens_details": {
+        "thinking_tokens": 1279
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 4
+    },
+    "bytes_down": 126207,
+    "bytes_up": 1762155,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "2fb1a289c1081bb5f1e4902133a1e88c7a448ef3",
+    "run_attempt": 1,
+    "run_id": 41206360478,
+    "run_started_at": "2026-10-31T13:36:48Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41206360478",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-10-31",
+    "prior_runs": [
+      "runs/2026-10-30_P2",
+      "runs/2026-10-29_P2"
+    ],
+    "project": "P2",
+    "run_started_at": "2026-10-31T13:36:48Z",
+    "task": "P2-T003",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}

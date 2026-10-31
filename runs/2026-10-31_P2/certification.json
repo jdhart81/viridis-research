@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-31",
+  "engine_sha": "a28b5044ab8ed5d7a9c96649f9d7bfdec2462320",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "59286948a6b807ac2f16da6bc2558780d11987b2b01adde147a06d61e2eba4b1",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P2.Restoration",
+      "statement_sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+      "text": "For all real Delta mu, a, sigma > 0, the critical radius rStar = 2 a sigma / (3 Delta mu) is positive, G(r) <= G(rStar) for every r >= 0 where G(r) = -Delta mu r^3 + a sigma r^2, and any r >= 0 with G(r) = G(rStar) equals rStar. For all Delta mu > 0 and all real a, sigma, G(rStar) = (1/2) Delta mu rStar^3.",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Observation from a local check, not a sealed claim: the half-barrier identity G(rStar) = (1/2) Delta mu rStar^3 holds for every real Delta mu (for Delta mu = 0 by Lean's x/0 = 0 convention), so the hypothesis 0 < Delta mu in part (ii) of P2.Restoration is not used mathematically."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "59286948a6b807ac2f16da6bc2558780d11987b2b01adde147a06d61e2eba4b1",
+      "durations": {
+        "check": 5.879,
+        "compile": 6.732,
+        "replay": 8.486
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P2.Restoration",
+      "statement_sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 11,
+  "project": "P2",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1016/B978-0-7506-4682-6.X5000-8",
+      "10.1017/CBO9780511804441",
+      "10.1137/1.9781611971262",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21855690"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-10-31_P2",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P2-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}
