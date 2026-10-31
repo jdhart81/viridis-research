@@ -1,0 +1,27 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P3/README.md",
+    "projects/P3/context/SOURCES.sha256",
+    "projects/P3/context/ReciprocityCorridor.lean",
+    "projects/P3/context/UsefulDissipatedWork.lean"
+  ],
+  "id": "P3",
+  "priority": 3,
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21971047",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.22736716",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of a thermodynamic-economics kernel for the circular economy: loop mass balance, cascaded recovery, a recovery-adjusted work floor and the N-partner symbiosis condition, each sealed as a statement by Justin's decision and proved under the pinned Lean toolchain.",
+  "title": "Circular-economy kernel: loops, cascades and industrial symbiosis"
+}

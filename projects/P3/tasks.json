@@ -1,0 +1,68 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P3-T001",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the circular-economy kernel",
+      "produces": [
+        "P3.LoopMassBalance",
+        "P3.CascadedRecovery",
+        "P3.RecoveryWorkFloor",
+        "P3.CyclicSymbiosis"
+      ],
+      "brief": "Draft four sealed statements, one module each in proposals/. (1) P3.LoopMassBalance: for demand D >= 0, recovery fraction r in [0,1] and stock retention rho in [0,1), virgin input per period is V = D(1 - r); the secondary stock S(t+1) = rho S(t) + r D satisfies S(t) - S* = rho^t (S(0) - S*) with S* = r D / (1 - rho), so it converges to S*; cumulative virgin input over T periods is T D (1 - r), strictly decreasing in r when T > 0 and D > 0. (2) P3.CascadedRecovery: for n stages with r_i in [0,1], the virgin share after the cascade is the product of (1 - r_i); it is at least (1 - max r_i)^n and at most (1 - r_j) for every stage j, strictly less when some other stage has r_i > 0 and r_j < 1. (3) P3.RecoveryWorkFloor: extend target_requires_supply in context/UsefulDissipatedWork.lean (canon Run-163) to a fresh supply w_f and a recovered supply w_r with efficiencies in [0, e_max], e_max > 0: if useful work reaches T then w_f >= (T - e_max w_r) / e_max, with a witness showing the floor is attained. (4) P3.CyclicSymbiosis: generalise the two-partner reciprocity corridor in context/ReciprocityCorridor.lean (canon Run-128) to a cycle of N >= 2 partners with costs c_i > 0 and values v_i > 0, where partner i ships x_i at cost c_i x_i and receives value v_i x_(i-1) (indices mod N): a strictly positive flow giving every partner strictly positive net benefit exists if and only if the product of c_i is less than the product of v_i. Its N = 2 case must agree with ProductCondition in the canon file. Restate it self-contained over Mathlib only. Include sanity examples with concrete numbers (norm_num or decide), including one negative control. The rationale file lists every hypothesis and says what the statement does not settle: no claim about any real recovery rate, cost, value or material, which are field inputs."
+    },
+    {
+      "id": "P3-T002",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P3-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P3.LoopMassBalance",
+      "title": "Prove the circular-loop mass balance",
+      "brief": "Prove the sealed statement P3.LoopMassBalance. The paper is a short note: state the loop model, the fixed point and the virgin-input identity, give the proof, and say what it settles (accounting identities of the model) and what it does not (any measured recovery rate or retention)."
+    },
+    {
+      "id": "P3-T003",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P3-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P3.CascadedRecovery",
+      "title": "Prove the cascaded-recovery bounds",
+      "brief": "Prove the sealed statement P3.CascadedRecovery. The paper explains why a cascade of imperfect recovery stages beats any one of its stages, and states the bounds without claiming any real stage efficiency."
+    },
+    {
+      "id": "P3-T004",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P3-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P3.RecoveryWorkFloor",
+      "title": "Prove the recovery-adjusted work floor",
+      "brief": "Prove the sealed statement P3.RecoveryWorkFloor, building on target_requires_supply (canon Run-163, doi:10.5281/zenodo.22736716). The paper states the floor, shows it is attained, and says plainly that it is a modeled-efficiency bound, not a Landauer bound and not a consequence of the Intelligence Bound conjecture."
+    },
+    {
+      "id": "P3-T005",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P3-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P3.CyclicSymbiosis",
+      "title": "Prove the N-partner industrial-symbiosis condition",
+      "brief": "Prove the sealed statement P3.CyclicSymbiosis. Port ideas from the two-partner proof in context/ReciprocityCorridor.lean (canon Run-128, doi:10.5281/zenodo.21971047). The paper states the cycle model and the product condition, shows the N = 2 case recovers the reciprocity corridor, and says what it does not settle: real costs, values, logistics or contracts."
+    }
+  ]
+}
