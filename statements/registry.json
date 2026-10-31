@@ -23,6 +23,28 @@
       "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
       "task": "P1-T001"
     },
+    "P2.Afforestation": {
+      "constant": "ViridisStatements.P2.Afforestation.Statement",
+      "decision": "D-007",
+      "module": "ViridisStatements.P2.Afforestation",
+      "path": "lean/ViridisStatements/P2/Afforestation.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P2",
+      "sealed_at": "2026-10-31T13:19:07Z",
+      "sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+      "task": "P2-T002"
+    },
     "P2.CarbonContinuity": {
       "constant": "ViridisStatements.P2.CarbonContinuity.Statement",
       "decision": "D-004",
@@ -44,6 +66,50 @@
       "sealed_at": "2026-10-28T23:29:57Z",
       "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
       "task": "P2-T001"
+    },
+    "P2.Harmonization": {
+      "constant": "ViridisStatements.P2.Harmonization.Statement",
+      "decision": "D-008",
+      "module": "ViridisStatements.P2.Harmonization",
+      "path": "lean/ViridisStatements/P2/Harmonization.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P2",
+      "sealed_at": "2026-10-31T13:19:10Z",
+      "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
+      "task": "P2-T002"
+    },
+    "P2.Restoration": {
+      "constant": "ViridisStatements.P2.Restoration.Statement",
+      "decision": "D-006",
+      "module": "ViridisStatements.P2.Restoration",
+      "path": "lean/ViridisStatements/P2/Restoration.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P2",
+      "sealed_at": "2026-10-31T13:19:05Z",
+      "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+      "task": "P2-T002"
     }
   }
 }
