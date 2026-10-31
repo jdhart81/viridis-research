@@ -29,12 +29,14 @@
       "P1": {
         "approved_by": "D-003",
         "concept_recid": null,
-        "latest_deposition_id": null
+        "latest_deposition_id": null,
+        "record_note": "Scope and novelty. Project P1 aims to replace the assumed topological step (FaceCount) in Trees Cannot Cut (doi:10.5281/zenodo.21686446) with machine-checked theorems about finite rasters. Its first result, Gray's 1971 bit-quad formula for the Euler characteristic of an 8-connected binary image (IEEE Transactions on Computers C-20(5):551-561, doi:10.1109/T-C.1971.223289), is a Lean 4 formalization of a known formula, not a new result. We are not aware of an earlier machine-checked proof, but we have not searched exhaustively and claim no novelty. Until the remaining rungs (L2 and L3) are proved, the FaceCount assumption is not discharged."
       },
       "P2": {
         "approved_by": "D-005",
         "concept_recid": null,
-        "latest_deposition_id": null
+        "latest_deposition_id": null,
+        "record_note": "Scope and novelty. Project P2 re-proves the formal cores of Viridis OS decision kernels so that anyone can re-check them with the current public Lean 4 toolchain. These are classical, elementary results, not new theorems: the first, Carbon Continuity, is the 2x2 case of the Collatz-Wielandt characterisation of the Perron root of a nonnegative matrix (A. Berman and R. J. Plemmons, Nonnegative Matrices in the Mathematical Sciences, SIAM 1994, doi:10.1137/1.9781611971262). Each result holds only inside its stated model. It says nothing about coefficient values for any site, whether deployed kernel code implements the rule faithfully, or any carbon-credit or treatment outcome."
       }
     },
     "sandbox_base_url": "https://sandbox.zenodo.org/api"
