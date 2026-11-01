@@ -1,0 +1,73 @@
+{
+  "date": "2026-11-01",
+  "engine_sha": "9c1495480475161d13df02954217fb6133ced710",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "a179401aa4d0e0de8a14944fe4356287cdd2295f2d71d3fcd87a8093091ca48c",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P2.Afforestation",
+      "statement_sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+      "text": "(1) For all real a, sigma, Delta mu, t > 0 and every real C, eff(a, sigma, t Delta mu, C) = t^3 eff(a, sigma, Delta mu, C), where eff(a, sigma, Delta mu, C) = C (3 Delta mu / (2 a sigma))^3. (2) In every real inner-product space, for nonzero n and m, eta(n, m) = <n,m>^2 / (|n|^2 |m|^2) satisfies 0 <= eta(n, m) <= 1.",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Observation from a local check, not a sealed claim: both parts of P2.Afforestation hold without any of their hypotheses. The cubic law is a ring identity for all real a, sigma, Delta mu, t, C, and the alignment bound also holds for n = 0 or m = 0, where eta = 0 by Lean's x/0 = 0 convention."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "a179401aa4d0e0de8a14944fe4356287cdd2295f2d71d3fcd87a8093091ca48c",
+      "durations": {
+        "check": 4.373,
+        "compile": 4.676,
+        "replay": 6.827
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P2.Afforestation",
+      "statement_sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 13,
+  "project": "P2",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1016/B978-0-7506-4682-6.X5000-8",
+      "10.1017/CBO9780511804441",
+      "10.1137/1.9781611971262",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21855690"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-01_P2",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P2-T004",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

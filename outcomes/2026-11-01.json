@@ -1,0 +1,43 @@
+{
+  "agent_minutes": 2.72,
+  "date": "2026-11-01",
+  "github": {
+    "event": "schedule",
+    "head_sha": "fd2e3c0057b7fc254f1cdd325f6f30195702072c",
+    "run_attempt": 1,
+    "run_id": 41315221075,
+    "run_started_at": "2026-11-01T14:14:45Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41315221075",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P2.Afforestation",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "f32b635272d9610589e45f542f662fa5a195650b8d6fc50c16822648d0b16428",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P2.Afforestation"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-01_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T004",
+  "title": "Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Afforestation Seeding Core",
+  "written_at": "2026-11-01T14:32:47Z",
+  "written_by": "verify",
+  "zip_sha256": "c07364e94f08660f28c9c4ad2e85a66931af9c3ead1826594892ecdaf4aa6b76"
+}

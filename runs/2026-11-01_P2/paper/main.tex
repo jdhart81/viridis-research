@@ -1,0 +1,533 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+\sloppy
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{proposal}[theorem]{Proposed statement}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinelanguage{lean}{
+  morekeywords={theorem,def,example,import,namespace,end,open,by,intro,exact,obtain,refine,have,simp,only,at,fun,noncomputable},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"}
+\lstset{language=lean, basicstyle=\ttfamily\footnotesize, keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{green!40!black}, columns=fullflexible, breaklines=true, frame=single,
+  extendedchars=true, inputencoding=utf8,
+  literate={≤}{{$\le$}}1 {≥}{{$\ge$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {ℝ}{{$\mathbb{R}$}}1
+           {ℕ}{{$\mathbb{N}$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {∃}{{$\exists$}}1 {∀}{{$\forall$}}1
+           {∧}{{$\wedge$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1 {Δ}{{$\Delta$}}1 {μ}{{$\mu$}}1 {σ}{{$\sigma$}}1
+           {‖}{{$\|$}}1 {∑}{{$\sum$}}1 {≠}{{$\ne$}}1 {∈}{{$\in$}}1 {←}{{$\leftarrow$}}1 {₀}{{$_0$}}1 {η}{{$\eta$}}1}
+
+\title{Re-certifying the Viridis OS Decision Kernels:\\ Carbon Continuity, the Restoration Critical Nucleus,\\ and the Afforestation Seeding Core}
+\author{Justin Hart\\ Viridis LLC}
+\date{1 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Viridis OS runs decision kernels whose formal cores were checked by tools that can no longer be re-run.
+This paper documents the project that brings each kernel to a re-checkable standard: the kernel's formal core is restated as a
+sealed, self-contained Lean~4 statement and re-proved under a pinned toolchain.
+The first kernel, \emph{Carbon Continuity}, has a Lean proof of its sealed statement: a two-pool carbon portfolio can be kept
+from shrinking exactly when $(1-a)(1-d)\le rp$.
+The second kernel, \emph{Restoration}, decides whether a planted cluster on degraded
+land is large enough to grow into forest; we give a Lean proof of the sealed statement \texttt{P2.Restoration}.
+The critical radius $r^\star=2a\sigma/(3\Delta\mu)$ is positive and is the unique maximiser of the free energy
+$G(r)=-\Delta\mu r^3+a\sigma r^2$ on $r\ge 0$, and the barrier satisfies $G(r^\star)=\tfrac12\Delta\mu (r^\star)^3$.
+The proof rests on the factorisation $G(r^\star)-G(r)=\Delta\mu(r-r^\star)^2(r+r^\star/2)$.
+We set out what this settles (the go/no-go geometry inside the nucleation model) and what it leaves to field
+evidence (parameter values, adequacy of the model, rates, seed allocation and code conformance).
+This revision re-certifies the third kernel, \emph{Afforestation}, which ranks seeding plans by seeding efficiency
+and scores how well a seed allocation is aligned with the optimal one.
+We give a Lean proof of the sealed statement \texttt{P2.Afforestation}: seeding efficiency
+$\mathrm{eff}=C\,(3\Delta\mu/(2a\sigma))^3$ scales as the cube of the ecological drive $\Delta\mu$, and the seeding
+alignment $\eta=\langle n,m\rangle^2/(\|n\|^2\|m\|^2)$ lies in $[0,1]$ in every real inner-product space.
+The first part is a ring identity and the second is the squared Cauchy--Schwarz inequality.
+We observe that none of the hypotheses of either part is needed, that the canon proof still replays verbatim,
+and that the canon's ``$\cos^2\Theta$'' name promises more than the bound that is proved.
+The statement proposals of 30 October are retained.
+\texttt{P2.Harmonization} restates two properties of a scalar-price welfare theorem for $N$ quadratic stewards: market clearing,
+and the absence of a duality gap.
+Each proposal copies the canon definitions and hypotheses verbatim and records the hash of the canon file.
+It also includes sanity examples with concrete numbers, among them negative controls.
+We point out where canon theorem names promise more than the theorems prove.
+We also point out which canon hypotheses are kept for faithfulness although the proofs do not need them.
+\texttt{P2.Restoration} and \texttt{P2.Afforestation} have since been sealed unchanged and are proved here.
+No proof of \texttt{P2.Harmonization} is claimed.
+\end{abstract}
+
+\section{Introduction}
+Viridis OS runs a set of decision kernels. Each one is a small piece of software that turns ecological
+parameters into a decision. A kernel's rule is only as trustworthy as the mathematics behind it.
+The archived canon~\cite{HartCanon2026} proved those rules in Lean, but the certificates came from tooling that has
+since been retired. The project described here moves each kernel's assurance onto a re-checkable footing in two steps.
+First, a \emph{sealed statement} fixes the exact proposition a kernel relies on.
+Second, a Lean proof of that statement is checked under Lean v4.28.0 with a pinned Mathlib~\cite{Mathlib2020}.
+
+The two steps are separate on purpose. Writing the statement is where most of the risk lies.
+A statement can be correct and easy to prove and still be the wrong one. It can be weaker than what the kernel uses,
+stronger than what the canon proved, or vacuous. The 30 October revision covered that first step for three kernels:
+Restoration, Afforestation and Harmonization.
+The 31 October revision took the second step for Restoration (Section~\ref{sec:restoration}), and the present revision
+takes it for Afforestation (Section~\ref{sec:afforestation}).
+The Restoration kernel makes a go/no-go call for a planted cluster. Go means the cluster is past the nucleation barrier
+and will grow into forest. No-go means it is still on the uphill side and is expected to dissolve.
+A wrong rule here would send planting budgets to clusters that cannot persist, so the geometry of the barrier is worth
+checking mechanically, however elementary it is.
+The Afforestation kernel works one step later: given that clusters must clear the barrier, it compares seeding plans and
+site-preparation levers (such as nurse plants or mulch, which lower the edge hostility $\sigma$) by how much established canopy each seed buys,
+and it scores a proposed seed allocation by its alignment with the optimal one.
+Both rules rest on two short facts, a scaling law and a Cauchy--Schwarz bound, which are what \texttt{P2.Afforestation} seals.
+The question is narrow. We ask what each kernel's rule \emph{mathematically} relies on, and how to write that down
+self-contained and faithful to the canon theorem it replaces. We do not ask whether the models describe any real landscape.
+
+\section{Background and related work}
+\paragraph{Carbon Continuity.} One disturbance-recovery cycle maps $(L,D)\mapsto(aL+rD,\ pL+dD)$.
+This is the nonnegative matrix $M=\begin{pmatrix}a&r\\p&d\end{pmatrix}$, and the threshold theorem is a
+two-dimensional instance of the Collatz--Wielandt characterisation in Perron--Frobenius theory~\cite{BermanPlemmons1994}.
+
+\paragraph{Restoration and Afforestation.} The canon models a planted cluster as a nucleus of the forest phase inside a
+metastable degraded phase. It uses the free-energy form of classical nucleation theory~\cite{Kashchiev2000}:
+a bulk gain $-\Delta\mu\, n$ competes with a surface cost $a\sigma\, n^{2/3}$.
+In the cube-root variable $r=n^{1/3}$ this becomes the cubic $G(r)=-\Delta\mu r^3+a\sigma r^2$.
+The textbook facts are a critical size at the barrier top and a barrier equal to half the bulk term at the critical size.
+These are the mathematical content of \texttt{P2.Restoration}.
+The Afforestation efficiency $e=C/n^\star$ inherits the cube from $n^\star=(r^\star)^3$.
+The alignment score is a squared cosine, bounded by Cauchy--Schwarz.
+
+\paragraph{Harmonization.} The scalar-price theorem is the separable quadratic case of Lagrangian duality with
+one linear coupling constraint~\cite{BoydVandenberghe2004}.
+At the clearing price, the decentralised best responses solve the centralised problem, and there is no duality gap.
+
+We claim no novelty for any of this mathematics. The contribution is a set of faithful, machine-checkable targets tied
+to deployed kernels.
+
+\section{Carbon Continuity (P2-T001)}
+The sealed module defines $\mathrm{stepLiving}(a,r,L,D)=aL+rD$ and $\mathrm{stepDurable}(d,p,L,D)=pL+dD$.
+$\mathrm{Sustainable}(a,d,r,p)$ means that some $L,D>0$ satisfy $L\le aL+rD$ and $D\le pL+dD$.
+\begin{theorem}[\texttt{P2.CarbonContinuity}]
+For all real $a,d,r,p$ with $0\le a<1$, $0\le d<1$, $r>0$ and $p>0$:
+$\mathrm{Sustainable}(a,d,r,p)\iff (1-a)(1-d)\le rp$.
+\end{theorem}
+\begin{proof}[Proof sketch]
+Sufficiency uses the witness $(L,D)=(r,1-a)$. The living step is then an identity, and the durable step reduces to
+$rp-(1-a)(1-d)\ge 0$. For necessity, rearrange the two inequalities to $(1-a)L\le rD$ and $(1-d)D\le pL$,
+multiply them (both sides are positive), and cancel $LD>0$.
+\end{proof}
+The previous revision gave a Lean proof of this statement (file \texttt{proofs/P2.CarbonContinuity.lean} of run
+2026-10-29), with axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+\begin{lstlisting}
+theorem main : ViridisStatements.P2.CarbonContinuity.Statement := by
+  intro a d r p _ ha1 _ hd1 hr _
+  exact ⟨necessary a d r p ha1 hd1, sufficient a d r p ha1 hr⟩
+\end{lstlisting}
+We observe that the helper lemmas use only $a<1$, $d<1$ and $r>0$.
+
+\section{Restoration: the critical nucleus (P2-T003)}\label{sec:restoration}
+\subsection{The sealed statement}
+The sealed module \texttt{ViridisStatements.P2.Restoration} (sha256 \texttt{fd40b113\ldots ccff18}) is the statement
+proposed on 30 October (Section~\ref{sec:proposals}), unchanged.
+It defines $r^\star(\Delta\mu,a,\sigma)=2a\sigma/(3\Delta\mu)$ and $G(\Delta\mu,a,\sigma,r)=-\Delta\mu r^3+a\sigma r^2$
+verbatim from the canon file \texttt{ForestNucleation.lean} (sha256 \texttt{667a826a\ldots ec28132}, which we checked
+against the pinned manifest).
+\begin{theorem}[\texttt{P2.Restoration}]\label{thm:restoration}
+\begin{enumerate}
+\item[(i)] For all real $\Delta\mu,a,\sigma>0$: $r^\star>0$, $G(r)\le G(r^\star)$ for every $r\ge 0$, and every $r\ge0$ with
+$G(r)=G(r^\star)$ equals $r^\star$.
+\item[(ii)] For all real $\Delta\mu>0$ and all real $a,\sigma$: $G(r^\star)=\tfrac12\Delta\mu\,(r^\star)^3$.
+\end{enumerate}
+\end{theorem}
+We give a Lean proof of Theorem~\ref{thm:restoration} in \texttt{proofs/P2.Restoration.lean}.
+The local checker, which runs the same stages as the verifier, passes it, and the only axioms it reports are
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+
+\subsection{Proof}
+\begin{proof}
+Let $\Delta\mu\ne0$. By the definition of $r^\star$, $a\sigma=\tfrac32\Delta\mu\, r^\star$.
+Substituting into $G$ gives $G(r)=\Delta\mu\bigl(-r^3+\tfrac32 r^\star r^2\bigr)$, hence
+$G(r^\star)=\tfrac12\Delta\mu (r^\star)^3$, which is (ii). Subtracting,
+\[
+G(r^\star)-G(r)=\Delta\mu\bigl(r^3-\tfrac32 r^\star r^2+\tfrac12 (r^\star)^3\bigr)=\Delta\mu\,(r-r^\star)^2\,(r+r^\star/2).
+\]
+Now let $\Delta\mu,a,\sigma>0$. Then $r^\star>0$ as a quotient of positive numbers.
+For $r\ge0$ all three factors on the right are nonnegative, so $G(r)\le G(r^\star)$.
+If equality holds, the product is zero. Since $\Delta\mu>0$ and $r+r^\star/2>0$, we get $(r-r^\star)^2=0$, that is, $r=r^\star$.
+\end{proof}
+The Lean development follows this argument line by line. Its key lemmas are:
+\begin{lstlisting}
+lemma aσ_eq (Δμ a σ : ℝ) (hΔμ : Δμ ≠ 0) :
+    a * σ = 3 / 2 * Δμ * rStar Δμ a σ := by
+  unfold rStar
+  field_simp
+
+lemma key_identity (Δμ a σ r : ℝ) (hΔμ : Δμ ≠ 0) :
+    G Δμ a σ (rStar Δμ a σ) - G Δμ a σ r =
+      Δμ * (r - rStar Δμ a σ) ^ 2 * (r + rStar Δμ a σ / 2) := by
+  unfold G
+  rw [aσ_eq Δμ a σ hΔμ]
+  ring
+
+lemma barrier_half (Δμ a σ : ℝ) (hΔμ : 0 < Δμ) :
+    G Δμ a σ (rStar Δμ a σ) = (1 / 2) * Δμ * (rStar Δμ a σ) ^ 3 := by
+  unfold G
+  rw [aσ_eq Δμ a σ hΔμ.ne']
+  ring
+
+theorem main : ViridisStatements.P2.Restoration.Statement :=
+  ⟨fun Δμ a σ hΔμ ha hσ => critical_nucleus Δμ a σ hΔμ ha hσ,
+   fun Δμ a σ hΔμ => barrier_half Δμ a σ hΔμ⟩
+\end{lstlisting}
+Here \texttt{critical\_nucleus} proves (i). Maximality comes from \texttt{key\_identity}, \texttt{positivity} and \texttt{linarith}.
+Uniqueness is a two-way \texttt{mul\_eq\_zero} case split followed by \texttt{pow\_eq\_zero\_iff}.
+
+\subsection{Relation to the canon proof}
+The canon proof uses the same factorisation, but in a compressed tactic style (\texttt{refine'}, a long term-mode
+\texttt{contrapose!} chain, and \texttt{grind} for the half identity).
+We observe that the canon proofs, pasted verbatim into a candidate file, also pass the local checker under the pinned
+toolchain. The archived proof therefore still replays.
+We submit the restructured version because its helper lemmas name the single algebraic fact everything rests on,
+and because it depends less on the behaviour of \texttt{grind}, which may change between Mathlib versions.
+
+\subsection{Observations}
+\begin{itemize}
+\item \textbf{An unused hypothesis.} Part (ii) holds for every real $\Delta\mu$. For $\Delta\mu\ne0$ the argument above
+does not use the sign. For $\Delta\mu=0$, Lean's convention $x/0=0$ gives $r^\star=0$, and both sides are $0$.
+We checked both cases locally. The sealed statement keeps $0<\Delta\mu$ to match the canon.
+\item \textbf{The sign of $\Delta\mu$ matters for (i).} If $\Delta\mu<0$ the degraded state is favoured, $r^\star<0$, and
+$G$ is unbounded above on $r\ge0$, so no cluster size is a barrier top. The sealed module includes a negative control for this case.
+\item \textbf{$r$ versus $n$.} The theorem concerns the cube-root variable $r=n^{1/3}$. Since $r\mapsto r^3$ is an increasing
+bijection of $[0,\infty)$, it follows informally that $n^\star=(r^\star)^3$ is the unique maximiser of
+$-\Delta\mu n+a\sigma n^{2/3}$ on $n\ge0$. This translation is not part of the sealed statement, and it has no Lean proof here.
+\end{itemize}
+
+\section{Afforestation: the seeding core (P2-T004)}\label{sec:afforestation}
+\subsection{The sealed statement}
+The sealed module \texttt{ViridisStatements.P2.Afforestation} (sha256 \texttt{2fc1cbb0\ldots 59436}) is byte-identical to the
+statement proposed on 30 October (Section~\ref{sec:proposals}).
+It defines $n^\star(a,\sigma,\Delta\mu)=(2a\sigma/(3\Delta\mu))^3$, $\mathrm{eff}(a,\sigma,\Delta\mu,C)=C\,(3\Delta\mu/(2a\sigma))^3$
+and, on any real inner-product space $E$, $\eta(n,m)=\langle n,m\rangle^2/(\|n\|^2\|m\|^2)$.
+The first two are verbatim from the canon file \texttt{AfforestationStewardship.lean} (sha256 \texttt{3ebe33bf\ldots 9526f},
+checked against the pinned manifest); $\eta$ names the expression in the canon theorem's conclusion.
+\begin{theorem}[\texttt{P2.Afforestation}]\label{thm:afforestation}
+\begin{enumerate}
+\item[(i)] For all real $a,\sigma,\Delta\mu,t>0$ and every real $C$:
+$\mathrm{eff}(a,\sigma,t\Delta\mu,C)=t^3\,\mathrm{eff}(a,\sigma,\Delta\mu,C)$.
+\item[(ii)] For every real inner-product space $E$ and all $n,m\in E$ with $n\ne0$, $m\ne0$: $0\le\eta(n,m)\le1$.
+\end{enumerate}
+\end{theorem}
+We give a Lean proof of Theorem~\ref{thm:afforestation} in \texttt{proofs/P2.Afforestation.lean}.
+The local checker passes it, and the only axioms it reports are \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+
+\subsection{Proof}
+\begin{proof}
+(i) $C\,(3t\Delta\mu/(2a\sigma))^3=t^3\cdot C\,(3\Delta\mu/(2a\sigma))^3$ is an identity of rational expressions in which
+$t$ appears only in the numerator.
+(ii) $\eta$ is a square divided by a square, so $\eta\ge0$. By Cauchy--Schwarz, $|\langle n,m\rangle|\le\|n\|\,\|m\|$;
+both sides are nonnegative, so squaring gives $\langle n,m\rangle^2\le\|n\|^2\|m\|^2$, and dividing by the nonnegative
+denominator gives $\eta\le1$.
+\end{proof}
+In Lean, division by zero is defined to be zero, so both steps go through without the hypotheses: for (i), \texttt{ring}
+treats $x/y$ as $x\cdot y^{-1}$; for (ii), \texttt{div\_le\_one\_of\_le\(_0\)} needs only a nonnegative denominator.
+The submitted file therefore proves hypothesis-free helper lemmas and discards the hypotheses in \texttt{main}:
+\begin{lstlisting}
+theorem eff_cubic (a σ Δμ C t : ℝ) :
+    eff a σ (t * Δμ) C = t ^ 3 * eff a σ Δμ C := by
+  unfold eff
+  ring
+
+theorem eta_mem_unit {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    (n m : E) : 0 ≤ eta n m ∧ eta n m ≤ 1 := by
+  unfold eta
+  refine ⟨by positivity, ?_⟩
+  apply div_le_one_of_le₀ _ (by positivity)
+  have h := abs_real_inner_le_norm n m
+  have h2 : |inner ℝ n m| ^ 2 ≤ (‖n‖ * ‖m‖) ^ 2 :=
+    pow_le_pow_left₀ (abs_nonneg _) h 2
+  rw [sq_abs, mul_pow] at h2
+  exact h2
+
+theorem main : ViridisStatements.P2.Afforestation.Statement := by
+  refine ⟨fun a σ Δμ C t _ _ _ _ => eff_cubic a σ Δμ C t, ?_⟩
+  intro E _ _ n m _ _
+  exact eta_mem_unit n m
+\end{lstlisting}
+
+\subsection{Relation to the canon proof}
+Part (i) is the canon proof unchanged (\texttt{unfold eff; ring}).
+For part (ii) the canon closes the numerator bound with \texttt{nlinarith} fed the two sides of
+$|\langle n,m\rangle|\le\|n\|\|m\|$; we replace that search by an explicit squaring step
+(\texttt{pow\_le\_pow\_left\(_0\)}, \texttt{sq\_abs}, \texttt{mul\_pow}), which does not depend on \texttt{nlinarith}'s heuristics.
+We observe that the canon proofs, pasted verbatim (including \texttt{refine'}) into a candidate file, also pass the
+local checker under the pinned toolchain.
+The sealed statement quantifies over a universe-polymorphic type \texttt{E : Type*}, as the canon does; the polymorphic
+candidate passed the statement-match stage.
+
+\subsection{Observations}
+\begin{itemize}
+\item \textbf{No hypothesis is used.} The cubic law holds for all real $a,\sigma,\Delta\mu,t,C$ (as a Lean identity; when
+$a\sigma=0$ both sides are $0$). The alignment bound holds for $n=0$ or $m=0$, where $\eta=0/0=0$ in Lean.
+The sealed statement keeps all hypotheses to match the canon. The helper lemmas in the submitted file state the
+hypothesis-free versions; they are not sealed statements.
+\item \textbf{The name over-promises.} The canon theorem is called \texttt{seeding\_efficiency\_eq\_cos2\_theta}, and its
+docstring describes $\eta=\cos^2\Theta$ with forcing debt $1-\eta=\sin^2\Theta$ and $\eta=1$ exactly for aligned allocations.
+Only the bound $0\le\eta\le1$ is proved, in the canon and here. A kernel that reports ``zero forcing debt iff the allocation
+is optimal'' relies on the equality case of Cauchy--Schwarz, which is not sealed.
+\item \textbf{Scale invariance, not proved.} $\eta(cn,m)=\eta(n,m)$ for $c\ne0$, so the alignment score ignores the total
+seed budget and measures only the direction of the allocation. This is immediate but has no Lean proof here.
+\item \textbf{The site-prep lever.} The canon's 8$\times$ lever (halving $\sigma$ multiplies $\mathrm{eff}$ by $8$) is the same
+kind of ring identity; it is pinned in the sealed module only by a concrete \texttt{example}, not as a general statement.
+\end{itemize}
+
+\section{Method for writing a sealed statement}
+For each kernel we followed the same procedure.
+\begin{enumerate}
+\item \textbf{Identify the canon theorems.} We take the theorems named in the task brief and check the canon file's SHA-256
+against the pinned manifest (canon commit \texttt{80d32904}).
+\item \textbf{Copy definitions verbatim.} We copy only the definitions the theorems use, with the same argument order,
+and drop the rest. Any added abbreviation must unfold to the canon expression exactly.
+\item \textbf{Copy hypotheses verbatim.} Each conjunct of \texttt{Statement} keeps exactly the hypotheses of its canon theorem.
+We drop no hypothesis, even one that is mathematically unnecessary, because dropping it would strengthen the canon statement.
+We add none, because adding one would weaken it.
+\item \textbf{State the conclusion as proved, not as named.} Where a canon docstring or name claims more than the Lean
+conclusion, the statement follows the conclusion.
+\item \textbf{Pin the meaning.} We add sanity \texttt{example}s with concrete numbers, closed by \texttt{norm\_num} or \texttt{simp}
+(\texttt{decide} does not apply to $\mathbb{R}$). They include negative controls showing that the key hypotheses or factors cannot be dropped.
+\item \textbf{Test non-triviality.} We compile each module and probe \texttt{Statement} with 28 one-shot tactics
+after \texttt{unfold Statement}. The tactics include \texttt{rfl}, \texttt{decide}, \texttt{simp}, \texttt{norm\_num}, \texttt{aesop},
+\texttt{linarith}, \texttt{nlinarith}, \texttt{positivity}, \texttt{grind}, \texttt{field\_simp}, \texttt{ring} and \texttt{polyrith}.
+\item \textbf{Test feasibility.} Privately, we check that a port of the canon proof closes the proposed statement.
+This guards against proposing a false target. It is not a claim of proof.
+\end{enumerate}
+
+\section{The three proposals (P2-T002)}\label{sec:proposals}
+The three statements below were proposed on 30 October. \texttt{P2.Restoration} has since been sealed unchanged and is proved in
+Section~\ref{sec:restoration}; \texttt{P2.Afforestation} has been sealed unchanged and is proved in
+Section~\ref{sec:afforestation}. \texttt{P2.Harmonization} awaits its proof task.
+
+\subsection{\texttt{P2.Restoration}: the critical-nucleus go/no-go}
+Definitions: $r^\star(\Delta\mu,a,\sigma)=2a\sigma/(3\Delta\mu)$ and $G(\Delta\mu,a,\sigma,r)=-\Delta\mu r^3+a\sigma r^2$.
+\begin{proposal}
+(i) For all $\Delta\mu,a,\sigma>0$: $r^\star>0$; $G(r)\le G(r^\star)$ for all $r\ge0$; and $G(r)=G(r^\star)$ with $r\ge0$ implies $r=r^\star$.
+(ii) For all $\Delta\mu>0$ and all $a,\sigma$: $G(r^\star)=\tfrac12\Delta\mu\,(r^\star)^3$.
+\end{proposal}
+Part (i) restates canon \texttt{critical\_nucleus}, and part (ii) restates \texttt{barrier\_half\_identity}
+(file sha256 \texttt{667a826a\ldots ec28132}).
+Both follow from the factorisation $G(r^\star)-G(r)=\Delta\mu\,(r-r^\star)^2\,(r+r^\star/2)$.
+The kernel's go/no-go rule compares cluster size with $n^\star=(r^\star)^3$. Below $n^\star$ the cluster is on the uphill side of the barrier.
+Negative controls: $G(-1)=5/2>G(r^\star)=1/2$ at $(\Delta\mu,a,\sigma)=(1,1,3/2)$, so the restriction $r\ge0$ is essential.
+$G(r^\star)\ne\Delta\mu(r^\star)^3$, so the factor $\tfrac12$ is substantive.
+$\Delta\mu=-1$ gives $r^\star<0$.
+\begin{lstlisting}
+def Statement : Prop :=
+  (∀ Δμ a σ : ℝ, 0 < Δμ → 0 < a → 0 < σ →
+    0 < rStar Δμ a σ ∧
+    (∀ r : ℝ, 0 ≤ r → G Δμ a σ r ≤ G Δμ a σ (rStar Δμ a σ)) ∧
+    (∀ r : ℝ, 0 ≤ r → G Δμ a σ r = G Δμ a σ (rStar Δμ a σ) → r = rStar Δμ a σ)) ∧
+  (∀ Δμ a σ : ℝ, 0 < Δμ →
+    G Δμ a σ (rStar Δμ a σ) = (1 / 2) * Δμ * (rStar Δμ a σ) ^ 3)
+\end{lstlisting}
+
+\subsection{\texttt{P2.Afforestation}: cubic efficiency and seeding alignment}
+Definitions: $\mathrm{eff}(a,\sigma,\Delta\mu,C)=C\,(3\Delta\mu/(2a\sigma))^3$ and $\eta(n,m)=\langle n,m\rangle^2/(\|n\|^2\|m\|^2)$.
+\begin{proposal}
+(i) For all $a,\sigma,\Delta\mu,t>0$ and all $C$: $\mathrm{eff}(a,\sigma,t\Delta\mu,C)=t^3\,\mathrm{eff}(a,\sigma,\Delta\mu,C)$.
+(ii) In every real inner-product space $E$ (universe-polymorphic, as in the canon), for $n,m\ne0$: $0\le\eta(n,m)\le1$.
+\end{proposal}
+These restate the canon theorems
+\texttt{establishment\_efficiency\_cubic\_in\_drive\_over\_tension} and \texttt{seeding\_efficiency\_eq\_cos2\_theta}
+ (file sha256 \texttt{3ebe33bf\ldots 9526f}).
+\begin{remark}
+The second canon theorem is named ``$\mathrm{eff}=\cos^2\Theta$''. Its docstring also mentions $\eta=1$ iff $n\parallel m$, and $1-\eta=\sin^2\Theta$.
+Its Lean conclusion proves only the bound $0\le\eta\le1$, and the proposal restates only that bound.
+If the kernel uses the equality case, that case needs its own statement.
+\end{remark}
+Sanity examples pin $\mathrm{eff}=C/n^\star$ ($27/8$ at unit parameters), the factor $8$ when the drive is doubled, and the factor $8$ when $\sigma$ is halved.
+They also pin $\eta=1$ for parallel and $\eta=0$ for orthogonal vectors in $\mathbb{R}^2$.
+Negative controls: doubling the drive does not double the efficiency, and the unnormalised $\langle2,3\rangle^2=36$ exceeds $1$.
+\begin{lstlisting}
+def Statement : Prop :=
+  (∀ a σ Δμ C t : ℝ, 0 < a → 0 < σ → 0 < Δμ → 0 < t →
+    eff a σ (t * Δμ) C = t ^ 3 * eff a σ Δμ C) ∧
+  (∀ (E : Type*) [NormedAddCommGroup E] [InnerProductSpace ℝ E] (n m : E),
+    n ≠ 0 → m ≠ 0 → 0 ≤ eta n m ∧ eta n m ≤ 1)
+\end{lstlisting}
+
+\subsection{\texttt{P2.Harmonization}: one price suffices}
+Definitions: $\mathrm{br}(\lambda)_i=b_i-\lambda/a_i$, $J(x)=\sum_i \tfrac{a_i}{2}(x_i-b_i)^2$,
+$\lambda^\star=(\sum_i b_i-X)/\sum_i a_i^{-1}$ and $x^\star_i=\mathrm{br}(\lambda^\star)_i$.
+\begin{proposal}
+For all $N>0$, all $a,b\in\mathbb{R}^N$ with every $a_i>0$, and all $X$:
+(i) $\sum_i \mathrm{br}(\lambda^\star)_i=X$; and
+(ii) every $y$ with $\sum_i y_i=X$ satisfies $J(x^\star)\le J(y)$.
+\end{proposal}
+These restate \texttt{ght\_market\_clears} and \texttt{ght\_strong\_duality\_decentralized\_eq\_centralized}
+(file sha256 \texttt{cfdead65\ldots 110aec}).
+On the canon instance $N=2$, $a=b=(1,1)$, $X=0$, the sanity examples give $\lambda^\star=1$, $x^\star=(0,0)\ne b$, $J(x^\star)=1$, and $J(1,-1)=2$.
+Negative controls:
+\begin{itemize}
+\item The infeasible ideal $y=b$ has $J=0<1$, so the feasibility hypothesis is essential.
+\item The price $\lambda=0$ does not clear.
+\item With $N=0$ the aggregate is $0\ne X=1$, so $N>0$ is essential.
+\end{itemize}
+\begin{lstlisting}
+def Statement : Prop :=
+  ∀ (N : ℕ) (a b : Fin N → ℝ), 0 < N → (∀ i, 0 < a i) → ∀ X : ℝ,
+    (∑ i, br a b (lamStar a b X) i) = X ∧
+    (∀ y : Fin N → ℝ, (∑ i, y i) = X → J a b (xStar a b X) ≤ J a b y)
+\end{lstlisting}
+
+\section{Results}
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}llll@{}}
+\toprule
+Kernel & Sealed statement & Session & Status of our candidate \\
+\midrule
+Carbon Continuity & \texttt{P2.CarbonContinuity} & 2026-10-29 & Lean proof, local check passed \\
+Restoration & \texttt{P2.Restoration} & 2026-10-31 & Lean proof, local check passed \\
+Afforestation & \texttt{P2.Afforestation} & 2026-11-01 & Lean proof, local check passed \\
+Harmonization & proposed only & 2026-10-30 & no proof yet \\
+\bottomrule
+\end{tabular}
+\caption{State of the P2 program. ``Local check passed'' means \texttt{viridis-lean-check} accepted the file, with axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. The verifier awards the labels.}
+\end{table}
+For Afforestation, the results of 1 November are as follows.
+The restructured proof of \texttt{P2.Afforestation} passed the local checker on the first attempt.
+The verbatim canon proof also passed it. Neither part needs any of its hypotheses.
+Aristotle was not used.
+
+For Restoration, the results of 31 October were as follows.
+The restructured proof of \texttt{P2.Restoration} passed the local checker on the first attempt.
+The verbatim canon proof also passed it.
+The half-barrier identity holds without its hypothesis $0<\Delta\mu$.
+Aristotle was not used.
+
+The 30 October proposals are summarised below.
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}p{0.17\textwidth}p{0.42\textwidth}lc@{}}
+\toprule
+Proposal & Canon theorems restated & Canon file sha256 (prefix) & Probes closed \\
+\midrule
+\texttt{P2.Restoration} & \texttt{critical\_nucleus}, \texttt{barrier\_half\_identity} & \texttt{667a826a} & 0/28 \\
+\texttt{P2.Afforestation} & \texttt{establishment\_efficiency\_\ldots}, \texttt{seeding\_efficiency\_\ldots} & \texttt{3ebe33bf} & 0/28 \\
+\texttt{P2.Harmonization} & \texttt{ght\_market\_clears}, \texttt{ght\_strong\_duality\_\ldots} & \texttt{cfdead65} & 0/28 \\
+\bottomrule
+\end{tabular}
+\caption{Proposed sealed statements. All three modules compile under the pinned toolchain, and their sanity examples elaborate.
+The probe column counts how many of our 28 one-shot tactics closed \texttt{Statement} locally. The verifier runs its own probes.}
+\end{table}
+We observe the following.
+\begin{itemize}
+\item For each proposal, a private port of the canon proof elaborated against a local build of the module.
+It depends only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+We do not present these as proofs of the proposals. The proofs belong to later tasks, against the sealed modules.
+\item Several canon hypotheses are not needed mathematically but are kept for faithfulness:
+\begin{itemize}
+\item In Lean's convention $x/0=0$, the half-barrier identity also holds at $\Delta\mu=0$.
+\item The cubic law is a ring identity, so it needs none of its positivity hypotheses.
+\item The alignment bound holds trivially when $n=0$ or $m=0$, since then $\eta=0$.
+\end{itemize}
+\item One canon name over-promises: the ``$\cos^2\Theta$'' theorem proves only the bound $0\le\eta\le1$.
+\end{itemize}
+
+\section{What the statements settle and what they do not}
+\begin{itemize}
+\item \textbf{Settled, once sealed and proved:} the internal mathematics of each kernel's rule inside its stated model.
+\item \textbf{Not settled:} any parameter value. This covers $\Delta\mu$, $\sigma$, $a$, $C$, the curvatures $a_i$, the ideals $b_i$ and the target $X$.
+These come from field evidence and remain ASSUMED.
+\item \textbf{Not settled:} whether the models are adequate. The models in question are classical nucleation for tree-cluster establishment and
+quadratic dissipation for stewardship coordination. Nucleation rates, ecological temperature and stochastic establishment are outside the statements.
+\item \textbf{Not settled:} code conformance. The kernels' runtime identifiers and TypeScript sources were not among this session's inputs.
+\end{itemize}
+
+\paragraph{Restoration in particular.} Theorem~\ref{thm:restoration} settles the following:
+\begin{itemize}
+\item Inside the cubic model with positive $\Delta\mu,a,\sigma$ there is exactly one barrier top on $r\ge0$, and it sits at
+$r^\star=2a\sigma/(3\Delta\mu)$.
+\item $G$ is at most $G(r^\star)$ everywhere on $r\ge 0$.
+\item The barrier height is $\tfrac12\Delta\mu (r^\star)^3$.
+\end{itemize}
+So a kernel that computes $r^\star$ (or $n^\star=(r^\star)^3$) by this formula and calls ``go'' above it and ``no-go'' below it
+is applying a correct consequence of the model.
+The theorem does \emph{not} settle any of the following, all of which stay ASSUMED:
+\begin{itemize}
+\item the field values of the driving force $\Delta\mu$, the edge ``surface tension'' $\sigma$ and the shape factor $a$, and
+their uncertainty. Because $n^\star$ scales as $(a\sigma/\Delta\mu)^3$, relative errors in these inputs are roughly tripled in $n^\star$;
+\item whether classical nucleation theory, with an $n^{2/3}$ edge cost, describes tree-cluster establishment at a given site;
+\item the time-scale and probability layer: the Arrhenius nucleation rate, the ecological temperature, the stochastic committor
+that replaces the sharp threshold in practice, and any planting deadline;
+\item the seed-allocation result \texttt{broadcast\_suboptimal}, which is in the same canon file but not in the sealed statement;
+\item the translation from $r$ to cluster size $n$ (a short argument, not formalised here);
+\item that the deployed code computes $r^\star$ with this formula and applies the stated comparison.
+\end{itemize}
+
+\paragraph{Afforestation in particular.} Theorem~\ref{thm:afforestation} settles that, inside the model,
+doubling the ecological drive multiplies seeding efficiency by exactly $8$, and more generally by $t^3$; so a kernel that ranks
+plans by $\mathrm{eff}$ will see drive (and, by the same algebra, edge hostility) changes amplified cubically. It also settles that
+the alignment score is a number in $[0,1]$, so the forcing debt $1-\eta$ is also in $[0,1]$.
+It does \emph{not} settle, and the following stay ASSUMED:
+\begin{itemize}
+\item the field values of $a$, $\sigma$, $\Delta\mu$ and the canopy yield $C$; because of the cube, relative errors in
+$\Delta\mu/(a\sigma)$ are roughly tripled in $\mathrm{eff}$;
+\item whether ``canopy per seed'' $C/n^\star$ is the right ranking criterion, and whether the nucleation model applies to the site;
+\item the equality case $\eta=1\iff n\parallel m$ and the scale invariance of $\eta$;
+\item how the optimal seeding vector $m$ is computed, which is outside the statement;
+\item the other canon results in the same file (the homogeneous-limit barrier identity and the information-rate ceiling);
+\item that the deployed code computes $\mathrm{eff}$ and $\eta$ by these formulas.
+\end{itemize}
+
+\section{Limitations}
+The mathematics is elementary, and its value lies in being faithful and re-checkable.
+Faithfulness was judged by hand against the canon text. No tool checks that a proposal matches its canon theorem.
+Our probe list is our own guess at the verifier's and may differ from it.
+\texttt{P2.Afforestation} is universe-polymorphic, following the canon's \texttt{Type*}. We checked locally that a polymorphic
+candidate \texttt{theorem main : Statement} and the verifier's statement-match template both elaborate.
+A universe-monomorphic seal (\texttt{Type}) would be a mild weakening.
+The project README asks readers to consult a guidance file (\texttt{STATEMENT\_PROPOSAL.md}) that was not among the inputs.
+We followed the brief and the format of the existing sealed module instead. That file was again absent on 31 October and 1 November.
+For Restoration, the sealed statement quantifies over the cube-root variable $r$, while field practice counts trees $n$.
+The step between the two is informal in this paper.
+
+\section{Reproducibility}
+Toolchain \texttt{leanprover/lean4:v4.28.0}, Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}.
+Canon repository commit \texttt{80d32904d751b45f415e23f872510cc2eddca3ff}. The canon file hashes are listed in the proposals' rationale files.
+Each proposal (in the outputs of run 2026-10-30) compiles with \texttt{lean proposals/P2.}\textit{Name}\texttt{.lean}.
+The sealed Carbon Continuity statement has sha256 \texttt{a5a6e8c6\ldots ffded}. To check its proof, run
+\texttt{viridis-lean-check proofs/P2.CarbonContinuity.lean P2.CarbonContinuity}.
+The sealed Restoration statement has sha256 \texttt{fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18},
+and the canon file it restates has sha256 \texttt{667a826a2e5befac67964b69670435362de2d3d792e163807c3bb7c2aec28132}.
+To check the proof, run \texttt{viridis-lean-check proofs/P2.Restoration.lean P2.Restoration}.
+The sealed Afforestation statement has sha256 \texttt{2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436},
+and the canon file it restates has sha256 \texttt{3ebe33bfd6bd74124e87b5d7e73448db58e1459207fd6ff5c00a90fc3ac9526f}.
+To check the proof, run \texttt{viridis-lean-check proofs/P2.Afforestation.lean P2.Afforestation}.
+No automated prover jobs (Aristotle) and no external data were used in any of the four sessions.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-10-29 (P2-T001): First version. Ported the canon threshold proof to the sealed statement
+\texttt{P2.CarbonContinuity}, and wrote the scope statement.
+\item 2026-10-30 (P2-T002): Proposed sealed statements \texttt{P2.Restoration}, \texttt{P2.Afforestation} and \texttt{P2.Harmonization},
+with rationales, sanity examples and negative controls. Added a method section for writing statements.
+Condensed the Carbon Continuity material into its own section, and retitled the paper to cover the P2 program.
+\item 2026-10-31 (P2-T003): Gave a Lean proof of the sealed statement \texttt{P2.Restoration}, as a restructured port of the canon
+proof. Added the Restoration section, covering the proof, its relation to the canon, an unused hypothesis, and the $r$-versus-$n$ remark.
+Added a scope paragraph on what the theorem does not settle for the Restoration kernel. Added a status table, and updated the title and abstract.
+\item 2026-11-01 (P2-T004): Gave a Lean proof of the sealed statement \texttt{P2.Afforestation}, porting the canon proof with
+an explicit squaring step in place of \texttt{nlinarith}. Added the Afforestation section (proof, relation to canon, unused hypotheses,
+the over-promising name), a scope paragraph for the Afforestation kernel, and updated the status table, title and abstract.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
