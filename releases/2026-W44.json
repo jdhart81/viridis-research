@@ -43,6 +43,18 @@
       "url": "https://zenodo.org/records/23899738",
       "version": "2026-10-29_P2"
     },
+    "2026-10-30_P2": {
+      "project": "P2",
+      "reason": "no compiled paper with a non-trivial PROVEN claim (GitHub only)",
+      "run_dir": "runs/2026-10-30_P2",
+      "status": "skipped"
+    },
+    "2026-10-31_P2": {
+      "project": "P2",
+      "run_dir": "runs/2026-10-31_P2",
+      "status": "pending",
+      "version": "2026-10-31_P2"
+    },
     "P1": {
       "concept_doi": "10.5281/zenodo.23886027",
       "concept_recid": 23886027,
