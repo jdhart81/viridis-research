@@ -9,8 +9,9 @@
   },
   "linkedin": {
     "run_dir": "runs/2026-10-31_P2",
-    "status": "pending",
-    "text": "New from Viridis Research: Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Restoration Critical-Nucleus Core\n\nViridis Research re-checked the math behind the Restoration kernel, which decides whether a planted tree cluster is big enough to grow into forest. A Lean proof shows that, in the nucleation model, there is exactly one critical cluster size, at r* = 2aσ/(3Δμ), and that the barrier height is half the driving energy of the critical cluster. Field parameters and the model's ecological fit are not covered and remain assumptions.\n\nWhat was verified: a Lean 4 proof of P2.Restoration, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.23886036\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent."
+    "status": "posted",
+    "text": "New from Viridis Research: Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Restoration Critical-Nucleus Core\n\nViridis Research re-checked the math behind the Restoration kernel, which decides whether a planted tree cluster is big enough to grow into forest. A Lean proof shows that, in the nucleation model, there is exactly one critical cluster size, at r* = 2aσ/(3Δμ), and that the barrier height is half the driving energy of the critical cluster. Field parameters and the model's ecological fit are not covered and remain assumptions.\n\nWhat was verified: a Lean 4 proof of P2.Restoration, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.23886036\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent.",
+    "urn": "urn:li:share:7523012503321104384"
   },
   "runs": [
     "runs/2026-10-28_P1",
