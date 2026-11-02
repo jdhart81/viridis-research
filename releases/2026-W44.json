@@ -31,9 +31,16 @@
       "status": "done"
     },
     "2026-10-29_P2": {
+      "concept_doi": "10.5281/zenodo.23899737",
+      "concept_recid": 23899737,
+      "deposition_id": 23899738,
+      "doi": "10.5281/zenodo.23899738",
+      "doi_url": "https://doi.org/10.5281/zenodo.23899738",
       "project": "P2",
+      "record_id": 23899738,
       "run_dir": "runs/2026-10-29_P2",
-      "status": "pending",
+      "status": "done",
+      "url": "https://zenodo.org/records/23899738",
       "version": "2026-10-29_P2"
     },
     "P1": {
