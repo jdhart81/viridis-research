@@ -35,7 +35,7 @@
       "P2": {
         "approved_by": "D-005",
         "concept_recid": 23886035,
-        "latest_deposition_id": 23899738,
+        "latest_deposition_id": 23899745,
         "record_note": "Scope and novelty. Project P2 re-proves the formal cores of Viridis OS decision kernels so that anyone can re-check them with the current public Lean 4 toolchain. These are classical, elementary results, not new theorems: the first, Carbon Continuity, is the 2x2 case of the Collatz-Wielandt characterisation of the Perron root of a nonnegative matrix (A. Berman and R. J. Plemmons, Nonnegative Matrices in the Mathematical Sciences, SIAM 1994, doi:10.1137/1.9781611971262). Each result holds only inside its stated model. It says nothing about coefficient values for any site, whether deployed kernel code implements the rule faithfully, or any carbon-credit or treatment outcome."
       }
     },
@@ -45,6 +45,13 @@
         "doi_url": "https://doi.org/10.5281/zenodo.23899738",
         "project": "P2",
         "record_id": 23899738,
+        "week": "2026-W44"
+      },
+      "2026-10-31_P2": {
+        "doi": "10.5281/zenodo.23899745",
+        "doi_url": "https://doi.org/10.5281/zenodo.23899745",
+        "project": "P2",
+        "record_id": 23899745,
         "week": "2026-W44"
       }
     },
