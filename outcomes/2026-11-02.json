@@ -1,0 +1,43 @@
+{
+  "agent_minutes": 3.53,
+  "date": "2026-11-02",
+  "github": {
+    "event": "schedule",
+    "head_sha": "fd2e3c0057b7fc254f1cdd325f6f30195702072c",
+    "run_attempt": 1,
+    "run_id": 41487136040,
+    "run_started_at": "2026-11-02T17:01:35Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41487136040",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P2.Harmonization",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "9b08dc2097f8f62479ff5733fc48246c6ff4061880d6b4b041c7f8b9119e6f57",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P2.Harmonization"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-02_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T005",
+  "title": "Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Harmonization Scalar-Price Welfare Core",
+  "written_at": "2026-11-02T17:19:35Z",
+  "written_by": "verify",
+  "zip_sha256": "881eb5311141d4ee6eca45e45117e122b7085f04f57829ddc87e304084c764d4"
+}
