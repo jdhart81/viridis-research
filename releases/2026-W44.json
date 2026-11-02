@@ -23,6 +23,19 @@
   "schema": "viridis-week-v1",
   "week": "2026-W44",
   "zenodo": {
+    "2026-10-28_P1": {
+      "doi_url": "https://doi.org/10.5281/zenodo.23886028",
+      "note": "already on Zenodo",
+      "project": "P1",
+      "run_dir": "runs/2026-10-28_P1",
+      "status": "done"
+    },
+    "2026-10-29_P2": {
+      "project": "P2",
+      "run_dir": "runs/2026-10-29_P2",
+      "status": "pending",
+      "version": "2026-10-29_P2"
+    },
     "P1": {
       "concept_doi": "10.5281/zenodo.23886027",
       "concept_recid": 23886027,
