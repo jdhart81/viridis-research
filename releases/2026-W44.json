@@ -17,5 +17,11 @@
   ],
   "schema": "viridis-week-v1",
   "week": "2026-W44",
-  "zenodo": {}
+  "zenodo": {
+    "P1": {
+      "run_dir": "runs/2026-10-28_P1",
+      "status": "pending",
+      "version": "2026-W44 (2026-10-28_P1)"
+    }
+  }
 }
