@@ -28,8 +28,8 @@
     "projects": {
       "P1": {
         "approved_by": "D-003",
-        "concept_recid": null,
-        "latest_deposition_id": null,
+        "concept_recid": 23886027,
+        "latest_deposition_id": 23886028,
         "record_note": "Scope and novelty. Project P1 aims to replace the assumed topological step (FaceCount) in Trees Cannot Cut (doi:10.5281/zenodo.21686446) with machine-checked theorems about finite rasters. Its first result, Gray's 1971 bit-quad formula for the Euler characteristic of an 8-connected binary image (IEEE Transactions on Computers C-20(5):551-561, doi:10.1109/T-C.1971.223289), is a Lean 4 formalization of a known formula, not a new result. We are not aware of an earlier machine-checked proof, but we have not searched exhaustively and claim no novelty. Until the remaining rungs (L2 and L3) are proved, the FaceCount assumption is not discharged."
       },
       "P2": {

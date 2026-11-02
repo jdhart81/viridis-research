@@ -19,8 +19,15 @@
   "week": "2026-W44",
   "zenodo": {
     "P1": {
+      "concept_doi": "10.5281/zenodo.23886027",
+      "concept_recid": 23886027,
+      "deposition_id": 23886028,
+      "doi": "10.5281/zenodo.23886028",
+      "doi_url": "https://doi.org/10.5281/zenodo.23886028",
+      "record_id": 23886028,
       "run_dir": "runs/2026-10-28_P1",
-      "status": "pending",
+      "status": "done",
+      "url": "https://zenodo.org/records/23886028",
       "version": "2026-W44 (2026-10-28_P1)"
     }
   }
