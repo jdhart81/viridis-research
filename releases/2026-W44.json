@@ -29,6 +29,11 @@
       "status": "done",
       "url": "https://zenodo.org/records/23886028",
       "version": "2026-W44 (2026-10-28_P1)"
+    },
+    "P2": {
+      "run_dir": "runs/2026-11-01_P2",
+      "status": "pending",
+      "version": "2026-W44 (2026-11-01_P2)"
     }
   }
 }
