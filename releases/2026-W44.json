@@ -31,8 +31,15 @@
       "version": "2026-W44 (2026-10-28_P1)"
     },
     "P2": {
+      "concept_doi": "10.5281/zenodo.23886035",
+      "concept_recid": 23886035,
+      "deposition_id": 23886036,
+      "doi": "10.5281/zenodo.23886036",
+      "doi_url": "https://doi.org/10.5281/zenodo.23886036",
+      "record_id": 23886036,
       "run_dir": "runs/2026-11-01_P2",
-      "status": "pending",
+      "status": "done",
+      "url": "https://zenodo.org/records/23886036",
       "version": "2026-W44 (2026-11-01_P2)"
     }
   }
