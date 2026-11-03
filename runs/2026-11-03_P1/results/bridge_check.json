@@ -1,0 +1,32 @@
+{
+  "bridge_all_subsets_4x4": {
+    "rasters": 65536,
+    "failures": 0
+  },
+  "insertion_256_configs_x41_contexts": {
+    "insertions": 10496,
+    "failures": 0
+  },
+  "bridge_random_upto_12x12": {
+    "rasters": 3000,
+    "failures": 0,
+    "seed": 20261103
+  },
+  "controls": {
+    "ring": {
+      "enclosed": 1,
+      "C8": 1,
+      "euler": 0
+    },
+    "block": {
+      "enclosed": 0,
+      "C8": 1,
+      "euler": 1
+    },
+    "diamond": {
+      "enclosed": 1,
+      "C8": 1,
+      "euler": 0
+    }
+  }
+}

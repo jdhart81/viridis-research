@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 14.56,
+  "date": "2026-11-03",
+  "github": {
+    "event": "schedule",
+    "head_sha": "43c54f1b1bc4ff1f2d6d0be928306c8755cc63d3",
+    "run_attempt": 1,
+    "run_id": 41560379915,
+    "run_started_at": "2026-11-03T01:32:24Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41560379915",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "empirical",
+      "label": "ASSUMED"
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "a586697b72404490a51f3600a615c3c60146ea8adb60c76a632971980c893dd0",
+  "paper_built": true,
+  "project": "P1",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-03_P1",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P1-T002",
+  "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity",
+  "written_at": "2026-11-03T02:04:50Z",
+  "written_by": "verify",
+  "zip_sha256": "5966ebc5f51fcf204e0377b9020b02627afa909a06b455b14fd34fac37733645"
+}

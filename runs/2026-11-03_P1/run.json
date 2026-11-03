@@ -1,0 +1,36 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P1",
+  "task": "P1-T002",
+  "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity",
+  "abstract": "For a finite set B in Z^2 of barrier pixels, read with 8-connected barriers and a 4-connected complement, the expected discrete form of Alexander duality is the identity enc(B) = C8(B) - chi(K(B)), where enc(B) is the number of finite 4-components of Z^2 \\ B, C8 counts 8-components of B and chi(K(B)) = V - E + F is the Euler characteristic of the union of the closed pixel squares. This identity would replace the topological hypothesis FaceCount that the machine-checked core of Trees Cannot Cut currently assumes. The project climbs a three-rung ladder. For the first rung (L1), Gray's bit-quad formula 4 chi = Q1 - Q3 - 2 QD, we gave a Lean 4 proof in an earlier session by double counting over the vertices of K(B). This version adds precise Lean statements proposed for sealing for the other two rungs: P1.Insertion (L2: inserting any pixel leaves enclosed - C8 + chi unchanged, with no hypothesis on its 3x3 neighbourhood) and P1.Bridge (L3: the identity above, together with finiteness of the set of enclosed components). Both use Mathlib's graph library on all of Z^2 and define a component as enclosed exactly when it is finite. Both reuse chi from the sealed L1 module. Each module checks the project's controls (the 3x3 ring, the solid 2x2 block, and the four-pixel diamond that is enclosing only under (8,4) connectivity) by decide on a computable bounded-box model. It also gives Lean proofs of the same control values for the non-computable definitions that the statements actually use. An independent brute-force computation finds no counterexample to L3 on all 65,536 subsets of a 4x4 box or on 3,000 random rasters, and none to L2 across all 256 neighbourhood configurations. L2 and L3 themselves remain unproved.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "empirical",
+      "text": "An independent brute-force computation (DFS component labelling on a padded grid, direct V-E+F count) finds no counterexample to the proposed P1.Bridge identity enc(B) = C8(B) - euler(B) on all 65,536 subsets of a 4x4 box and on 3,000 random rasters up to 12x12 (seed 20261103), and none to the proposed P1.Insertion invariance on 10,496 insertions covering all 256 configurations of the 8-neighbourhood of the inserted pixel, each alone and in 40 random contexts.",
+      "evidence": [
+        "results/bridge_check.json",
+        "code/bridge_check.py"
+      ]
+    },
+    {
+      "id": "C2",
+      "kind": "conjecture",
+      "text": "The proposed statements P1.Insertion and P1.Bridge are true: for every finite raster B in Z^2 under (8,4) connectivity, the set of finite 4-components of Z^2 \\ B is finite and its size equals C8(B) - euler(B), and inserting any pixel preserves enclosed - C8 + euler."
+    }
+  ],
+  "proposals": [
+    {
+      "statement_id": "P1.Insertion",
+      "file": "proposals/P1.Insertion.lean",
+      "rationale_file": "proposals/P1.Insertion.md"
+    },
+    {
+      "statement_id": "P1.Bridge",
+      "file": "proposals/P1.Bridge.lean",
+      "rationale_file": "proposals/P1.Bridge.md"
+    }
+  ],
+  "next_steps": "If P1.Insertion and P1.Bridge are sealed as proposed: (1) Prove the finiteness clause of P1.Bridge and a localisation lemma: every complement component meeting the outside of the bounding box is infinite (reuse infinite_of_ray from the proposal modules), every finite component lies in the box. (2) Prove the local Delta-chi lemma for insert p B from P1.BitQuad (only the four corner windows of p change). (3) Prove Delta C8 = 1 - k, with k the number of distinct 8-components of B meeting N8(p). (4) The hard part: Delta enclosed, via the 8-cycle around p and its runs of non-barrier 4-neighbours; do not argue from pictures. (5) Derive the P1.Bridge equation from P1.Insertion by Finset.induction_on. Aristotle was unavailable this session (invalid API key); retry it for the sub-lemmas once access works. If Justin asks for changes to the proposals, keep the two modules' definitions identical."
+}
