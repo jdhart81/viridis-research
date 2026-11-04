@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-010",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-04T15:56:23Z",
+  "posted_comment_id": 6635318908,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6635318908",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P1.Bridge proposed by runs/2026-11-04_P1"
 }
