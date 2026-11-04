@@ -1,0 +1,88 @@
+{
+  "date": "2026-11-04",
+  "engine_sha": "3c00e2c88e6ff23cbedb421b95b608fec9e35b30",
+  "labels": {
+    "C1": {
+      "kind": "empirical",
+      "label": "ASSUMED",
+      "reason": "verifier re-execution is not enabled yet; TESTED requires it",
+      "text": "An independent brute-force computation (DFS component labelling on a one-pixel-padded bounding box, direct V-E+F count) finds no counterexample to the proposed P1.Bridge identity enc(B) = C8(B) - euler(B) on all 65,536 subsets of a 4x4 box and on 3,000 random rasters up to 12x12 (seed 20261104), and none to the proposed P1.Insertion invariance on 10,496 insertions: each of the 256 configurations of the 8-neighbourhood of the inserted pixel, alone and in 40 random contexts."
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "The proposed statements P1.Insertion and P1.Bridge are true: for every finite raster B in Z^2 under (8,4) connectivity, the set of finite 4-components of Z^2 \\ B is finite and its size equals C8(B) - euler(B), and inserting any pixel preserves enclosed - C8 + euler."
+    }
+  },
+  "lean": {},
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 14,
+  "project": "P1",
+  "proposals": [
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "statement_id": "P1.Insertion",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+      "statement_id": "P1.Bridge",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    }
+  ],
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 6,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/321556.321570",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-04_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

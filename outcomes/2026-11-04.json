@@ -1,0 +1,46 @@
+{
+  "agent_minutes": 11.54,
+  "date": "2026-11-04",
+  "decision_requests": [
+    "D-009",
+    "D-010"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "43c54f1b1bc4ff1f2d6d0be928306c8755cc63d3",
+    "run_attempt": 1,
+    "run_id": 41857175229,
+    "run_started_at": "2026-11-04T15:23:10Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41857175229",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "empirical",
+      "label": "ASSUMED"
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "bd4b7dd10545933523c09e4f4c4dc1c942292bbf2c0e251ee94c9b838a0408f3",
+  "paper_built": true,
+  "project": "P1",
+  "proposed_statements": [
+    "P1.Bridge",
+    "P1.Insertion"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-04_P1",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P1-T002",
+  "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity",
+  "written_at": "2026-11-04T15:56:19Z",
+  "written_by": "verify",
+  "zip_sha256": "8d5a98441b321069c4637b200e4d04889b42103c318b0604e4ccf4b0154b0454"
+}

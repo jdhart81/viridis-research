@@ -1,0 +1,35 @@
+{
+  "seed": 20261104,
+  "controls": {
+    "ring": {
+      "C8": 1,
+      "chi": 0,
+      "enclosed": 1
+    },
+    "block": {
+      "C8": 1,
+      "chi": 1,
+      "enclosed": 0
+    },
+    "diamond": {
+      "C8": 1,
+      "chi": 0,
+      "enclosed": 1
+    }
+  },
+  "L3_4x4_exhaustive": {
+    "rasters": 65536,
+    "failures": 0
+  },
+  "L3_random": {
+    "rasters": 3000,
+    "max_side": 12,
+    "failures": 0
+  },
+  "L2_insertions": {
+    "configurations": 256,
+    "contexts_per_configuration": 41,
+    "insertions": 10496,
+    "failures": 0
+  }
+}

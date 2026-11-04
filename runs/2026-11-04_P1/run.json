@@ -1,0 +1,36 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P1",
+  "task": "P1-T002",
+  "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity",
+  "abstract": "For a finite set B in Z^2 of barrier pixels, read with 8-connected barriers and a 4-connected complement, the expected discrete form of Alexander duality is enc(B) = C8(B) - chi(K(B)). Here enc(B) is the number of finite 4-components of Z^2 \\ B, C8 counts 8-components of B, and chi(K(B)) = V - E + F is the Euler characteristic of the union of the closed pixel squares. This identity would replace the topological hypothesis FaceCount that the machine-checked core of Trees Cannot Cut currently assumes. The project climbs a three-rung ladder. For L1, Gray's bit-quad formula, we gave a Lean 4 proof in an earlier session. This version proposes precise Lean statements for sealing for the other two rungs. P1.Insertion (L2) says that inserting any pixel leaves enclosed - C8 + chi unchanged, with no hypothesis on its 3x3 neighbourhood. P1.Bridge (L3) is the identity above, together with finiteness of the set of enclosed components. Both use Mathlib's graph library on all of Z^2 and call a component enclosed exactly when it is finite. Both restate chi verbatim from the sealed L1 module and import only Mathlib. The previous draft imported the L1 module, and the verifier's proposal environment could not resolve that import. Each module checks the project's controls by decide on a computable bounded-box model: the 3x3 ring, the solid 2x2 block, and the four-pixel diamond, which encloses its centre only under (8,4) connectivity. Each also gives Lean proofs of the same control values for the non-computable definitions that the statements use. A new bit-level model lets decide go through all 256 configurations of the eight neighbours of an inserted pixel, both alone and inside a closed ring; in every case the invariant stays 0. An independent brute-force computation finds no counterexample to L3 on all 65,536 subsets of a 4x4 box or on 3,000 random rasters, and none to L2 in 10,496 insertions. L2 and L3 themselves remain unproved.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "empirical",
+      "text": "An independent brute-force computation (DFS component labelling on a one-pixel-padded bounding box, direct V-E+F count) finds no counterexample to the proposed P1.Bridge identity enc(B) = C8(B) - euler(B) on all 65,536 subsets of a 4x4 box and on 3,000 random rasters up to 12x12 (seed 20261104), and none to the proposed P1.Insertion invariance on 10,496 insertions: each of the 256 configurations of the 8-neighbourhood of the inserted pixel, alone and in 40 random contexts.",
+      "evidence": [
+        "results/bridge_check.json",
+        "code/bridge_check.py"
+      ]
+    },
+    {
+      "id": "C2",
+      "kind": "conjecture",
+      "text": "The proposed statements P1.Insertion and P1.Bridge are true: for every finite raster B in Z^2 under (8,4) connectivity, the set of finite 4-components of Z^2 \\ B is finite and its size equals C8(B) - euler(B), and inserting any pixel preserves enclosed - C8 + euler."
+    }
+  ],
+  "proposals": [
+    {
+      "statement_id": "P1.Insertion",
+      "file": "proposals/P1.Insertion.lean",
+      "rationale_file": "proposals/P1.Insertion.md"
+    },
+    {
+      "statement_id": "P1.Bridge",
+      "file": "proposals/P1.Bridge.lean",
+      "rationale_file": "proposals/P1.Bridge.md"
+    }
+  ],
+  "next_steps": "First check the certification: both proposals should now compile, because they import only Mathlib. If they are sealed as proposed: (1) Prove the finiteness clause of P1.Bridge via localisation. A non-barrier pixel beyond the bounding box has a free ray (reuse infinite_of_ray), so every enclosed component lies in the box. (2) Prove local Delta-chi for insert p B from P1.BitQuad: only the four corner windows of p change. (3) Prove Delta C8 = 1 - k, where k is the number of distinct 8-components of B meeting N8(p). (4) The hard part is Delta enclosed, via the 8-cycle around p and its runs of non-barrier 4-neighbours. Do not argue from pictures. The Mask decide tables give the target values for every configuration. (5) Derive the P1.Bridge equation from P1.Insertion by Finset.induction_on. A lemma tying the bitmask/box models to the semantic definitions would let decide checks bind to Statement. Aristotle failed with an invalid API key on 2026-11-03 and 2026-11-04; retry it only once access works. If Justin asks for changes, keep the two modules' definitions identical, and keep the L1 block identical to P1.BitQuad."
+}
