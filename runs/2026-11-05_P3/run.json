@@ -1,0 +1,22 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P3",
+  "task": "P3-T001",
+  "title": "Proposed Sealed Statements for a Circular-Economy Kernel: Loop Mass Balance, Cascaded Recovery, a Recovery-Adjusted Work Floor, and the N-Partner Symbiosis Condition",
+  "abstract": "A software kernel for the circular economy has to do a few pieces of arithmetic correctly every time. It must split demand into virgin and recovered input, track a secondary stock, compose recovery stages, bound the fresh work needed when recovered supply is available, and decide when a ring of firms exchanging by-products can leave every member strictly better off. We propose four formal target statements for this arithmetic, written in Lean 4 over Mathlib, as candidates for sealing. LoopMassBalance gives the virgin/recovered split, an exact geometric closed form and the convergence of the secondary stock, and strict monotonicity of cumulative virgin input in the recovery fraction. CascadedRecovery bounds the virgin share prod(1 - r_i) after n stages from below by (1 - max r_i)^n and from above by every single stage's share, strictly so under a stated condition. RecoveryWorkFloor recasts the canon work-ledger bound (Run-163) as a floor on fresh supply given recovered supply and shows that the floor is attained. CyclicSymbiosis states that a strictly positive by-product flow around an N-partner cycle giving every partner strictly positive net benefit exists if and only if prod c_i < prod v_i. Its N = 2 case coincides with the product condition of the two-partner Reciprocity Corridor (Run-128). Every module compiles under the pinned toolchain and carries concrete sanity checks and negative controls. Simple automated tactics close none of the four statements. We make no claim to have proved any proposal. The statements fix the mathematics of a model and say nothing about any real recovery rate, cost, value or material.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "empirical",
+      "text": "Each of the four proposal modules compiles under the pinned toolchain, and none of the tactics simp, norm_num, decide, aesop, trivial, simp_all or exact? closes its Statement.",
+      "evidence": ["results/probe_results.tsv", "code/probe.sh"]
+    }
+  ],
+  "proposals": [
+    {"statement_id": "P3.LoopMassBalance", "file": "proposals/P3.LoopMassBalance.lean", "rationale_file": "proposals/P3.LoopMassBalance.md"},
+    {"statement_id": "P3.CascadedRecovery", "file": "proposals/P3.CascadedRecovery.lean", "rationale_file": "proposals/P3.CascadedRecovery.md"},
+    {"statement_id": "P3.RecoveryWorkFloor", "file": "proposals/P3.RecoveryWorkFloor.lean", "rationale_file": "proposals/P3.RecoveryWorkFloor.md"},
+    {"statement_id": "P3.CyclicSymbiosis", "file": "proposals/P3.CyclicSymbiosis.lean", "rationale_file": "proposals/P3.CyclicSymbiosis.md"}
+  ],
+  "next_steps": "After Justin's sealing decision on issue #1: (1) prove each sealed statement as out/proofs/<ID>.lean. Proof sketches with the key Mathlib lemma names are in notes.md (LoopMassBalance: gap recursion by induction and tendsto_pow_atTop_nhds_zero_of_lt_one; CascadedRecovery: Finset.prod_le_prod, Finset.mul_prod_erase, le_ciSup/ciSup_le; RecoveryWorkFloor: div_le_iff0 plus nlinarith; CyclicSymbiosis: bijectivity of prev, Finset.prod_lt_prod_of_nonempty, and an explicit flow built with lam = (prod v/c)^(1/N)). (2) If Justin wants a stronger RecoveryWorkFloor, redraft it with separate efficiency caps for fresh and recovered supply. (3) Aristotle was unavailable this session (invalid API key), so check access before relying on it."
+}

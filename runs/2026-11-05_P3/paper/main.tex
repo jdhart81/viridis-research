@@ -1,0 +1,419 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{proposal}{Proposed statement}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\emergencystretch=2em
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,example,namespace,end,open,fun,Prop,by,noncomputable,section,import},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {→}{{$\to$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∈}{{$\in$}}1
+    {∑}{{$\sum$}}1
+    {∏}{{$\prod$}}1
+    {∧}{{$\wedge$}}1
+    {≤}{{$\le$}}1
+    {≠}{{$\ne$}}1
+    {⨆}{{$\bigsqcup$}}1
+    {ρ}{{$\rho$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+}
+
+\title{Proposed Sealed Statements for a Circular-Economy Kernel:\\
+Loop Mass Balance, Cascaded Recovery, a Recovery-Adjusted Work Floor,\\
+and the $N$-Partner Symbiosis Condition}
+\author{Justin Hart, Viridis LLC}
+\date{5 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A software kernel for the circular economy has to do a few pieces of arithmetic correctly every
+time. It must split demand into virgin and recovered input, track a secondary stock, compose
+recovery stages, bound the fresh work needed when recovered supply is available, and decide
+when a ring of firms exchanging by-products can leave every member strictly better off. We
+propose four formal target statements for this arithmetic, written in Lean~4 over Mathlib, as
+candidates for sealing in the Viridis Research program. \emph{LoopMassBalance} gives the
+virgin/recovered split, an exact geometric closed form and the convergence of the secondary
+stock, and strict monotonicity of cumulative virgin input in the recovery fraction.
+\emph{CascadedRecovery} bounds the virgin share $\prod_i(1-r_i)$ after $n$ stages from below by
+$(1-\max_i r_i)^n$ and from above by every single stage's share, strictly so under a stated
+condition. \emph{RecoveryWorkFloor} recasts a canon work-ledger bound as a floor on fresh supply
+given recovered supply and shows that the floor is attained. \emph{CyclicSymbiosis} states that a
+strictly positive by-product flow around an $N$-partner cycle giving every partner strictly
+positive net benefit exists if and only if $\prod_i c_i<\prod_i v_i$. Its $N=2$ case coincides
+with the product condition of the two-partner Reciprocity Corridor. Every module compiles under
+the pinned toolchain and carries concrete sanity checks and negative controls. Simple automated
+tactics close none of the four statements. We make no claim to have proved any proposal. The
+statements fix the mathematics of a model and say nothing about any real recovery rate, cost,
+value or material.
+\end{abstract}
+
+\section{Introduction}
+Circular-economy accounting rests on simple identities and inequalities. Material that is
+recovered does not have to be extracted. Recovery stages in series compound. Recovered energy
+or work offsets fresh supply. A ring of firms exchanging by-products is viable only if the
+exchange creates value overall
+\citep{geissdoerfer2017,chertow2000}. These statements are elementary, but a decision kernel that
+applies them automatically should rely on exact, machine-checked versions with explicitly listed
+hypotheses, not on informal folklore. Edge cases are where silent errors creep in. Examples are
+full stock retention, out-of-range recovery fractions, stages that recover nothing, and partners
+whose own exchange is unprofitable but whose cycle is profitable.
+
+Viridis Research separates \emph{proposing} a formal target from \emph{proving} it. A proposal
+is a Lean module that defines a proposition \texttt{Statement}. If the module compiles and simple
+tactics do not close it, the program owner decides whether to seal it as an exact target for
+later proof sessions. This paper is the first entry of project P3 (``Circular-economy kernel'').
+It drafts four such modules and explains the design choices behind them. The question we address
+is: \emph{what exact statements should the circular-economy kernel's formal core consist of?}
+Each statement must be faithful to the intended model, strong enough to be useful, provably
+non-vacuous, and continuous with the two canon results it builds on.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item Four self-contained Lean~4 statement modules over Mathlib
+\citep{moura2021lean4,mathlib2020} (Section~\ref{sec:statements}), each with sanity witnesses and
+negative controls checked at compile time.
+\item A recovery-adjusted reading of the canon work-ledger bound \citep{hart2026udwl}, with an
+attainment half that the canon lacks.
+\item An $N$-partner generalisation of the canon Reciprocity Corridor's feasibility theorem
+\citep{hart2026reciprocity}, together with a compile-time check that its $N=2$ instance reproduces
+the canon's \texttt{ProductCondition} and payoffs.
+\item An automated probe (Section~\ref{sec:results}) showing that none of the four statements is
+closed by \texttt{simp}, \texttt{norm\_num}, \texttt{decide}, \texttt{aesop}, \texttt{trivial},
+\texttt{simp\_all} or \texttt{exact?}.
+\end{itemize}
+
+\section{Background and related work}
+\paragraph{Circular economy and industrial symbiosis.}
+\citet{geissdoerfer2017} review how the circular-economy concept relates to sustainability. Its
+operational core is closing material loops, which means substituting recovered for virgin
+material. \citet{chertow2000} defined industrial symbiosis as the exchange of materials, energy,
+water and by-products among co-located firms and gave a taxonomy of exchange types. Our
+\emph{CyclicSymbiosis} model is a deliberately stylised, linear version of one such exchange
+pattern: a single directed ring of by-product transfers.
+
+\paragraph{Canon results.}
+The Viridis canon contains two results that P3 builds on. The Reciprocity Corridor (Run-128)
+\citep{hart2026reciprocity} studies two partners $X$, $Y$ with payoffs $u_X = v_X y - c_X x$ and
+$u_Y = v_Y x - c_Y y$. Its Lean formalisation proves that strictly positive flows with
+$u_X,u_Y>0$ exist if and only if $c_Xc_Y<v_Xv_Y$ (\texttt{ProductCondition}). The Useful and
+Dissipated Work Ledger (Run-163) \citep{hart2026udwl} defines useful work
+$e_1w_1+e_2w_2$ from two supplies and proves \texttt{target\_requires\_supply}: if every
+efficiency is at most $e_{\max}>0$ and useful work reaches $T$, then $w_1+w_2\ge T/e_{\max}$.
+
+\paragraph{Formal tools.}
+All modules are written for Lean~4 \citep{moura2021lean4} (toolchain v4.28.0) and Mathlib
+\citep{mathlib2020} (commit \texttt{8f9d9cff}). They use only standard Mathlib notions: finite
+products and sums, \texttt{Filter.Tendsto}, \texttt{StrictAntiOn} and \texttt{iSup} on~$\mathbb{R}$.
+
+\section{Design principles}
+\label{sec:design}
+\begin{enumerate}
+\item \textbf{Self-contained.} Each module imports only Mathlib, so a sealed statement does not
+depend on canon files that might change. Where a canon definition is needed for comparison
+(\texttt{ProductCondition}), it is copied verbatim.
+\item \textbf{All hypotheses explicit.} Each hypothesis appears in the proposition as an
+implication. Nothing is hidden in a structure or type class.
+\item \textbf{Faithful to the brief, slightly stronger where cheap.} For example, LoopMassBalance
+asserts the exact closed form for the gap $S(t)-S^\ast$ as well as convergence, and
+CascadedRecovery adds a uniform-upper-bound version of the max bound.
+\item \textbf{Controls compiled with the module.} Every module contains \texttt{example}s with
+concrete numbers, proved by \texttt{norm\_num}, \texttt{simp} or \texttt{decide}. They include
+\emph{witnesses}, which show that the hypotheses are satisfiable and the conclusions
+non-trivial, and \emph{negative controls}, which show that dropping a hypothesis breaks a
+conclusion.
+\item \textbf{No field claims.} The statements are about models. Recovery rates, retention
+rates, efficiencies, costs and values are free real parameters.
+\end{enumerate}
+
+\section{The four proposed statements}
+\label{sec:statements}
+
+\subsection{P3.LoopMassBalance}
+\begin{proposal}[Loop mass balance]
+Let $D\ge0$, $r\in[0,1]$, $\rho\in[0,1)$ and $S(0)\in\mathbb{R}$. Put $V=D(1-r)$,
+$S(t+1)=\rho S(t)+rD$ and $S^\ast=rD/(1-\rho)$. Then $0\le V\le D$;
+$S(t)-S^\ast=\rho^t(S(0)-S^\ast)$ for all $t\in\mathbb{N}$; $S(t)\to S^\ast$; and
+$\sum_{t<T}V = TD(1-r)$. Moreover, if $D>0$ and $T>0$, then $r\mapsto\sum_{t<T}V$ is strictly
+decreasing on $[0,1]$.
+\end{proposal}
+\emph{Informal argument.} The gap $g_t = S(t)-S^\ast$ satisfies $g_{t+1}=\rho g_t$ because
+$\rho S^\ast + rD = S^\ast$. Since $0\le\rho<1$, $\rho^t\to0$. The remaining parts are
+elementary. (No Lean proof is claimed here.)
+
+\begin{lstlisting}[caption={Core of \texttt{proposals/P3.LoopMassBalance.lean} (docstrings omitted; \texttt{nhds} is the name behind Mathlib's $\mathcal{N}$ notation used in the file).}]
+namespace ViridisStatements.P3.LoopMassBalance
+
+open Filter Topology
+
+def virgin (D r : ℝ) : ℝ := D * (1 - r)
+
+def stock (ρ r D S0 : ℝ) : ℕ → ℝ
+  | 0 => S0
+  | t + 1 => ρ * stock ρ r D S0 t + r * D
+
+def steadyStock (ρ r D : ℝ) : ℝ := r * D / (1 - ρ)
+
+def cumulativeVirgin (D r : ℝ) (T : ℕ) : ℝ := ∑ _t ∈ Finset.range T, virgin D r
+
+def Statement : Prop :=
+  (∀ D r ρ S0 : ℝ, 0 ≤ D → 0 ≤ r → r ≤ 1 → 0 ≤ ρ → ρ < 1 →
+    (0 ≤ virgin D r ∧ virgin D r ≤ D) ∧
+    (∀ t : ℕ, stock ρ r D S0 t - steadyStock ρ r D
+        = ρ ^ t * (S0 - steadyStock ρ r D)) ∧
+    Tendsto (stock ρ r D S0) atTop (nhds (steadyStock ρ r D)) ∧
+    (∀ T : ℕ, cumulativeVirgin D r T = (T : ℝ) * D * (1 - r))) ∧
+  (∀ (D : ℝ) (T : ℕ), 0 < D → 0 < T →
+    StrictAntiOn (fun r => cumulativeVirgin D r T) (Set.Icc 0 1))
+\end{lstlisting}
+
+\emph{Controls.} The witness $D=10$, $r=\rho=\tfrac12$, $S(0)=0$ gives $V=5$, the stock sequence
+$0,5,\tfrac{15}{2},\dots$ and $S^\ast=10$, and the gap at $t=2$ equals
+$(\tfrac12)^2(0-10)$. Over three periods, cumulative virgin input falls from $15$ to $\tfrac{15}{2}$
+when $r$ rises to $\tfrac34$. There are three negative controls. With $\rho=1$ the stock grows
+without bound and the closed form fails; Lean's convention $x/0=0$ makes $S^\ast=0$. With $D=0$
+the cumulative virgin input does not depend on $r$. With $r=2$ the virgin input is negative.
+
+\subsection{P3.CascadedRecovery}
+\begin{proposal}[Cascaded recovery]
+Let $n\in\mathbb{N}$ and $r_1,\dots,r_n\in[0,1]$, and let $\sigma=\prod_i(1-r_i)$ be the virgin
+share. Then $0\le\sigma\le1$, and $(1-m)^n\le\sigma$ for every $m\le 1$ with $r_i\le m$ for all
+$i$. In particular $(1-\sup_i r_i)^n\le\sigma$. Also $\sigma\le 1-r_j$ for every $j$, with strict
+inequality whenever $r_j<1$ and $r_k>0$ for some $k\ne j$.
+\end{proposal}
+\emph{Informal argument.} Each factor lies in $[1-m,1]\subseteq[0,1]$. Splitting off factor $j$
+gives $\sigma=(1-r_j)\prod_{i\ne j}(1-r_i)$, and the remaining product is at most $1-r_k<1$.
+The maximum is written as Mathlib's $\bigsqcup_i r_i$ (\texttt{iSup}). On $\mathrm{Fin}\,0$ this
+is $\sup\emptyset=0$, and both sides then equal~$1$, so no side condition $n>0$ is needed.
+
+\begin{lstlisting}[caption={Core of \texttt{proposals/P3.CascadedRecovery.lean}.}]
+namespace ViridisStatements.P3.CascadedRecovery
+
+def virginShare {n : ℕ} (r : Fin n → ℝ) : ℝ := ∏ i, (1 - r i)
+
+def Statement : Prop :=
+  ∀ (n : ℕ) (r : Fin n → ℝ), (∀ i, 0 ≤ r i) → (∀ i, r i ≤ 1) →
+    (0 ≤ virginShare r ∧ virginShare r ≤ 1) ∧
+    (∀ m : ℝ, (∀ i, r i ≤ m) → m ≤ 1 → (1 - m) ^ n ≤ virginShare r) ∧
+    (1 - ⨆ i, r i) ^ n ≤ virginShare r ∧
+    (∀ j, virginShare r ≤ 1 - r j) ∧
+    (∀ j k, k ≠ j → 0 < r k → r j < 1 → virginShare r < 1 - r j)
+\end{lstlisting}
+
+\emph{Controls.} With $r=(\tfrac12,\tfrac12)$ the share is $\tfrac14$, which meets the lower
+bound and lies strictly below $\tfrac12$. With $r=(\tfrac12,\tfrac14,0)$ the share is
+$\tfrac38>\tfrac18$. Four negative controls show which hypotheses matter. With $r=(0,\tfrac12)$
+the cascade equals stage~2, so strictness needs another stage with $r_k>0$. With
+$r=(\tfrac12,1)$ the share is $0=1-r_2$, so strictness needs $r_j<1$. With $r=(2,\tfrac12)$ the
+share is negative. With $r=(-1,\tfrac12)$ the share exceeds $1-r_2$.
+
+\subsection{P3.RecoveryWorkFloor}
+\begin{proposal}[Recovery-adjusted work floor]
+Let $w_f,w_r\ge0$, $e_f,e_r\in[0,e_{\max}]$ with $e_{\max}>0$, and $U=e_fw_f+e_rw_r$. If $U\ge T$,
+then $w_f\ge (T-e_{\max}w_r)/e_{\max}$. Conversely, if $e_{\max}w_r\le T$, then
+$w_f^\ast=(T-e_{\max}w_r)/e_{\max}$ is non-negative and, at $e_f=e_r=e_{\max}$, delivers exactly $T$.
+\end{proposal}
+\emph{Informal argument.} We have $T\le U\le e_{\max}(w_f+w_r)$. Dividing by $e_{\max}$ and
+rearranging gives the floor. Attainment is a direct calculation.
+
+\begin{remark}
+Since $(T-e_{\max}w_r)/e_{\max}=T/e_{\max}-w_r$, the floor half is algebraically equivalent to
+Run-163's \texttt{target\_requires\_supply} specialised to a fresh and a recovered supply. The
+proposal is therefore a conservative extension. What it adds is the recovery reading (one unit
+of recovered supply at the cap offsets one unit of fresh supply) and the attainment half, which
+shows that the floor cannot be raised. Separate caps for fresh and recovered efficiencies would
+be a genuinely stronger alternative, and we flag it for the sealing decision.
+\end{remark}
+
+\begin{lstlisting}[caption={Core of \texttt{proposals/P3.RecoveryWorkFloor.lean}.}]
+namespace ViridisStatements.P3.RecoveryWorkFloor
+
+def useful (wf wr ef er : ℝ) : ℝ := ef * wf + er * wr
+
+def freshFloor (T wr emax : ℝ) : ℝ := (T - emax * wr) / emax
+
+def Statement : Prop :=
+  (∀ wf wr ef er emax T : ℝ, 0 ≤ wf → 0 ≤ wr →
+    0 ≤ ef → ef ≤ emax → 0 ≤ er → er ≤ emax → 0 < emax →
+    T ≤ useful wf wr ef er → freshFloor T wr emax ≤ wf) ∧
+  (∀ wr emax T : ℝ, 0 < emax → 0 ≤ wr → emax * wr ≤ T →
+    0 ≤ freshFloor T wr emax ∧ useful (freshFloor T wr emax) wr emax emax = T)
+\end{lstlisting}
+
+\emph{Controls.} The Run-163 witness $(8,4,\tfrac34,\tfrac12)$ gives $U=8$ and floor
+$\tfrac{20}{3}\le8$. For attainment, $e_{\max}=\tfrac12$, $w_r=4$ and $T=8$ give floor $12$, and
+$12$ units of fresh supply deliver exactly $8$. Without recovery the floor would be $16$. There
+are three negative controls. Fresh supply $11<12$ falls short of the target. An efficiency of $1$
+above the cap reaches the target below the floor. With $e_{\max}w_r>T$ the floor is negative.
+
+\subsection{P3.CyclicSymbiosis}
+\begin{proposal}[$N$-partner cyclic symbiosis]
+Let $N\ge2$ and $c_i,v_i>0$ for $i\in\mathbb{Z}/N$. Partner $i$ ships $x_i$ at cost $c_ix_i$ and
+receives value $v_ix_{i-1}$. A flow $x$ with all $x_i>0$ and all net benefits
+$v_ix_{i-1}-c_ix_i>0$ exists if and only if $\prod_i c_i<\prod_i v_i$.
+\end{proposal}
+\emph{Informal argument.} ($\Rightarrow$) Multiply the $N$ strict inequalities
+$c_ix_i<v_ix_{i-1}$ between positive numbers. Index shift is a bijection, so
+$\prod_i x_{i-1}=\prod_i x_i>0$ cancels. ($\Leftarrow$) Put $a_i=v_i/c_i$, $P=\prod a_i>1$ and
+$\lambda=P^{1/N}>1$. Set $x_0=1$ and $x_i=x_{i-1}a_i/\lambda$ for $1\le i<N$. Then
+$x_i<a_ix_{i-1}$ for $i\ge1$, and $a_0x_{N-1}=P/\lambda^{N-1}=\lambda>1=x_0$ closes the cycle.
+
+\begin{lstlisting}[caption={Core of \texttt{proposals/P3.CyclicSymbiosis.lean}. \texttt{ProductCondition} is copied verbatim from the canon file.}]
+namespace ViridisStatements.P3.CyclicSymbiosis
+
+def prev {N : ℕ} (i : Fin N) : Fin N :=
+  ⟨(i.val + (N - 1)) % N, Nat.mod_lt _ (Nat.zero_lt_of_lt i.isLt)⟩
+
+def net {N : ℕ} (c v x : Fin N → ℝ) (i : Fin N) : ℝ := v i * x (prev i) - c i * x i
+
+def StrictlyBeneficialFlow {N : ℕ} (c v x : Fin N → ℝ) : Prop :=
+  (∀ i, 0 < x i) ∧ ∀ i, 0 < net c v x i
+
+def CycleProductCondition {N : ℕ} (c v : Fin N → ℝ) : Prop := ∏ i, c i < ∏ i, v i
+
+def ProductCondition (vX cX vY cY : ℝ) : Prop := cX * cY < vX * vY
+
+def Statement : Prop :=
+  ∀ (N : ℕ), 2 ≤ N → ∀ c v : Fin N → ℝ, (∀ i, 0 < c i) → (∀ i, 0 < v i) →
+    ((∃ x : Fin N → ℝ, StrictlyBeneficialFlow c v x) ↔ CycleProductCondition c v)
+\end{lstlisting}
+
+\paragraph{Agreement with the canon at $N=2$.}
+The module checks two facts at compile time. First,
+\texttt{CycleProductCondition ![cX, cY] ![vX, vY]} is equivalent to Run-128's
+\texttt{ProductCondition vX cX vY cY}. Second, at the flow \texttt{![x, y]} partner~0 nets
+$v_Xy-c_Xx=u_X$ and partner~1 nets $v_Yx-c_Yy=u_Y$. Hence the $N=2$ instance of the statement is
+the canon's strict-feasibility theorem in its bilateral-benefit form.
+
+\begin{lstlisting}[caption={The $N=2$ agreement checks, as they appear in the module.}]
+example (vX cX vY cY : ℝ) :
+    CycleProductCondition ![cX, cY] ![vX, vY] ↔ ProductCondition vX cX vY cY := by
+  simp [CycleProductCondition, ProductCondition, Fin.prod_univ_two]
+
+example (vX cX vY cY x y : ℝ) :
+    net ![cX, cY] ![vX, vY] ![x, y] 0 = vX * y - cX * x ∧
+    net ![cX, cY] ![vX, vY] ![x, y] 1 = vY * x - cY * y := by
+  have h0 : prev (0 : Fin 2) = 1 := by decide
+  have h1 : prev (1 : Fin 2) = 0 := by decide
+  simp [net, h0, h1]
+\end{lstlisting}
+
+\emph{Controls.} The values of \texttt{prev} on $\mathrm{Fin}\,3$ and $\mathrm{Fin}\,2$ are
+checked by \texttt{decide}. The three-partner economy $c=(1,1,1)$, $v=(4,\tfrac12,1)$ satisfies
+$1<2$ even though partner~1 alone has $v_1<c_1$. The uniform flow gives partner~1 a negative
+net, while $x=(1,\tfrac{9}{20},\tfrac25)$ gives nets $(\tfrac35,\tfrac1{20},\tfrac1{20})$, all
+positive. The flow must therefore be tuned to the cycle. There are two negative controls.
+$c=(2,2,2)$, $v=(1,1,1)$ fails the condition, and the uniform flow harms partner~0. The
+boundary case $c=v=(1,1)$ fails the strict condition.
+
+\section{Results}
+\label{sec:results}
+All four modules compile under the pinned toolchain without errors or warnings, including every
+sanity example. We probed each \texttt{Statement} with seven simple tactics
+(\texttt{code/probe.sh}, output in \texttt{results/probe\_results.tsv}). Table~\ref{tab:probe}
+summarises the outcome. No tactic closed any statement, so none is trivial in the sense the
+verifier tests. Table~\ref{tab:hyp} lists the hypotheses of each statement. These results describe
+the proposals only. Proofs belong to later tasks, after a sealing decision.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccccccc}
+\toprule
+Statement & \texttt{simp} & \texttt{norm\_num} & \texttt{decide} & \texttt{aesop} & \texttt{trivial} & \texttt{simp\_all} & \texttt{exact?}\\
+\midrule
+LoopMassBalance & open & open & open & open & open & open & open \\
+CascadedRecovery & open & open & open & open & open & open & open \\
+RecoveryWorkFloor & open & open & open & open & open & open & open \\
+CyclicSymbiosis & open & open & open & open & open & open & open \\
+\bottomrule
+\end{tabular}
+\caption{Probe outcomes. ``open'' means the tactic failed to close the statement.}
+\label{tab:probe}
+\end{table}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lp{10.5cm}}
+\toprule
+Statement & Hypotheses \\
+\midrule
+LoopMassBalance & $0\le D$, $0\le r\le1$, $0\le\rho<1$ (parts 1--4); $0<D$, $0<T$, $r\in[0,1]$ (strict monotonicity)\\
+CascadedRecovery & $0\le r_i\le1$ for all $i$; $r_i\le m\le1$ (uniform bound); $k\ne j$, $r_k>0$, $r_j<1$ (strictness)\\
+RecoveryWorkFloor & $w_f,w_r\ge0$, $0\le e_f,e_r\le e_{\max}$, $e_{\max}>0$, $T\le U$ (floor); $e_{\max}>0$, $w_r\ge0$, $e_{\max}w_r\le T$ (attainment)\\
+CyclicSymbiosis & $N\ge2$, $c_i>0$, $v_i>0$ for all $i$\\
+\bottomrule
+\end{tabular}
+\caption{Hypotheses of each proposed statement.}
+\label{tab:hyp}
+\end{table}
+
+\section{Limitations}
+\begin{itemize}
+\item \textbf{Models, not measurements.} No statement says anything about real recovery rates,
+retention, efficiencies, costs, values, materials or environmental outcomes. Those remain field
+inputs.
+\item \textbf{Stylised dynamics.} LoopMassBalance has constant demand and rates, a single
+material and no feedback from stock to recovery. CascadedRecovery treats stages as independent.
+CyclicSymbiosis covers a single directed cycle with linear payoffs and no capacities, transport
+losses or division of surplus. Run-128's Nash-midpoint result has no $N$-partner analogue here.
+\item \textbf{Mild extension in RecoveryWorkFloor.} Its floor half is a rearrangement of the
+canon bound (see the remark above). It is not a thermodynamic bound: it is neither a Landauer
+bound nor dependent on the Intelligence Bound, which remains a conjecture.
+\item \textbf{Probes are not proofs of hardness.} Failing seven simple tactics does not show
+that a statement is deep. It only shows that the statement is not closed by those tactics.
+\item \textbf{Tooling.} An attempt to use the Aristotle prover failed at submission with an
+authentication error. No Aristotle project was created.
+\end{itemize}
+
+\section{Reproducibility}
+Each file \texttt{proposals/P3.<ID>.lean} compiles with \texttt{lean} under toolchain
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit
+\texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. The probe table is regenerated by
+\texttt{code/probe.sh proposals <scratch-dir>}. The rationale files
+\texttt{proposals/P3.<ID>.md} list every hypothesis, every control and what each statement does
+not settle. The two canon files used for comparison are copied from the canon repository at
+commit \texttt{17a0702f}, and their hashes are recorded by the project.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-05 (P3-T001): first version. Proposes P3.LoopMassBalance, P3.CascadedRecovery,
+P3.RecoveryWorkFloor and P3.CyclicSymbiosis, with controls, probe results and rationale. No prior
+P3 paper existed.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

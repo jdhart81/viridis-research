@@ -1,0 +1,46 @@
+{
+  "agent_minutes": 18.49,
+  "date": "2026-11-05",
+  "decision_requests": [
+    "D-011",
+    "D-012",
+    "D-013",
+    "D-014"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "43c54f1b1bc4ff1f2d6d0be928306c8755cc63d3",
+    "run_attempt": 1,
+    "run_id": 41940722827,
+    "run_started_at": "2026-11-05T00:21:30Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/41940722827",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "empirical",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "cc6b63e080015ec9ce704d6c1a944da01f2babaa03c25b03fad12462024e13e0",
+  "paper_built": true,
+  "project": "P3",
+  "proposed_statements": [
+    "P3.CascadedRecovery",
+    "P3.CyclicSymbiosis",
+    "P3.LoopMassBalance",
+    "P3.RecoveryWorkFloor"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-05_P3",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P3-T001",
+  "title": "Proposed Sealed Statements for a Circular-Economy Kernel: Loop Mass Balance, Cascaded Recovery, a Recovery-Adjusted Work Floor, and the N-Partner Symbiosis Condition",
+  "written_at": "2026-11-05T00:55:04Z",
+  "written_by": "verify",
+  "zip_sha256": "990fc9836d86210961bae209a0ecc02f575924053562e3151aff558a26ddc110"
+}

@@ -1,0 +1,124 @@
+{
+  "date": "2026-11-05",
+  "engine_sha": "80671cff27c39859fb020232096f6e0451c5ae9a",
+  "labels": {
+    "C1": {
+      "kind": "empirical",
+      "label": "ASSUMED",
+      "reason": "verifier re-execution is not enabled yet; TESTED requires it",
+      "text": "Each of the four proposal modules compiles under the pinned toolchain, and none of the tactics simp, norm_num, decide, aesop, trivial, simp_all or exact? closes its Statement."
+    }
+  },
+  "lean": {},
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 9,
+  "project": "P3",
+  "proposals": [
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+      "statement_id": "P3.LoopMassBalance",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+      "statement_id": "P3.CascadedRecovery",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+      "statement_id": "P3.RecoveryWorkFloor",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
+      "statement_id": "P3.CyclicSymbiosis",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    }
+  ],
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 6,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/j.jclepro.2016.12.048",
+      "10.1145/3372885.3373824",
+      "10.1146/annurev.energy.25.1.313",
+      "10.5281/zenodo.21971047",
+      "10.5281/zenodo.22736716"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-05_P3",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P3-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

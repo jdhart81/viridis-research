@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-05_P3`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-05_P3) (task P3-T001) proposes a new formal target `P3.RecoveryWorkFloor`.\n\n- File: [`runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.lean), sha256 `5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c`\n- Rationale: [`runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P3 · Recovery-adjusted work floor\n\nExtends `target_requires_supply` of the Useful and Dissipated Work Ledger (canon Run-163,\n`series/UDWL/ViridisRun163.lean`, copied as `context/UsefulDissipatedWork.lean`) from two\ngeneric supplies to a *fresh* supply `wf` and a *recovered* supply `wr`.\n\nModel (restated over Mathlib only; same algebra as Run-163 `useful w1 w2 e1 e2` with\n`w1 = wf`, `w2 = wr`):\n* supplies `wf, wr ≥ 0`;\n* modeled conversion efficiencies `ef, er ∈ [0, emax]` with a common cap `emax > 0`;\n* useful work `U = ef·wf + er·wr`.\n\n`Statement`:\n1. (floor) if `U ≥ T` then `wf ≥ (T - emax·wr) / emax`;\n2. (attainment) for every `emax > 0`, `wr ≥ 0` and target `T ≥ emax·wr`, the fresh supply\n   `wf = (T - emax·wr)/emax` is nonnegative and, run at `ef = er = emax`, delivers exactly `T`;\n   so the floor in part 1 cannot be raised.\n\n`emax` is a bound on *modeled* efficiency. The statement is not a Landauer bound, does not use\nthe Intelligence Bound, and makes no claim about any real efficiency or recovered supply.\n-/\n\nnoncomputable section\n\nnamespace ViridisStatements.P3.RecoveryWorkFloor\n\n/-- Useful work from fresh supply `wf` at efficiency `ef` and recovered supply `wr` at\nefficiency `er`. -/\ndef useful (wf wr ef er : ℝ) : ℝ := ef * wf + er * wr\n\n/-- The fresh-supply floor `(T - emax·wr) / emax`. -/\ndef freshFloor (T wr emax : ℝ) : ℝ := (T - emax * wr) / emax\n\n/-- **Proposed sealed target `P3.RecoveryWorkFloor`.** -/\ndef Statement : Prop :=\n  (∀ wf wr ef er emax T : ℝ, 0 ≤ wf → 0 ≤ wr →\n    0 ≤ ef → ef ≤ emax → 0 ≤ er → er ≤ emax → 0 < emax →\n    T ≤ useful wf wr ef er → freshFloor T wr emax ≤ wf) ∧\n  (∀ wr emax T : ℝ, 0 < emax → 0 ≤ wr → emax * wr ≤ T →\n    0 ≤ freshFloor T wr emax ∧ useful (freshFloor T wr emax) wr emax emax = T)\n\n/-! ## Sanity checks -/\n\n/-- The Run-163 witness `(w1, w2, e1, e2) = (8, 4, 3/4, 1/2)` read as fresh `8`, recovered `4`:\nuseful work `8`; with `emax = 3/4` and `T = 8` the floor is `20/3 ≤ 8`. -/\nexample : useful 8 4 (3/4) (1/2) = 8 ∧ freshFloor 8 4 (3/4) = 20/3 ∧\n    freshFloor 8 4 (3/4) ≤ (8 : ℝ) := by\n  norm_num [useful, freshFloor]\n\n/-- Attainment witness: `emax = 1/2`, recovered `4`, target `8` give floor `12`, and\n`12` units of fresh supply at efficiency `1/2` reach the target exactly. -/\nexample : freshFloor 8 4 (1/2) = 12 ∧ useful 12 4 (1/2) (1/2) = 8 := by\n  norm_num [freshFloor, useful]\n\n/-- Recovery lowers the floor: with no recovered supply the same target needs `16`. -/\nexample : freshFloor 8 4 (1/2) < freshFloor 8 0 (1/2) := by\n  norm_num [freshFloor]\n\n/-- Negative control: fresh supply below the floor (`11 < 12`) cannot reach the target even at\nthe cap, `useful 11 4 (1/2) (1/2) = 15/2 < 8`. -/\nexample : useful 11 4 (1/2) (1/2) < 8 := by\n  norm_num [useful]\n\n/-- Negative control: the efficiency cap matters. An efficiency `1` above the cap `1/2`\nreaches `8` with fresh supply `4`, below the floor `12`. -/\nexample : useful 4 4 1 1 = 8 ∧ (4 : ℝ) < freshFloor 8 4 (1/2) := by\n  norm_num [useful, freshFloor]\n\n/-- Negative control: when recovery alone covers the target (`emax·wr > T`) the floor is\nnegative, so attainment (part 2) genuinely needs `emax·wr ≤ T`. -/\nexample : freshFloor 1 4 (1/2) < 0 := by\n  norm_num [freshFloor]\n\nend ViridisStatements.P3.RecoveryWorkFloor\n\n```\n</details>",
+  "created_at": "2026-11-05T00:55:04Z",
+  "created_by": "verify:41940722827",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P3",
+    "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+    "source_path": "runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.lean",
+    "statement_id": "P3.RecoveryWorkFloor",
+    "task": "P3-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-013",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P3.RecoveryWorkFloor proposed by runs/2026-11-05_P3"
+}
