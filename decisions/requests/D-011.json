@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-011",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-05T00:55:06Z",
+  "posted_comment_id": 6646562359,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6646562359",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P3.LoopMassBalance proposed by runs/2026-11-05_P3"
 }
