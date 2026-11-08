@@ -23,6 +23,28 @@
       "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
       "task": "P1-T001"
     },
+    "P1.Bridge": {
+      "constant": "ViridisStatements.P1.Bridge.Statement",
+      "decision": "D-010",
+      "module": "ViridisStatements.P1.Bridge",
+      "path": "lean/ViridisStatements/P1/Bridge.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P1",
+      "sealed_at": "2026-11-08T14:32:54Z",
+      "sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+      "task": "P1-T002"
+    },
     "P1.Insertion": {
       "constant": "ViridisStatements.P1.Insertion.Statement",
       "decision": "D-009",
