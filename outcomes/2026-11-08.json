@@ -1,0 +1,44 @@
+{
+  "agent_minutes": 39.28,
+  "date": "2026-11-08",
+  "github": {
+    "event": "schedule",
+    "head_sha": "bf9fef2e70bb7543b78670ee23a501076b4e0e68",
+    "run_attempt": 1,
+    "run_id": 42532371109,
+    "run_started_at": "2026-11-08T22:52:18Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/42532371109",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "ASSUMED",
+      "statement_id": "P1.Insertion"
+    },
+    "C2": {
+      "kind": "empirical",
+      "label": "ASSUMED"
+    },
+    "C3": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "f43863a892cbc9e114440ea993696b8bd3bf662e021e8f439196a049f6d91831",
+  "paper_built": true,
+  "project": "P1",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-08_P1",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P1-T003",
+  "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula, the inequality enc >= C8 - chi, and a reduction of single-pixel insertion to a half-plane Jordan lemma",
+  "written_at": "2026-11-08T23:53:58Z",
+  "written_by": "verify",
+  "zip_sha256": "59d871f786f661a0dc074aa665497cf7f161d0bf07ce7309ca382100ec90155a"
+}

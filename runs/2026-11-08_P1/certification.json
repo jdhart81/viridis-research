@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-08",
+  "engine_sha": "98153355c710f7b4a77107d41ba8d7155856104c",
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "ASSUMED",
+      "reason": "Lean check did not pass (stopped at stage: source)",
+      "statement_id": "P1.Insertion",
+      "text": "Work toward P1.Insertion, not a proof of Statement: the file has no Candidate.main. With no gaps, it proves locality of Delta-chi; C8(insert p B) = C8(B) + 1 - k; finiteness of the enclosed components; the change in the enclosed count; L2 when all four 4-neighbours of p are in B; that Statement follows from scan-order insertions; one direction of a half-plane digital Jordan lemma (senc_of_join); enc(B) >= C8(B) - euler(B) for every finite raster (invariant_nonneg, enclosed_ge); and that Statement follows from the converse direction (statement_of_enc_join) or from enc <= C8 - euler (statement_of_le)."
+    },
+    "C2": {
+      "kind": "empirical",
+      "label": "ASSUMED",
+      "reason": "verifier re-execution is not enabled yet; TESTED requires it",
+      "text": "On 4,000 random rasters (side 3 to 9, seed 20261108), the hypothesis of statement_of_halfplane_jordan holds in all 17,344 configurations where it applies (7,924 with S enclosed, 9,420 not), and the invariant enc - C8 + chi is unchanged in all 15,281 scan-order insertions checked. A mutated test that ignores SW reports 3,662 disagreements."
+    },
+    "C3": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "Remaining direction of the half-plane Jordan lemma: let every pixel of the finite raster B come before p in raster-scan order, with S = p+(0,-1) not in B, SE = p+(1,-1) in B, and W = p+(-1,0) or SW = p+(-1,-1) in B. If the 4-component of S in Z^2 minus (B with p) is finite, then W or SW lies in the 8-component of SE in B. By the Lean theorem statement_of_enc_join this implies P1.Insertion; equivalently, enc(B) <= C8(B) - euler(B) for every finite raster."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [],
+      "candidate_sha256": "12bbdc63e632b9e046317a2740a5b0630b55b01ed02329b7ab62a2c183cd52a9",
+      "durations": {},
+      "messages": [],
+      "ok": false,
+      "stage": "source",
+      "statement_id": "P1.Insertion",
+      "statement_sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "violations": [
+        "missing `theorem main`"
+      ]
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 19,
+  "project": "P1",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 7,
+    "entries": 7,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/321356.321357",
+      "10.1145/321556.321570",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-08_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

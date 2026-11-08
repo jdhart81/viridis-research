@@ -1,0 +1,32 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P1",
+ "task": "P1-T003",
+ "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula, the inequality enc >= C8 - chi, and a reduction of single-pixel insertion to a half-plane Jordan lemma",
+ "abstract": "For a finite barrier raster B in Z^2 with 8-connected barriers and a 4-connected complement, the expected discrete Alexander duality is enc(B) = C8(B) - chi(K(B)). It would replace the topological hypothesis FaceCount of Trees Cannot Cut. The project's ladder is L1 (bit-quad formula, with an earlier Lean proof), L2 (sealed P1.Insertion: inserting any pixel preserves enc - C8 + chi) and L3 (sealed P1.Bridge). This session worked toward L2 and did not prove it. We give Lean proofs, with no gaps, of: locality of the change in chi; C8(B with p) = C8(B) + 1 - k, with k the number of 8-components of B touching p; finiteness of the enclosed components; and the change in the enclosed count on insertion. An induction in raster-scan order reduces L2 to insertions after all of B. There, four of five neighbourhood cases close by local arguments. The fifth is a half-plane digital Jordan lemma: with S below p free, SE a barrier pixel and W or SW a barrier pixel, the component of S is finite exactly when W or SW is 8-connected to SE in B. We give a Lean proof of one direction by crossing parity. As a consequence we give a Lean proof that enc(B) >= C8(B) - chi(K(B)) for every finite raster. L2 follows from the converse direction, equivalently from the reverse inequality, which remains open. A brute-force check finds no counterexample to it in 17,344 configurations. The Aristotle prover was unavailable (invalid API key).",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "formal",
+   "statement_id": "P1.Insertion",
+   "proof_file": "proofs/P1.Insertion.lean",
+   "text": "Work toward P1.Insertion, not a proof of Statement: the file has no Candidate.main. With no gaps, it proves locality of Delta-chi; C8(insert p B) = C8(B) + 1 - k; finiteness of the enclosed components; the change in the enclosed count; L2 when all four 4-neighbours of p are in B; that Statement follows from scan-order insertions; one direction of a half-plane digital Jordan lemma (senc_of_join); enc(B) >= C8(B) - euler(B) for every finite raster (invariant_nonneg, enclosed_ge); and that Statement follows from the converse direction (statement_of_enc_join) or from enc <= C8 - euler (statement_of_le)."
+  },
+  {
+   "id": "C2",
+   "kind": "empirical",
+   "text": "On 4,000 random rasters (side 3 to 9, seed 20261108), the hypothesis of statement_of_halfplane_jordan holds in all 17,344 configurations where it applies (7,924 with S enclosed, 9,420 not), and the invariant enc - C8 + chi is unchanged in all 15,281 scan-order insertions checked. A mutated test that ignores SW reports 3,662 disagreements.",
+   "evidence": [
+    "results/core_check.json",
+    "code/core_check.py"
+   ]
+  },
+  {
+   "id": "C3",
+   "kind": "conjecture",
+   "text": "Remaining direction of the half-plane Jordan lemma: let every pixel of the finite raster B come before p in raster-scan order, with S = p+(0,-1) not in B, SE = p+(1,-1) in B, and W = p+(-1,0) or SW = p+(-1,-1) in B. If the 4-component of S in Z^2 minus (B with p) is finite, then W or SW lies in the 8-component of SE in B. By the Lean theorem statement_of_enc_join this implies P1.Insertion; equivalently, enc(B) <= C8(B) - euler(B) for every finite raster."
+  }
+ ],
+ "proposals": [],
+ "next_steps": "Start from out/proofs/P1.Insertion.lean (2026-11-08). It compiles, uses only the standard axioms and has no gaps, but it has no Candidate.main. The only missing piece is the hypothesis of statement_of_enc_join: in scan order, with S free, SE in B and W or SW in B, SEnc B p -> JoinLR B p. Equivalently, enc <= C8 - euler (statement_of_le), since enc >= C8 - euler is proved (invariant_nonneg). (1) Prove that direction: if W/SW and SE lie in different 8-components of B, build a free 4-path from S to the upper half-plane. Two routes: boundary following around the 8-component of SE, or the lemma that the outer border of a finite 4-connected set is 8-connected (Rosenfeld). (2) Consider sealing that direction as its own rung. (3) After L2: P1.Bridge follows from finite_enclosed and invariant_zero_of_scan. (4) Retry Aristotle only if the key works."
+}

@@ -1,0 +1,10 @@
+{
+ "seed": 20261108,
+ "rasters": 4000,
+ "core_cases": 17344,
+ "core_enclosed": 7924,
+ "core_not_enclosed": 9420,
+ "core_failures": 0,
+ "scan_insertions_checked": 15281,
+ "scan_insertion_failures": 0
+}
