@@ -1,0 +1,35 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-11-08T14:33:10Z",
+  "author": "jdhart81",
+  "body": "yes D-011",
+  "comment_id": 6722763210,
+  "comment_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6722763210",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P3",
+    "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+    "source_path": "runs/2026-11-05_P3/proposals/P3.LoopMassBalance.lean",
+    "statement_id": "P3.LoopMassBalance",
+    "task": "P3-T001",
+    "type": "seal_statement"
+  },
+  "effect_result": {
+    "applied": true,
+    "sealed": "P3.LoopMassBalance"
+  },
+  "id": "D-011",
+  "recorded_at": "2026-11-08T14:33:22Z",
+  "schema": "viridis-decision-record-v1"
+}
