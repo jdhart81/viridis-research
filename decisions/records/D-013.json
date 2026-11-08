@@ -1,0 +1,35 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-11-08T14:33:58Z",
+  "author": "jdhart81",
+  "body": "yes D-013",
+  "comment_id": 6722771982,
+  "comment_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6722771982",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P3",
+    "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+    "source_path": "runs/2026-11-05_P3/proposals/P3.RecoveryWorkFloor.lean",
+    "statement_id": "P3.RecoveryWorkFloor",
+    "task": "P3-T001",
+    "type": "seal_statement"
+  },
+  "effect_result": {
+    "applied": true,
+    "sealed": "P3.RecoveryWorkFloor"
+  },
+  "id": "D-013",
+  "recorded_at": "2026-11-08T14:34:11Z",
+  "schema": "viridis-decision-record-v1"
+}

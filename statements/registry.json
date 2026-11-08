@@ -177,6 +177,28 @@
       "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
       "task": "P3-T001"
     },
+    "P3.CyclicSymbiosis": {
+      "constant": "ViridisStatements.P3.CyclicSymbiosis.Statement",
+      "decision": "D-014",
+      "module": "ViridisStatements.P3.CyclicSymbiosis",
+      "path": "lean/ViridisStatements/P3/CyclicSymbiosis.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P3",
+      "sealed_at": "2026-11-08T14:34:07Z",
+      "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
+      "task": "P3-T001"
+    },
     "P3.LoopMassBalance": {
       "constant": "ViridisStatements.P3.LoopMassBalance.Statement",
       "decision": "D-011",
@@ -197,6 +219,28 @@
       "project": "P3",
       "sealed_at": "2026-11-08T14:33:10Z",
       "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+      "task": "P3-T001"
+    },
+    "P3.RecoveryWorkFloor": {
+      "constant": "ViridisStatements.P3.RecoveryWorkFloor.Statement",
+      "decision": "D-013",
+      "module": "ViridisStatements.P3.RecoveryWorkFloor",
+      "path": "lean/ViridisStatements/P3/RecoveryWorkFloor.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P3",
+      "sealed_at": "2026-11-08T14:33:58Z",
+      "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
       "task": "P3-T001"
     }
   }
