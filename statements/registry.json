@@ -155,6 +155,28 @@
       "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
       "task": "P2-T002"
     },
+    "P3.CascadedRecovery": {
+      "constant": "ViridisStatements.P3.CascadedRecovery.Statement",
+      "decision": "D-012",
+      "module": "ViridisStatements.P3.CascadedRecovery",
+      "path": "lean/ViridisStatements/P3/CascadedRecovery.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P3",
+      "sealed_at": "2026-11-08T14:33:37Z",
+      "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+      "task": "P3-T001"
+    },
     "P3.LoopMassBalance": {
       "constant": "ViridisStatements.P3.LoopMassBalance.Statement",
       "decision": "D-011",
