@@ -23,6 +23,28 @@
       "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
       "task": "P1-T001"
     },
+    "P1.Insertion": {
+      "constant": "ViridisStatements.P1.Insertion.Statement",
+      "decision": "D-009",
+      "module": "ViridisStatements.P1.Insertion",
+      "path": "lean/ViridisStatements/P1/Insertion.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P1",
+      "sealed_at": "2026-11-08T14:32:32Z",
+      "sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "task": "P1-T002"
+    },
     "P2.Afforestation": {
       "constant": "ViridisStatements.P2.Afforestation.Statement",
       "decision": "D-007",
