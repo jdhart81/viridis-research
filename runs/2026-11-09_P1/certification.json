@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-09",
+  "engine_sha": "8c1757ff8e36aa7e275e0df6f4c6066832792cbf",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "e31434107d76a387f2bd47d3752511581084d3195b2563373ad279fbc907d670",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P1.Insertion",
+      "statement_sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "text": "For every finite raster B of pixels in Z^2 and every pixel p not in B, enclosed(insert p B) - C8(insert p B) + euler(insert p B) = enclosed(B) - C8(B) + euler(B), with C8 the number of 8-components of B, enclosed the number of finite 4-components of Z^2 minus B, and euler = V - E + F of the cubical complex of B (Candidate.main). The same file also proves, as the auxiliary theorem bridge_eq, that enclosed(B) = C8(B) - euler(B) for every finite raster B.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "e31434107d76a387f2bd47d3752511581084d3195b2563373ad279fbc907d670",
+      "durations": {
+        "check": 7.731,
+        "compile": 24.023,
+        "replay": 10.688
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P1.Insertion",
+      "statement_sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 28,
+  "project": "P1",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 7,
+    "entries": 7,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/321356.321357",
+      "10.1145/321556.321570",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-09_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

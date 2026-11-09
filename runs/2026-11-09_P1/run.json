@@ -1,0 +1,18 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P1",
+ "task": "P1-T003",
+ "title": "A machine-checked raster bridge for Trees Cannot Cut: single-pixel insertion preserves enc - C8 + chi",
+ "abstract": "For a finite barrier raster B in Z^2 with 8-connected barriers and a 4-connected complement, the expected discrete Alexander duality is enc(B) = C8(B) - chi(K(B)): the number of enclosed (finite) 4-components of the complement equals the number of 8-components of B minus the Euler characteristic of its cubical complex. It would replace the assumed topological hypothesis FaceCount of Trees Cannot Cut. We give a Lean proof of the sealed statement P1.Insertion (rung L2): inserting any pixel into any finite raster leaves enc - C8 + chi unchanged. Earlier sessions reduced L2, via an induction in raster-scan order and explicit counts of the changes in C8, chi and the enclosed count, to one direction of a half-plane digital Jordan lemma. If the 4-component of the pixel S below the inserted pixel p is finite, then the left neighbour of p and the pixel SE are 8-connected in B. We prove that direction by following the crack boundary of the 8-component C of SE. The (8,4) crack-successor map has an explicit left inverse, so it permutes the finite set of cracks and every orbit closes. If the left neighbours of p are not in C, then p touches C only at one corner. Injectivity then forces the orbit from the crack between S and SE to reach the crack between SE and E before it turns around that corner. The outside pixels along the way form a free 4-path from S to E, and E escapes along a free ray. As a corollary we give a Lean proof of the bridge equation enc = C8 - chi for every finite raster. The proof uses no planar-topology library: crossing parity for one direction and a finite permutation for the other. The Aristotle prover was unavailable (invalid API key).",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "formal",
+   "statement_id": "P1.Insertion",
+   "proof_file": "proofs/P1.Insertion.lean",
+   "text": "For every finite raster B of pixels in Z^2 and every pixel p not in B, enclosed(insert p B) - C8(insert p B) + euler(insert p B) = enclosed(B) - C8(B) + euler(B), with C8 the number of 8-components of B, enclosed the number of finite 4-components of Z^2 minus B, and euler = V - E + F of the cubical complex of B (Candidate.main). The same file also proves, as the auxiliary theorem bridge_eq, that enclosed(B) = C8(B) - euler(B) for every finite raster B."
+  }
+ ],
+ "proposals": [],
+ "next_steps": "P1-T003 should be complete if the verifier confirms out/proofs/P1.Insertion.lean (local viridis-lean-check: PASSED, standard axioms). Next is P1-T004 (P1.Bridge). The equation is already the theorem bridge_eq in this file, and clause (1), finitely many enclosed components, is finite_enclosed. Read the sealed P1.Bridge statement, copy the file and adapt main. The definitions in P1.Bridge are meant to match P1.Insertion; check this character by character. If they differ, prove the agreement lemma first. Retry Aristotle only if the key works."
+}
