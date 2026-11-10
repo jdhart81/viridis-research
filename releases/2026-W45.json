@@ -9,8 +9,9 @@
   },
   "linkedin": {
     "run_dir": "runs/2026-11-02_P2",
-    "status": "pending",
-    "text": "New from Viridis Research: Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Harmonization Scalar-Price Welfare Core\n\nViridis Research re-checked the math behind the Harmonization kernel, which coordinates many land stewards by broadcasting one price instead of many commands. We give a Lean proof, under a pinned toolchain, that the published clearing price meets the shared target exactly and that the resulting allocation costs no more than any centrally planned one. Field values and the cost model remain assumptions.\n\nWhat was verified: a Lean 4 proof of P2.Harmonization, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24095907\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent."
+    "status": "posted",
+    "text": "New from Viridis Research: Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Harmonization Scalar-Price Welfare Core\n\nViridis Research re-checked the math behind the Harmonization kernel, which coordinates many land stewards by broadcasting one price instead of many commands. We give a Lean proof, under a pinned toolchain, that the published clearing price meets the shared target exactly and that the resulting allocation costs no more than any centrally planned one. Field values and the cost model remain assumptions.\n\nWhat was verified: a Lean 4 proof of P2.Harmonization, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24095907\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent.",
+    "urn": "urn:li:share:7525742135871160320"
   },
   "runs": [
     "runs/2026-11-02_P2",
