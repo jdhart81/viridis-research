@@ -1,0 +1,14 @@
+{
+  "body_md": "This approves Zenodo deposits for project P3, *Circular-economy kernel: loops, cascades and industrial symbiosis*. Under the publication policy (Z5), each P3 run that has a compiled paper and a non-trivial PROVEN claim then gets its own Zenodo record and DOI at the weekly publication. Without this approval, proven P3 runs are published on GitHub only.\n\n- **Creator:** Hart, Justin D. (Viridis LLC, ORCID 0009-0008-3082-2482). AI assistance is disclosed in the description.\n- **Scope and novelty note:** in `config/channels.json` (`zenodo.projects.P3.record_note`). It says these are elementary results about the stated models, not new theorems, and that no measured rate, cost or environmental outcome is certified.\n- **Links:** `isSupplementTo` the Reciprocity Corridor (10.5281/zenodo.21971047) and the Useful and Dissipated Work Ledger (10.5281/zenodo.22736716).\n- **Existing records:** this does not touch any of them.\n\nZenodo DOIs cannot be deleted.\n",
+  "created_at": "2026-11-10T01:40:31Z",
+  "created_by": "pull-request",
+  "effect": {
+    "project": "P3",
+    "type": "zenodo_concept"
+  },
+  "id": "D-015",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Approve Zenodo records for project P3"
+}
