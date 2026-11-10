@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-10",
+  "engine_sha": "0d6cbd3c299631951b12400ae5b4563e6a33a5de",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "ae3490865be63f9fc80518f96e5e9c0aa618e951d6fd7f3689e963144385a2af",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P1.Bridge",
+      "statement_sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+      "text": "For every finite raster B of pixels in Z^2, read with 8-connected barrier and a 4-connected complement taken in all of Z^2, the set of finite (enclosed) 4-components of Z^2 minus B is finite, and their number equals C8(B) - euler(B). C8 is the number of 8-components of B, and euler = V - E + F of the cubical complex of B (Candidate.main). The same file also proves L2 restated over these definitions (Candidate.insertion) and, as auxiliary theorems outside the sealed statement, that exactly one 4-component of the complement is infinite and that the total number of components is C8(B) - euler(B) + 1 (Candidate.unique_unbounded, Candidate.card_components).",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "ae3490865be63f9fc80518f96e5e9c0aa618e951d6fd7f3689e963144385a2af",
+      "durations": {
+        "check": 10.793,
+        "compile": 31.681,
+        "replay": 10.042
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P1.Bridge",
+      "statement_sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 30,
+  "project": "P1",
+  "proposals": [],
+  "references": {
+    "all_resolved": true,
+    "dois": 7,
+    "entries": 7,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/0734-189X(89)90147-3",
+      "10.1109/T-C.1971.223289",
+      "10.1145/321356.321357",
+      "10.1145/321556.321570",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.21686446"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-10_P1",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P1-T004",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

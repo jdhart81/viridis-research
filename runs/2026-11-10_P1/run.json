@@ -1,0 +1,18 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P1",
+ "task": "P1-T004",
+ "title": "A machine-checked raster bridge for Trees Cannot Cut: enclosed 4-components equal C8 minus the Euler characteristic on every finite raster",
+ "abstract": "For a finite set B of barrier pixels in Z^2, with 8-connected barriers and a 4-connected complement, we give a Lean 4 proof of the raster bridge enc(B) = C8(B) - chi(K(B)). Here enc(B) is the number of finite 4-components of Z^2 minus B, C8(B) is the number of 8-components of B, and chi = V - E + F is the Euler characteristic of the cubical complex formed by the pixel squares. The proof targets the sealed statement P1.Bridge (rung L3), which also asserts that only finitely many components are enclosed. It completes a three-rung ladder. L1 is Gray's bit-quad formula. L2 (single-pixel insertion preserves enc - C8 + chi) was proved in earlier sessions by a raster-scan induction, crossing parity and a crack-boundary permutation. L3 follows by induction from the empty raster, with a bounding-box argument for finiteness. In the same file we also give a Lean proof that the complement has exactly one infinite 4-component, so the total number of compartments is C8 - chi + 1. We state precisely what this discharges in Trees Cannot Cut. The FaceCount hypothesis there says that compartments = circuit rank + 1 for an abstract corridor graph, justified by Alexander duality. On rasters, the duality step is now a theorem with no hypotheses, with C8 - chi in the role of the first Betti number. FaceCount as stated is not discharged. Three links are not formalised: a corridor-graph-to-raster correspondence matching circuit rank to C8 - chi (the solid 2x2 block shows that the pixel-adjacency graph is the wrong choice), the identification of C8 - chi with rank H1, and anchoring at the landscape boundary.",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "formal",
+   "statement_id": "P1.Bridge",
+   "proof_file": "proofs/P1.Bridge.lean",
+   "text": "For every finite raster B of pixels in Z^2, read with 8-connected barrier and a 4-connected complement taken in all of Z^2, the set of finite (enclosed) 4-components of Z^2 minus B is finite, and their number equals C8(B) - euler(B). C8 is the number of 8-components of B, and euler = V - E + F of the cubical complex of B (Candidate.main). The same file also proves L2 restated over these definitions (Candidate.insertion) and, as auxiliary theorems outside the sealed statement, that exactly one 4-component of the complement is infinite and that the total number of components is C8(B) - euler(B) + 1 (Candidate.unique_unbounded, Candidate.card_components)."
+  }
+ ],
+ "proposals": [],
+ "next_steps": "If the verifier confirms P1.Bridge, the raster ladder L1-L3 is complete. The remaining gap to the FaceCount hypothesis of Trees Cannot Cut is graph-theoretic. (1) Propose a sealed statement connecting a corridor graph to a raster: for a rasterisation in which each edge is a 1-pixel-wide digital arc and distinct edges meet only at vertex blocks (or for the 1-skeleton of K(B)), circuitRank G = C8 - euler. It must reproduce the 2x2-block negative control. (2) Optionally seal the total count (card_components: number of complement components = C8 - euler + 1), whose proof is already in proofs/P1.Bridge.lean. (3) A windowed version for boundary anchoring: B together with the frame of a rectangle, counting compartments inside the window. Aristotle has never had a working key. Check it with `aristotle list` before relying on it."
+}

@@ -1,0 +1,1334 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\lstdefinelanguage{lean}{
+  keywords={theorem,lemma,def,abbrev,namespace,end,open,import,by,intro,
+    rintro,obtain,have,set,with,fun,at,if,then,else,show,exact,refine,apply,
+    rw,simp,simpa,unfold,cases,rcases,by_cases,omega,ring,ext,left,right,constructor},
+  sensitive=true,
+  comment=[l]{--},
+  morecomment=[s]{/-}{-/},
+  string=[b]"
+}
+\lstset{language=lean,basicstyle=\ttfamily\footnotesize,breaklines=true,
+  columns=fullflexible,keepspaces=true,
+  keywordstyle=\color{blue!60!black}\bfseries,commentstyle=\color{green!40!black},
+  frame=single,
+  literate=
+    {·}{{$\cdot$}}1 {×}{{$\times$}}1 {₁}{{$_1$}}1 {₂}{{$_2$}}1
+    {ℕ}{{$\mathbb{N}$}}1 {ℤ}{{$\mathbb{Z}$}}1 {←}{{$\leftarrow$}}1
+    {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1 {∈}{{$\in$}}1 {∑}{{$\sum$}}1 {∨}{{$\lor$}}1
+    {⊢}{{$\vdash$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1
+    {¬}{{$\neg$}}1 {≠}{{$\neq$}}1 {α}{{$\alpha$}}1 {ᶜ}{{$^{c}$}}1 {∉}{{$\notin$}}1 {∧}{{$\land$}}1 {≤}{{$\le$}}1
+}
+
+\title{A machine-checked raster bridge for \emph{Trees Cannot Cut}:\\
+enclosed 4-components equal $C_8-\chi$ on every finite raster}
+\author{Justin Hart\\Viridis LLC}
+\date{10 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For a finite set $B\subset\mathbb{Z}^2$ of barrier pixels, read with 8-connected
+barriers and a 4-connected complement, we give a Lean~4 proof of the raster bridge
+\[
+  \mathrm{enc}(B) \;=\; C_8(B)-\chi(K(B)),
+\]
+where $\mathrm{enc}(B)$ is the number of finite 4-components of $\mathbb{Z}^2\setminus B$,
+$C_8(B)$ is the number of 8-components of $B$, and $\chi(K(B))=V-E+F$ is the Euler
+characteristic of the cubical complex formed by the closed pixel squares. The proof
+targets the sealed statement \texttt{P1.Bridge} (rung L3 of the project's ladder),
+which also asserts that only finitely many components are enclosed. The proof is the
+end of a three-rung ladder. L1 is Gray's bit-quad formula for $\chi$. L2
+(\texttt{P1.Insertion}) states that inserting one pixel leaves
+$\mathrm{enc}-C_8+\chi$ unchanged. We proved it in earlier sessions by an induction in
+raster-scan order, a crossing-parity argument and a crack-boundary permutation. L3
+follows from L2 by induction from the empty raster, together with a bounding-box
+argument for finiteness. In the same file we also give a Lean proof that
+$\mathbb{Z}^2\setminus B$ has exactly one infinite 4-component, so the total number of
+compartments is $C_8(B)-\chi(K(B))+1$. We explain which assumption of \emph{Trees Cannot Cut}
+this discharges and which it does not. The hypothesis \texttt{FaceCount} in that paper's
+Lean core says that compartments equal circuit rank plus one for an abstract corridor
+graph, and it rests on Alexander duality. On rasters, our result replaces the duality step
+by a theorem with no assumptions, with $C_8-\chi$ playing the role of the first Betti number.
+It does not discharge \texttt{FaceCount} as stated. Three links are not formalised: a
+correspondence between corridor graphs and rasters under which the graph's circuit rank equals $C_8-\chi$
+(the solid $2\times2$ block shows that the pixel-adjacency graph is the wrong
+choice), the identification of $C_8-\chi$ with $\operatorname{rank}H_1(K(B))$, and the
+anchoring at the landscape boundary $\partial\Omega$. The development uses no planar-topology library.
+\end{abstract}
+
+\section{Introduction}
+
+Hart's \emph{Trees Cannot Cut}~\cite{Hart2026} argues that fuel breaks and
+habitat corridors split a forest landscape into separate compartments only
+through their cycles: an acyclic corridor leaves the fuel matrix connected. The
+graph theory behind this claim is machine-checked, but the step from topology to
+graph theory is carried as an explicit hypothesis (\texttt{FaceCount}), which
+says that the number of compartments equals the circuit rank plus one. The
+manuscript justifies it by Alexander duality. Mathlib~\cite{Mathlib2020} has
+neither Alexander duality nor a planar Euler formula in a form that applies
+here.
+
+Fire and fuel-break data usually come as rasters, so project P1 aims to
+discharge the hypothesis in the raster setting. For a finite barrier raster $B$
+with 8-connected barriers and a 4-connected complement, the target identity is
+\[
+  \#\{\text{enclosed 4-components of } \mathbb{Z}^2\setminus B\}
+  \;=\; C_8(B) - \chi(K(B)).
+\]
+The proposed route is a ladder of three lemmas. L1 is a local formula for
+$\chi(K(B))$. L2 says that adding one pixel preserves
+$\text{enclosed} - C_8 + \chi$. L3 is the bridge itself, by induction on $|B|$.
+The first version of this paper did L1: it gives a Lean proof of Gray's
+bit-quad formula in its 8-connected form (Sections~\ref{sec:l1start}--\ref{sec:l1end}).
+This version adds exact Lean statements, proposed for sealing, for L2 and L3
+(Section~\ref{sec:proposals}). It also adds machine-checked sanity checks on
+their definitions and computational evidence that the proposed statements are
+true (Section~\ref{sec:evidence}). The 2026-11-04 revision made the proposal
+modules self-contained (Section~\ref{sec:selfcontained}) and added an exhaustive
+kernel check of all 256 neighbourhood configurations of L2
+(Section~\ref{sec:allconfigs}). A proposed statement is a target, not a
+result: those sections do not prove L2 or L3. L1 matters for the rest of the ladder because it makes the
+change in $\chi$ under a single-pixel insertion a purely local quantity: only
+the four windows around the new pixel change.
+
+Both proposed statements were later sealed unchanged. The 2026-11-08 revision
+(Section~\ref{sec:reduction}) reduced L2 to one direction of a half-plane digital
+Jordan lemma about the pixel below the inserted one. It proved the other direction,
+and with it half of the bridge identity, $\mathrm{enc}\ge C_8-\chi$. The present
+revision closes the gap (Section~\ref{sec:crack}). We give a Lean proof of
+the sealed statement \texttt{P1.Insertion} and, as a corollary, of the bridge
+equation $\mathrm{enc}=C_8-\chi$ for every finite raster. The 2026-11-10 revision
+(Section~\ref{sec:l3}) gives a Lean proof of the sealed L3 statement \texttt{P1.Bridge}
+in its exact form. It also proves that exactly one component is unbounded, and states
+precisely how far this goes towards the \texttt{FaceCount} hypothesis of
+\emph{Trees Cannot Cut}.
+
+\section{Background and related work}
+
+Gray~\cite{Gray1971} introduced locally countable properties of binary images,
+among them area, perimeter and the Euler number. He showed that the Euler number
+can be computed from counts of $2\times2$ ``bit-quad'' patterns, with different
+weightings for 4- and 8-connectivity of the foreground. The (8,4) pairing of
+connectivity for foreground and background goes back to
+Rosenfeld~\cite{Rosenfeld1970}, who showed that with this pairing a simple closed
+digital curve separates the plane into exactly two components. Its role in
+digital Jordan-type theorems is surveyed by Kong and
+Rosenfeld~\cite{KongRosenfeld1989}.
+In the 8-connected reading, two pixels that share only a corner touch in $K(B)$.
+The two diagonal patterns then contribute $-2$ to $4\chi$, because their
+shared corner is one vertex where four edges meet. Our Lean development uses
+Lean~4~\cite{Lean4} and Mathlib~\cite{Mathlib2020}. We are not aware of an
+earlier machine-checked proof of the bit-quad formula, but we have not searched
+exhaustively and make no claim of novelty.
+
+\section{Setting: the sealed statement}\label{sec:l1start}
+
+The statement module \texttt{ViridisStatements.P1.BitQuad} fixes the following
+definitions. A pixel $p=(i,j)\in\mathbb{Z}^2$ stands for the closed square
+$[i,i+1]\times[j,j+1]$.
+\begin{itemize}
+\item $\mathrm{vertices}(B)=\bigcup_{p\in B}\mathrm{corners}(p)$, where
+  $\mathrm{corners}(i,j)=\{(i,j),(i+1,j),(i,j+1),(i+1,j+1)\}$.
+\item $\mathrm{hEdges}(B)=\bigcup_{(i,j)\in B}\{(i,j),(i,j+1)\}$ (horizontal
+  edges named by their left end) and
+  $\mathrm{vEdges}(B)=\bigcup_{(i,j)\in B}\{(i,j),(i+1,j)\}$ (vertical edges named
+  by their lower end).
+\item The Euler characteristic, computed in $\mathbb{Z}$:
+  \[\chi(B) = |\mathrm{vertices}(B)| - (|\mathrm{hEdges}(B)|+|\mathrm{vEdges}(B)|) + |B|.\]
+\item The window at a lattice point $v=(x,y)$ consists of four bits,
+  $a=[(x-1,y-1)\in B]$, $b=[(x,y-1)\in B]$, $c=[(x-1,y)\in B]$ and
+  $d=[(x,y)\in B]$, with $n(v)=a+b+c+d$.
+\item $Q_1$, $Q_3$ and $Q_D$ count the vertices $v$ with $n(v)=1$, with
+  $n(v)=3$, and with $\{a,d\}$ or $\{b,c\}$ as the only set bits.
+\end{itemize}
+Every window that meets $B$ is centred on a vertex of $K(B)$, so counting over
+the vertices counts every such window exactly once.
+
+\begin{theorem}[\texttt{P1.BitQuad}]\label{thm:main}
+For every finite $B\subset\mathbb{Z}^2$,
+$4\,\chi(K(B)) = Q_1(B) - Q_3(B) - 2\,Q_D(B)$.
+\end{theorem}
+
+\section{Proof architecture}
+
+Write $\mathcal V=\mathrm{vertices}(B)$, and use $[P]\in\{0,1\}$ for the indicator
+of a proposition $P$.
+
+\begin{lemma}[Edge membership]\label{lem:edges}
+$(i,j)\in\mathrm{hEdges}(B) \iff (i,j)\in B \lor (i,j-1)\in B$, and
+$(i,j)\in\mathrm{vEdges}(B) \iff (i,j)\in B \lor (i-1,j)\in B$.
+\end{lemma}
+
+\begin{lemma}[Shift counting]\label{lem:shift}
+Let $S,\mathcal V\subset\mathbb{Z}^2$ be finite and $s\in\mathbb{Z}^2$. If $x+s\in\mathcal V$
+for every $x\in S$, then $\sum_{v\in\mathcal V}[v-s\in S]=|S|$.
+\end{lemma}
+\begin{proof}
+The map $v\mapsto v-s$ is a bijection from $\{v\in\mathcal V: v-s\in S\}$ onto
+$S$. Its inverse is $x\mapsto x+s$, which lands in $\mathcal V$ by hypothesis.
+\end{proof}
+
+Lemma~\ref{lem:shift} does all of the double counting. Every pixel $x\in B$
+has its four corners $x$, $x+(1,0)$, $x+(0,1)$ and $x+(1,1)$ in $\mathcal V$.
+Applying the lemma with the four shifts gives
+\[
+  4F = \sum_{v\in\mathcal V} n(v).
+\]
+By Lemma~\ref{lem:edges}, both ends $x$ and $x+(1,0)$ of a horizontal edge are
+corners of the pixel above or below it, and likewise for vertical edges.
+Write the arms of $v$ as left $[v-(1,0)\in\mathrm{hEdges}]$, right
+$[v\in\mathrm{hEdges}]$, down $[v-(0,1)\in\mathrm{vEdges}]$ and up
+$[v\in\mathrm{vEdges}]$. Applying the lemma once more for each arm gives
+\[
+  2E = \sum_{v\in\mathcal V}\mathrm{arms}(v), \qquad V=\sum_{v\in\mathcal V}1 .
+\]
+Hence $4\chi = \sum_{v\in\mathcal V}\bigl(4-2\,\mathrm{arms}(v)+n(v)\bigr)$.
+Lemma~\ref{lem:edges} expresses each arm through the window bits. The left arm
+is $a\lor c$, the right arm $b\lor d$, the down arm $a\lor b$ and the up arm
+$c\lor d$. The summand therefore depends only on $(a,b,c,d)$, and
+Table~\ref{tab:patterns} evaluates it. Every vertex is a corner of some pixel,
+which must be one of the four window cells, so the empty pattern never occurs.
+On the other 15 patterns the summand equals
+$[n=1]-[n=3]-2[\text{diagonal}]$. Summing over $\mathcal V$ proves
+Theorem~\ref{thm:main}.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccc}
+\toprule
+Pattern class & \#patterns & $n$ & arms & $4-2\,\mathrm{arms}+n$\\
+\midrule
+empty (cannot occur) & 1 & 0 & 0 & 4\\
+one pixel & 4 & 1 & 2 & $1$\\
+adjacent pair & 4 & 2 & 3 & $0$\\
+diagonal pair & 2 & 2 & 4 & $-2$\\
+three pixels & 4 & 3 & 4 & $-1$\\
+full & 1 & 4 & 4 & $0$\\
+\bottomrule
+\end{tabular}
+\caption{The local summand on the 16 window patterns.}
+\label{tab:patterns}
+\end{table}
+
+\section{The Lean development}
+
+The candidate file \texttt{proofs/P1.BitQuad.lean} (145 lines) follows the
+architecture above.
+\begin{itemize}
+\item \texttt{mem\_vertices}, \texttt{mem\_corners}, \texttt{mem\_hEdges} and
+  \texttt{mem\_vEdges} unfold the membership predicates (Lemma~\ref{lem:edges}).
+\item \texttt{card\_shift} proves Lemma~\ref{lem:shift} with
+  \texttt{Finset.card\_bij}. Its corollary \texttt{sum\_shift} restates it as a
+  sum of $\{0,1\}$-valued integer indicators via \texttt{Finset.sum\_boole}.
+\item In \texttt{main}, the eight instances of \texttt{sum\_shift} (four for
+  faces, two for each edge direction) and the three expressions of $Q_1$, $Q_3$
+  and $Q_D$ as indicator sums reduce the goal to a single
+  \texttt{Finset.sum\_congr}. The pointwise goal is closed by
+  \texttt{by\_cases} on the four window memberships followed by \texttt{simp},
+  which also uses the fact that the window at a vertex is non-empty.
+\end{itemize}
+The brief suggested evaluating the 16 patterns with \texttt{decide}. That
+proved unnecessary: once the window memberships are case-split, \texttt{simp}
+closes all 16 branches directly. The file uses no \texttt{decide} on large
+objects and no \texttt{native\_decide}. The project checker
+(\texttt{viridis-lean-check}) reports that the file compiles under Lean
+\texttt{v4.28.0} with the pinned Mathlib, matches the sealed statement, depends
+only on \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and
+replays through the kernel. Whether the claim is accepted is decided by the
+project's independent verifier; see its certification page. The complete file
+follows.
+
+\begin{lstlisting}
+import Mathlib
+import ViridisStatements.P1.BitQuad
+
+namespace Candidate
+
+open ViridisStatements.P1.BitQuad
+
+/-- Membership in `vertices`. -/
+theorem mem_vertices (B : Finset Pixel) (v : ℤ × ℤ) :
+    v ∈ vertices B ↔ ∃ p ∈ B, v ∈ corners p := by
+  unfold vertices
+  simp only [Finset.mem_biUnion]
+
+theorem mem_corners (p v : ℤ × ℤ) :
+    v ∈ corners p ↔ v = (p.1, p.2) ∨ v = (p.1 + 1, p.2) ∨ v = (p.1, p.2 + 1) ∨
+      v = (p.1 + 1, p.2 + 1) := by
+  unfold corners
+  simp only [Finset.mem_insert, Finset.mem_singleton]
+
+/-- A horizontal edge is present iff the pixel above or below it is in `B`. -/
+theorem mem_hEdges (B : Finset Pixel) (h : ℤ × ℤ) :
+    h ∈ hEdges B ↔ (h.1, h.2) ∈ B ∨ (h.1, h.2 - 1) ∈ B := by
+  unfold hEdges
+  simp only [Finset.mem_biUnion, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨p, hp, rfl | rfl⟩
+    · left; simpa using hp
+    · right; simpa using hp
+  · rintro (h1 | h1)
+    · exact ⟨_, h1, Or.inl rfl⟩
+    · exact ⟨_, h1, Or.inr (by simp)⟩
+
+/-- A vertical edge is present iff the pixel right or left of it is in `B`. -/
+theorem mem_vEdges (B : Finset Pixel) (e : ℤ × ℤ) :
+    e ∈ vEdges B ↔ (e.1, e.2) ∈ B ∨ (e.1 - 1, e.2) ∈ B := by
+  unfold vEdges
+  simp only [Finset.mem_biUnion, Finset.mem_insert, Finset.mem_singleton]
+  constructor
+  · rintro ⟨p, hp, rfl | rfl⟩
+    · left; simpa using hp
+    · right; simpa using hp
+  · rintro (h1 | h1)
+    · exact ⟨_, h1, Or.inl rfl⟩
+    · exact ⟨_, h1, Or.inr (by simp)⟩
+
+/-- Shift-counting: if every translate `x + (a, b)` of `S` lies in `V`, then
+counting the `v ∈ V` with `v - (a, b) ∈ S` gives `|S|`. -/
+theorem card_shift (V S : Finset (ℤ × ℤ)) (a b : ℤ)
+    (hS : ∀ x ∈ S, (x.1 + a, x.2 + b) ∈ V) :
+    (V.filter fun v => (v.1 - a, v.2 - b) ∈ S).card = S.card := by
+  apply Finset.card_bij (fun v _ => (v.1 - a, v.2 - b))
+  · intro v hv
+    exact (Finset.mem_filter.mp hv).2
+  · intro v₁ _ v₂ _ h
+    simp only [Prod.mk.injEq] at h
+    ext <;> omega
+  · intro x hx
+    refine ⟨(x.1 + a, x.2 + b), Finset.mem_filter.mpr ⟨hS x hx, ?_⟩, ?_⟩
+    · simpa using hx
+    · simp
+
+theorem sum_shift (V S : Finset (ℤ × ℤ)) (a b : ℤ)
+    (hS : ∀ x ∈ S, (x.1 + a, x.2 + b) ∈ V) :
+    (∑ v ∈ V, if (v.1 - a, v.2 - b) ∈ S then (1 : ℤ) else 0) = S.card := by
+  rw [Finset.sum_boole, card_shift V S a b hS]
+
+theorem main : ViridisStatements.P1.BitQuad.Statement := by
+  intro B
+  set V := vertices B with hV
+  -- inclusion facts
+  have hB : ∀ x ∈ B, ∀ a b : ℤ, (a = 0 ∨ a = 1) → (b = 0 ∨ b = 1) →
+      (x.1 + a, x.2 + b) ∈ V := by
+    intro x hx a b ha hb
+    rw [hV, mem_vertices]
+    refine ⟨x, hx, ?_⟩
+    rw [mem_corners]
+    rcases ha with rfl | rfl <;> rcases hb with rfl | rfl <;> simp
+  have hH : ∀ x ∈ hEdges B, ∀ a : ℤ, (a = 0 ∨ a = 1) → (x.1 + a, x.2 + 0) ∈ V := by
+    intro x hx a ha
+    rw [mem_hEdges] at hx
+    rcases hx with hx | hx
+    · have := hB _ hx a 0 ha (Or.inl rfl)
+      simpa using this
+    · have := hB _ hx a 1 ha (Or.inr rfl)
+      simpa using this
+  have hVe : ∀ x ∈ vEdges B, ∀ b : ℤ, (b = 0 ∨ b = 1) → (x.1 + 0, x.2 + b) ∈ V := by
+    intro x hx b hb
+    rw [mem_vEdges] at hx
+    rcases hx with hx | hx
+    · have := hB _ hx 0 b (Or.inl rfl) hb
+      simpa using this
+    · have := hB _ hx 1 b (Or.inr rfl) hb
+      simpa using this
+  -- the four expressions as sums over V
+  have eV : ((V.card : ℤ)) = ∑ v ∈ V, (1 : ℤ) := by simp
+  have eF11 := sum_shift V B 1 1 (fun x hx => hB x hx 1 1 (Or.inr rfl) (Or.inr rfl))
+  have eF01 := sum_shift V B 0 1 (fun x hx => hB x hx 0 1 (Or.inl rfl) (Or.inr rfl))
+  have eF10 := sum_shift V B 1 0 (fun x hx => hB x hx 1 0 (Or.inr rfl) (Or.inl rfl))
+  have eF00 := sum_shift V B 0 0 (fun x hx => hB x hx 0 0 (Or.inl rfl) (Or.inl rfl))
+  have eH10 := sum_shift V (hEdges B) 1 0 (fun x hx => hH x hx 1 (Or.inr rfl))
+  have eH00 := sum_shift V (hEdges B) 0 0 (fun x hx => hH x hx 0 (Or.inl rfl))
+  have eV01 := sum_shift V (vEdges B) 0 1 (fun x hx => hVe x hx 1 (Or.inr rfl))
+  have eV00 := sum_shift V (vEdges B) 0 0 (fun x hx => hVe x hx 0 (Or.inl rfl))
+  have eQ1 : ((Q1 B : ℕ) : ℤ) = ∑ v ∈ V, if windowCount B v = 1 then (1 : ℤ) else 0 := by
+    rw [Finset.sum_boole]; rfl
+  have eQ3 : ((Q3 B : ℕ) : ℤ) = ∑ v ∈ V, if windowCount B v = 3 then (1 : ℤ) else 0 := by
+    rw [Finset.sum_boole]; rfl
+  have eQD : ((QD B : ℕ) : ℤ) = ∑ v ∈ V, if isDiagonal B v = true then (1 : ℤ) else 0 := by
+    rw [Finset.sum_boole]; rfl
+  have key : 4 * euler B = ∑ v ∈ V,
+      ((4 : ℤ) - 2 * ((if (v.1 - 1, v.2 - 0) ∈ hEdges B then 1 else 0)
+        + (if (v.1 - 0, v.2 - 0) ∈ hEdges B then 1 else 0)
+        + (if (v.1 - 0, v.2 - 1) ∈ vEdges B then 1 else 0)
+        + (if (v.1 - 0, v.2 - 0) ∈ vEdges B then 1 else 0))
+        + ((if (v.1 - 1, v.2 - 1) ∈ B then 1 else 0)
+        + (if (v.1 - 0, v.2 - 1) ∈ B then 1 else 0)
+        + (if (v.1 - 1, v.2 - 0) ∈ B then 1 else 0)
+        + (if (v.1 - 0, v.2 - 0) ∈ B then 1 else 0))) := by
+    simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib, ← Finset.mul_sum]
+    rw [eF11, eF01, eF10, eF00, eH10, eH00, eV01, eV00]
+    unfold euler
+    rw [← hV]
+    simp
+    ring
+  rw [key, eQ1, eQ3, eQD, ← Finset.sum_sub_distrib, Finset.mul_sum,
+    ← Finset.sum_sub_distrib]
+  apply Finset.sum_congr rfl
+  intro v hv
+  obtain ⟨x, y⟩ := v
+  have hne : (x - 1, y - 1) ∈ B ∨ (x, y - 1) ∈ B ∨ (x - 1, y) ∈ B ∨ (x, y) ∈ B := by
+    rw [hV, mem_vertices] at hv
+    obtain ⟨p, hp, hc⟩ := hv
+    rw [mem_corners] at hc
+    rcases hc with h | h | h | h <;> simp only [Prod.mk.injEq] at h <;> obtain ⟨rfl, rfl⟩ := h
+    · right; right; right; exact hp
+    · right; right; left; simpa using hp
+    · right; left; simpa using hp
+    · left; simpa using hp
+  unfold windowCount isDiagonal bits
+  simp only [sub_zero, mem_hEdges, mem_vEdges]
+  by_cases ha : (x - 1, y - 1) ∈ B <;> by_cases hb : (x, y - 1) ∈ B <;>
+    by_cases hc : (x - 1, y) ∈ B <;> by_cases hd : (x, y) ∈ B <;>
+    simp [ha, hb, hc, hd] at hne ⊢
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+
+\begin{itemize}
+\item We give a Lean proof of Theorem~\ref{thm:main}, the sealed statement
+  \texttt{P1.BitQuad}, for all finite rasters.
+\item As an independent computational check, which is evidence and not a
+  proof, the script \texttt{code/bitquad\_check.py} recomputes both sides for
+  all $2^{16}=65{,}536$ subsets of a $4\times4$ box. It finds no
+  counterexample (\texttt{results/bitquad\_4x4.json}). Euler characteristics
+  from $-1$ to $4$ occur in that box.
+\end{itemize}
+
+\section{How L1 serves the L2/L3 bridge}\label{sec:l1end}
+
+Let $p\notin B$ and $B'=B\cup\{p\}$. The windows whose bits differ between $B$
+and $B'$ are exactly the four windows centred on the corners of $p$. By
+Theorem~\ref{thm:main} applied to $B$ and to $B'$, $4(\chi(B')-\chi(B))$ equals
+the change in $Q_1-Q_3-2Q_D$ over those four windows. That change depends only on the
+$3\times3$ neighbourhood of $p$. This is the ``local half'' of L2. The non-local
+half, the change in $C_8$ and in the number of enclosed 4-components of the
+complement, still needs a separate argument: a pixel joining two
+8-components can close off a new bounded region. L1 contributes nothing there.
+The negative controls listed in the project context (the solid $2\times2$ block,
+whose 8-neighbour graph $K_4$ has circuit rank 3 yet encloses nothing, and the
+four-pixel N/S/E/W cross enclosing its centre) show that L2 must be stated
+in terms of $\chi(K(B))$ and not in terms of the graph circuit rank.
+
+
+\section{Proposed statements for L2 and L3}\label{sec:proposals}
+
+The two modules \texttt{proposals/P1.Insertion.lean} and
+\texttt{proposals/P1.Bridge.lean} are \emph{proposals}. They become targets only
+if they are sealed, and nothing in this section is a proof of either statement.
+Proposals may not import one another, so the two modules carry identical copies
+of the connectivity definitions.
+
+\subsection{Self-contained modules}\label{sec:selfcontained}
+{\sloppy The first draft of these modules (2026-11-03) imported the sealed L1 module
+\texttt{ViridisStatements.P1.BitQuad} for $\chi$. In the verifier's proposal
+environment that import did not resolve: the compiled object file for the module
+was missing. Both drafts were therefore rejected before any probe ran. The brief
+anticipates this: if the L1 module cannot be imported, its definitions are
+restated identically. Both modules now import only Mathlib. Each restates
+\texttt{Pixel}, \texttt{corners}, \texttt{vertices}, \texttt{hEdges},
+\texttt{vEdges} and \texttt{euler} character for character from the sealed L1
+module, and a textual \texttt{diff} confirms that the copies are identical. The
+two \texttt{Statement} bodies are unchanged from the first draft. If the import
+becomes available, the restated block can be replaced by
+\texttt{open ViridisStatements.P1.BitQuad} without any change in meaning.\par}
+
+\subsection{Definitions and conventions}
+
+\begin{definition}
+Let $G_4$ and $G_8$ be the graphs on $\mathbb{Z}^2$ in which distinct $p,q$ are
+adjacent when $|p_1-q_1|+|p_2-q_2|=1$, respectively when $|p_1-q_1|\le1$ and
+$|p_2-q_2|\le1$. For a finite $B$, $C_8(B)$ is the number of connected
+components of the subgraph of $G_8$ induced on $B$. A connected component of the
+subgraph of $G_4$ induced on $\mathbb{Z}^2\setminus B$ is \emph{enclosed} when it
+is finite, and $\mathrm{enc}(B)$ is the number of enclosed components.
+\end{definition}
+
+The brief for this task fixes the exterior convention, and the definitions follow
+it literally. The complement is taken in all of $\mathbb{Z}^2$, never inside a
+cropping window. ``Enclosed'' means ``finite'', so no bounding box enters the
+statements. In Lean the graphs are built with \texttt{SimpleGraph.fromRel},
+which symmetrises a relation and removes loops, and components are Mathlib's
+\texttt{ConnectedComponent} of an induced graph
+(Listing~\ref{lst:defs}).
+
+\begin{lstlisting}[caption={Definitions and the two proposed statements (each Statement lives in its own module).},label={lst:defs}]
+def G4 : SimpleGraph Pixel :=
+  SimpleGraph.fromRel fun p q => |p.1 - q.1| + |p.2 - q.2| = 1
+def G8 : SimpleGraph Pixel :=
+  SimpleGraph.fromRel fun p q => |p.1 - q.1| ≤ 1 ∧ |p.2 - q.2| ≤ 1
+def barrierGraph (B : Finset Pixel) : SimpleGraph (B : Set Pixel) :=
+  G8.induce (B : Set Pixel)
+def complementGraph (B : Finset Pixel) : SimpleGraph ((B : Set Pixel)ᶜ : Set Pixel) :=
+  G4.induce (B : Set Pixel)ᶜ
+noncomputable def C8 (B : Finset Pixel) : ℕ :=
+  Nat.card (barrierGraph B).ConnectedComponent
+def IsEnclosed {B : Finset Pixel} (c : (complementGraph B).ConnectedComponent) : Prop :=
+  c.supp.Finite
+noncomputable def enclosed (B : Finset Pixel) : ℕ :=
+  Nat.card {c : (complementGraph B).ConnectedComponent // IsEnclosed c}
+
+-- P1.Bridge (L3)
+def Statement : Prop :=
+  ∀ B : Finset Pixel,
+    {c : (complementGraph B).ConnectedComponent | IsEnclosed c}.Finite ∧
+      (enclosed B : ℤ) = C8 B - euler B
+
+-- P1.Insertion (L2)
+noncomputable def invariant (B : Finset Pixel) : ℤ :=
+  (enclosed B : ℤ) - C8 B + euler B
+def Statement : Prop :=
+  ∀ (B : Finset Pixel) (p : Pixel), p ∉ B → invariant (insert p B) = invariant B
+\end{lstlisting}
+
+\paragraph{L3 (\texttt{P1.Bridge}).} For every finite $B$, the set of enclosed
+components is finite and $\mathrm{enc}(B) = C_8(B)-\chi(K(B))$ in $\mathbb{Z}$.
+The finiteness clause is deliberate. \texttt{Nat.card} returns $0$ on an
+infinite type, so without the clause the equation could be met in a degenerate
+way. With it, the count means what it says. The clause is true because every
+component outside the bounding box of $B$ contains a ray.
+
+\paragraph{L2 (\texttt{P1.Insertion}).} For every finite $B$ and every
+$p\notin B$, $\mathrm{enc}-C_8+\chi$ takes the same value on $B\cup\{p\}$ and on
+$B$. The statement puts no condition on the $3\times3$ neighbourhood of $p$. All
+256 configurations of its eight neighbours are therefore covered, in every global
+context. These include insertions that merge several 8-components, insertions
+that close off a hole, and insertions that fill one. By L1, $\Delta\chi$ is a
+function of the neighbourhood (Section~\ref{sec:l1end}). $\Delta C_8$ and
+$\Delta\mathrm{enc}$ are not local, and they are where the proof effort lies.
+
+\paragraph{Relation between the rungs.} L3's equation follows from L2 by
+induction on $|B|$ from the empty raster, where both sides are $0$. Conversely,
+L3's equation gives L2 at once. The two rungs are equivalent given the base case.
+The split organises the proof around one inductive step; it does not grade the
+statements by strength.
+
+\subsection{Controls}
+
+The definitions of $C_8$ and $\mathrm{enc}$ are not decidable, since they
+quantify over infinite components of $\mathbb{Z}^2$. Each module therefore also
+contains a computable \emph{bounded-box model}. It flood-fills the complement
+inside the bounding box of $B\cup\{(0,0)\}$ with a one-pixel margin, starting
+from the box corner, and counts components by their lexicographically least
+pixel. The statements do not mention this model, and we do not prove that it
+agrees with the definitions. Against the box model, \texttt{decide} checks the
+values in Table~\ref{tab:controls}. The \texttt{P1.Insertion} module also checks
+four non-local insertions: closing the ring's top edge, merging the ring's two
+columns through a corner, completing the diamond, and filling the ring's centre.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccl}
+\toprule
+raster & $C_8$ & $\chi$ & enc & role\\
+\midrule
+empty & 0 & 0 & 0 & base case\\
+$3\times3$ ring & 1 & 0 & 1 & witness\\
+solid $2\times2$ block & 1 & 1 & 0 & negative control 1 ($K_4$ has circuit rank 3)\\
+N/S/E/W diamond & 1 & 0 & 1 & negative control 2 (4-adjacency graph has no edges)\\
+diagonal pair & 1 & 1 & 0 & corner contact\\
+\bottomrule
+\end{tabular}
+\caption{Control values. All rows are checked by \texttt{decide} on the box
+model. For the first four rows we also give Lean proofs for the semantic
+definitions $C_8$ and $\mathrm{enc}$ themselves.}
+\label{tab:controls}
+\end{table}
+
+To connect the controls to the definitions that the statements actually use, each
+module proves the control values for $C_8$ and $\mathrm{enc}$ directly. Two
+general lemmas carry these proofs (Listing~\ref{lst:controls}). If a horizontal
+ray from a non-barrier pixel avoids $B$, the pixel's component is infinite
+(\texttt{infinite\_of\_ray}). A non-barrier pixel whose four 4-neighbours lie in
+$B$ forms a finite component (\texttt{isolated}). For the ring, every non-barrier
+pixel other than the centre has a free ray to the left or right. The centre is
+isolated. Hence exactly one component is enclosed. The block and diamond are
+handled the same way, and $C_8=1$ follows from explicit 8-paths. Combined with
+\texttt{decide} on $\chi$, this checks the identity $\mathrm{enc}=C_8-\chi$ for
+the ring ($1=1-0$), the block ($0=1-1$) and the diamond ($1=1-0$) on the
+semantic definitions.
+
+\begin{lstlisting}[caption={Key lemmas behind the semantic controls (excerpt from the proposal modules).},label={lst:controls}]
+/-- A horizontal ray of non-barrier pixels makes a component infinite. -/
+theorem infinite_of_ray (B : Finset Pixel) (v : Pixel) (hv : v ∉ B) (d : ℤ) (hd : d = 1 ∨ d = -1)
+    (hray : ∀ n : ℕ, (v.1 + d * n, v.2) ∉ B) :
+    ¬ IsEnclosed ((complementGraph B).connectedComponentMk ⟨v, hv⟩) := by
+  intro hfin
+  have hreach : ∀ n : ℕ, (complementGraph B).Reachable ⟨v, hv⟩ ⟨(v.1 + d * n, v.2), hray n⟩ := by
+    intro n
+    induction n with
+    | zero => simp
+    | succ n ih =>
+      refine ih.trans (SimpleGraph.Adj.reachable ?_)
+      simp only [complementGraph, SimpleGraph.comap_adj, SimpleGraph.induce, G4,
+        SimpleGraph.fromRel_adj, Function.Embedding.coe_subtype, ne_eq, Prod.mk.injEq]
+      push_cast
+      rcases hd with rfl | rfl <;> refine ⟨by omega, Or.inl ?_⟩ <;> simp
+  apply Set.infinite_of_injective_forall_mem (f := fun n : ℕ => (⟨(v.1 + d * n, v.2), hray n⟩ :
+    ((B : Set Pixel)ᶜ : Set Pixel)))
+  · intro m n h
+    simp only [Subtype.mk.injEq, Prod.mk.injEq] at h
+    rcases hd with rfl | rfl <;> omega
+  · intro n
+    exact (SimpleGraph.ConnectedComponent.mem_supp_iff _ _).2
+      (SimpleGraph.ConnectedComponent.eq.2 (hreach n).symm)
+  · exact hfin
+
+
+/-- A pixel whose four 4-neighbours are all barrier is a finite component on its own. -/
+theorem isolated (B : Finset Pixel) (h : Pixel) (hh : h ∉ B)
+    (hn : ∀ u : Pixel, |h.1 - u.1| + |h.2 - u.2| = 1 → u ∈ B) :
+    IsEnclosed ((complementGraph B).connectedComponentMk ⟨h, hh⟩) := by
+  apply (Set.finite_singleton (⟨h, hh⟩ : ((B : Set Pixel)ᶜ : Set Pixel))).subset
+  intro w hw
+  rw [SimpleGraph.ConnectedComponent.mem_supp_iff, SimpleGraph.ConnectedComponent.eq] at hw
+  obtain ⟨p⟩ := hw.symm
+  cases p with
+  | nil => rfl
+  | @cons _ u _ hadj _ =>
+    exfalso
+    simp only [complementGraph, SimpleGraph.comap_adj, SimpleGraph.induce, G4,
+      SimpleGraph.fromRel_adj, Function.Embedding.coe_subtype] at hadj
+    obtain ⟨-, hr | hr⟩ := hadj
+    · exact u.2 (hn _ hr)
+    · exact u.2 (hn _ (by rw [abs_sub_comm h.1, abs_sub_comm h.2]; exact hr))
+
+theorem enclosed_ring : enclosed ring = 1 := by
+  refine enclosed_eq_one ring (1, 1) (by decide) (isolated _ _ _ ?_) ?_
+  · rintro ⟨x, y⟩ h
+    have h' : |1 - x| + |1 - y| = 1 := h
+    simp only [ring, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq]
+    rcases abs_cases (1 - x) with ⟨h1, h1'⟩ | ⟨h1, h1'⟩ <;>
+    rcases abs_cases (1 - y) with ⟨h2, h2'⟩ | ⟨h2, h2'⟩ <;> omega
+  · rintro ⟨x, y⟩ hv hne
+    simp only [ring, Finset.mem_insert, Finset.mem_singleton, Prod.mk.injEq, not_or] at hv
+    simp only [ne_eq, Prod.mk.injEq] at hne
+    by_cases hr : 2 < x ∨ y < 0 ∨ 2 < y
+    · refine infinite_of_ray _ _ _ 1 (Or.inl rfl) (ray_right _ _ ?_)
+      simp only [ring, Finset.mem_insert, Finset.mem_singleton, forall_eq_or_imp, forall_eq]
+      omega
+    · refine infinite_of_ray _ _ _ (-1) (Or.inr rfl) (ray_left _ _ ?_)
+      simp only [ring, Finset.mem_insert, Finset.mem_singleton, forall_eq_or_imp, forall_eq]
+      omega
+
+\end{lstlisting}
+
+\subsection{All 256 neighbourhood configurations by \texttt{decide}}\label{sec:allconfigs}
+
+The task brief asks that L2 account for every configuration of the $3\times3$
+neighbourhood. The statement itself does so by having no hypothesis on the
+neighbourhood. The first draft checked only four hand-picked insertions in Lean,
+because the \texttt{Finset} flood fill of the box model is too slow for the kernel
+to run through all 256 cases. This revision adds a second test oracle (namespace
+\texttt{Mask} in both modules). A $7\times7$ box is a 49-bit natural number with
+pixel $(x,y)$ at bit $7y+x$. Neighbourhoods are computed with shifts and masks,
+components by iterated flood fill from the lowest set bit, and $V-E+F$ by
+counting the bits of shifted unions. These use the same vertex and edge naming as
+\texttt{euler}. The Lean kernel evaluates these natural-number operations
+efficiently, so \texttt{decide} handles the full table
+(Listing~\ref{lst:mask}). With the inserted pixel $p$ at the centre $(3,3)$:
+\begin{itemize}
+\item \texttt{allConfigs 0 256}: for each of the 256 subsets $N$ of the eight
+  neighbours of $p$, the invariant is $0$ on $N$ and on $N\cup\{p\}$. So all 512
+  subsets of the $3\times3$ window satisfy the L3 identity, and inserting the
+  centre never changes $\mathrm{enc}-C_8+\chi$.
+\item \texttt{allConfigs ring5 256}: the same for $N$ placed inside the closed
+  16-pixel ring at Chebyshev distance 2 from $p$. Every barrier neighbour of $p$
+  is then already 8-connected to every other through the ring, and every
+  non-barrier run around $p$ lies in a finite region. This is the opposite
+  extreme of global context from the first check.
+\end{itemize}
+The bitmask model also reproduces the witness and both negative controls,
+including the four 4-components of the diamond. In a scratch mutation test (not
+part of the modules), we replaced 8-adjacency by 4-adjacency in the model's
+$C_8$. Both exhaustive checks then failed, so the table depends on the (8,4)
+pairing. As with the box model, we do not prove that the bitmask model agrees
+with the semantic definitions. Two contexts are also far from all contexts: the
+proof of L2 must still handle every intermediate global situation.
+
+\begin{lstlisting}[caption={The exhaustive configuration check (excerpt from the \texttt{Mask} namespace).},label={lst:mask}]
+def inv (B : ℕ) : ℤ := (enc B : ℤ) - c8 B + chi B
+def allConfigs (ctx : ℕ) : ℕ → Bool
+  | 0 => true
+  | n + 1 =>
+    let B := ctx ||| spread n
+    (inv (B ||| centre) == inv B && inv B == 0) && allConfigs ctx n
+
+set_option maxRecDepth 100000 in
+example : allConfigs 0 256 = true := by decide
+set_option maxRecDepth 100000 in
+example : allConfigs ring5 256 = true := by decide
+\end{lstlisting}
+
+\section{A proof of L2, part 1: reduction to a half-plane Jordan lemma}\label{sec:reduction}
+
+This section reports the 2026-11-08 session on the sealed statement
+\texttt{P1.Insertion}. Section~\ref{sec:crack} completes the proof. The candidate file
+\texttt{proofs/P1.Insertion.lean} (about 1{,}950 lines including the 2026-11-09
+additions) compiles against the pinned toolchain, and its theorems depend only on
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. Write $B' = B\cup\{p\}$ with $p\notin B$, and
+$W_p(B) = \{q\in B : |q_1-p_1|\le1,\ |q_2-p_2|\le1\}$ for the part of $B$ in the
+$3\times3$ window of $p$.
+
+\paragraph{Locality of $\Delta\chi$.} We give a Lean proof (\texttt{euler\_insert\_local}) that
+\[
+  \chi(K(B')) - \chi(K(B)) \;=\; \chi(K(W_p(B)\cup\{p\})) - \chi(K(W_p(B))).
+\]
+The proof does not go through L1. Each of \texttt{vertices}, \texttt{hEdges} and
+\texttt{vEdges} is a union over pixels, so inserting $p$ adds exactly the cells of
+$p$ that are not already present. A corner or edge of $p$ can belong to a pixel $q$
+only if $q$ is in the window, so whether such a cell is new is decided by $W_p(B)$.
+
+\paragraph{The change in $C_8$.} Let $k$ be the number of 8-components of $B$ that
+contain an 8-neighbour of $p$. We give a Lean proof (\texttt{C8\_insert}) that
+$C_8(B') = C_8(B) + 1 - k$. The inclusion $B\subseteq B'$ is a graph homomorphism of the
+8-adjacency graphs, so it maps components to components. The key lemma is a walk
+lemma, proved by induction on \texttt{Relation.ReflTransGen}. If $v\in B$ reaches
+$y$ in $B'$, then either $y\ne p$ and $v$ reaches $y$ already in $B$, or the component
+of $v$ touches $p$. From this, the components that touch $p$ all map to the
+component of $p$, and the others map injectively onto the rest. The bijection
+$\mathrm{Option}\{\text{non-touching}\}\simeq \pi_0(B')$ gives the count.
+
+\paragraph{The change in the enclosed count.} The complement of $B'$ is the
+complement of $B$ with $p$ removed, and the same walk lemma applies with
+4-adjacency. Let $c_p$ be the 4-component of $p$ in $\mathbb{Z}^2\setminus B$ and
+let $P$ be the number of enclosed 4-components of $\mathbb{Z}^2\setminus B'$ that
+contain a 4-neighbour of $p$. A component of $\mathbb{Z}^2\setminus B'$ that
+contains no 4-neighbour of $p$ has the same support as its image, so it is enclosed exactly
+when its image is. We give a Lean proof (\texttt{enclosed\_insert}) that, if $B$ has finitely many enclosed
+components,
+\[
+  \mathrm{enc}(B') = \mathrm{enc}(B) - [\,c_p \text{ enclosed}\,] + P .
+\]
+The finiteness hypothesis is needed because \texttt{enclosed} is a
+\texttt{Nat.card}, which is $0$ on infinite types.
+
+\paragraph{Finiteness.} We give a Lean proof (\texttt{finite\_enclosed}) that for every finite $B$
+the set of enclosed components of $\mathbb{Z}^2\setminus B$ is finite. Choose
+$M$ with $|b_1|,|b_2|<M$ for all $b\in B$. A non-barrier pixel $v$ with
+$v_1\ge M$, $v_1\le -M$ or $|v_2|\ge M$ has a horizontal ray free of $B$, so by the
+lemma \texttt{infinite\_of\_ray} of the sealed module its component is infinite.
+Hence every enclosed component has a representative in the finite box
+$[-M,M]^2$, and sending a component to its representative is injective. This also
+discharges the finiteness hypothesis above, and it is clause (1) of the sealed
+statement \texttt{P1.Bridge}. It is stated there in a different form, so we do
+not claim that statement.
+
+\paragraph{The reduction.} Combining the four gives \texttt{invariant\_insert}:
+\[
+  \Delta(\mathrm{enc}-C_8+\chi) \;=\; \bigl(P - [\,c_p\text{ enclosed}\,]\bigr) - (1-k)
+  + \Delta\chi\bigl(W_p(B)\bigr),
+\]
+and \texttt{statement\_of\_jordan} derives \texttt{Statement} from one hypothesis:
+\begin{enumerate}
+\item[(J)] for every $B$ and $p\notin B$,
+  $P - [\,c_p\text{ enclosed}\,] - (1-k) + \Delta\chi(W_p(B)) = 0$.
+\end{enumerate}
+(J) is the real topological content. Let $a$ be the number of
+maximal 8-connected arcs of barrier pixels on the 8-cycle around $p$. For
+$r\ge1$ non-barrier 4-neighbours we expect $\Delta\chi(W_p)=1-a$, and $P$ should
+equal $a-k+1$ minus the unbounded piece when $c_p$ is infinite. Each pair of arcs that is
+already joined by a barrier 8-path away from $p$ closes a digital curve through $p$
+and cuts off one more piece. Proving this needs a digital Jordan curve theorem for
+(8,4) curves~\cite{Rosenfeld1970}. Mathlib does not provide one. The rest of this section
+narrows (J) down to a single configuration.
+
+\paragraph{A special case of L2.} As a check on the reduction, we give a Lean proof
+(\texttt{insertion\_hole}) that $\mathrm{enc}-C_8+\chi$ is unchanged when all four
+4-neighbours of $p$ are barrier pixels. In this case no new component contains a
+4-neighbour of $p$, so $P=0$. The old component $c_p=\{p\}$ is enclosed, by the
+lemma \texttt{isolated} of the sealed module. Every 8-neighbour of $p$ is joined to
+the north neighbour through the north, east and south neighbours, so $k=1$. Every
+corner and edge of $p$ is already present, so $\Delta\chi=1$. Then (J) reads
+$0-1-0+1=0$. This case covers, for example, filling the centre of the $3\times3$
+ring and of the diamond. It is not the hard case: there, merging and splitting
+interact through the global shape of $B$.
+
+
+\paragraph{Raster-scan order.} Say that $B$ is \emph{before} $p$ if every
+$q\in B$ has $q_2<p_2$, or $q_2=p_2$ and $q_1<p_1$. The invariant of the empty
+raster is $0$, by the control lemmas of the sealed module and $\chi(\emptyset)=0$.
+Mathlib's \texttt{Finset.induction\_on\_max\_value} with the lexicographic key
+$(q_2,q_1)$ builds every finite raster by insertions in which $B$ is before $p$. So
+if those insertions preserve the invariant, the invariant is $0$ on every finite
+raster, and \texttt{Statement} follows (\texttt{statement\_of\_scan}). This is the
+classical raster-scan idea of connected-component labelling~\cite{RosenfeldPfaltz1966}.
+
+\paragraph{Insertion in scan order.} Write $W,SW,S,SE$ for $p+(-1,0)$, $p+(-1,-1)$,
+$p+(0,-1)$, $p+(1,-1)$. If $B$ is before $p$, every pixel above the row of $p$, and
+every pixel to the right of $p$ in its row, is free in $B\cup\{p\}$ and has a free
+ray. We give Lean proofs of the following. The old component $c_p$ is infinite. A
+new piece that contains $E$, $N$ or $W$ is infinite: $W$ is 4-adjacent to the free
+pixel $NW$. So $P$ is $1$ if $S$ is free and its piece is enclosed, and $0$ otherwise
+(\texttt{P\_scan}). The barrier neighbours of $p$ lie among $W,SW,S,SE$, and
+(\texttt{euler\_scan})
+\[
+  \Delta\chi = [\,W,S,SW\notin B\,] + [\,S,SE\notin B\,] - [\,S\notin B\,].
+\]
+Table~\ref{tab:scan} lists the five cases. In four of them $k$ and $P$ are fixed
+by local arguments, and the invariant is preserved. In the fifth, $S$ is free,
+$SE\in B$ and $L\in\{W,SW\}$ meets $B$. Then $\Delta\chi=-1$, $k\in\{1,2\}$, and we
+give a Lean proof (\texttt{k\_core}) that $k=1$ exactly when $L$ and $SE$ are
+8-connected in $B$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lcccl@{}}
+\toprule
+Case (scan order) & $\Delta\chi$ & $k$ & $P$ & reason for $P$\\
+\midrule
+$S\in B$ & $0$ & $1$ & $0$ & $S$ is not free\\
+$S,SE\notin B$, $W,SW\notin B$ & $1$ & $0$ & $0$ & $S\to SE\to E$, free ray\\
+$S,SE\notin B$, $L\cap B\neq\emptyset$ & $0$ & $1$ & $0$ & $S\to SE\to E$\\
+$S\notin B$, $SE\in B$, $W,SW\notin B$ & $0$ & $1$ & $0$ & $S\to SW\to W\to NW$\\
+$S\notin B$, $SE\in B$, $L\cap B\neq\emptyset$ & $-1$ & $1$ or $2$ & $2-k$ & half-plane Jordan lemma\\
+\bottomrule
+\end{tabular}
+\caption{Insertion of $p$ after all of $B$ in raster-scan order. In every row the
+invariant changes by $P-(1-k)+\Delta\chi$ (the old component of $p$ is never
+enclosed), so it is preserved exactly when $P+k+\Delta\chi=1$. Rows 1--4 were proved
+by local arguments on 2026-11-08. Row 5 needs $P+k=2$, which is the half-plane Jordan
+lemma (crossing parity, Section~\ref{sec:reduction}, and the crack boundary,
+Section~\ref{sec:crack}).}
+\label{tab:scan}
+\end{table}
+
+
+\paragraph{One direction by crossing parity.} We give a Lean proof
+(\texttt{senc\_of\_join}) of the direction ``$L$ and $SE$ 8-connected
+$\Rightarrow$ the component of $S$ is finite''. Take an 8-walk $\gamma$ in $B$ from
+$L$ to $SE$ and close it into the cycle $\Gamma=(p,\gamma,p)$. For a pixel $v$ let
+$N(v)$ count the steps $a\to b$ of $\Gamma$ that join column $v_1$ to column
+$v_1+1$ and whose endpoint in column $v_1$ lies strictly above $v$. Each of the
+following facts reduces to an identity, modulo $2$, for a single step of $\Gamma$.
+Each such identity is a statement in linear integer arithmetic, closed by
+\texttt{omega}. A generic lemma (\texttt{dsum\_parity}) then adds them up along the
+walk:
+\begin{itemize}
+\item if $v$ and $v+(0,1)$ are free, $N(v)\equiv N(v+(0,1))$: a step could
+  distinguish them only through the free pixel $v+(0,1)$;
+\item if $v$ and $v+(1,0)$ are free, $N(v)+N(v+(1,0))$ is the number of times
+  $\Gamma$ enters or leaves the half-column $\{(v_1+1,t):t>v_2\}$, which is even
+  because $\Gamma$ is closed;
+\item $N(v)$ is even if $v$ is above the row of $p$, to the left or right of all of
+  $\Gamma$, or below all of $\Gamma$ (then $N(v)$ counts every crossing of a full vertical
+  line, which is even);
+\item $N(S)$ is odd: the only step of $\Gamma$ that reaches column $x+1$ from a pixel
+  of column $x$ at height at least $y$ is $SE\to p$, because $B$ is before $p$.
+\end{itemize}
+So $N$ is odd on the whole free 4-component of $S$, which therefore lies in a
+finite box.
+
+\paragraph{Half of the bridge identity.} In the fifth case the invariant changes by
+$P+k-2$. If $L$ and $SE$ are connected then $k=1$ and, by \texttt{senc\_of\_join},
+$P=1$. Otherwise $k=2$ and $P\ge0$. So every scan-order insertion changes the
+invariant by $0$ or $+1$ (\texttt{scan\_step\_mono}). Since the empty raster has
+invariant $0$, we give a Lean proof (\texttt{invariant\_nonneg}, \texttt{enclosed\_ge})
+that for every finite raster
+\[
+  \mathrm{enc}(B) \;\ge\; C_8(B) - \chi(K(B)).
+\]
+The invariant of $B$ counts the ``bad'' scan steps, where $S$ is enclosed although $L$
+and $SE$ lie in different 8-components. \texttt{statement\_of\_le} derives
+\texttt{Statement} from the reverse inequality.
+
+\paragraph{What remained on 2026-11-08.} \texttt{statement\_of\_halfplane\_jordan} derives
+\texttt{Statement} from the following hypothesis. From the
+same hypothesis, \texttt{bridge\_of\_halfplane\_jordan} derives the equation
+$\mathrm{enc}(B)=C_8(B)-\chi(K(B))$ of L3 for every finite $B$.
+
+\begin{quote}
+\textbf{Half-plane Jordan lemma.} Let $B$ be before $p$, with
+$S\notin B$, $SE\in B$ and $W\in B$ or $SW\in B$. Then the 4-component of $S$ in
+$\mathbb{Z}^2\setminus(B\cup\{p\})$ is finite if and only if $W$ or $SW$ lies in the
+8-component of $SE$ in $B$.
+\end{quote}
+
+One direction says that an 8-path in $B$ from $L$ to $SE$, closed up through $p$,
+cuts $S$ off from infinity. It has a Lean proof (above). The other says that if no
+such path exists, $S$ escapes around the 8-component of $SE$
+(\texttt{statement\_of\_enc\_join} derives \texttt{Statement} from this direction
+alone). Both are instances of the digital Jordan curve theorem for (8,4)
+connectivity~\cite{Rosenfeld1970,KongRosenfeld1989}. The second direction needs
+a different tool, boundary following. Section~\ref{sec:crack} gives it. The
+four-pixel diamond shows that the case cannot be avoided by a cleverer choice of
+insertion order. Each of its pixels, inserted last in any of the eight scan
+orders, falls into row 5 with $L$ and $SE$ joined.
+
+The key statements, as they appear in the candidate file:
+\begin{lstlisting}
+theorem euler_insert_local (B : Finset Pixel) (p : Pixel) (hp : p ∉ B) :
+    euler (insert p B) - euler B = euler (insert p (win B p)) - euler (win B p)
+
+theorem C8_insert (hp : p ∉ B) :
+    (C8 (insert p B) : ℤ) = C8 B + 1 - Nat.card {c // TouchC B p c}
+
+theorem enclosed_insert (hp : p ∉ B)
+    (hfin : Finite {c : (complementGraph B).ConnectedComponent // IsEnclosed c}) :
+    (enclosed (insert p B) : ℤ) = enclosed B - (if IsEnclosed (cp B p hp) then 1 else 0)
+      + Nat.card {x : {c : (complementGraph (insert p B)).ConnectedComponent // IsEnclosed c} //
+          TouchPC B p x.1}
+
+theorem statement_of_halfplane_jordan
+    (hJ : ∀ (B : Finset Pixel) (p : Pixel), p ∉ B → Before B p →
+      (p.1, p.2 - 1) ∉ B → (p.1 + 1, p.2 - 1) ∈ B →
+      ((p.1 - 1, p.2) ∈ B ∨ (p.1 - 1, p.2 - 1) ∈ B) →
+      (SEnc B p ↔ JoinLR B p)) :
+    Statement
+
+theorem senc_of_join (hb : Before B p) (hS : (p.1, p.2 - 1) ∉ B) (hJ : JoinLR B p) :
+    SEnc B p
+
+theorem invariant_nonneg (B : Finset Pixel) : 0 ≤ invariant B
+
+theorem statement_of_le
+    (h : ∀ B : Finset Pixel, (enclosed B : ℤ) ≤ C8 B - euler B) : Statement
+
+lemma cross_horiz (v a b : Pixel) (hadj : G8.Adj a b)
+    (ha1 : ¬ (a.1 = v.1 ∧ a.2 = v.2)) (ha2 : ¬ (a.1 = v.1 + 1 ∧ a.2 = v.2))
+    (hb1 : ¬ (b.1 = v.1 ∧ b.2 = v.2)) (hb2 : ¬ (b.1 = v.1 + 1 ∧ b.2 = v.2)) :
+    (cross v a b + cross (v.1 + 1, v.2) a b
+      - (if a.1 = v.1 + 1 ∧ v.2 < a.2 then 1 else 0) - (if b.1 = v.1 + 1 ∧ v.2 < b.2 then 1 else 0))
+      % 2 = 0 := by
+  have := g8_coords hadj
+  unfold cross
+  simp only
+  split_ifs <;> omega
+
+lemma walk_lemma (v : (B : Set Pixel)) (y : ((insert p B : Finset Pixel) : Set Pixel))
+    (h : (barrierGraph (insert p B)).Reachable (incl B p v) y) :
+    (∃ y0 : (B : Set Pixel), y.1 = y0.1 ∧ (barrierGraph B).Reachable v y0) ∨ Touch B p v := by
+  rw [SimpleGraph.reachable_iff_reflTransGen] at h
+  induction h with
+  | refl => exact Or.inl ⟨v, rfl, SimpleGraph.Reachable.refl _⟩
+  | @tail y z _ hyz ih =>
+    rcases ih with ⟨y0, hy, hr⟩ | ht
+    · rw [barrier_adj_iff] at hyz
+      by_cases hz : z.1 = p
+      · right
+        exact ⟨y0, hr, by rw [← hz, ← hy]; exact hyz.symm⟩
+      · have hzB : z.1 ∈ (B : Set Pixel) := by
+          have := z.2
+          simp only [Finset.coe_insert, Set.mem_insert_iff] at this
+          exact this.resolve_left hz
+        left
+        refine ⟨⟨z.1, hzB⟩, rfl, hr.trans (SimpleGraph.Adj.reachable ?_)⟩
+        rw [barrier_adj_iff]; rw [← hy]; exact hyz
+    · exact Or.inr ht
+\end{lstlisting}
+
+
+\section{A proof of L2, part 2: escape along the crack boundary}\label{sec:crack}
+
+This section reports the 2026-11-09 session. It proves the remaining direction of the
+half-plane Jordan lemma. With it, the file \texttt{proofs/P1.Insertion.lean} contains
+\texttt{Candidate.main : ViridisStatements.P1.Insertion.Statement}. The project's
+checker \texttt{viridis-lean-check} ran all five of its stages (denylist, compilation,
+statement match, axioms, kernel replay) on this file and passed it, with axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. That is a local
+preview; the verifier's own report is the certification page.
+
+\paragraph{The claim.} Let $B$ be before $p$, with $S\notin B$, $SE\in B$, and suppose that
+neither $W$ nor $SW$ lies in the 8-component $C$ of $SE$ in $B$. We show that $S$ is joined to
+$E=p+(1,0)$ by a 4-path in $\mathbb{Z}^2\setminus(B\cup\{p\})$. Since $E$ has a free
+ray, the component of $S$ is infinite (\texttt{join\_of\_senc}, by contraposition). Two
+facts about $C$ make the problem local:
+\begin{itemize}
+\item no pixel of $B\setminus C$ lies within Chebyshev distance $1$ of $C$, since it
+  would be 8-adjacent to $C$ and hence in $C$. So every pixel near $C$ but not in $C$ is free,
+  apart from $p$ itself;
+\item the only pixel of $C$ within Chebyshev distance $1$ of $p$ is $SE$. The other
+  candidates are $W$ and $SW$ (not in $C$ by assumption), $S$ (free), and pixels at or
+  after $p$ in scan order (not in $B$). So $p$ touches $C$ only at the corner shared by $SE$.
+\end{itemize}
+
+\paragraph{Cracks and their successor.} A \emph{crack} of a finite set $C$ is a pair
+$(c,d)$ with $c\in C$, $d\in\{(\pm1,0),(0,\pm1)\}$ and $c+d\notin C$: a unit edge of
+$K(C)$ with $C$ on one side and the outside pixel $c+d$ on the other. Let
+$t=\mathrm{rot}(d)=(-d_2,d_1)$. The successor of $(c,d)$ follows the (8,4) rule:
+\[
+  \mathrm{next}(c,d)=\begin{cases}
+  (c+d+t,\,-t) & \text{if } c+d+t\in C \quad\text{(turn outward, diagonal step in } C),\\
+  (c+t,\,d) & \text{else if } c+t\in C \quad\text{(straight on)},\\
+  (c,\,t) & \text{otherwise}\quad\text{(turn around } c).
+  \end{cases}
+\]
+We give Lean proofs that $\mathrm{next}$ maps cracks to cracks (\texttt{next\_mem}) and
+that it has an explicit left inverse $\mathrm{prev}$ on cracks, given by the mirror rule
+(\texttt{prev\_next}). So $\mathrm{next}$ is a permutation of the finite set of cracks. By
+a pigeonhole argument (\texttt{orbit}) every crack $x_0$ has a least period $n>0$ with
+$\mathrm{next}^n(x_0)=x_0$.
+
+\paragraph{The orbit from $S$.} Take $x_0=(SE,(-1,0))$, whose outside pixel is $S$,
+and $x_E=(SE,(0,1))$, whose outside pixel is $E$. A direct computation gives
+$\mathrm{next}(x_E)=x_0$: the diagonal pixel is $p\notin C$ and the side pixel is
+$S\notin C$, so the boundary turns around $SE$. Since
+$\mathrm{next}(\mathrm{next}^{n-1}x_0)=x_0=\mathrm{next}(x_E)$, injectivity gives
+$\mathrm{next}^{n-1}x_0=x_E$. Minimality of $n$ gives $\mathrm{next}^{k}x_0\ne x_E$ for
+$k<n-1$. Neither fact uses any planar topology.
+
+\paragraph{One step is one short free path.} Let $x=(c,d)$ be a crack other than $x_E$.
+We give a Lean proof (\texttt{crack\_step}) that the outside pixels of $x$ and of
+$\mathrm{next}(x)$ are joined by a free 4-path of length at most $2$. In the first case
+of the rule the outside pixel is unchanged. In the second it moves to the 4-adjacent
+pixel $c+d+t$. In the third it moves from $c+d$ to $c+t$ through the diagonal pixel
+$c+d+t$. Every pixel involved is within distance $1$ of $C$ and not in $C$, so it is
+free unless it is $p$. The outside pixels are 4-adjacent to $C$, and $p$ is not. The diagonal pixel of
+the third case equals $p$ only if $c=SE$ and $d+t=(-1,1)$, that is, only for $x=x_E$. Each
+of these local facts is linear integer arithmetic over the four directions and is
+closed by \texttt{omega}.
+
+Chaining the steps for $k=0,\dots,n-2$ gives a free 4-path from $S$ to $E$
+(\texttt{crack\_escape}). This proves the remaining direction. Then
+\texttt{statement\_of\_enc\_join} gives \texttt{Statement}, and
+\texttt{bridge\_of\_halfplane\_jordan} gives the bridge equation for every finite raster
+(\texttt{bridge\_eq}).
+
+\paragraph{Why this was the right tool.} The earlier sessions considered two
+routes: boundary following, and the lemma that the border of a finite 4-connected set
+is 8-connected. Formalizing boundary following usually means proving that the traced
+sequence closes up and visits the right pixels. The permutation view avoids both. Closing
+up is pigeonhole plus injectivity, and the only global information needed is that the
+step into $x_0$ comes from $x_E$. That step is the one that passes the corner at $p$. We
+also tried, on paper, an induction that fills free pixels of the component of $S$ one
+at a time. It fails on annular components: filling any pixel of an annulus around a
+one-pixel island merges the island with the outer barrier.
+
+The new definitions and the final theorems:
+\begin{lstlisting}
+def next (C : Finset Pixel) (x : Pixel × Pixel) : Pixel × Pixel :=
+  if (x.1.1 + x.2.1 - x.2.2, x.1.2 + x.2.2 + x.2.1) ∈ C then
+    ((x.1.1 + x.2.1 - x.2.2, x.1.2 + x.2.2 + x.2.1), (x.2.2, -x.2.1))
+  else if (x.1.1 - x.2.2, x.1.2 + x.2.1) ∈ C then ((x.1.1 - x.2.2, x.1.2 + x.2.1), x.2)
+  else (x.1, (-x.2.2, x.2.1))
+
+lemma prev_next (C : Finset Pixel) (x : Pixel × Pixel) (hx : x ∈ cracks C) :
+    prev C (next C x) = x
+
+lemma orbit {α : Type*} (f g : α → α) (s : Finset α) (hs : ∀ x ∈ s, f x ∈ s)
+    (hg : ∀ x ∈ s, g (f x) = x) (x0 : α) (h0 : x0 ∈ s) :
+    ∃ n, 0 < n ∧ f^[n] x0 = x0 ∧ ∀ k, 0 < k → k < n → f^[k] x0 ≠ x0
+
+theorem crack_escape (hc0 : c0 ∈ C)
+    (hfree : ∀ c ∈ C, ∀ q : Pixel, q ∉ C → Near q c → q ≠ p → q ∉ B)
+    (hp : p = (c0.1 - 1, c0.2 + 1))
+    (hpC : ∀ c ∈ C, Near p c → c = c0)
+    (hS : (c0.1 - 1, c0.2) ∉ C) (hE : (c0.1, c0.2 + 1) ∉ C) :
+    FR B p (c0.1 - 1, c0.2) (c0.1, c0.2 + 1)
+
+theorem join_of_senc (hp : p ∉ B) (hb : Before B p) (hS : (p.1, p.2 - 1) ∉ B)
+    (hSE : (p.1 + 1, p.2 - 1) ∈ B) (hs : SEnc B p) : JoinLR B p
+
+theorem bridge_eq (B : Finset Pixel) : (enclosed B : ℤ) = C8 B - euler B
+
+theorem main : ViridisStatements.P1.Insertion.Statement :=
+  statement_of_enc_join fun B p hp hb hS hSE _ hs => join_of_senc B p hp hb hS hSE hs
+\end{lstlisting}
+Here \texttt{FR B p a b} says that $a$ and $b$ are free in $B\cup\{p\}$ and joined by a
+4-path there, and \texttt{Near q c} says that $q$ and $c$ are at Chebyshev distance at most $1$.
+
+\section{A proof of L3 and what it discharges}\label{sec:l3}
+
+This section reports the 2026-11-10 session on the sealed statement \texttt{P1.Bridge}.
+
+\subsection{The statement}
+
+The module \texttt{ViridisStatements.P1.Bridge} restates the definitions of
+Listing~\ref{lst:defs}. They are character for character the same as those of
+\texttt{P1.Insertion}, which we checked by a textual diff. The statement is
+\begin{lstlisting}
+def Statement : Prop :=
+  ∀ B : Finset Pixel,
+    {c : (complementGraph B).ConnectedComponent | IsEnclosed c}.Finite ∧
+      (enclosed B : ℤ) = C8 B - euler B
+\end{lstlisting}
+The first clause is needed because \texttt{enclosed} is a \texttt{Nat.card}, which
+would read $0$ on an infinite type.
+
+\begin{theorem}[L3]\label{thm:l3}
+For every finite $B\subset\mathbb{Z}^2$, the set of finite 4-components of
+$\mathbb{Z}^2\setminus B$ is finite, and its cardinality is $C_8(B)-\chi(K(B))$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Finiteness (\texttt{finite\_enclosed}, 2026-11-08). Choose $M$ with $|b_1|,|b_2|<M$ for every
+$b\in B$. A free pixel outside the box $[-M,M]^2$, or inside it but on a row that $B$
+does not meet on that side, has a free horizontal ray, so its component is infinite
+(\texttt{enclosed\_in\_box}). Choosing one representative pixel per enclosed component
+therefore gives an injection into the finite box.
+The equation (\texttt{bridge\_eq}, 2026-11-09). Order the pixels of $B$ in raster-scan order
+and insert them one at a time, starting from $\varnothing$. The quantity
+$\mathrm{enc}-C_8+\chi$ is $0$ on $\varnothing$, and by L2 every insertion preserves it.
+\end{proof}
+
+In the Lean file, L2 is restated over the \texttt{P1.Bridge} definitions as
+\texttt{InsStatement} and proved as \texttt{Candidate.insertion}. The only new step for the
+sealed target is to put the two clauses together:
+\begin{lstlisting}
+theorem main : ViridisStatements.P1.Bridge.Statement := fun B =>
+  ⟨finite_enclosed B, bridge_eq B⟩
+\end{lstlisting}
+Here \texttt{finite\_enclosed} is stated as \texttt{Finite \{c // IsEnclosed c\}}. Lean accepts it
+for the \texttt{Set.Finite} clause without conversion, because the two are definitionally
+equal.
+
+\subsection{Exactly one unbounded component}
+
+The bridge counts \emph{bounded} compartments. \texttt{FaceCount} counts all of them,
+and the ``$+1$'' in ``circuit rank $+\,1$'' is the unbounded one. We therefore also give a Lean
+proof of the following (auxiliary theorems \texttt{unique\_unbounded} and
+\texttt{card\_components}, which are not part of the sealed statement).
+
+\begin{theorem}\label{thm:total}
+For every finite $B$, $\mathbb{Z}^2\setminus B$ has exactly one infinite 4-component.
+Hence it has finitely many 4-components in all, and their number is
+$C_8(B)-\chi(K(B))+1$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Take $M$ as above and $N=|M|$. Every row $y$ with $|y|\ge M$ and every column $x$ with
+$|x|\ge M$ is free of $B$. Any free pixel with a coordinate of absolute value
+at least $M$ therefore reaches $(N,N)$ along one free row and one free column
+(\texttt{row\_reach}, \texttt{col\_reach}). The component of $(N,N)$ is infinite by a free ray.
+An infinite component cannot lie inside the box, so it contains such a pixel and equals
+the component of $(N,N)$. The count follows by splitting the components into enclosed and
+non-enclosed ones and applying Theorem~\ref{thm:l3}.
+\end{proof}
+
+\begin{lstlisting}[caption={The total compartment count (excerpt from \texttt{proofs/P1.Bridge.lean}).}]
+theorem unique_unbounded : ∃ c : (complementGraph B).ConnectedComponent,
+    ¬ IsEnclosed c ∧ ∀ c', ¬ IsEnclosed c' → c' = c
+
+theorem card_components : Finite (complementGraph B).ConnectedComponent ∧
+    (Nat.card (complementGraph B).ConnectedComponent : ℤ) = C8 B - euler B + 1
+\end{lstlisting}
+
+\subsection{Which assumption of \emph{Trees Cannot Cut} this discharges}
+
+The Lean core of \emph{Trees Cannot Cut}~\cite{Hart2026} (\texttt{DualCorridor.lean}) carries
+the topological step as an explicit hypothesis:
+\begin{lstlisting}
+structure FaceCount (V : Type*) [Fintype V] [DecidableEq V] where
+  faces : (G : SimpleGraph V) → [DecidableRel G.Adj] → ℕ
+  duality : ∀ (G : SimpleGraph V) [DecidableRel G.Adj],
+      (faces G : ℤ) = circuitRank G + 1
+\end{lstlisting}
+The manuscript justifies it by Alexander duality: the number of components of the fuel
+matrix $\Omega\setminus C$ equals $\operatorname{rank}H_1(C\cup\partial\Omega)+1$, if we count the outer
+compartment. The present result relates to this hypothesis as follows.
+
+\paragraph{Discharged (on rasters).} The \emph{duality step} itself. For a corridor or
+fuel break given as a finite raster, with the (8,4) reading, Theorems~\ref{thm:l3}
+and~\ref{thm:total} prove with no hypotheses that the fuel matrix $\mathbb{Z}^2\setminus B$
+has exactly $C_8(B)-\chi(K(B))+1$ compartments, of which $C_8(B)-\chi(K(B))$ are bounded.
+Here $C_8-\chi$ is computed from the raster by counting components and local
+$2\times 2$ patterns (L1). No appeal to Alexander duality, to a planar embedding or to
+any topological library remains. The ``trees cannot cut'' message also has a raster
+form: a raster with $\chi(K(B))=C_8(B)$ encloses nothing.
+
+\paragraph{Not discharged.} \texttt{FaceCount} as stated is a hypothesis about an
+abstract \texttt{SimpleGraph} and its \emph{graph} circuit rank $|E|-|V|+c(G)$. Our
+theorem does not mention any such graph. Three links remain unformalised.
+\begin{enumerate}
+\item \emph{Raster-to-graph correspondence.} One needs a map from corridor graphs to
+  rasters (or back) under which $\operatorname{circuitRank}(G)=C_8(B)-\chi(K(B))$. The obvious
+  candidate, the 8-adjacency graph of the barrier pixels, fails: the solid $2\times2$ block
+  has circuit rank $3$ and $C_8-\chi=0$ (negative control~1). Natural candidates are
+  the 1-skeleton of $K(B)$ after collapsing filled squares, or a rasterisation of $G$ in which
+  each edge becomes a one-pixel-wide digital arc and distinct edges meet only at vertex
+  blocks. We have not formalised either.
+\item \emph{Homology.} We do not prove that $C_8(B)-\chi(K(B))=\operatorname{rank}H_1(K(B))$,
+  nor that $C_8(B)$ is the number of path components of $K(B)\subset\mathbb{R}^2$. The theorem is
+  purely combinatorial, and it was designed so that it would not need these facts.
+\item \emph{The landscape boundary.} The manuscript works in a bounded landscape $\Omega$
+  and anchors the corridor to $\partial\Omega$ (the \texttt{anchor} construction of
+  \texttt{DualCorridor.lean}). Our complement is taken in all of $\mathbb{Z}^2$, with no
+  window. A windowed version, in which the frame of a rectangle is added to the barrier, is
+  a special case of Theorem~\ref{thm:l3} applied to $B\cup\partial\Omega$. Matching it to the
+  anchored graph again needs item~1.
+\end{enumerate}
+So the downstream results of \emph{Trees Cannot Cut} (zero-cut lemma, bridge and
+non-bridge deletion, disjoint support) remain conditional on \texttt{FaceCount} in their
+graph form. What changes is the status of the step that \texttt{FaceCount} stands for. On
+rasters, it is now a theorem about $C_8-\chi$, and the remaining gap is the graph-theoretic
+item~1, not a topological one.
+
+\section{Computational evidence for L2 and L3}\label{sec:evidence}
+
+The script \texttt{code/bridge\_check.py} is independent of both Lean models. It
+was rewritten for this revision, because the first draft's script is not part of
+the inputs available to this session. It pads each raster by one pixel, labels the 4-components of the complement and
+the 8-components of $B$ by depth-first search, and computes $V-E+F$ directly. A complement component counts as enclosed when
+it does not touch the padded border.
+It found no failures (\texttt{results/bridge\_check.json}):
+\begin{itemize}
+\item L3 on all $2^{16}=65{,}536$ subsets of a $4\times4$ box;
+\item L3 on 3{,}000 random rasters of side up to 12 with random density (seed 20261104);
+\item L2 on $10{,}496$ insertions: each of the 256 configurations of the eight
+  neighbours of $p$, alone and in 40 random contexts at Chebyshev distance
+  between 2 and 6 from $p$.
+\end{itemize}
+This is evidence that the proposed statements are true and that their
+conventions are the intended ones. It is not a proof.
+
+For the 2026-11-08 reduction, the script \texttt{code/core\_check.py} (standard
+library only, about 3 seconds) tests the exact hypothesis of
+\texttt{statement\_of\_halfplane\_jordan}. It draws 4{,}000 random rasters (side 3
+to 9, seed 20261108). At every candidate pixel $p$ it restricts the raster to the
+pixels before $p$ and keeps the configurations of row 5 of
+Table~\ref{tab:scan}. In all 17{,}344 such configurations (7{,}924 enclosed, 9{,}420
+not enclosed), the finiteness of the component of $S$ agrees with the
+8-connection of $L$ and $SE$. The script also checks the full invariant on 15{,}281
+scan-order insertions, with no failures (\texttt{results/core\_check.json}). As a
+mutation test, a variant that ignores $SW$ in the connection test reports 3{,}662
+disagreements. So the check can tell the two sides apart.
+
+\section{Limitations}
+
+\begin{itemize}
+\item The theorem concerns the combinatorial counts $V-E+F$ as defined in the
+  sealed module. The development does not show that this number is the Euler
+  characteristic of the topological space $K(B)\subset\mathbb{R}^2$. That
+  identification is standard but is not formalised here, and L2/L3 are
+  designed not to need it.
+\item Only the 8-connected weighting of the bit quads is treated. The
+  4-connected variant, with $+2Q_D$, is not formalised.
+\item We give a Lean proof of L2 and of the sealed L3 statement \texttt{P1.Bridge}.
+  The \texttt{FaceCount} hypothesis of \emph{Trees Cannot Cut} is about a corridor graph,
+  not a raster. Discharging it also needs a raster-to-graph correspondence, the
+  identification with homology and the boundary anchoring
+  (Section~\ref{sec:l3}). None of these is formalised. The
+  heuristic description of (J) in terms of arcs on the 8-cycle is a conjecture and
+  has no Lean proof. The proof of L2 goes through scan order instead.
+\item The bounded-box model used for the \texttt{decide} checks is not proved
+  to agree with the semantic definitions. Only the four semantic control lemmas
+  link the two.
+\item The \texttt{decide} table of all 256 neighbourhood configurations
+  uses only two global contexts: none, and a closed surrounding ring. The Python
+  check adds 40 random contexts per configuration. Neither replaces a proof of
+  L2.
+\item Attempts to use the Aristotle prover (finiteness clause of L3 on
+  2026-11-04; the full L2 statement on 2026-11-08; a status check on 2026-11-09)
+  failed with an invalid API key, as in earlier sessions. On 2026-11-10 the prover was not
+  needed and was not used. No automated proof search
+  was done, and every proof in the file was written by hand.
+\item L3 relates enclosed components to $C_8-\chi$, not to the circuit rank of
+  a corridor graph. A paper that uses L3 in place of \texttt{FaceCount} must
+  state which raster-to-graph correspondence it uses. The $2\times2$ block
+  shows that the two notions differ.
+\end{itemize}
+
+\section{Reproducibility}
+{\sloppy
+
+The L1 proof file \texttt{proofs/P1.BitQuad.lean} and the script
+\texttt{code/bitquad\_check.py} belong to the package of the 2026-10-28 run. It imports only
+\texttt{Mathlib} and the sealed module \texttt{ViridisStatements.P1.BitQuad}
+(sha256 \texttt{cd3cdeba48f6\ldots{}8e23}), and it builds with toolchain
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit
+\texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. The check takes about 20
+seconds. The brute-force script runs with the Python~3 standard library:
+\texttt{python3 code/bitquad\_check.py results/bitquad\_4x4.json}. No external
+data are used.
+
+The proposals \texttt{proposals/P1.Insertion.lean} and
+\texttt{proposals/P1.Bridge.lean} each compile with \texttt{lean} against the
+same toolchain and Mathlib commit, in about 100 and 60 seconds respectively,
+including all \texttt{decide} checks (among them the two 256-configuration
+tables) and the semantic control proofs. Both import only \texttt{Mathlib}. The evidence
+for L2/L3 is reproduced by \texttt{python3 -I code/bridge\_check.py
+results/bridge\_check.json} (standard library only, about 6 seconds). The
+proposals, the evidence script and its results belong to the package of the
+2026-11-04 run.
+
+The file \texttt{proofs/P1.Insertion.lean} (2026-11-09 package) imports only
+\texttt{Mathlib} and the sealed module \texttt{ViridisStatements.P1.Insertion}
+(sha256 \texttt{800bd9b9fec5\ldots{}c734}). It builds with toolchain
+\texttt{leanprover/lean4:v4.28.0} and the Mathlib commit above, and compiles in about
+30 seconds with \texttt{lean}. Run
+\texttt{viridis-lean-check proofs/P1.Insertion.lean P1.Insertion} to check it
+(about 50 seconds). On our run it passed all five stages and reported the axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. The script
+\texttt{code/core\_check.py} belongs to the 2026-11-08 session and is not part of
+this package. The proof does not depend on it.
+
+The file \texttt{proofs/P1.Bridge.lean} (2026-11-10 package, about 2{,}090 lines) imports only
+\texttt{Mathlib} and the sealed module \texttt{ViridisStatements.P1.Bridge}
+(sha256 \texttt{66038622a819\ldots{}171d}). It contains the whole development of L2
+over the \texttt{P1.Bridge} definitions, so it does not depend on any earlier package.
+It compiles in about 20 seconds with \texttt{lean} against the toolchain and Mathlib commit
+above. Run \texttt{viridis-lean-check proofs/P1.Bridge.lean P1.Bridge} to check it
+(about 40 seconds). On our run it passed all five stages, and \texttt{Candidate.main} reported the
+axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. The auxiliary
+theorems \texttt{insertion}, \texttt{unique\_unbounded} and \texttt{card\_components}
+depend on the same three axioms (\texttt{\#print axioms} in a scratch copy).
+
+}
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-10-28 (P1-T001): first version of the paper. Lean proof of L1
+  (\texttt{P1.BitQuad}), proof architecture, brute-force check on the
+  $4\times4$ box, and discussion of the role of L1 in L2/L3.
+\item 2026-11-03 (P1-T002): new title and abstract. Added the proposed
+  statements \texttt{P1.Insertion} (L2) and \texttt{P1.Bridge} (L3) with their
+  conventions, controls (box-model \texttt{decide} checks and Lean proofs of the
+  control values for the semantic definitions), brute-force evidence for L2/L3,
+  the reference to Rosenfeld (1970), and updated limitations and reproducibility.
+\item 2026-11-04 (P1-T002, second attempt): the verifier had rejected the first
+  draft of the proposals because the import of the L1 module did not resolve in its
+  environment. The proposal modules now restate the L1 definitions verbatim and
+  import only Mathlib. Added the bitmask model with \texttt{decide} checks of all
+  256 neighbourhood configurations in two contexts, and rewrote the evidence
+  script (new seed). Updated abstract, limitations and reproducibility.
+\item 2026-11-08 (P1-T003): new section on a reduction of L2
+  (Section~\ref{sec:reduction}): Lean proofs of locality of $\Delta\chi$,
+  of $\Delta C_8 = 1-k$, of finiteness of the enclosed components, of the change
+  in the enclosed count, of L2 from the Jordan-type identity (J), and of L2 in
+  the special case where the four 4-neighbours of $p$ are barrier. Then the
+  raster-scan reduction: L2 from scan-order insertions, the explicit case analysis
+  of Table~\ref{tab:scan}, and L2 from a half-plane digital Jordan lemma, which is
+  checked by brute force (\texttt{code/core\_check.py}). A Lean proof of one
+  direction of that lemma by crossing parity, and of the inequality
+  $\mathrm{enc}\ge C_8-\chi$ for every finite raster. Updated the title, abstract, introduction,
+  limitations and reproducibility. L2 remains unproved.
+\item 2026-11-09 (P1-T003): new Section~\ref{sec:crack}. Lean proof of the remaining
+  direction of the half-plane Jordan lemma by following the crack boundary
+  (a permutation of the finite set of cracks), and hence a Lean proof of the sealed
+  statement \texttt{P1.Insertion} (\texttt{Candidate.main}) and of the bridge
+  equation $\mathrm{enc}=C_8-\chi$ (\texttt{bridge\_eq}). Updated the title, abstract,
+  introduction, Table~\ref{tab:scan}, limitations and reproducibility.
+\item 2026-11-10 (P1-T004): new Section~\ref{sec:l3}. Lean proof of the sealed L3
+  statement \texttt{P1.Bridge} (\texttt{Candidate.main}), obtained from the 2026-11-09 development
+  restated over the \texttt{P1.Bridge} definitions. New Lean proofs of uniqueness of the
+  unbounded component and of the total compartment count $C_8-\chi+1$. A precise account
+  of which part of \texttt{FaceCount} is discharged and which is not. Updated the title, abstract,
+  introduction, limitations and reproducibility.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+
+\end{document}
