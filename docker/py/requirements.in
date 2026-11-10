@@ -1,0 +1,13 @@
+# Top-level packages of the verifier's Python image. Edit here, then regenerate requirements.txt:
+#   uv pip compile docker/py/requirements.in --generate-hashes --python-version 3.12 \
+#     --python-platform x86_64-manylinux_2_28 -o docker/py/requirements.txt
+numpy
+pandas
+scipy
+statsmodels
+scikit-learn
+networkx
+shapely
+pyproj
+rasterio
+geopandas

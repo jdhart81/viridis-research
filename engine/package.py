@@ -10,7 +10,7 @@ from typing import Any
 from .util import canonical_json, sha256_bytes, sha256_file
 
 AGENT_ITEMS = ("run.json", "notes.md", "announcement.md", "data_pins.json", "paper", "proofs", "proposals", "code",
-               "results")
+               "results", "data")
 ZIP_DATE = (1980, 1, 1, 0, 0, 0)
 
 
@@ -29,7 +29,7 @@ def copy_agent_outputs(artifact_out: Path, folder: Path) -> None:
 
 
 def reproduce_md(*, run_dir: str, date: str, commit: str, repository: str, toolchain: str, mathlib_rev: str,
-                 formal: list[dict[str, Any]]) -> str:
+                 formal: list[dict[str, Any]], tested: list[dict[str, Any]] | None = None) -> str:
     lines = [f"# Reproduce `{run_dir}`", "",
              f"Run date {date}. Verified by engine version `{commit[:12]}`; the verifier kit in this repository",
              "(`engine/lean_check.py`, `engine/reproduce.py`) re-runs every check.", "",
@@ -54,6 +54,14 @@ def reproduce_md(*, run_dir: str, date: str, commit: str, repository: str, toolc
                   f"- Statement: `lean/{item['statement_id']}/Statement.lean` (sha256 `{item['statement_sha256']}`)",
                   f"- Candidate: `proofs/{item['statement_id']}.lean` (sha256 `{item['candidate_sha256']}`)",
                   f"- Verifier result: stage `{item['stage']}`, axioms `{', '.join(item.get('axioms', [])) or 'n/a'}`", ""]
+    if tested:
+        lines += ["## Re-executed analyses (TESTED)", "",
+                  "The verifier ran each script below in a sandbox with no network, with this folder's `code/` and",
+                  "`data/` as the only inputs, and compared the result files it produced with `results/`. The input",
+                  "files and their sources are listed in `data_pins.json`; `certification.json` (`reexecution`) records",
+                  "the hashes. To repeat it: `python3 -m engine.reexec " + run_dir + "` (add `--docker` for the",
+                  "verifier's image, `docker/py/Dockerfile`).", ""]
+        lines += [f"- {item['claim_id']}: `{item['entry']}`" for item in tested] + [""]
     lines += ["## Paper", "",
               "`paper.pdf` is the verifier's certification page followed by the compiled paper. To rebuild the paper,",
               "run `latexmk -pdf -no-shell-escape main.tex` in `paper/`, with `docker/tex/viridis-lean.sty` on",

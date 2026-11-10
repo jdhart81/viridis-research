@@ -54,5 +54,11 @@
     "tex_timeout_seconds": 600
   },
   "schedule_activated_at": "2026-10-28T00:43:55Z",
-  "schema": "viridis-engine-config-v1"
+  "schema": "viridis-engine-config-v1",
+  "tested": {
+    "enabled": true,
+    "max_claims": 3,
+    "memory_mb": 4096,
+    "timeout_seconds": 900
+  }
 }

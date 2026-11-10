@@ -1,0 +1,14 @@
+{
+  "body_md": "This approves Zenodo deposits for project P4, *Real fires: re-executed tests of Trees Cannot Cut*. Under the publication policy (Z5), each P4 run that has a compiled paper and a TESTED claim then gets its own Zenodo record and DOI at the weekly publication, containing the paper, the registered inputs and the reproduce package. Without this approval, P4 runs are published on GitHub only.\n\n- **First result:** the P1C confirmatory replication in northeast Washington (registered as viridis-canon pull request 138): beta = 0.053, registered interval 0.023 to 0.084, SUPPORTED.\n- **Creator:** Hart, Justin D. (Viridis LLC, ORCID 0009-0008-3082-2482). AI assistance is disclosed in the description.\n- **Scope and novelty note:** in `config/channels.json` (`zenodo.projects.P4.record_note`). It says the studies are observational, that they do not show that barriers stop fires, and what TESTED does and does not certify.\n- **Links:** `isSupplementTo` Trees Cannot Cut (10.5281/zenodo.21686446).\n- **Existing records:** this does not touch any of them.\n\nZenodo DOIs cannot be deleted.\n",
+  "created_at": "2026-11-10T02:32:53Z",
+  "created_by": "pull-request",
+  "effect": {
+    "project": "P4",
+    "type": "zenodo_concept"
+  },
+  "id": "D-016",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Approve Zenodo records for project P4"
+}
