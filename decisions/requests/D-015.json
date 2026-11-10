@@ -7,8 +7,9 @@
     "type": "zenodo_concept"
   },
   "id": "D-015",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-10T07:45:05Z",
+  "posted_comment_id": 6761910816,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6761910816",
   "schema": "viridis-decision-request-v1",
   "title": "Approve Zenodo records for project P3"
 }
