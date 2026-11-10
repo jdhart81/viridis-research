@@ -14,16 +14,35 @@
    week: the reproduce zip (rebuilt from the committed folder and checked
    against the outcome's hash) and the paper PDF. The notes list every night
    of the week, including IDLE and FAILED.
-2. **Zenodo.** Each project gets one new version per week of its living paper,
-   built from that project's latest run with a compiled paper. Creating a
-   project's first Zenodo record requires a recorded decision (effect
-   `zenodo_concept`); after that, versions follow automatically. Justin Hart
-   (ORCID 0009-0008-3082-2482) is the only creator. AI assistance is disclosed
-   in the description.
+2. **Zenodo (Z5, decided by Justin D. Hart on 2026-11-02).** Every run of the
+   week that has a compiled paper **and** a non-trivial PROVEN claim or a TESTED claim gets its
+   own Zenodo record and DOI, containing that run's paper and reproduce zip.
+   Separate results are separate records, not versions of one record. A run
+   that does not pass this gate gets no Zenodo record, and the reason is
+   recorded; it still ships in the GitHub Release. A run is deposited at most
+   once, ever: the ledger `zenodo.runs` in `config/channels.json` records
+   each deposit (Z6). Depositing for a project requires a recorded approval
+   (effect `zenodo_concept`) and the project's record note. A week published
+   before Z5 can be completed with `engine.weekly --week YYYY-Www
+   --zenodo-catchup --force`, which deposits only the missing qualifying runs
+   and never touches GitHub or LinkedIn. Justin D. Hart (ORCID
+   0009-0008-3082-2482) is the only creator.
+   Every description:
+   - opens with "Working paper, not peer reviewed. Nothing in this record is
+     field-validated." (for a run with a TESTED claim: "... Its empirical results
+     are analyses of existing records that the verifier re-ran; nothing in this
+     record has been validated by a field trial.");
+   - then gives the project's scope and novelty note (`zenodo.projects.<id>.record_note`
+     in `config/channels.json`), saying plainly when a result formalizes known
+     work. A project without a note is skipped, not published without one;
+   - ends with the AI-use line: drafted by Claude (Anthropic) running the
+     engine, formal claims checked by the Lean 4 kernel and empirical claims by
+     re-execution, Justin D. Hart accountable, no AI
+     author.
 3. **LinkedIn.** At most one post per week, under Justin's name. It goes out
    only when a run clears the announcement bar:
    - the run is MERGED and its paper compiled;
-   - it has a non-trivial PROVEN (or stronger) claim;
+   - it has a non-trivial PROVEN, TESTED or stronger claim;
    - every DOI resolved;
    - the project is announceable;
    - the result has not been announced before;
@@ -48,27 +67,3 @@ workflow for that week.
 - Listing an AI system as an author.
 - Announcing an ASSUMED or TRIVIAL result.
 - Reposting after an unconfirmed post.
-
-## Record text (Viridis science release standard, S2 and S5 to S9)
-
-Every Zenodo description, release-notes header and LinkedIn post built from a run
-must contain, in the record text itself and not only in the PDF:
-
-1. **Status first.** The first sentence is "Working paper, not peer reviewed." It
-   also says that nothing is field-validated, unless a recorded decision says
-   otherwise.
-2. **Novelty, honestly.** When the paper says it claims no novelty, or the result is
-   a known theorem (for example Gray 1971, or a 2×2 Perron–Frobenius case), the
-   record says so in its first paragraph: "a formalization of a known result, not
-   a new result".
-3. **Assumptions and limits.** The paper's stated limits (model scope, what the
-   sealed statement does not cover, ASSUMED claims) appear in the description.
-4. **AI use.** The tools and their roles (the research agent and its model, whether
-   Aristotle was used in that run), that labels come from the automated verifier,
-   and that Justin D. Hart is the accountable author. No AI system is a creator.
-5. **Exact source.** A related identifier `isSupplementTo` the GitHub Release tag
-   `week-YYYY-Www` (or the commit) the record was built from, plus the run folder.
-6. **Citations.** Only DOIs the verifier resolved. The agent's own statement that it
-   checked references is never repeated as evidence.
-7. **Creator.** `Hart, Justin D.`, ORCID 0009-0008-3082-2482, matching every other
-   Viridis record and CITATION.cff.

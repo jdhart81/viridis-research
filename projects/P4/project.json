@@ -1,0 +1,25 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P4/README.md",
+    "projects/P4/context/INPUTS.json",
+    "projects/P4/context/rerun_p1c.py",
+    "projects/P4/context/P1C_RESULTS.md",
+    "projects/P4/context/PREREGISTRATION_P1C_NEWA_v1.4.md",
+    "projects/P4/context/ADDENDUM_v1.4.md",
+    "projects/P4/context/SOURCES.sha256"
+  ],
+  "id": "P4",
+  "priority": 1,
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.21686446",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    }
+  ],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Bring the pre-registered real-fire tests of 'Trees Cannot Cut' into the engine's record as TESTED results: the verifier re-runs each registered analysis, unchanged, on the registered inputs and confirms the reported numbers. First: the P1C confirmatory replication in northeast Washington (do wildfires that start inside smaller compartments of mapped barriers end smaller?).",
+  "title": "Real fires: re-executed tests of Trees Cannot Cut"
+}
