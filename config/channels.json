@@ -51,7 +51,7 @@
         "record_note": "Scope and novelty. Project P4 re-executes pre-registered tests of Trees Cannot Cut (doi:10.5281/zenodo.21686446) on real wildfire records. Each test was frozen and publicly registered before its outcome data were requested; this record reports the registered analysis, re-run unchanged, and the verifier's confirmation that it reproduces the reported numbers. The studies are observational. They do not show that barriers stop fires, and the pre-specified checks reported in the paper bound each result. The label TESTED certifies that the registered computation gives these numbers from the registered input files. It does not certify the agencies' source data, the choice of model or the interpretation. The input files are derived from public United States sources (FPA FOD, TIGER, NHD, LANDFIRE, gridMET, MTBS)."
       },
       "P5": {
-        "approved_by": null,
+        "approved_by": "D-017",
         "concept_recid": null,
         "latest_deposition_id": null,
         "record_note": "Scope and novelty. Project P5 is a correction. It checks with the Lean kernel that an unrestricted axiom in an early Viridis source (January 2026) is false as written, and that an early theorem named no_finite_compensation proves the opposite of its name. The statements proved here are elementary facts about the algebra cap = P*D/C and are not new theorems. They say nothing about whether any agent preserves biodiversity, about any measured quantity, or about the Intelligence Bound as a physical conjecture, which remains a conjecture."
