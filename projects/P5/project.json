@@ -1,0 +1,14 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P5/README.md",
+    "projects/P5/context/STATEMENT_PROPOSAL.md"
+  ],
+  "id": "P5",
+  "priority": 2,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Check two corrections to early Viridis Lean sources with the Lean kernel: the unrestricted Intelligence Bound axiom of January 2026 is false as written, and the theorem named no_finite_compensation in fact proves that a finite power increase compensates a partial loss of D. State and prove what holds instead: compensation in the interior, its limit under a power ceiling, divergence near complete loss, and impossibility at D = 0.",
+  "title": "Intelligence Bound audit: compensation, ceilings and the unrestricted axiom"
+}

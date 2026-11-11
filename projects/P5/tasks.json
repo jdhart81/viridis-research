@@ -1,0 +1,42 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P5-T001",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose the two audit statements",
+      "produces": [
+        "P5.UnrestrictedBoundFalse",
+        "P5.CompensationUnderCeiling"
+      ],
+      "brief": "Draft two statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it quotes the two historical declarations and says what this project does and does not claim. Write the mathematics in Lean 4 with Mathlib; keep all definitions inside each statement's namespace; do not import or copy any historical module, and do not declare any axiom. Check each statement compiles and that its sanity checks pass. In each rationale file say plainly that the result is elementary, state the negative control, and state what the statement does not establish: nothing about whether any agent preserves biodiversity, and nothing about the Intelligence Bound as a physical conjecture. If you find the specification itself is wrong, propose the corrected statement and explain the change. The paper is a short note that explains the two findings and the four separate facts about compensation; every claim in it is a conjecture until the statements are sealed and proved."
+    },
+    {
+      "id": "P5-T002",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P5-T001"
+      ],
+      "max_runs": 3,
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "title": "Prove that the unrestricted bound is false",
+      "brief": "Prove the sealed statement P5.UnrestrictedBoundFalse. The paper is a short correction note: quote the historical axiom from README.md, give the counterinstance, explain that an inconsistent axiom makes every statement provable in an environment that assumes it, and report that no declaration in the reviewed corpus depended on it. Say what a well-posed successor needs: a predicate tying the rate to a physical system, and separate empirical validation. Do not present this as a result about the Intelligence Bound conjecture itself."
+    },
+    {
+      "id": "P5-T003",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P5-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P5.CompensationUnderCeiling",
+      "title": "Prove compensation in the interior and its limit under a power ceiling",
+      "brief": "Prove the sealed statement P5.CompensationUnderCeiling. The paper corrects the reading of the theorem named no_finite_compensation: quote it from README.md, show that it proves finite compensation, and set out the four separate facts (interior, ceiling, divergence, complete loss) with a worked numerical example of each. State the economics plainly: along a level set of P*D the two inputs substitute for one another; D is essential (nothing replaces it at zero) but not non-substitutable in the interior, and it is a finite power ceiling that makes a loss of D uncompensable. State what is not shown: any behaviour of any agent, any measured D, any ecological claim."
+    }
+  ]
+}
