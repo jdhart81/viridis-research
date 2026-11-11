@@ -1,0 +1,29 @@
+{
+  "agent_minutes": 0.01,
+  "date": "2026-11-11",
+  "failure_category": "scope",
+  "github": {
+    "event": "schedule",
+    "head_sha": "b0fad361ff2c12b83fdb5ef4c8954f1093579a62",
+    "run_attempt": 1,
+    "run_id": 42928080751,
+    "run_started_at": "2026-11-11T00:01:46Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/42928080751",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": null,
+  "paper_built": false,
+  "project": "P4",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "output contract violations: missing required file: run.json; missing required file: notes.md; missing required file: paper/main.tex",
+  "run_dir": null,
+  "schema": "viridis-outcome-v1",
+  "status": "FAILED",
+  "task": "P4-T001",
+  "written_at": "2026-11-11T00:21:33Z",
+  "written_by": "verify",
+  "zip_sha256": null
+}
