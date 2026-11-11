@@ -1,0 +1,423 @@
+{
+ "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
+ "counts": {
+  "merged_runs": 12,
+  "problems": 0,
+  "proven_statements": 7,
+  "sealed_statements": 11,
+  "tested_claims": 0
+ },
+ "problems": [],
+ "projects": {
+  "P1": {
+   "priority": 2,
+   "status": "active",
+   "title": "A machine-checked raster bridge for Trees Cannot Cut"
+  },
+  "P2": {
+   "priority": 1,
+   "status": "active",
+   "title": "Re-certifying the live Viridis OS decision kernels"
+  },
+  "P3": {
+   "priority": 3,
+   "status": "active",
+   "title": "Circular-economy kernel: loops, cascades and industrial symbiosis"
+  },
+  "P4": {
+   "priority": 1,
+   "status": "active",
+   "title": "Real fires: re-executed tests of Trees Cannot Cut"
+  },
+  "P5": {
+   "priority": 2,
+   "status": "active",
+   "title": "Intelligence Bound audit: compensation, ceilings and the unrestricted axiom"
+  }
+ },
+ "proven": [
+  "P1.BitQuad",
+  "P1.Bridge",
+  "P1.Insertion",
+  "P2.Afforestation",
+  "P2.CarbonContinuity",
+  "P2.Harmonization",
+  "P2.Restoration"
+ ],
+ "runs": [
+  {
+   "date": "2026-10-28",
+   "doi": "10.5281/zenodo.23886028",
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "9de0b2d483b0f103a906159f64ee5ed89c9800159c578e50ffc9d454a3dd27f9",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-10-28_P1",
+   "task": "P1-T001",
+   "title": "The 8-connected bit-quad Euler formula for finite rasters: a Lean proof by vertex double counting"
+  },
+  {
+   "date": "2026-10-29",
+   "doi": "10.5281/zenodo.23899738",
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "c07fec1a5c4595705519175639e713f1d5ba2575251c57cc7ae249f30218f25c",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-10-29_P2",
+   "task": "P2-T001",
+   "title": "Re-certifying the Carbon Continuity Threshold: A Lean Proof of the Two-Pool Regenerative Coupling Condition under a Pinned Toolchain"
+  },
+  {
+   "date": "2026-10-30",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 2
+   },
+   "manifest_sha256": "3e181f13f2ed1b9aee453ce66854503f3644fd08f7475bd3763405e4f1aaf4a9",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-10-30_P2",
+   "task": "P2-T002",
+   "title": "Sealed Statements for the Restoration, Afforestation and Harmonization Kernels: Faithful Lean Restatements of the Canon Formal Cores"
+  },
+  {
+   "date": "2026-10-31",
+   "doi": "10.5281/zenodo.23899745",
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "04c770378dbf2bfc87375a8efe6938b1be2a9e799df1b1fefc57c5a57e3ce91d",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-10-31_P2",
+   "task": "P2-T003",
+   "title": "Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Restoration Critical-Nucleus Core"
+  },
+  {
+   "date": "2026-11-01",
+   "doi": "10.5281/zenodo.23886036",
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "f32b635272d9610589e45f542f662fa5a195650b8d6fc50c16822648d0b16428",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-11-01_P2",
+   "task": "P2-T004",
+   "title": "Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Afforestation Seeding Core"
+  },
+  {
+   "date": "2026-11-02",
+   "doi": "10.5281/zenodo.24095907",
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "9b08dc2097f8f62479ff5733fc48246c6ff4061880d6b4b041c7f8b9119e6f57",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-11-02_P2",
+   "task": "P2-T005",
+   "title": "Re-certifying the Viridis OS Decision Kernels: A Lean Proof of the Harmonization Scalar-Price Welfare Core"
+  },
+  {
+   "date": "2026-11-03",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 2
+   },
+   "manifest_sha256": "a586697b72404490a51f3600a615c3c60146ea8adb60c76a632971980c893dd0",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-11-03_P1",
+   "task": "P1-T002",
+   "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity"
+  },
+  {
+   "date": "2026-11-04",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 2
+   },
+   "manifest_sha256": "bd4b7dd10545933523c09e4f4c4dc1c942292bbf2c0e251ee94c9b838a0408f3",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-11-04_P1",
+   "task": "P1-T002",
+   "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula and proposed statements for single-pixel insertion and the enclosure identity"
+  },
+  {
+   "date": "2026-11-05",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 1
+   },
+   "manifest_sha256": "cc6b63e080015ec9ce704d6c1a944da01f2babaa03c25b03fad12462024e13e0",
+   "paper_built": true,
+   "project": "P3",
+   "run_dir": "runs/2026-11-05_P3",
+   "task": "P3-T001",
+   "title": "Proposed Sealed Statements for a Circular-Economy Kernel: Loop Mass Balance, Cascaded Recovery, a Recovery-Adjusted Work Floor, and the N-Partner Symbiosis Condition"
+  },
+  {
+   "date": "2026-11-08",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 3
+   },
+   "manifest_sha256": "f43863a892cbc9e114440ea993696b8bd3bf662e021e8f439196a049f6d91831",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-11-08_P1",
+   "task": "P1-T003",
+   "title": "Toward a machine-checked raster bridge for Trees Cannot Cut: the bit-quad formula, the inequality enc >= C8 - chi, and a reduction of single-pixel insertion to a half-plane Jordan lemma"
+  },
+  {
+   "date": "2026-11-09",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "a2d0232c5dea3bd2a6138ed6d69158d73eba2b4d874f77928d2a7f5e9022e55c",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-11-09_P1",
+   "task": "P1-T003",
+   "title": "A machine-checked raster bridge for Trees Cannot Cut: single-pixel insertion preserves enc - C8 + chi"
+  },
+  {
+   "date": "2026-11-10",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "8a4e2cf9bf58b93260c2a644c20e0efaef54d7ac6e7f254b2fb4ebed11061007",
+   "paper_built": true,
+   "project": "P1",
+   "run_dir": "runs/2026-11-10_P1",
+   "task": "P1-T004",
+   "title": "A machine-checked raster bridge for Trees Cannot Cut: enclosed 4-components equal C8 minus the Euler characteristic on every finite raster"
+  }
+ ],
+ "schema": "viridis-certified-index-v1",
+ "statements": {
+  "P1.BitQuad": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P1.BitQuad.Statement",
+   "decision": "D-001",
+   "path": "lean/ViridisStatements/P1/BitQuad.lean",
+   "project": "P1",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "328a9a292c6c09accf3439cb81f2fce20d97efa7ee1eeb8a9acc9d72e6d3c77f",
+    "claim_id": "C1",
+    "date": "2026-10-28",
+    "doi": "10.5281/zenodo.23886028",
+    "run_dir": "runs/2026-10-28_P1"
+   },
+   "sealed_at": "2026-10-27T23:03:28Z",
+   "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+   "status": "PROVEN",
+   "task": "P1-T001"
+  },
+  "P1.Bridge": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P1.Bridge.Statement",
+   "decision": "D-010",
+   "path": "lean/ViridisStatements/P1/Bridge.lean",
+   "project": "P1",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "ae3490865be63f9fc80518f96e5e9c0aa618e951d6fd7f3689e963144385a2af",
+    "claim_id": "C1",
+    "date": "2026-11-10",
+    "doi": null,
+    "run_dir": "runs/2026-11-10_P1"
+   },
+   "sealed_at": "2026-11-08T14:32:54Z",
+   "sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+   "status": "PROVEN",
+   "task": "P1-T002"
+  },
+  "P1.Insertion": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P1.Insertion.Statement",
+   "decision": "D-009",
+   "path": "lean/ViridisStatements/P1/Insertion.lean",
+   "project": "P1",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "e31434107d76a387f2bd47d3752511581084d3195b2563373ad279fbc907d670",
+    "claim_id": "C1",
+    "date": "2026-11-09",
+    "doi": null,
+    "run_dir": "runs/2026-11-09_P1"
+   },
+   "sealed_at": "2026-11-08T14:32:32Z",
+   "sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+   "status": "PROVEN",
+   "task": "P1-T002"
+  },
+  "P2.Afforestation": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.Afforestation.Statement",
+   "decision": "D-007",
+   "path": "lean/ViridisStatements/P2/Afforestation.lean",
+   "project": "P2",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "a179401aa4d0e0de8a14944fe4356287cdd2295f2d71d3fcd87a8093091ca48c",
+    "claim_id": "C1",
+    "date": "2026-11-01",
+    "doi": "10.5281/zenodo.23886036",
+    "run_dir": "runs/2026-11-01_P2"
+   },
+   "sealed_at": "2026-10-31T13:19:07Z",
+   "sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+   "status": "PROVEN",
+   "task": "P2-T002"
+  },
+  "P2.CarbonContinuity": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.CarbonContinuity.Statement",
+   "decision": "D-004",
+   "path": "lean/ViridisStatements/P2/CarbonContinuity.lean",
+   "project": "P2",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "bfced37f622d1ab9921f2fe7bf02ffa7c88dbdeb1e53d3a250df0ff8f0f94f44",
+    "claim_id": "C1",
+    "date": "2026-10-29",
+    "doi": "10.5281/zenodo.23899738",
+    "run_dir": "runs/2026-10-29_P2"
+   },
+   "sealed_at": "2026-10-28T23:29:57Z",
+   "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+   "status": "PROVEN",
+   "task": "P2-T001"
+  },
+  "P2.Harmonization": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.Harmonization.Statement",
+   "decision": "D-008",
+   "path": "lean/ViridisStatements/P2/Harmonization.lean",
+   "project": "P2",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "1bcfdf8580578e7aec5c34f539fe0f3994119c63e78fbf5285aa44ff270df3b1",
+    "claim_id": "C1",
+    "date": "2026-11-02",
+    "doi": "10.5281/zenodo.24095907",
+    "run_dir": "runs/2026-11-02_P2"
+   },
+   "sealed_at": "2026-10-31T13:19:10Z",
+   "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
+   "status": "PROVEN",
+   "task": "P2-T002"
+  },
+  "P2.Restoration": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.Restoration.Statement",
+   "decision": "D-006",
+   "path": "lean/ViridisStatements/P2/Restoration.lean",
+   "project": "P2",
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "59286948a6b807ac2f16da6bc2558780d11987b2b01adde147a06d61e2eba4b1",
+    "claim_id": "C1",
+    "date": "2026-10-31",
+    "doi": "10.5281/zenodo.23899745",
+    "run_dir": "runs/2026-10-31_P2"
+   },
+   "sealed_at": "2026-10-31T13:19:05Z",
+   "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+   "status": "PROVEN",
+   "task": "P2-T002"
+  },
+  "P3.CascadedRecovery": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P3.CascadedRecovery.Statement",
+   "decision": "D-012",
+   "path": "lean/ViridisStatements/P3/CascadedRecovery.lean",
+   "project": "P3",
+   "proof": null,
+   "sealed_at": "2026-11-08T14:33:37Z",
+   "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+   "status": "SEALED_UNPROVEN",
+   "task": "P3-T001"
+  },
+  "P3.CyclicSymbiosis": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P3.CyclicSymbiosis.Statement",
+   "decision": "D-014",
+   "path": "lean/ViridisStatements/P3/CyclicSymbiosis.lean",
+   "project": "P3",
+   "proof": null,
+   "sealed_at": "2026-11-08T14:34:07Z",
+   "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
+   "status": "SEALED_UNPROVEN",
+   "task": "P3-T001"
+  },
+  "P3.LoopMassBalance": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P3.LoopMassBalance.Statement",
+   "decision": "D-011",
+   "path": "lean/ViridisStatements/P3/LoopMassBalance.lean",
+   "project": "P3",
+   "proof": null,
+   "sealed_at": "2026-11-08T14:33:10Z",
+   "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+   "status": "SEALED_UNPROVEN",
+   "task": "P3-T001"
+  },
+  "P3.RecoveryWorkFloor": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P3.RecoveryWorkFloor.Statement",
+   "decision": "D-013",
+   "path": "lean/ViridisStatements/P3/RecoveryWorkFloor.lean",
+   "project": "P3",
+   "proof": null,
+   "sealed_at": "2026-11-08T14:33:58Z",
+   "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+   "status": "SEALED_UNPROVEN",
+   "task": "P3-T001"
+  }
+ },
+ "tested_claims": []
+}

@@ -47,6 +47,12 @@ Anyone can re-check any run with it, and none of the labels depends on trusting
 the private code. `docs/CERTIFICATION.md` defines the labels, and
 `docs/PUBLICATION_POLICY.md` sets out when results go to Zenodo and LinkedIn.
 
+`index/certified.json` lists what this record has certified: every sealed
+statement with its status and proof run, and every TESTED claim. It is computed
+from the files in this repository and refreshed with each engine commit. Check
+it with `python3 -m engine.certified_index --check`. Other Viridis systems take
+the status of a result from this file at a named commit, not from prose.
+
 Everything in `runs/`, `projects/` and `lean/` is open for others to build on,
 with attribution, under CC BY 4.0.
 
