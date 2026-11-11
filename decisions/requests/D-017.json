@@ -7,8 +7,9 @@
     "type": "zenodo_concept"
   },
   "id": "D-017",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-11T17:24:27Z",
+  "posted_comment_id": 6802595474,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6802595474",
   "schema": "viridis-decision-request-v1",
   "title": "Approve Zenodo records for project P5"
 }
