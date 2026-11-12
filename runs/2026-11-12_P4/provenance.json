@@ -1,0 +1,86 @@
+{
+  "agent": {
+    "duration_api_ms": 335416,
+    "duration_ms": 994162,
+    "final_message": "The re-run gave the published numbers exactly. Running the frozen P1C script unchanged on the registered inputs gives the decision **SUPPORTED**, with the reading **REPLICATED**.\n\n**Primary result** (from `results/p1c_primary.json`):\n- **Sample:** n = 11,314 ignitions.\n- **Effect:** β = 0.0531, with registered interval 0.0228 to 0.0835 and T = 4.42 against a critical value of 2.53.\n- **In plain words:** fires that start in a compartment ten times larger end about 13% larger.\n\n**Checks:**\n- All 12 downloaded files (the 11 inputs and `run_test.py`) match their registered hashes, and nothing was edited. The script's own check against `FREEZE.json` also passed.\n- Every number in `P1C_RESULTS.md` matches the re-run: the primary test, S13, leave-one-year-out, the comparison with the pilot, S1–S12, the secondary models, H3 and H4.\n- I deleted `results/` and re-ran three times; the output files came back byte-identical each time.\n\n**Things to know:**\n- **pip and scipy:** pip refused the `--user` install the brief gives (PEP 668), so I used a separate environment outside `out/` with numpy 2.5.4 and pandas 3.1.1. The first run then failed because the frozen script also needs scipy, which the brief doesn't mention. The verifier's image has it, and I used scipy 1.18.1.\n- **Hash mismatch:** my `p1c_primary.json` does not match the hash recorded on 2026-11-09. A second run with that date's library versions (numpy 2.5.3, pandas 3.0.5) gave yet another hash. Across runs every decision, reading and count is identical, and numbers differ by at most a relative 6×10⁻¹² — last-digit rounding, well inside the verifier's 10⁻⁶ tolerance.\n- **Commit:** the published report names commit `9e79127…` as the registration, but the brief's download links point to `cfdf55a…`, a later commit in the same pull request. All hashes matched.\n- **Paper:** it compiles cleanly; I built it in a scratch folder so no build files landed in `out/`. The abstract and conclusions state the four limits you asked for: observational, S13 at 0.033 below its critical value, no effect in lightning fires (S6a), and S5 at 0.020. I added no new analysis. TIGER, NHD and LANDFIRE FBFM40 are cited by web address because I found no DOI for them.\n\nEverything is in `out/`: `run.json` (claim C1), `notes.md`, `data_pins.json`, `announcement.md` (484 characters), and the paper in `paper/main.tex` with `refs.bib`.",
+    "is_error": false,
+    "num_turns": 54,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "86eeefc4-cdb3-439b-ac0a-0d12dde97b0a",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 2.5592180000000004,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 103985,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 103985,
+      "cache_read_input_tokens": 3254930,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 90,
+      "iterations": [],
+      "output_tokens": 32405,
+      "output_tokens_details": {
+        "thinking_tokens": 3718
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 7,
+      "api.crossref.org": 12,
+      "doi.org": 13,
+      "files.pythonhosted.org": 3,
+      "github.com": 1,
+      "pypi.org": 3,
+      "raw.githubusercontent.com": 12,
+      "www.mtbs.gov": 1,
+      "www.usgs.gov": 1,
+      "zenodo.org": 2
+    },
+    "bytes_down": 97259705,
+    "bytes_up": 9162657,
+    "denied": {
+      "data.crosscite.org (not on the allowlist)": 1,
+      "example.com (not on the allowlist)": 1,
+      "landfire.gov (not on the allowlist)": 1,
+      "opentimestamps.org (not on the allowlist)": 1,
+      "www.census.gov (not on the allowlist)": 1,
+      "www.climatologylab.org (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "a2fcbc0d176454a57a9d68ef2f2e745a983174e1",
+    "run_attempt": 1,
+    "run_id": 43134889263,
+    "run_started_at": "2026-11-12T01:29:51Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43134889263",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-12",
+    "prior_runs": [],
+    "project": "P4",
+    "run_started_at": "2026-11-12T01:29:51Z",
+    "task": "P4-T001",
+    "task_kind": "empirical"
+  },
+  "schema": "viridis-provenance-v1"
+}

@@ -1,0 +1,63 @@
+{
+ "schema": "viridis-data-pins-v1",
+ "inputs": [
+  {
+   "path": "data/p1c/CALIBRATION.json",
+   "sha256": "be7287fdc47edc78416b9bfe2e42450e887223b0d43d4862562bce82a7c119f5",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/CALIBRATION.json"
+  },
+  {
+   "path": "data/p1c/CRITICAL_VALUES.json",
+   "sha256": "17d87f48fd4b704069af631229a920087e971f7f88bf9ced2968a8cdd84469f2",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/CRITICAL_VALUES.json"
+  },
+  {
+   "path": "data/p1c/EXPOSURE_LISTS.json",
+   "sha256": "fd727a07073e608a404e25319f5554598e4c67282a7742aaa334bc1d8094c4e9",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/EXPOSURE_LISTS.json"
+  },
+  {
+   "path": "data/p1c/FREEZE.json",
+   "sha256": "4efb62b83fa8f8a5bbb674739f5102dd87bb599a17bf2f0b10f813789019e042",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/FREEZE.json"
+  },
+  {
+   "path": "data/p1c/OUTCOME_FETCH.json",
+   "sha256": "981b3853c557e4de5f0ea08c246aaea8e3e0d82ffc29d351a8bb5a050cb28b28",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4_results/OUTCOME_FETCH.json"
+  },
+  {
+   "path": "data/p1c/outcomes.csv",
+   "sha256": "d3284182a22b054e215f156a6d1dfb749a79b65dc360a49a520dd68ed92277e9",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4_results/outcomes.csv"
+  },
+  {
+   "path": "data/p1c/p1_config.json",
+   "sha256": "ce1d1452b567b19933eea05fdda02b0b2bb9cfe4ca35de0dc8dbfc72d6c5b213",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/p1_config.json"
+  },
+  {
+   "path": "data/p1c/predictors_blind.csv",
+   "sha256": "2229c814df242d6b8acd3724d79f6eec63868d9d837f01a04a8c509ef3c8b2af",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/predictors_blind.csv.gz",
+   "note": "gunzip the downloaded file; the hash is of the uncompressed file"
+  },
+  {
+   "path": "data/pilot/outcomes.csv",
+   "sha256": "45705d1192032850bf971f3358f659f2328a4c53427c86855df2bc9c3960bae1",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/pilot_outcomes.csv.gz",
+   "note": "gunzip the downloaded file; the hash is of the uncompressed file"
+  },
+  {
+   "path": "data/pilot/p1_config.json",
+   "sha256": "d43bd6025f46a7efec48f644f65b1f15e6e8186163da4deb4afe199a0e704f99",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/pilot_p1_config.json"
+  },
+  {
+   "path": "data/pilot/predictors_blind.csv",
+   "sha256": "57118595eea2a28b2e268733ec9645304fdb283bfc60ed107c332624a96dc4d0",
+   "url": "https://raw.githubusercontent.com/jdhart81/viridis-canon/cfdf55a24b2b833ef88dcd160813edab9c7116dd/preregistrations/p1c_newa_v1.4/pilot_predictors_blind.csv.gz",
+   "note": "gunzip the downloaded file; the hash is of the uncompressed file"
+  }
+ ]
+}

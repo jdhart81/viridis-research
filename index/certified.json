@@ -1,11 +1,11 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 12,
+  "merged_runs": 13,
   "problems": 0,
   "proven_statements": 7,
   "sealed_statements": 11,
-  "tested_claims": 0
+  "tested_claims": 1
  },
  "problems": [],
  "projects": {
@@ -205,6 +205,19 @@
    "run_dir": "runs/2026-11-10_P1",
    "task": "P1-T004",
    "title": "A machine-checked raster bridge for Trees Cannot Cut: enclosed 4-components equal C8 minus the Euler characteristic on every finite raster"
+  },
+  {
+   "date": "2026-11-12",
+   "doi": null,
+   "labels": {
+    "TESTED": 1
+   },
+   "manifest_sha256": "cf9dfdeacd0a59d11034c3fc805948201efdb209528ccaae4e50e519c2ec8b5b",
+   "paper_built": true,
+   "project": "P4",
+   "run_dir": "runs/2026-11-12_P4",
+   "task": "P4-T001",
+   "title": "Do wildfires that start in smaller barrier compartments end smaller? A re-executed pre-registered confirmatory test in northeast Washington"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -419,5 +432,17 @@
    "task": "P3-T001"
   }
  },
- "tested_claims": []
+ "tested_claims": [
+  {
+   "claim_id": "C1",
+   "date": "2026-11-12",
+   "doi": null,
+   "entry": "code/rerun_p1c.py",
+   "pinned_inputs": 11,
+   "project": "P4",
+   "run_dir": "runs/2026-11-12_P4",
+   "task": "P4-T001",
+   "text": "Running the frozen registered P1C v1.4 script (code/run_test.py, unchanged, via code/rerun_p1c.py) on the registered input files gives, for the registered primary test (H2, definition B, model M2R): n = 11,314 ignitions, beta = 0.0531 (0.05313557) log10 final fire size per log10 compartment area, max(two-way, year-clustered) SE = 0.0120, registered interval beta +/- 2.53 x max SE = [0.0228, 0.0835], decision SUPPORTED under the frozen rule (SUPPORTED iff beta - C2 x max SE > 0), and pre-specified reading REPLICATED. The script's input check against the registered FREEZE.json passed (inputs_ver"
+  }
+ ]
 }

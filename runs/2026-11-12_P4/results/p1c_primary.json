@@ -1,0 +1,113 @@
+{
+ "decision": "SUPPORTED",
+ "decision_rule": "SUPPORTED iff beta - C2 * max(SE_twoway, SE_year) > 0",
+ "inputs_verified_against_freeze": true,
+ "interpretation": {
+  "independent": {
+   "diff": -0.025998362787769284,
+   "note": "pilot under M2R (Deviation 3); assumes the two estimates are independent (they share 33 years); see stacked",
+   "p_two_sided": 0.37276812292527417,
+   "pilot_beta_M2R": 0.07913393598337634,
+   "pilot_beta_inside_registered_interval": true,
+   "pooled_fixed_effect": {
+    "beta": 0.057542724872255965,
+    "ci95": [
+     0.036091625675030034,
+     0.0789938240694819
+    ],
+    "se": 0.010944438365931597
+   },
+   "z": -0.8913002344847635
+  },
+  "per_tenfold_multiplier": 1.1301486567841141,
+  "reading": "REPLICATED",
+  "small_telescopes": {
+   "beta33": 0.04152611485970525,
+   "reject_beta_ge_beta33": false,
+   "upper90": 0.07811550870201803
+  },
+  "stacked_with_pilot": {
+   "beta_conf": 0.053135573195609964,
+   "beta_pilot": 0.07913393598335841,
+   "model": "M2R",
+   "twoway": {
+    "clustering": "year x 20 km block",
+    "corr": 0.0910405233128365,
+    "cov": 2.7147530313299397e-05,
+    "difference": {
+     "diff": -0.025998362787748447,
+     "p_two_sided": 0.32831919419388056,
+     "z": -0.9775050190664737
+    },
+    "pooled_gls": {
+     "beta": 0.057428134255022856,
+     "ci95": [
+      0.03554460567265146,
+      0.07931166283739424
+     ],
+     "se": 0.011165065603250712
+    },
+    "se_conf": 0.011997607860652107,
+    "se_pilot": 0.024854264642465224
+   },
+   "year": {
+    "clustering": "year",
+    "corr": 0.10094854857399232,
+    "cov": 2.57783925626655e-05,
+    "difference": {
+     "diff": -0.025998362787748447,
+     "p_two_sided": 0.3385649918704756,
+     "z": -0.9570044837934294
+    },
+    "pooled_gls": {
+     "beta": 0.055528667827904096,
+     "ci95": [
+      0.037198958289514944,
+      0.07385837736629325
+     ],
+     "se": 0.009351892621627118
+    },
+    "se_conf": 0.009680441319995146,
+    "se_pilot": 0.0263791378368466
+   }
+  }
+ },
+ "n_ignitions": 14105,
+ "n_with_outcome": 14105,
+ "pilot_overlap": 0,
+ "primary_test": {
+  "C2": 2.53,
+  "beta": 0.05313557319560706,
+  "beta_log10_rho": -0.04852071377483863,
+  "beta_log10_roaddist": 0.14054314601314574,
+  "block_clusters": 75,
+  "boot_ci95": [
+   0.035033173531017266,
+   0.07205250912959375
+  ],
+  "ci95_year": [
+   0.03419676899869012,
+   0.072074377392524
+  ],
+  "defn": "B",
+  "dof": 32,
+  "hypothesis": "H2",
+  "interval_registered": [
+   0.022751324719059107,
+   0.083519821672155
+  ],
+  "interval_v11_t": [
+   0.028672850334793887,
+   0.07759829605642023
+  ],
+  "model": "M2R",
+  "n": 11314,
+  "regions_40km": 24,
+  "se_max": 0.012009584378082194,
+  "se_twoway": 0.012009584378082194,
+  "se_year": 0.009662655202508643,
+  "t_crit": 2.0369333434601016,
+  "year_clusters": 33
+ },
+ "registered_test": "P1C v1.4, H2, definition B, model M2R"
+}

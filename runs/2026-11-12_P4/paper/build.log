@@ -1,0 +1,154 @@
+n input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count302
+\scratchdimen=\dimen181
+\scratchbox=\box56
+\nofMPsegments=\count303
+\nofMParguments=\count304
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count305
+\MPscratchDim=\dimen182
+\MPnumerator=\count306
+\makeMPintoPDFobject=\count307
+\everyMPtoPDFconversion=\toks32
+)
+\c@lstlisting=\count308
+Package hyperref Info: Link coloring OFF on input line 19.
+ (./main.out) (./main.out)
+\@outlinefile=\write3
+\openout3 = `main.out'.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 21.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 21.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Overfull \hbox (7.07077pt too wide) in paragraph at lines 111--114
+[]\OT1/cmr/bx/n/10.95 Audit of v1.3 \OT1/cmr/m/n/10.95 found that $\OML/cmm/m/i
+t/10.95 C[] \OT1/cmr/m/n/10.95 = 2\OML/cmm/m/it/10.95 :\OT1/cmr/m/n/10.95 37$ h
+ad no mar-gin against anisotropic fields and compartment-
+ []
+
+[3] [4]
+Underfull \hbox (badness 10000) in paragraph at lines 190--190
+[]\OT1/cmr/m/n/10.95 Table 1: []The reg-is-tered pri-mary test (H2, def-i-ni-ti
+on B, model M2R), from
+ []
+
+[5] [6] [7] (./main.bbl [8]
+Underfull \hbox (badness 1062) in paragraph at lines 93--99
+[]\OT1/cmr/m/n/10.95 Karen C. Short.  Spa-tial wild-fire oc-cur-rence data for 
+the United States, 1992--2024
+ []
+
+
+Underfull \hbox (badness 5504) in paragraph at lines 116--121
+[]\OT1/cmr/m/n/10.95 U.S. Ge-o-log-i-cal Sur-vey.  Na-tional hy-drog-ra-phy dat
+aset (NHD), high res-o-lu-tion.
+ []
+
+
+Underfull \hbox (badness 2790) in paragraph at lines 116--121
+\OT1/cmr/m/n/10.95 U.S. Ge-o-log-i-cal Sur-vey, n.d.  URL []$\OT1/cmtt/m/n/10.9
+5 https : / / www . usgs . gov / national-[]hydrography /
+ []
+
+) [9] (./main.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 781DCFA2F3AC2EE70DF1C8FBEF23CBB7;2016.
+ ) 
+Here is how much of TeX's memory you used:
+ 12854 strings out of 476106
+ 188566 string characters out of 5793932
+ 2034975 words of memory out of 5000000
+ 34642 multiletter control sequences out of 15000+600000
+ 571010 words of font info for 86 fonts, out of 8000000 for 9000
+ 59 hyphenation exceptions out of 8191
+ 75i,13n,79p,541b,1303s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </tmp/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmbx9.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
+mr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pf
+b></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/te
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmtt10.pfb>
+Output written on main.pdf (9 pages, 264055 bytes).
+PDF statistics:
+ 293 PDF objects out of 1000 (max. 8388607)
+ 244 compressed objects within 3 object streams
+ 76 named destinations out of 1000 (max. 500000)
+ 113 words of extra memory for PDF output out of 10000 (max. 10000000)
+

@@ -1,0 +1,309 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{hyperref}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,columns=fullflexible,
+  keywordstyle=\color{blue!60!black},commentstyle=\color{gray},language=Python}
+
+\title{Do wildfires that start in smaller barrier compartments end smaller?\\
+A re-executed pre-registered confirmatory test in northeast Washington}
+\author{Justin Hart\\Viridis LLC}
+\date{12 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\emph{Trees Cannot Cut} holds that wildfires end where closed loops of holdable features stop them.
+One consequence is that a fire which starts inside a smaller compartment of mapped barriers should end smaller.
+After a pilot in the Okanogan, Methow and Chelan region of Washington State, a confirmatory replication (P1C v1.4) was
+pre-registered for the adjoining northeast Washington region. Its plan, code, blind predictor table and critical
+values were hash-frozen and timestamped before any fire size was requested, and the plan went through five independent audits.
+The single confirmatory test regresses $\log_{10}$ final fire size (FPA FOD, 1992--2024) on $\log_{10}$ compartment
+area, where compartments are bounded by TIGER roads, NHD water and LANDFIRE non-burnable fuel. It controls for the gridMET
+energy-release-component percentile, fuel group, cause, month, year, barrier density, road distance and 40\,km regional fixed
+effects (model M2R), and it is decided on the interval $\beta \pm 2.53\times\max(\mathrm{SE}_{\text{two-way}},\mathrm{SE}_{\text{year}})$.
+We re-ran the frozen registered script, unchanged, on the registered input files, and every file's SHA-256 hash matched the registration.
+The re-run gives the published numbers. On 11{,}314 ignitions, $\beta=0.0531$ (registered interval 0.0228 to 0.0835, $T=4.42$),
+so the decision under the frozen rule is SUPPORTED and the pre-specified reading is REPLICATED. In plain terms, a compartment
+ten times larger goes with final fires about 13\% larger.
+The study's own pre-specified checks set firm limits on this result. \textbf{The study is observational. It does not show that
+barriers stop fires}, and it cannot say how much of the association runs through suppression access.
+\textbf{Without the 40\,km regional terms} (S13, the pilot's model M2) the estimate is 0.033, and it does not pass its critical value of 3.93.
+\textbf{Lightning-caused fires show no effect} (S6a: $-0.015$, 95\% CI $-0.062$ to $0.033$); the association is in human-caused fires.
+\textbf{Counting burn scars from the previous ten years as barriers} shrinks the estimate to 0.020 (S5).
+\end{abstract}
+
+\section{Introduction}
+
+Fire managers rely on roads, water bodies and ground that will not burn as places where a fire can be held.
+\emph{Trees Cannot Cut} \citep{Hart2026TCC} argues that the structure of these features matters as a network:
+a fire ends where a closed loop of holdable features stops it, so the size of the loop that encloses an ignition
+(its \emph{compartment}) should bound how large the fire can grow. If that holds, a fire that starts in a small
+compartment should, on average, end smaller than one that starts in a large compartment, once fire weather, fuel and access are
+held equal. The question matters for landscape design. If compartment size predicts fire size, the arrangement of
+barriers, and not only their total amount, could be managed to limit fire spread. It also connects to operational
+work on potential control locations and pre-planned containment \citep{OConnor2016,OConnor2017PCL}.
+
+This question was put to wildfire records in October 2026 in two steps. A pilot in the Okanogan, Methow and Chelan region
+(2{,}677 fires) found the association for mapped barriers. A confirmatory replication, P1C, was then designed for the
+adjoining northeast Washington region. It was frozen and registered before any fire size from that region was requested
+(viridis-canon pull request 138; \citealp{ViridisCanonPR138}), and was run once on 22 October 2026.
+
+This paper reports that registered study in full and adds one element: an independent re-execution. We re-ran the frozen script,
+unchanged, on the registered input files, and report whether it gives the published numbers. It does. We add no
+analysis, subgroup or model. Every number below is a pre-specified output of the frozen script.
+
+\section{Background and related work}
+
+\paragraph{The pilot.} The pilot used FPA FOD 1992--2024 for the Okanogan, Methow and Chelan region, frozen before any
+fire size was fetched. Its decisive test (H2) asked whether compartment size predicts final fire size beyond barrier
+density and road distance. Under definition B (mapped barriers) it estimated $\beta=0.063$ (95\% CI 0.010 to 0.117,
+$n=2{,}677$), about 16\% larger fires per tenfold larger compartment. A second definition, A50, used the Washington DNR potential control
+location (PCL) raster \citep{OConnor2017PCL} thresholded at 0.5. It was underpowered and was not supported.
+
+\paragraph{Why a confirmatory test.} The pilot's estimate cleared $p<0.05$, so it is probably inflated (winner's curse).
+The P1C plan also re-read the pilot under alternative spatial error models and found its evidence only moderate. The
+confirmatory test therefore needed new data, a single pre-specified test, and a critical value calibrated for spatial
+correlation. The plan uses the small-telescopes benchmark of \citet{Simonsohn2015} to define what a failed replication
+would mean.
+
+\paragraph{Data sources.} Ignitions and final fire sizes come from the Fire Program Analysis fire-occurrence database
+(FPA FOD), 7th edition, FPA\_FOD\_20260615 \citep{Short2026FPAFOD7}, built as described by \citet{Short2014ESSD}.
+Barriers come from TIGER/Line roads, vehicle classes only \citep{CensusTIGER}; NHD large-scale water areas and waterbodies \citep{USGSNHD};
+and the non-burnable classes of LANDFIRE 2024 FBFM40 \citep{LANDFIRE2024,Rollins2009LANDFIRE,ScottBurgan2005}.
+Fire danger is the gridMET energy release component, expressed as a per-cell percentile over 1992--2024 \citep{Abatzoglou2013gridMET}.
+Burn scars for sensitivity S5 are MTBS perimeters, used as geometry only \citep{Eidenshink2007MTBS}. Control locations for the
+secondary definitions A50 and A25 come from the DNR PCL raster \citep{OConnor2017PCL}.
+
+\section{The pre-registration}
+
+\subsection{Freeze, registration and outcome fetch}
+The plan, code, blind predictor table, raw inputs, logs and critical-value records were hash-frozen in
+\texttt{FREEZE.json} and submitted to OpenTimestamps. Outcomes (fire size) were requested only after three guards passed:
+G1, every frozen file unchanged; G2, an anonymous download of the public plan and \texttt{FREEZE.json} byte-identical to the local copies;
+G3, no shared ignition with the pilot. The published report gives this order of events on 22 October 2026 (UTC):
+registration record written at 11:30:09; addendum registration at 11:30:17; the guard download at 11:30:56; all
+14{,}105 of 14{,}105 outcomes fetched by 11:34:43, none missing and none overlapping the pilot; the fetch record timestamped
+at 11:34:46. \texttt{run\_test.py} then ran once. The report records no deviations from the plan beyond Addendum~1, which
+changed no frozen file, model, statistic, critical value or decision rule.
+
+\subsection{Five audits}
+The plan passed through five versions, each frozen, timestamped and audited by a separate agent that had not built the study.
+None was published before v1.4.
+\begin{enumerate}
+\item \textbf{Audit of v1.0} found an inaccurate blindness statement about MTBS attributes, a registration guard that trusted a local file,
+  neglect of the 33 years shared with the pilot, unfrozen fetch evidence and undisclosed post-fire map updates.
+  v1.1 fixed these and also replaced the pilot's interval with $t_{0.975,32}\times\max\mathrm{SE}$.
+\item \textbf{Audit of v1.1} found that this calibration held only if spatial correlation stops at the 20\,km block edges.
+  Under correlation that crosses block edges, the rule gave 6--8\% false calls. v1.2 calibrated a critical value $C_2=2.31$ under four
+  spatial error models fitted to the pilot's residuals.
+\item \textbf{Audit of v1.2} found that the fitted range of residual correlation (11\,km) is biased low. Under fields with ranges of 22--45\,km,
+  the rule gave 6.7--9.3\% false calls. v1.3 calibrated over a screened family of error models that the pilot's residuals cannot reject (140 exponential
+  fields and 9 block models), and changed the primary model to M2R, which adds 40\,km regional fixed effects. That choice was recorded before the pilot's
+  M2R estimate was computed.
+\item \textbf{Audit of v1.3} found that $C_2=2.37$ had no margin against anisotropic fields and compartment-level clustering, both outside the family,
+  and that S13's critical value under\-covered exact long-range fields. v1.4 added a stress set of 90 structures fixed in advance, of which 52 are retained.
+  This raised the critical values to $C_2=2.53$, $C_1=2.08$ and $C_{2,\mathrm{M2}}=3.93$.
+\item \textbf{Audit of v1.4} (a verification audit) found no critical or moderate issue and six minor ones. Addendum~1, written and timestamped
+  before any outcome was requested, answered them. It noted that between grid points a retained model could set a critical value up to
+  about 0.08 higher for $C_2$ (2.61) and about 0.16 higher for $C_{2,\mathrm{M2}}$ (4.10). It therefore labels as \emph{borderline} any verdict with
+  $2.53<T\le2.61$ (primary) or $3.93<T\le4.10$ (S13). These notes change no decision.
+\end{enumerate}
+Up to v1.2 every change widened the interval. v1.3 changed the model, and v1.4 changed only the critical values, which can only rise.
+All changes were made before any outcome from the region existed.
+
+\section{Region, data and sample}
+The analysis box is longitude $-119.4$ to $-117.0$ and latitude 47.75 to 49.0. It covers eastern Okanogan, Ferry, Stevens and Pend Oreille
+counties, the northern edges of Lincoln and Spokane counties, and a strip about 3\,km wide of the Idaho panhandle. The region adjoins the pilot
+to the east. Predictors were computed on a 30\,m grid in EPSG:5070 over the analysis box plus 15\,km.
+The sample is every FPA FOD record inside the box: 14{,}105 ignitions (4{,}779 natural, 9{,}080 human, 246 missing cause),
+none shared with the pilot. After the predictor-based rules (ignitions on holdable cells and censored compartments excluded), 11{,}314 ignitions
+are usable under definition B.
+
+\paragraph{Definitions.} \textbf{B} (primary): compartments bounded by roads, water and non-burnable ground.
+\textbf{A50}/\textbf{A25}: PCL $>0.5$ / $>0.25$. \textbf{B+}: B plus MTBS scars from the previous 10 years.
+The PCL raster has large no-data gaps in this region, so A50 and A25 samples are small (102 and 712).
+
+\paragraph{Known limits of blindness (disclosed in the plan).} During the pilot, MTBS perimeters with full attributes were received for
+the pilot's compute box, and 63 of them reach into this region. Only geometry and year were kept. Sensitivities S10 and S10b drop the exposed ignitions.
+The fuel and road maps date from 2024 but are applied to fires from 1992 to 2024. LANDFIRE updates fuels after disturbance (addressed by S11),
+and post-fire roads would work against the hypothesis. Five ignitions have a pilot ignition on the same date within 5\,km; S12 drops them.
+
+\section{Model and decision rule}
+The outcome is $Y=\log_{10}(\text{fire size, acres})$. The models are
+\begin{align*}
+\text{M1:}\quad & Y \sim \log_{10}A_{\text{enc}} + \text{ERC}_{\text{pct}} + \text{fuel group} + \text{cause} + \text{month} + \text{year},\\
+\text{M2:}\quad & \text{M1} + \log_{10}(\rho+0.001) + \log_{10}(\text{road distance}+30\,\text{m}),\\
+\text{M2R:}\quad & \text{M2} + \text{40\,km region},
+\end{align*}
+with categorical terms as fixed effects, estimated by OLS. $A_{\text{enc}}$ is the area of the compartment that encloses the ignition and $\rho$ is barrier density.
+The 40\,km regions are the cells $(\lfloor x/40000\rfloor,\lfloor y/40000\rfloor)$ in EPSG:5070, each the $2\times2$ parent of the 20\,km
+clustering blocks.
+
+The single confirmatory test is H2, definition B, model M2R: $\beta(\log_{10}A_{\text{enc}})>0$. Let $\mathrm{SE}_2$ be the CR1 standard error
+two-way clustered by year and 20\,km block \citep{Cameron2011}, and $\mathrm{SE}_{\text{year}}$ the year-clustered CR1 standard error.
+With $T=\beta/\max(\mathrm{SE}_2,\mathrm{SE}_{\text{year}})$, the registered interval is $\beta\pm C_2\max(\mathrm{SE}_2,\mathrm{SE}_{\text{year}})$,
+$C_2=2.53$. The verdict is SUPPORTED if the interval lies above 0, CONTRADICTED if it lies below 0, and NOT SUPPORTED otherwise. The pre-specified reading is
+REPLICATED if SUPPORTED. It is NOT REPLICATED if NOT SUPPORTED and the one-sided bound $\beta+C_1\max\mathrm{SE}$ ($C_1=2.08$) falls below
+$\beta_{33}=0.0415$, the effect the pilot had 33\% power to detect \citep{Simonsohn2015}. It is INCONCLUSIVE otherwise.
+The frozen decision code is:
+\begin{lstlisting}
+def decide_ci(lo, hi):
+    return 'SUPPORTED' if lo > 0 else ('CONTRADICTED' if hi < 0 else 'NOT SUPPORTED')
+
+def decide_primary(tw):
+    """The registered P1C decision: the interval beta +- C2 * max(two-way SE, year-only SE)."""
+    if tw.get('not_estimable'):
+        return 'NOT ESTIMABLE'
+    return decide_ci(tw['interval_registered'][0], tw['interval_registered'][1])
+\end{lstlisting}
+Across the error models in the plan's power table, the simulated probability of SUPPORTED was 0.52--0.60 at $\beta_{33}$ and 0.86--0.95 at the pilot's M2 estimate (0.063).
+
+\section{Re-execution}
+We downloaded the eleven registered input files and the frozen \texttt{run\_test.py} from the registration repository at commit
+\texttt{cfdf55a24b2b833ef88dcd160813edab9c7116dd}, gunzipped the three compressed tables, and checked each SHA-256 hash against the registered list.
+All twelve matched. The entry script \texttt{rerun\_p1c.py} copies the inputs into the folder layout the frozen script expects and runs it
+unchanged with \texttt{python3 -B}. It then writes the full output (\texttt{p1c\_results.json}) and the primary test
+(\texttt{p1c\_primary.json}). The frozen script itself refuses to run unless every input matches \texttt{FREEZE.json} and the outcomes match the
+fetch record; it reported \texttt{inputs\_verified: true}.
+
+We ran it with Python 3.12.3, numpy 2.5.4, pandas 3.1.1 and scipy 1.18.1 (the frozen script imports \texttt{scipy.stats} for a
+$t$ critical value). Its only randomness, the 2{,}000-replicate year bootstrap and the 10{,}000 H4 permutations, uses a fixed generator
+seed (20261020). Two runs from an empty results folder gave byte-identical files. Every number reported below agrees with the
+published report to the precision it gives. The SHA-256 of our \texttt{p1c\_primary.json} differs from the hash recorded on 9 November 2026
+with numpy 2.5.3 and pandas 3.0.5. To see why, we also ran the package in a scratch copy with numpy 2.5.3 and pandas 3.0.5 on our machine.
+That gave a third hash. Across both runs, all decisions, readings and counts were identical, and the largest relative difference in any number
+was $9\times10^{-13}$ in \texttt{p1c\_primary.json} and $6\times10^{-12}$ in \texttt{p1c\_results.json}. The hashes therefore differ only through floating-point
+rounding in the last digits, which depends on the platform and linear-algebra libraries; see Section~\ref{sec:repro}.
+
+\section{Results}
+
+\subsection{Primary result}
+\begin{table}[h]\centering
+\caption{The registered primary test (H2, definition B, model M2R), from \texttt{results/p1c\_primary.json}.}
+\begin{tabular}{lr}\toprule
+Ignitions in the primary sample & 11{,}314 \\
+Year clusters / 20\,km blocks / 40\,km regions & 33 / 75 / 24 \\
+$\beta$, $\log_{10}$ size per $\log_{10}$ compartment area & \textbf{0.0531} \\
+$\mathrm{SE}_2$ / $\mathrm{SE}_{\text{year}}$ / max & 0.0120 / 0.0097 / 0.0120 \\
+Registered interval, $\beta\pm2.53\times\max\mathrm{SE}$ & \textbf{0.0228 to 0.0835} \\
+$T=\beta/\max\mathrm{SE}$ & 4.42 \\
+Decision (frozen rule) & \textbf{SUPPORTED} \\
+Pre-specified reading & \textbf{REPLICATED} \\
+Fire size per tenfold larger compartment & $\times1.130$ \\
+\bottomrule\end{tabular}\end{table}
+
+$T=4.42$ lies outside the borderline band $(2.53,2.61]$ of Addendum~1. Other readings are reported but do not decide.
+The v1.1-rule interval ($t_{0.975,32}\times\max\mathrm{SE}$) is 0.0287 to 0.0776, which is SUPPORTED, and the pilot-rule reading is also SUPPORTED.
+The year-clustered 95\% CI is 0.0342 to 0.0721 and the year cluster bootstrap gives 0.0350 to 0.0721.
+For the small-telescopes reading, $\beta_{33}=0.0415$ and the 90\% upper bound is 0.078, so effects as large as those the pilot could detect are not rejected.
+The barrier-density and road-distance coefficients are $-0.049$ and $0.141$.
+
+\subsection{Pre-specified checks}
+\paragraph{S13, the pilot's model M2 without regional terms ($C_{2,\mathrm{M2}}=3.93$; no decision weight).}
+$\beta=0.0330$, $\max\mathrm{SE}=0.0142$, $T=2.33$. The registered interval is $-0.023$ to $0.089$, so the verdict is NOT SUPPORTED against 3.93,
+and also against 4.10, so it is not borderline. Its year-clustered 95\% CI is 0.005 to 0.061 and its v1.1-rule reading is SUPPORTED.
+\emph{The estimate is smaller without the 40\,km regional terms.} The plan notes that M2 is exposed to differences between reporting agencies.
+It also notes that M2R compares compartments only within regions, so an effect that worked only between regions would not be detected by the primary test.
+
+\paragraph{Leave-one-year-out.} $\beta$ ranges from 0.049 to 0.057 over the 33 years, and no year's removal changes the decision.
+
+\paragraph{Comparison with the pilot (M2R).} The pilot's M2R estimate is 0.079, so the difference is $-0.026$ ($z=-0.98$, $p=0.33$ with two-way SEs,
+from the stacked model). The pooled GLS estimate (two-way) is 0.057 (0.036 to 0.079).
+
+\begin{table}[h]\centering\footnotesize
+\caption{Sensitivity analyses, definition B. 95\% CIs; the registered-rule interval is given where the plan specifies one.}
+\label{tab:sens}
+\begin{tabular}{llrll}\toprule
+Check & Model & $n$ & $\beta$ (95\% CI) & Registered rule \\\midrule
+S10 outside the pilot's compute box & M2R & 9{,}941 & 0.043 (0.016--0.069) & SUPPORTED (0.009--0.077)\\
+S10b also excl.\ pilot-fetched MTBS & M2R & 9{,}368 & 0.042 (0.012--0.072) & SUPPORTED (0.003--0.081)\\
+S11 no fuel-group term & M2R & 11{,}314 & 0.051 (0.027--0.075) & SUPPORTED (0.020--0.082)\\
+S12 without possible duplicates & M2R & 11{,}309 & 0.052 (0.029--0.076) & SUPPORTED (0.022--0.083)\\
+S1 snap ignitions on holdable cells & M2 & 13{,}707 & 0.057 (0.039--0.075) & n/a\\
+S2 include censored compartments & M2 & 11{,}585 & 0.031 (0.012--0.050) & n/a\\
+S3 drop coarse coordinates & M2 & 11{,}297 & 0.033 (0.014--0.052) & n/a\\
+S5 B+ (prior 10-yr burn scars) & M2 & 11{,}105 & \textbf{0.020} (0.001--0.039) & n/a\\
+S6a lightning-caused only & M2 & 4{,}226 & \textbf{$-$0.015} ($-$0.062--0.033) & n/a\\
+S6b human-caused only & M2 & 6{,}915 & 0.054 (0.031--0.076) & n/a\\
+S8 years 2010 on & M2 & 4{,}865 & 0.049 (0.025--0.073) & n/a\\
+\bottomrule\end{tabular}\end{table}
+
+\paragraph{Secondary models (not confirmatory).}
+B under M1: 0.063 (0.042--0.085), $n=11{,}314$. A50 under M1: 0.553 (0.361--0.746) and under M2: 0.527 (0.366--0.689), both $n=102$.
+A25 under M1: 0.158 (0.087--0.228) and under M2: 0.140 (0.071--0.209), both $n=712$. Because of the PCL gaps the A50 sample is small. The PCL raster is a
+model product that may have been trained on fire perimeters from this region.
+
+\paragraph{H3, escaped fires} (B, M2, fires $\ge10$ acres, $n=802$): $\beta=0.091$ (0.001--0.181).
+\paragraph{H4, containment} (B, $n=802$): the observed share of fires no larger than their compartment is 0.946, against a permutation null mean of 0.929
+(within year $\times$ fuel-group strata), one-sided $p=0.0002$.
+
+\section{Discussion and limitations}
+Under the rule frozen and timestamped before any outcome was requested, the compartment association found in the pilot replicates in the
+adjoining region. It is slightly smaller than the pilot's estimate under the same model (0.053 against 0.079), and the two estimates are statistically compatible.
+In plain terms, after fire weather, fuel, cause, month, year, barrier density, road distance and 40\,km region are taken into account, fires that
+start in a compartment ten times larger end about 13\% larger.
+
+The study's own design and pre-specified checks limit what this shows:
+\begin{itemize}
+\item \textbf{Observational.} The study does not show that barriers stop fires. Nor can it separate fuel discontinuity from suppression access:
+  roads that bound small compartments also bring crews and engines. Road distance and barrier density are controlled, but not experimentally.
+\item \textbf{S13: without the regional terms the estimate is 0.033 and does not pass its critical value} (3.93). The result therefore depends on
+  comparing compartments within 40\,km regions. This model was chosen, before any outcome existed, for robustness to long-range spatial correlation.
+\item \textbf{S6a: lightning-caused fires show no effect} ($-0.015$, CI $-0.062$ to $0.033$). The association is in human-caused fires (S6b, 0.054).
+  Human ignitions cluster near roads and settlements, where access and early detection also differ, so this pattern fits a role for
+  suppression access but does not identify one.
+\item \textbf{S5: counting recent burn scars as barriers shrinks the estimate to 0.020.} S2 (censored compartments included, 0.031) and S3
+  (coarse coordinates dropped, 0.033) also give smaller estimates than the primary.
+\item \textbf{Residual statistical risk.} The critical values cover the screened family and the stress set. They do not cover structures outside both,
+  such as correlation that changes from year to year, combinations of structures at their limits, or non-exponential shapes. Between grid points the binding
+  value could be up to about 0.08 higher. The primary $T=4.42$ is far from either bound.
+\item \textbf{Maps and blindness.} The barrier and fuel maps are from 2024 and are applied to fires from 1992 onward. The disclosed MTBS exposure is addressed by S10 and
+  S10b, which do not change the decision.
+\item \textbf{Scope of the re-execution.} Our re-run shows that the frozen code gives the published numbers from the registered files. It does not check those files against the agencies'
+  servers, the registration's timestamps, or the blindness of the original fetch. The frozen script checks the inputs against \texttt{FREEZE.json} and
+  trusts the fetch record. The study has not been peer reviewed.
+\end{itemize}
+
+\section{Conclusions}
+The pre-registered P1C confirmatory test, re-executed unchanged on the registered inputs, gives $\beta=0.0531$ (registered interval 0.0228 to 0.0835,
+$n=11{,}314$). The decision is SUPPORTED and the reading is REPLICATED: fires that start in a tenfold larger compartment of mapped barriers end about 13\% larger.
+This is an observational association and does not show that barriers stop fires. It weakens to 0.033, below its critical value, without the 40\,km
+regional terms (S13). It is absent in lightning-caused fires (S6a), and it shrinks to 0.020 when recent burn scars count as barriers (S5).
+Mechanism remains open, in particular whether suppression access rather than fuel discontinuity carries the association.
+
+\section{Reproducibility}\label{sec:repro}
+{\sloppy
+The package holds \texttt{code/run\_test.py} (the frozen registered script, SHA-256 \texttt{25abae84\ldots}), \texttt{code/rerun\_p1c.py}
+(the entry script, \texttt{065fe6a5\ldots}), the eleven registered inputs under \texttt{data/} with their URLs and hashes in \texttt{data\_pins.json},
+and the outputs \texttt{results/p1c\_primary.json} and \texttt{results/p1c\_results.json}. From the package folder, with an empty \texttt{results/},
+run \texttt{python3 code/rerun\_p1c.py}; it uses no network and takes a few minutes. It requires numpy, pandas and scipy. Our run used numpy 2.5.4, pandas 3.1.1 and scipy 1.18.1, and gave
+\texttt{p1c\_primary.json} with SHA-256 \texttt{6741918a\ldots} and \texttt{p1c\_results.json} with \texttt{adda924a\ldots}.\par}
+The entry script is:
+\begin{lstlisting}
+proc = subprocess.run([sys.executable, "-B", "run_test.py"], cwd=p1c, capture_output=True, text=True)
+...
+if results.get("inputs_verified") is not True or results.get("synthetic") is not False:
+    sys.stderr.write("run_test.py did not verify its inputs\n")
+    return 2
+primary = {"registered_test": "P1C v1.4, H2, definition B, model M2R",
+           "decision_rule": "SUPPORTED iff beta - C2 * max(SE_twoway, SE_year) > 0", ...}
+\end{lstlisting}
+The plan, addendum, audits, logs and published report are in the registration repository \citep{ViridisCanonPR138}.
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-11-12 (P4-T001): first version. Re-executed the registered P1C v1.4 confirmatory test unchanged on the registered inputs and
+  reported the registered study in full. No new analysis.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
