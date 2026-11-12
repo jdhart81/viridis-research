@@ -1,0 +1,29 @@
+{
+  "agent_minutes": 14.74,
+  "date": "2026-11-12",
+  "failure_category": "verifier_error",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "a2fcbc0d176454a57a9d68ef2f2e745a983174e1",
+    "run_attempt": 1,
+    "run_id": 43132034375,
+    "run_started_at": "2026-11-12T01:05:30Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43132034375",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": null,
+  "paper_built": false,
+  "project": "P4",
+  "proposed_statements": [],
+  "proven_statements": [],
+  "reason": "verifier error: EngineError: sealed_statement_broken: P1.BitQuad: [{'severity': 'error', 'line': None, 'column': None, 'text': 'docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: cannot enter cgroupv2 \"/sys/fs/cgroup/docker\" with domain controllers -- it is in threaded mode\\n\\nRun \\'docker run --help\\' for more information\\n'}]",
+  "run_dir": null,
+  "schema": "viridis-outcome-v1",
+  "status": "FAILED",
+  "task": "P4-T001",
+  "written_at": "2026-11-12T01:50:56Z",
+  "written_by": "verify",
+  "zip_sha256": null
+}
