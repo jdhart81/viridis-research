@@ -1,0 +1,27 @@
+# The certified index must equal what the record says (I15). The engine refreshes it with every commit it
+# makes; this check catches a hand-made change that forgot to. It holds no secrets and writes nothing.
+name: index-check
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Compare index/certified.json with the record
+        run: python3 -m engine.certified_index --check
+      - name: Check the context file hashes of every project
+        run: |
+          for f in projects/*/context/SOURCES.sha256; do
+            (cd "$(dirname "$f")" && sha256sum --quiet -c SOURCES.sha256)
+          done
