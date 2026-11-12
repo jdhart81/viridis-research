@@ -15,7 +15,9 @@
     "projects/P2/context/SLSPT_ShadowPrice.lean",
     "projects/P2/context/SLSPT_ShadowPriceLevelCurves.lean",
     "projects/P2/context/SLSPT_IntelligenceBound.lean",
-    "projects/P2/context/SLSPT_SLSPTTowerOrdering.lean"
+    "projects/P2/context/SLSPT_SLSPTTowerOrdering.lean",
+    "projects/P2/context/Tempo_function.json",
+    "projects/P2/context/Tempo_runner.py"
   ],
   "id": "P2",
   "priority": 4,
@@ -62,6 +64,11 @@
     },
     {
       "identifier": "10.5281/zenodo.20006414",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20705183",
       "relation": "isSupplementTo",
       "scheme": "doi"
     }
