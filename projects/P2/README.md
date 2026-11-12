@@ -23,5 +23,13 @@ Two of these kernels state capacity bounds from the Intelligence Bound family. T
 Landauer limit enters as a hypothesis (`SatisfiesLandauerLimit`) or as a definition of the bound, and is not proved.
 Sealed statements must keep that visible. See project P5 for why an unconditional reading is wrong.
 
+## Tempo (added 2026-11-12)
+
+Tempo, the stewardship-cadence kernel, is in the OS core list. Its registry entry names six theorems in a Lean module
+`StewardshipTempo` and lists no source file; the only evidence on record is a receipt from the retired Comparator. A
+replay of the canon on 2026-11-11 found no source for it. There is nothing to port, so P2 rebuilds its formal core from
+what the kernel computes: `context/Tempo_function.json` and `context/Tempo_runner.py`, copied from viridis-canon at
+commit 6a177d6b1a779f38c9215bd618f17f9be29cc253.
+
 Sources: the archived canon at github.com/jdhart81/viridis-canon, commit 80d32904d751b45f415e23f872510cc2eddca3ff. The
 files are copied into context/, with hashes in context/SOURCES.sha256.
