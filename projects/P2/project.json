@@ -6,10 +6,19 @@
     "projects/P2/context/CarbonContinuity_canon.lean",
     "projects/P2/context/ForestNucleation.lean",
     "projects/P2/context/AfforestationStewardship.lean",
-    "projects/P2/context/GaianHarmonization.lean"
+    "projects/P2/context/GaianHarmonization.lean",
+    "projects/P2/context/P0_IntelligenceBound_COMPILED.lean",
+    "projects/P2/context/MRAB.lean",
+    "projects/P2/context/SymbioticIntelligenceBound.lean",
+    "projects/P2/context/TRWFN_ViridisRun139.lean",
+    "projects/P2/context/SLSPT_InverseSquare.lean",
+    "projects/P2/context/SLSPT_ShadowPrice.lean",
+    "projects/P2/context/SLSPT_ShadowPriceLevelCurves.lean",
+    "projects/P2/context/SLSPT_IntelligenceBound.lean",
+    "projects/P2/context/SLSPT_SLSPTTowerOrdering.lean"
   ],
   "id": "P2",
-  "priority": 1,
+  "priority": 4,
   "related_identifiers": [
     {
       "identifier": "10.5281/zenodo.21855690",
@@ -28,6 +37,31 @@
     },
     {
       "identifier": "10.5281/zenodo.21168212",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.19317982",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20800757",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20764638",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.22236785",
+      "relation": "isSupplementTo",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20006414",
       "relation": "isSupplementTo",
       "scheme": "doi"
     }
