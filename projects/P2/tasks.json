@@ -60,6 +60,104 @@
       "max_runs": 7,
       "statement_id": "P2.Harmonization",
       "title": "Re-certify the Harmonization market-clearing core"
+    },
+    {
+      "id": "P2-T006",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 4,
+      "title": "Propose sealed statements for Decision-information capacity and Multi-ring alignment capacity",
+      "produces": [
+        "P2.DecisionInformationCapacity",
+        "P2.MultiRingAlignment"
+      ],
+      "brief": "Draft sealed statements for two live kernels, one module each in proposals/. P2.DecisionInformationCapacity (context/P0_IntelligenceBound_COMPILED.lean): the conditional bound the audit kernel applies, with intelligence_bound as the core and thermodynamic_bound_lemma, landauer_dissipation_bound and data_bound_lemma_conditional as its parts. The canon file is a measure-theoretic development (processes, mutual information, a limsup rate). Restate the definitions the core theorem needs and no more. The Landauer limit is a hypothesis there (SatisfiesLandauerLimit): keep it as an explicit hypothesis in the Statement, name it in the docstring, and say in the rationale that the theorem does not prove it for any physical system. Read projects/P5/README.md first: an early source stated this bound with no hypothesis tying the rate to a system, and that version is false. P2.MultiRingAlignment (context/MRAB.lean): Dbar_le_arith_mean, mrab_bound_le_baseRate, mrab_saturation and mrab_reduces_to_IB over the same real-valued definitions (kappa, Dbar, alignFactor, baseRate, mrabBound). These are facts about a defined bound; they do not show that any layered system attains or obeys it. Each Statement must say what the canon theorems say, over the same definitions, restated self-contained (Mathlib only, inside the statement's own namespace; do not import or copy a canon module wholesale, and declare no axiom). Do not weaken it, and do not strengthen it beyond what the kernel needs. Include sanity examples with concrete numbers (norm_num or decide) showing the definitions mean what their comments say, including one negative control. The rationale file names the canon theorems and the file hash they come from (context/SOURCES.sha256), the kernel decision they back, and every hypothesis. Say plainly which parts are elementary. If a canon theorem cannot be restated faithfully, say so and propose the nearest faithful statement with the difference explained."
+    },
+    {
+      "id": "P2-T007",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 4,
+      "title": "Propose sealed statements for Symbiotic surplus and Ecological-thermodynamic allocation",
+      "produces": [
+        "P2.SymbioticSurplus",
+        "P2.EcologicalAllocation"
+      ],
+      "brief": "Draft sealed statements for two live kernels, one module each in proposals/. P2.SymbioticSurplus (context/SymbioticIntelligenceBound.lean): joint_bound_from_partners, ness_reciprocity, symbiotic_surplus_threshold and cos_sq_extraction_bounded. P2.EcologicalAllocation (context/TRWFN_ViridisRun139.lean): clippedAllocation_nonnegative, clippedAllocation_le_one, interior_stationarity, embodied_burden_lowers_benefit and retrofit_allocation_nonvacuous. For each, state which inputs the kernel takes as declared by its user (values, costs, frictions, energy accounts) and say that the theorem certifies the allocation or audit rule for those declared inputs, not the inputs. Each Statement must say what the canon theorems say, over the same definitions, restated self-contained (Mathlib only, inside the statement's own namespace; do not import or copy a canon module wholesale, and declare no axiom). Do not weaken it, and do not strengthen it beyond what the kernel needs. Include sanity examples with concrete numbers (norm_num or decide) showing the definitions mean what their comments say, including one negative control. The rationale file names the canon theorems and the file hash they come from (context/SOURCES.sha256), the kernel decision they back, and every hypothesis. Say plainly which parts are elementary. If a canon theorem cannot be restated faithfully, say so and propose the nearest faithful statement with the difference explained."
+    },
+    {
+      "id": "P2-T008",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 4,
+      "title": "Propose a sealed statement for the Inverse-square shadow-price planner",
+      "produces": [
+        "P2.ShadowPriceCapacity"
+      ],
+      "brief": "Draft one sealed statement, in one module in proposals/, for the monitoring-tower planner. Its formal core is spread over five canon files (context/SLSPT_InverseSquare.lean, SLSPT_ShadowPrice.lean, SLSPT_ShadowPriceLevelCurves.lean, SLSPT_IntelligenceBound.lean, SLSPT_SLSPTTowerOrdering.lean) and ten theorems: inv_sq_strict_mono_decreasing, shadow_price_strict_decreasing, shadow_price_level_curve, shadow_price_budget_tradeoff, prefactor_ordering, tower_ordering_trans, cap_nonneg, cap_strictMono_P, cap_strictMono_D, cap_strictAnti_C. Write the Statement as a conjunction with one clearly numbered part per theorem, over one consistent set of definitions. The capacity function there is the algebra cap = P*D/C that project P5 also studies: monotonicity in P, D and C is elementary, and says nothing about whether a sensor network attains the capacity. Each Statement must say what the canon theorems say, over the same definitions, restated self-contained (Mathlib only, inside the statement's own namespace; do not import or copy a canon module wholesale, and declare no axiom). Do not weaken it, and do not strengthen it beyond what the kernel needs. Include sanity examples with concrete numbers (norm_num or decide) showing the definitions mean what their comments say, including one negative control. The rationale file names the canon theorems and the file hash they come from (context/SOURCES.sha256), the kernel decision they back, and every hypothesis. Say plainly which parts are elementary. If a canon theorem cannot be restated faithfully, say so and propose the nearest faithful statement with the difference explained."
+    },
+    {
+      "id": "P2-T009",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T006"
+      ],
+      "max_runs": 7,
+      "statement_id": "P2.DecisionInformationCapacity",
+      "title": "Re-certify the Decision-information capacity core",
+      "brief": "Prove the sealed statement P2.DecisionInformationCapacity. Port the canon proofs in context/P0_IntelligenceBound_COMPILED.lean (written for Lean 4.24; port it to the pinned toolchain). The paper is the re-certification note for the audit kernel: what the conditional bound settles, that the Landauer limit is a hypothesis the theorem does not prove, and that the kernel checks a declared process against the bound without measuring anything. State in the abstract that the result certifies the mathematics the kernel applies and not any field input or ecological outcome."
+    },
+    {
+      "id": "P2-T010",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T006"
+      ],
+      "max_runs": 5,
+      "statement_id": "P2.MultiRingAlignment",
+      "title": "Re-certify the Multi-ring alignment capacity core",
+      "brief": "Prove the sealed statement P2.MultiRingAlignment. Port the canon proofs in context/MRAB.lean. The paper is the re-certification note for the layered-capacity audit: what the bound's algebra settles, and that no real system's alignment factors are certified. State in the abstract that the result certifies the mathematics the kernel applies and not any field input or ecological outcome."
+    },
+    {
+      "id": "P2-T011",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T007"
+      ],
+      "max_runs": 5,
+      "statement_id": "P2.SymbioticSurplus",
+      "title": "Re-certify the Symbiotic surplus core",
+      "brief": "Prove the sealed statement P2.SymbioticSurplus. Port the canon proofs in context/SymbioticIntelligenceBound.lean. The paper is the re-certification note for the reciprocity audit: what the surplus threshold settles for declared energy accounts, and what it does not say about real partners. State in the abstract that the result certifies the mathematics the kernel applies and not any field input or ecological outcome."
+    },
+    {
+      "id": "P2-T012",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T007"
+      ],
+      "max_runs": 5,
+      "statement_id": "P2.EcologicalAllocation",
+      "title": "Re-certify the Ecological-thermodynamic allocation core",
+      "brief": "Prove the sealed statement P2.EcologicalAllocation. Port the canon proofs in context/TRWFN_ViridisRun139.lean. The paper is the re-certification note for the capital-allocation kernel: what the clipped allocation and its stationarity condition settle for declared values and costs. State in the abstract that the result certifies the mathematics the kernel applies and not any field input or ecological outcome."
+    },
+    {
+      "id": "P2-T013",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P2-T008"
+      ],
+      "max_runs": 7,
+      "statement_id": "P2.ShadowPriceCapacity",
+      "title": "Re-certify the Inverse-square shadow-price planner core",
+      "brief": "Prove the sealed statement P2.ShadowPriceCapacity. Port the canon proofs in the five context/SLSPT_*.lean files. The paper is the re-certification note for the tower planner: what the shadow-price and ordering results settle, and that detection physics and site data are inputs. State in the abstract that the result certifies the mathematics the kernel applies and not any field input or ecological outcome."
     }
   ]
 }
