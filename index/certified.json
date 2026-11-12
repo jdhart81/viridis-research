@@ -15,7 +15,7 @@
    "title": "A machine-checked raster bridge for Trees Cannot Cut"
   },
   "P2": {
-   "priority": 1,
+   "priority": 4,
    "status": "active",
    "title": "Re-certifying the live Viridis OS decision kernels"
   },
