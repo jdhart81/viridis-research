@@ -20,6 +20,8 @@ jobs:
           persist-credentials: false
       - name: Compare index/certified.json with the record
         run: python3 -m engine.certified_index --check
+      - name: Lean pins and their labels agree (lean/ files and config/engine.json)
+        run: python3 -m engine.pins --check
       - name: Check the context file hashes of every project
         run: |
           for f in projects/*/context/SOURCES.sha256; do

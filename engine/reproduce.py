@@ -4,6 +4,10 @@ Checks the manifest, recompiles the sealed statements, re-runs the five Lean
 stages for every formal claim, and compares the result with
 ``certification.json``. ``--docker`` uses the verifier's sandbox; the default
 runs Lean directly.
+
+A run is reproduced at the pins it was verified with. If this checkout pins a different Lean or Mathlib than
+the run folder records, the tool stops and says which commit to check out. ``--at-checkout-pins`` runs the
+checks at this checkout's pins anyway; that is a re-check at newer pins, not a reproduction.
 """
 from __future__ import annotations
 
@@ -14,7 +18,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from . import lean_check, package, statements
+from . import lean_check, package, pins, statements
 from .util import RECORD_ROOT as REPO_ROOT, load_json
 
 
@@ -31,8 +35,20 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--docker", action="store_true")
     ap.add_argument("--toolchain", type=Path)
     ap.add_argument("--lake-project", type=Path, default=REPO_ROOT / "lean")
+    ap.add_argument("--at-checkout-pins", action="store_true",
+                    help="re-check at this checkout's pins even when the run was verified at other pins")
     args = ap.parse_args(argv)
     folder = args.run_dir if args.run_dir.is_absolute() else (Path.cwd() / args.run_dir)
+    mismatch = pins.run_mismatch(folder, REPO_ROOT)
+    if mismatch and not args.at_checkout_pins:
+        print(f"pins differ: {mismatch}.")
+        print("Check out the commit that added this run, fetch its Mathlib cache, and run this again:")
+        print(f'  git checkout "$(git log --diff-filter=A --format=%H -1 -- {args.run_dir}/MANIFEST.sha256)"')
+        print("  (cd lean && lake exe cache get)")
+        print("Or pass --at-checkout-pins to re-check the proofs at this checkout's pins instead.")
+        return 2
+    if mismatch:
+        print(f"note: {mismatch}; re-checking at this checkout's pins (not a reproduction at the original pins)")
     problems = package.verify_manifest(folder)
     print("manifest:", "ok" if not problems else "; ".join(problems))
     cert = load_json(folder / "certification.json")

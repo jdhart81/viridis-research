@@ -36,6 +36,8 @@ def reproduce_md(*, run_dir: str, date: str, commit: str, repository: str, toolc
              "## Everything at once", "",
              "```bash",
              f"git clone https://github.com/{repository} && cd {repository.split('/')[1]}",
+             "# the commit that added this run, so Lean and Mathlib are the ones it was verified with",
+             f'git checkout "$(git log --diff-filter=A --format=%H -1 -- {run_dir}/MANIFEST.sha256)"',
              "# Lean toolchain and the Mathlib cache (pins in lean/lean-toolchain and lean/lake-manifest.json)",
              "curl -sSfL https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolchain none",
              "(cd lean && lake exe cache get)",
