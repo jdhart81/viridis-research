@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-13_P5`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-13_P5) (task P5-T001) proposes a new formal target `P5.UnrestrictedBoundFalse`.\n\n- File: [`runs/2026-11-13_P5/proposals/P5.UnrestrictedBoundFalse.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-13_P5/proposals/P5.UnrestrictedBoundFalse.lean), sha256 `3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d`\n- Rationale: [`runs/2026-11-13_P5/proposals/P5.UnrestrictedBoundFalse.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-13_P5/proposals/P5.UnrestrictedBoundFalse.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P5 · The unrestricted Intelligence Bound postulate is false as written\n\n`Gaia_Intelligence_Theorem.lean` (January 2026, SHA-256 `37c017145dcf…2098c4`) declares a\npostulate `intelligence_bound` quantifying the rate `dI_dt` over *all* reals, with no hypothesis\ntying it to any system. This module restates the two historical definitions over Mathlib only\n(same algebra, nothing imported or copied from the historical file) and states that the\nuniversally quantified bound is false.\n\nDefinitions (mirroring the historical ones):\n* `landauerEnergy kB T = kB · T · log 2`;\n* `maxBitRate P kB T = P / landauerEnergy kB T`.\n\n`Statement`: it is not the case that for all reals `dIdt P D kB T` with\n`kB > 0`, `T > 0`, `P ≥ 0`, `0 ≤ D ≤ 1` we have `dIdt ≤ maxBitRate P kB T · D`.\n\nA witness (not part of the statement) is `dIdt = 1`, `P = 0`, `D = 0`, `kB = T = 1`.\n\nThe statement concerns that exact formal text. It says nothing about the Intelligence Bound as a\nphysical conjecture, which needs a model of the system whose rate is bounded, and nothing about\nwhether any agent preserves biodiversity.\n-/\n\nnoncomputable section\n\nnamespace ViridisStatements.P5.UnrestrictedBoundFalse\n\n/-- Landauer energy per bit, `kB · T · ln 2` (mirrors the historical `landauer_energy`). -/\ndef landauerEnergy (kB T : ℝ) : ℝ := kB * T * Real.log 2\n\n/-- Maximal bit rate at power `P`, `P / (kB · T · ln 2)` (mirrors the historical\n`max_bit_rate`). -/\ndef maxBitRate (P kB T : ℝ) : ℝ := P / landauerEnergy kB T\n\n/-- **Proposed sealed target `P5.UnrestrictedBoundFalse`.** The historical postulate, with the rate\nquantified over all reals, is false. -/\ndef Statement : Prop :=\n  ¬ (∀ dIdt P D kB T : ℝ,\n      kB > 0 → T > 0 → P ≥ 0 → D ≥ 0 → D ≤ 1 →\n      dIdt ≤ maxBitRate P kB T * D)\n\n/-! ## Sanity checks -/\n\n/-- At zero power the maximal bit rate is zero. -/\nexample : maxBitRate 0 1 1 = 0 := by\n  simp [maxBitRate]\n\n/-- The Landauer energy at `kB = T = 1` is `ln 2 > 0`. -/\nexample : 0 < landauerEnergy 1 1 := by\n  simp [landauerEnergy, Real.log_pos one_lt_two]\n\n/-- The witness `dIdt = 1, P = 0, D = 0, kB = T = 1` meets every guard and violates the\nconclusion: the bound evaluates to `0` and `1 ≤ 0` fails. -/\nexample : (1 : ℝ) > 0 ∧ (1 : ℝ) > 0 ∧ (0 : ℝ) ≥ 0 ∧ (0 : ℝ) ≥ 0 ∧ (0 : ℝ) ≤ 1 ∧\n    ¬ ((1 : ℝ) ≤ maxBitRate 0 1 1 * 0) := by\n  norm_num\n\n/-- The guards and the arithmetic core of the witness, checked by `decide` on natural numbers:\nevery guard holds and the conclusion `1 ≤ 0 · 0` fails. -/\nexample : (0 < 1 ∧ 0 < 1 ∧ 0 ≤ 0 ∧ 0 ≤ 1) ∧ ¬ (1 ≤ 0 * 0) := by\n  decide\n\n/-- Negative control: once the rate is tied to the bound by hypothesis, the implication is\ntrivially true. The missing ingredient in the historical postulate is exactly such a condition. -/\nexample : ∀ dIdt P D kB T : ℝ,\n    kB > 0 → T > 0 → P ≥ 0 → D ≥ 0 → D ≤ 1 →\n    dIdt ≤ maxBitRate P kB T * D → dIdt ≤ maxBitRate P kB T * D :=\n  fun _ _ _ _ _ _ _ _ _ _ h => h\n\n/-- Negative control: a nonpositive rate never violates the bound when `P, D ≥ 0` and\n`kB, T > 0`; so a counterexample needs a positive rate exceeding the capacity. -/\nexample : ∀ dIdt P D kB T : ℝ,\n    kB > 0 → T > 0 → P ≥ 0 → D ≥ 0 → dIdt ≤ 0 →\n    dIdt ≤ maxBitRate P kB T * D := by\n  intro dIdt P D kB T hkB hT hP hD hr\n  have hL : 0 < landauerEnergy kB T := by\n    unfold landauerEnergy\n    exact mul_pos (mul_pos hkB hT) (Real.log_pos one_lt_two)\n  have : 0 ≤ maxBitRate P kB T * D :=\n    mul_nonneg (div_nonneg hP hL.le) hD\n  linarith\n\nend ViridisStatements.P5.UnrestrictedBoundFalse\n\n```\n</details>",
+  "created_at": "2026-11-13T01:19:55Z",
+  "created_by": "verify:43335904766",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P5",
+    "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+    "source_path": "runs/2026-11-13_P5/proposals/P5.UnrestrictedBoundFalse.lean",
+    "statement_id": "P5.UnrestrictedBoundFalse",
+    "task": "P5-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-019",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P5.UnrestrictedBoundFalse proposed by runs/2026-11-13_P5"
+}

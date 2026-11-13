@@ -1,0 +1,46 @@
+{
+  "agent_minutes": 6.21,
+  "date": "2026-11-13",
+  "decision_requests": [
+    "D-019",
+    "D-020"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "16324aa1b69f58424eef38b8a8f1c06862068c45",
+    "run_attempt": 1,
+    "run_id": 43335904766,
+    "run_started_at": "2026-11-13T00:17:40Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43335904766",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "67331fd06f8fbcb63bce59ac2e561aaeea16cfe3fa1af9cbc3e59c42edeafb27",
+  "paper_built": true,
+  "project": "P5",
+  "proposed_statements": [
+    "P5.CompensationUnderCeiling",
+    "P5.UnrestrictedBoundFalse"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-13_P5",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P5-T001",
+  "title": "Two Corrections to Early Intelligence Bound Sources: An Inconsistent Axiom and Finite Compensation Under a Power Ceiling",
+  "written_at": "2026-11-13T01:19:54Z",
+  "written_by": "verify",
+  "zip_sha256": "7999f897bf88dda7662a9d2beaaa4d5c0e15405f5e1627d118fb086559c7bb1a"
+}

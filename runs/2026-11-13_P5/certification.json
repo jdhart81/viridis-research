@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-13",
+  "engine_sha": "18cc6c42e7b36bffde49fb1bdf1d5bdaf295ff1f",
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "The unrestricted historical Intelligence Bound axiom (rate quantified over all reals, guards kB>0, T>0, P>=0, 0<=D<=1) is false as written (proposed statement P5.UnrestrictedBoundFalse)."
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "For cap P D C = P*D/C with C>0, P>0, 0<dD<D: the power P*D/(D-dD) is the unique power restoring capacity after the loss; under a ceiling P<=Pmax it is attainable iff dD <= D*(1-P/Pmax); it diverges as dD -> D from below; and at D=0 no power restores a positive capacity (proposed statement P5.CompensationUnderCeiling)."
+    }
+  },
+  "lean": {},
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 5,
+  "project": "P5",
+  "proposals": [
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+      "statement_id": "P5.CompensationUnderCeiling",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    }
+  ],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 3,
+    "entries": 3,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1145/3372885.3373824",
+      "10.1147/rd.53.0183"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-13_P5",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P5-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

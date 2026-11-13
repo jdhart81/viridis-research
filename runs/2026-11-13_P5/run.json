@@ -1,0 +1,32 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P5",
+  "task": "P5-T001",
+  "title": "Two Corrections to Early Intelligence Bound Sources: An Inconsistent Axiom and Finite Compensation Under a Power Ceiling",
+  "abstract": "Two early Viridis Lean declarations claim more in their names and comments than their formal text supports. An axiom of January 2026 states an Intelligence Bound for every real rate with no hypothesis tying the rate to a system; the instance rate = 1, P = D = 0, kB = T = 1 meets every guard and gives 1 <= 0, so the axiom is false as written. A theorem named no_finite_compensation in fact proves that the finite power P*D/(D - dD) exactly compensates a partial loss dD of D. We separate four facts about the capacity algebra cap = P*D/C: exact and unique compensation in the interior, the condition dD <= D*(1 - P/Pmax) under a power ceiling, divergence of the required power as dD -> D, and impossibility at D = 0. We write both corrections as Lean 4 statement modules over Mathlib, with sanity checks and negative controls, and propose them for sealing. The mathematics is elementary, and every claim is a conjecture until the statements are sealed and proved. Nothing here concerns whether any agent preserves biodiversity, nor the Intelligence Bound as a physical conjecture.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "conjecture",
+      "text": "The unrestricted historical Intelligence Bound axiom (rate quantified over all reals, guards kB>0, T>0, P>=0, 0<=D<=1) is false as written (proposed statement P5.UnrestrictedBoundFalse)."
+    },
+    {
+      "id": "C2",
+      "kind": "conjecture",
+      "text": "For cap P D C = P*D/C with C>0, P>0, 0<dD<D: the power P*D/(D-dD) is the unique power restoring capacity after the loss; under a ceiling P<=Pmax it is attainable iff dD <= D*(1-P/Pmax); it diverges as dD -> D from below; and at D=0 no power restores a positive capacity (proposed statement P5.CompensationUnderCeiling)."
+    }
+  ],
+  "proposals": [
+    {
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "file": "proposals/P5.UnrestrictedBoundFalse.lean",
+      "rationale_file": "proposals/P5.UnrestrictedBoundFalse.md"
+    },
+    {
+      "statement_id": "P5.CompensationUnderCeiling",
+      "file": "proposals/P5.CompensationUnderCeiling.lean",
+      "rationale_file": "proposals/P5.CompensationUnderCeiling.md"
+    }
+  ],
+  "next_steps": "Once Justin seals the two statements: P5-T002 proves P5.UnrestrictedBoundFalse by instantiating at dIdt=1, P=0, D=0, kB=T=1 and closing 1 <= 0 with norm_num. P5-T003 proves P5.CompensationUnderCeiling: field_simp for part 1; for part 2 use Pmax>0 (from 0<P<=Pmax), div_le_iff0 and nlinarith; for part 3 take delta = P*D/(|M|+1); part 4 by simp and positivity. Both routes compiled in a scratch check during P5-T001 (outside out/, not submitted). If sealing changes the text, re-derive."
+}

@@ -1,0 +1,200 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+  frame=single,keywordstyle=\color{blue!60!black},commentstyle=\color{gray},
+  morekeywords={def,theorem,namespace,end,example,by,fun,import,noncomputable,section},
+  morecomment=[l]{--},
+  literate={ℝ}{{$\mathbb{R}$}}1 {→}{{$\to$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1
+           {¬}{{$\neg$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {↔}{{$\leftrightarrow$}}1
+           {∧}{{$\wedge$}}1 {δ}{{$\delta$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1 {⁻}{{$^{-}$}}1}
+
+\title{Two Corrections to Early Intelligence Bound Sources:\\
+An Inconsistent Axiom and Finite Compensation Under a Power Ceiling}
+\author{Justin Hart\\Viridis LLC}
+\date{13 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Two declarations in early Viridis Lean sources claim more in their names and comments than
+their formal text supports. First, an axiom of January 2026 states an ``Intelligence Bound''
+$\dot I \le \frac{P}{k_B T\ln 2}\,D$ for every real rate $\dot I$, with no hypothesis linking the
+rate to any system; the instance $\dot I=1$, $P=D=0$, $k_B=T=1$ satisfies every guard and gives
+$1\le 0$, so the axiom is false and any environment assuming it is inconsistent. Second, a
+theorem named \texttt{no\_finite\_compensation} in fact proves that the finite power
+$P D/(D-\Delta D)$ exactly compensates a partial loss $\Delta D$ of the diversity factor $D$. We
+separate four facts about the capacity algebra $\mathrm{cap}=PD/C$ that the surrounding prose
+mixes: exact and unique compensation in the interior, the condition
+$\Delta D\le D(1-P/P_{\max})$ under a power ceiling, divergence of the required power as
+$\Delta D\to D$, and impossibility at $D=0$. We write both corrections as Lean~4 statement
+modules over Mathlib, with sanity checks and negative controls, and propose them for sealing.
+The mathematics is elementary. Until the statements are sealed and proved, every claim in this
+note is a conjecture. Nothing here concerns whether any agent preserves biodiversity, nor the
+Intelligence Bound as a physical conjecture.
+\end{abstract}
+
+\section{Introduction}
+Machine-checked statements are only as good as the match between their formal text and the
+claims made about them. A review of the Viridis research corpus on 11~November~2026 found two
+early Lean declarations where the two diverge. Both were found by reading the sources; neither
+had been checked by the Lean kernel. Project P5 checks them in the open and replaces the prose
+with exact statements. This note reports the first step: two proposed statements, written so
+that a later session can prove them against a fixed, sealed target.
+
+The question matters because the historical prose was used to motivate a stronger argument,
+that capacity lost with biodiversity cannot be bought back with power. If an axiom is
+inconsistent, everything derived in its presence is vacuous; if a theorem proves the opposite of
+its name, citing it supports the wrong conclusion. Correcting both is a matter of record keeping,
+not new mathematics.
+
+\section{Background}
+Landauer's principle~\citep{landauer1961} associates a minimal dissipation of order $k_B T\ln 2$
+with each logically irreversible bit operation. The early sources define, over the reals,
+\[
+  \mathrm{landauerEnergy}(k_B,T)=k_B T\ln 2,\qquad
+  \mathrm{maxBitRate}(P,k_B,T)=\frac{P}{k_B T\ln 2},
+\]
+and a capacity $P\cdot D$ scaled by a cost, with $D\in[0,1]$ a diversity factor. We use
+Lean~4~\citep{lean4} and Mathlib~\citep{mathlib2020}. The two historical files are identified by
+SHA-256 prefixes (\texttt{37c017145dcf\ldots2098c4} and \texttt{8b1194634\ldots bee273}); they
+are quoted, not imported or copied.
+
+\section{Finding 1: the unrestricted axiom is false}
+The historical axiom reads
+\[
+  \forall\,\dot I,P,D,k_B,T\in\mathbb{R}:\;
+  k_B>0,\;T>0,\;P\ge0,\;0\le D\le1\;\Longrightarrow\;\dot I\le \mathrm{maxBitRate}(P,k_B,T)\,D .
+\]
+\begin{conjecture}[\texttt{P5.UnrestrictedBoundFalse}]
+The displayed proposition is false.
+\end{conjecture}
+\noindent The witness $\dot I=1$, $P=D=0$, $k_B=T=1$ meets every guard, and the right-hand side
+is $0$. The rate $\dot I$ is an unconstrained real, so no physics enters. As a negative control,
+adding the hypothesis $\dot I\le\mathrm{maxBitRate}(P,k_B,T)\,D$ makes the implication trivially
+true; the missing ingredient is a definition of the rate from a modelled system. This says
+nothing about a physical Intelligence Bound, which would need such a model.
+
+\section{Finding 2: finite compensation exists}
+Let $\mathrm{cap}(P,D,C)=PD/C$. The theorem \texttt{no\_finite\_compensation} proves, for
+$P>0$ and $0<\Delta D<D$, that
+$\mathrm{cap}\bigl(P+\tfrac{P\Delta D}{D-\Delta D},\,D-\Delta D\bigr)=\mathrm{cap}(P,D)$; since
+$P+\frac{P\Delta D}{D-\Delta D}=\frac{PD}{D-\Delta D}$, a finite power restores the capacity.
+We separate four facts.
+
+\begin{conjecture}[\texttt{P5.CompensationUnderCeiling}]
+Let $C>0$ and $P>0$.
+\begin{enumerate}
+\item \emph{Interior.} If $0<\Delta D<D$, then $P'=PD/(D-\Delta D)$ satisfies
+  $\mathrm{cap}(P',D-\Delta D,C)=\mathrm{cap}(P,D,C)$, and it is the only such $P'$.
+\item \emph{Ceiling.} If moreover $P\le P_{\max}$, some $P'\le P_{\max}$ restores the capacity
+  if and only if $\Delta D\le D\,(1-P/P_{\max})$.
+\item \emph{Divergence.} If $D>0$, then $PD/(D-\Delta D)\to\infty$ as $\Delta D\to D^{-}$.
+\item \emph{Complete loss.} If $D>0$, then $\mathrm{cap}(P',0,C)=0<\mathrm{cap}(P,D,C)$ for
+  every $P'$.
+\end{enumerate}
+\end{conjecture}
+\noindent For part~2: with $D-\Delta D>0$ and $P_{\max}\ge P>0$,
+$PD/(D-\Delta D)\le P_{\max}\iff PD\le P_{\max}(D-\Delta D)\iff \Delta D\le D-PD/P_{\max}$.
+Table~\ref{tab:checks} lists the sanity checks included in the module.
+
+\begin{table}[h]
+\centering
+\small\begin{tabular}{@{}llll@{}}
+\toprule
+Check & Instance & Expected & Tactic \\
+\midrule
+Witness & $P=D=C=1$, $\Delta D=\tfrac12$ & $P'=2$ & \texttt{norm\_num}, \texttt{decide}\\
+Ceiling met & $P_{\max}=2$ & $\tfrac12=1\cdot(1-\tfrac12)$ & \texttt{norm\_num}, \texttt{decide}\\
+Ceiling missed & $P_{\max}=\tfrac32$ & $\tfrac12>\tfrac13$ & \texttt{norm\_num}, \texttt{decide}\\
+Complete loss & $P'=1000$, $D=0$ & $0<1$ & \texttt{norm\_num}\\
+Drop $P\le P_{\max}$ & $P_{\max}=-1$ & RHS true, LHS false & \texttt{linarith}\\
+Drop $\Delta D<D$ & $\Delta D=2$, $P_{\max}=1$ & LHS true ($P'=-1$), RHS false & \texttt{norm\_num}\\
+\bottomrule
+\end{tabular}
+\caption{Sanity checks and negative controls in \texttt{P5.CompensationUnderCeiling}. The \texttt{decide} checks use cleared-denominator forms over $\mathbb{Z}$.}
+\label{tab:checks}
+\end{table}
+
+\section{Formal development}
+Both statements are self-contained Lean modules importing only Mathlib; all definitions live
+inside the statement's namespace and no axiom is declared. The core of the second module is:
+\begin{lstlisting}
+def cap (P D C : ℝ) : ℝ := P * D / C
+
+def Statement : Prop :=
+  (∀ P D dD C : ℝ, 0 < C → 0 < P → 0 < dD → dD < D →
+    cap (P * D / (D - dD)) (D - dD) C = cap P D C ∧
+    ∀ P' : ℝ, cap P' (D - dD) C = cap P D C → P' = P * D / (D - dD)) ∧
+  (∀ P D dD C Pmax : ℝ, 0 < C → 0 < P → 0 < dD → dD < D → P ≤ Pmax →
+    ((∃ P' : ℝ, P' ≤ Pmax ∧ cap P' (D - dD) C = cap P D C) ↔
+      dD ≤ D * (1 - P / Pmax))) ∧
+  (∀ P D C : ℝ, 0 < C → 0 < P → 0 < D →
+    ∀ M : ℝ, ∃ δ : ℝ, 0 < δ ∧ ∀ dD : ℝ, D - δ < dD → dD < D →
+      M < P * D / (D - dD)) ∧
+  (∀ P D C : ℝ, 0 < C → 0 < P → 0 < D →
+    ∀ P' : ℝ, cap P' 0 C = 0 ∧ cap P' 0 C < cap P D C)
+\end{lstlisting}
+and of the first:
+\begin{lstlisting}
+def landauerEnergy (kB T : ℝ) : ℝ := kB * T * Real.log 2
+def maxBitRate (P kB T : ℝ) : ℝ := P / landauerEnergy kB T
+
+def Statement : Prop :=
+  ¬ (∀ dIdt P D kB T : ℝ,
+      kB > 0 → T > 0 → P ≥ 0 → D ≥ 0 → D ≤ 1 →
+      dIdt ≤ maxBitRate P kB T * D)
+\end{lstlisting}
+Divergence is written with an explicit $\delta$ rather than a filter limit, so the statement can
+be read without Mathlib's filter vocabulary.
+
+\section{Results}
+Both modules compile against the pinned toolchain, and all of their sanity checks and negative
+controls compile. We observe two points about the specification that we passed to the
+rationale files. (i) A negative control for dropping $\Delta D<D$ needs $\Delta D>D$: at
+$\Delta D=D$ both sides of part~2 are false, so the equivalence still holds there. (ii) A negative
+control for dropping $P\le P_{\max}$ needs $P_{\max}\le0$: for $0<P_{\max}<P$ both sides are
+false. Neither point changes the proposed statements. Real-number arithmetic is not decidable
+and \texttt{decide} on $\mathbb{Q}$ got stuck in kernel reduction, so the \texttt{decide} checks
+use equivalent integer forms and the real checks use \texttt{norm\_num}.
+
+\section{Limitations}
+The results are elementary corrections of record, not new theorems. They say nothing about
+whether any agent preserves biodiversity: a capacity upper bound does not say the bound is
+attained, that capacity serves an agent's goal, that biodiversity is the only source of the
+relevant information, or that preservation is the best action once costs are counted. They say
+nothing about the Intelligence Bound as a physical conjecture, and $\mathrm{cap}$ is an algebraic
+model, not a description of a physical system. The claim that no other corpus file uses the
+axiom comes from reading the corpus and is not checked by these statements. No proof is
+claimed in this note; the statements are conjectures until sealed and proved.
+
+\section{Reproducibility}
+The modules are
+\begin{itemize}
+\item \texttt{proposals/P5.UnrestrictedBoundFalse.lean} and
+\item \texttt{proposals/P5.CompensationUnderCeiling.lean},
+\end{itemize}
+with rationale files alongside. They compile
+with \texttt{lean} from toolchain \texttt{leanprover/lean4:v4.28.0} and Mathlib commit
+\path{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. No data or external code is used.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-13 (P5-T001): first version. Proposed both statements with sanity checks and
+negative controls; noted the conditions the negative controls need.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

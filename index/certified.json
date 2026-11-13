@@ -1,7 +1,7 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 13,
+  "merged_runs": 14,
   "problems": 0,
   "proven_statements": 7,
   "sealed_statements": 11,
@@ -218,6 +218,19 @@
    "run_dir": "runs/2026-11-12_P4",
    "task": "P4-T001",
    "title": "Do wildfires that start in smaller barrier compartments end smaller? A re-executed pre-registered confirmatory test in northeast Washington"
+  },
+  {
+   "date": "2026-11-13",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 2
+   },
+   "manifest_sha256": "67331fd06f8fbcb63bce59ac2e561aaeea16cfe3fa1af9cbc3e59c42edeafb27",
+   "paper_built": true,
+   "project": "P5",
+   "run_dir": "runs/2026-11-13_P5",
+   "task": "P5-T001",
+   "title": "Two Corrections to Early Intelligence Bound Sources: An Inconsistent Axiom and Finite Compensation Under a Power Ceiling"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -241,7 +254,6 @@
     "run_dir": "runs/2026-10-28_P1"
    },
    "sealed_at": "2026-10-27T23:03:28Z",
-   "sealed_by": "owner",
    "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
    "status": "PROVEN",
    "task": "P1-T001"
@@ -265,7 +277,6 @@
     "run_dir": "runs/2026-11-10_P1"
    },
    "sealed_at": "2026-11-08T14:32:54Z",
-   "sealed_by": "owner",
    "sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
    "status": "PROVEN",
    "task": "P1-T002"
@@ -289,7 +300,6 @@
     "run_dir": "runs/2026-11-09_P1"
    },
    "sealed_at": "2026-11-08T14:32:32Z",
-   "sealed_by": "owner",
    "sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
    "status": "PROVEN",
    "task": "P1-T002"
@@ -313,7 +323,6 @@
     "run_dir": "runs/2026-11-01_P2"
    },
    "sealed_at": "2026-10-31T13:19:07Z",
-   "sealed_by": "owner",
    "sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
    "status": "PROVEN",
    "task": "P2-T002"
@@ -337,7 +346,6 @@
     "run_dir": "runs/2026-10-29_P2"
    },
    "sealed_at": "2026-10-28T23:29:57Z",
-   "sealed_by": "owner",
    "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
    "status": "PROVEN",
    "task": "P2-T001"
@@ -361,7 +369,6 @@
     "run_dir": "runs/2026-11-02_P2"
    },
    "sealed_at": "2026-10-31T13:19:10Z",
-   "sealed_by": "owner",
    "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
    "status": "PROVEN",
    "task": "P2-T002"
@@ -385,7 +392,6 @@
     "run_dir": "runs/2026-10-31_P2"
    },
    "sealed_at": "2026-10-31T13:19:05Z",
-   "sealed_by": "owner",
    "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
    "status": "PROVEN",
    "task": "P2-T002"
@@ -398,7 +404,6 @@
    "project": "P3",
    "proof": null,
    "sealed_at": "2026-11-08T14:33:37Z",
-   "sealed_by": "owner",
    "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
    "status": "SEALED_UNPROVEN",
    "task": "P3-T001"
@@ -411,7 +416,6 @@
    "project": "P3",
    "proof": null,
    "sealed_at": "2026-11-08T14:34:07Z",
-   "sealed_by": "owner",
    "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
    "status": "SEALED_UNPROVEN",
    "task": "P3-T001"
@@ -424,7 +428,6 @@
    "project": "P3",
    "proof": null,
    "sealed_at": "2026-11-08T14:33:10Z",
-   "sealed_by": "owner",
    "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
    "status": "SEALED_UNPROVEN",
    "task": "P3-T001"
@@ -437,7 +440,6 @@
    "project": "P3",
    "proof": null,
    "sealed_at": "2026-11-08T14:33:58Z",
-   "sealed_by": "owner",
    "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
    "status": "SEALED_UNPROVEN",
    "task": "P3-T001"
