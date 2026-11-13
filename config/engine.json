@@ -10,7 +10,7 @@
       "propext"
     ],
     "compile_timeout_seconds": 1800,
-    "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+    "mathlib_rev": "5ed2965256430c3649e86755f9576b54eca72435",
     "memory_mb": 8192,
     "probe_tactics": [
       "rfl",
@@ -25,7 +25,7 @@
       "tauto"
     ],
     "probe_timeout_seconds": 300,
-    "toolchain": "leanprover/lean4:v4.28.0"
+    "toolchain": "leanprover/lean4:v4.34.0"
   },
   "limits": {
     "artifact_max_bytes": 200000000,

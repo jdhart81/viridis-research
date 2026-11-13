@@ -3,7 +3,8 @@
   "context": [
     "projects/P1/README.md",
     "projects/P1/context/STATEMENT_PROPOSAL.md",
-    "projects/P1/context/DualCorridor.lean"
+    "projects/P1/context/DualCorridor.lean",
+    "projects/P1/context/PORT_v4.34.md"
   ],
   "id": "P1",
   "priority": 2,
