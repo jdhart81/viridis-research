@@ -7,8 +7,9 @@
     "type": "sealing_policy"
   },
   "id": "D-018",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-13T01:20:46Z",
+  "posted_comment_id": 6840933746,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6840933746",
   "schema": "viridis-decision-request-v1",
   "title": "Seal vetted statements automatically (standing sealing policy)"
 }

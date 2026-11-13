@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-020",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-13T01:20:48Z",
+  "posted_comment_id": 6840934046,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6840934046",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P5.CompensationUnderCeiling proposed by runs/2026-11-13_P5"
 }

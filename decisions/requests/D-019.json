@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-019",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-13T01:20:47Z",
+  "posted_comment_id": 6840933908,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-6840933908",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P5.UnrestrictedBoundFalse proposed by runs/2026-11-13_P5"
 }
