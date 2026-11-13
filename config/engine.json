@@ -55,6 +55,11 @@
   },
   "schedule_activated_at": "2026-10-28T00:43:55Z",
   "schema": "viridis-engine-config-v1",
+  "sealing": {
+    "decision": "D-018",
+    "mode": "auto",
+    "since": "2026-11-13T01:22:33Z"
+  },
   "tested": {
     "enabled": true,
     "max_claims": 3,
