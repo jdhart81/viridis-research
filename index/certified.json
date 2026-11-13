@@ -4,7 +4,7 @@
   "merged_runs": 14,
   "problems": 0,
   "proven_statements": 7,
-  "sealed_statements": 11,
+  "sealed_statements": 13,
   "tested_claims": 1
  },
  "problems": [],
@@ -454,6 +454,32 @@
    "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
    "status": "SEALED_UNPROVEN",
    "task": "P3-T001"
+  },
+  "P5.CompensationUnderCeiling": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P5.CompensationUnderCeiling.Statement",
+   "decision": "D-020",
+   "path": "lean/ViridisStatements/P5/CompensationUnderCeiling.lean",
+   "project": "P5",
+   "proof": null,
+   "sealed_at": "2026-11-13T01:23:34Z",
+   "sealed_by": "policy",
+   "sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+   "status": "SEALED_UNPROVEN",
+   "task": "P5-T001"
+  },
+  "P5.UnrestrictedBoundFalse": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P5.UnrestrictedBoundFalse.Statement",
+   "decision": "D-019",
+   "path": "lean/ViridisStatements/P5/UnrestrictedBoundFalse.lean",
+   "project": "P5",
+   "proof": null,
+   "sealed_at": "2026-11-13T01:23:34Z",
+   "sealed_by": "policy",
+   "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+   "status": "SEALED_UNPROVEN",
+   "task": "P5-T001"
   }
  },
  "tested_claims": [

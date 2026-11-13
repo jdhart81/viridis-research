@@ -242,6 +242,50 @@
       "sealed_at": "2026-11-08T14:33:58Z",
       "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
       "task": "P3-T001"
+    },
+    "P5.CompensationUnderCeiling": {
+      "constant": "ViridisStatements.P5.CompensationUnderCeiling.Statement",
+      "decision": "D-020",
+      "module": "ViridisStatements.P5.CompensationUnderCeiling",
+      "path": "lean/ViridisStatements/P5/CompensationUnderCeiling.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P5",
+      "sealed_at": "2026-11-13T01:23:34Z",
+      "sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+      "task": "P5-T001"
+    },
+    "P5.UnrestrictedBoundFalse": {
+      "constant": "ViridisStatements.P5.UnrestrictedBoundFalse.Statement",
+      "decision": "D-019",
+      "module": "ViridisStatements.P5.UnrestrictedBoundFalse",
+      "path": "lean/ViridisStatements/P5/UnrestrictedBoundFalse.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P5",
+      "sealed_at": "2026-11-13T01:23:34Z",
+      "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "task": "P5-T001"
     }
   }
 }
