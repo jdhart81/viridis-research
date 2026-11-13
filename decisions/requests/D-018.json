@@ -1,0 +1,14 @@
+{
+  "body_md": "This switches on the standing sealing policy (engine invariant I17). From then on, a proposed statement is sealed without asking when all of these hold:\n\n1. the seal request was written by the verify job;\n2. the verifier compiled the statement and its triviality probe (at least five tactics) did not close it;\n3. the statement's ID is named in its task's `produces` list (open-ended tasks still come to you);\n4. the proposal file still has the hash the verifier recorded;\n5. the statement is not sealed already.\n\nAnything else still waits for your answer here, and your own answer always comes first. Every request is still posted on this issue, each automatic seal is acknowledged here with its reasons, and `index/certified.json` marks each statement `sealed_by` owner or policy.\n\n**What the policy does not check:** whether the Lean statement says what the paper says it does. PROVEN certifies the sealed statement word for word; the paper's interpretation stays ASSUMED.\n\nA sealed statement cannot be unsealed. To go back to deciding each one yourself, ask for a request with mode `owner` and answer yes.\n",
+  "created_at": "2026-11-13T00:42:49Z",
+  "created_by": "pull-request",
+  "effect": {
+    "mode": "auto",
+    "type": "sealing_policy"
+  },
+  "id": "D-018",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal vetted statements automatically (standing sealing policy)"
+}
