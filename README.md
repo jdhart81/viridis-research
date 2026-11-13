@@ -39,6 +39,10 @@ curl -sSfL https://elan.lean-lang.org/elan-init.sh | sh -s -- -y --default-toolc
 python3 -m engine.reproduce runs/<date>_<project>
 ```
 
+A run is reproduced with the Lean and Mathlib it was verified with. If the
+repository has since moved to newer pins, `engine.reproduce` stops and prints
+the commit to check out. Each run's `REPRODUCE.md` has the exact commands.
+
 ## How it works
 
 The research engine that runs the agent is private. The verifier kit in
