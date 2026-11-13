@@ -45,6 +45,17 @@ def _text(value: Any, limit: int = 600) -> str:
     return value.strip()[:limit] if isinstance(value, str) else ""
 
 
+def _sealed_by(root: Path, decision: Any) -> str:
+    """Who sealed a statement: "owner" (the owner's own comment), "policy" (the standing sealing policy, I17),
+    or "unknown" when the decision record cannot be read."""
+    try:
+        record = _read(root / "decisions" / "records" / f"{decision}.json")
+        authority = record.get("authority", "owner")
+        return authority if authority in ("owner", "policy") else "unknown"
+    except (OSError, ValueError, KeyError, TypeError, AttributeError):
+        return "unknown"
+
+
 def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
     """Return the index for the record at ``root``. Pure: reads files, writes nothing."""
     problems: list[str] = []
@@ -84,6 +95,7 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
         probe = entry.get("probe") if isinstance(entry.get("probe"), dict) else {}
         statements[sid] = {"status": "SEALED_UNPROVEN", "project": entry.get("project"), "task": entry.get("task"),
                            "decision": entry.get("decision"), "sealed_at": entry.get("sealed_at"),
+                           "sealed_by": _sealed_by(root, entry.get("decision")),
                            "sha256": entry["sha256"], "path": entry.get("path"), "constant": entry.get("constant"),
                            "closed_by_single_tactic": any(v == "closed" for v in probe.values()), "proof": None}
 

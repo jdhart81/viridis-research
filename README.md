@@ -85,8 +85,10 @@ Browse every project on the [Viridis profile](https://github.com/jdhart81). If t
 ## Credit and disclosure
 
 The research program is directed by Justin D. Hart (Viridis LLC,
-ORCID 0009-0008-3082-2482), who approves every sealed statement and is the
-accountable author. Papers and proofs are drafted by an AI research agent (Claude,
+ORCID 0009-0008-3082-2482), who is the accountable author. Every statement is
+sealed by his decision: either his own approval of that statement, or a standing
+policy he set by a recorded decision for statements the verifier has vetted
+(`index/certified.json` marks which, as `sealed_by`). Papers and proofs are drafted by an AI research agent (Claude,
 by Anthropic, run through Claude Code; the version is pinned in
 `config/engine.json` and each run's `provenance.json` records the session).
 Formal proof search may use Aristotle (Harmonic); each run says whether it did.

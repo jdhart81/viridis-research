@@ -97,6 +97,19 @@ def load_sealed(statement_id: str, root: Path = RECORD_ROOT) -> SealedStatement:
     if (record.get("answer") != "yes" or effect.get("type") != "seal_statement"
             or effect.get("statement_id") != statement_id or effect.get("sha256") != entry["sha256"]):
         raise EngineError("seal_unauthorized", f"{statement_id}: decision {decision} does not approve this seal")
+    if record.get("authority", "owner") == "policy":
+        # I17: a seal made under the standing policy is valid only if an owner decision, made no later than the
+        # seal, switched automatic sealing on.
+        policy_id = str(record.get("policy_decision", ""))
+        policy_path = root / "decisions" / "records" / f"{policy_id}.json"
+        if not re.fullmatch(r"D-\d{3,5}", policy_id) or not policy_path.is_file():
+            raise EngineError("seal_unauthorized", f"{statement_id}: no sealing-policy decision {policy_id!r}")
+        policy = load_json(policy_path)
+        policy_effect = policy.get("effect") or {}
+        if (policy.get("answer") != "yes" or policy.get("authority", "owner") != "owner"
+                or policy_effect.get("type") != "sealing_policy" or policy_effect.get("mode") != "auto"
+                or str(policy.get("answered_at", "")) > str(record.get("answered_at", ""))):
+            raise EngineError("seal_unauthorized", f"{statement_id}: decision {policy_id} does not authorise automatic sealing")
     return SealedStatement(statement_id=statement_id, module=entry["module"], constant=entry["constant"],
                            path=entry["path"], sha256=entry["sha256"], decision=decision,
                            sealed_at=entry.get("sealed_at", ""), project=entry.get("project", ""),

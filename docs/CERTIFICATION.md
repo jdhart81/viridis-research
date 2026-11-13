@@ -48,8 +48,13 @@ only data that may be redistributed belongs in `data/`.
 
 PROVEN does not mean that the paper's prose is correct, that the result is
 new, or that the sealed definitions capture the intended mathematics. The last
-point is why Justin reviews every statement before it is sealed, and why the
-statement is reprinted in full on the certification page. The trusted base is
+point is why the statement is reprinted in full on the certification page, and
+why `index/certified.json` says who sealed it. `sealed_by: owner` means Justin
+reviewed and approved that statement himself. `sealed_by: policy` means it was
+sealed under a standing policy he switched on by a recorded decision: the
+verifier compiled it, none of the probe tactics closed it, and its task had
+named it in advance. That policy does not check that the definitions capture
+the intended mathematics; read the statement. The trusted base is
 the Lean kernel, `leanchecker`, the pinned Mathlib, and this repository's
 verifier code.
 
