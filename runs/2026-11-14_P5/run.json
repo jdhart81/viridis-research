@@ -1,0 +1,23 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P5",
+  "task": "P5-T002",
+  "title": "A Correction Note on an Early Intelligence Bound Source: The Unrestricted Axiom Is False as Written",
+  "abstract": "An early Viridis Lean source of January 2026 declares an axiom, intelligence_bound, stating dI/dt <= P/(kB T ln 2) * D for every real rate dI/dt under the guards kB>0, T>0, P>=0, 0<=D<=1, with no hypothesis linking the rate to any system. The instance dI/dt = 1, P = D = 0, kB = T = 1 meets every guard and reduces the conclusion to 1 <= 0. We give a Lean 4 proof, against the sealed statement P5.UnrestrictedBoundFalse, that the universally quantified proposition is false, and a companion Lean lemma showing that, taken as a hypothesis, it proves every proposition; an environment assuming the axiom is therefore inconsistent. According to a reading of the corpus, no declaration in the reviewed sources depended on it. We describe what a well-posed successor needs: a predicate tying the rate to a modelled physical system, and separate empirical validation. This note concerns one piece of formal text and says nothing about the Intelligence Bound as a physical conjecture. A second correction, on finite compensation of a loss of D, is restated as a conjecture pending its own proof.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "proof_file": "proofs/P5.UnrestrictedBoundFalse.lean",
+      "text": "It is not the case that for all reals dIdt, P, D, kB, T with kB>0, T>0, P>=0, 0<=D<=1 one has dIdt <= maxBitRate P kB T * D, where maxBitRate P kB T = P/(kB*T*log 2); counterinstance dIdt=1, P=D=0, kB=T=1. The historical unrestricted Intelligence Bound axiom is false as written."
+    },
+    {
+      "id": "C2",
+      "kind": "conjecture",
+      "text": "For cap P D C = P*D/C with C>0, P>0, 0<dD<D: P*D/(D-dD) is the unique power restoring capacity after the loss; under a ceiling P<=Pmax it is attainable iff dD <= D*(1-P/Pmax); it diverges as dD -> D from below; and at D=0 no power restores a positive capacity (sealed statement P5.CompensationUnderCeiling, to be proved in P5-T003)."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "P5-T003: prove P5.CompensationUnderCeiling. Routes from the 2026-11-13 notes: field_simp for part 1; for part 2 derive Pmax>0 from 0<P<=Pmax, then div_le_iff0 and nlinarith; for part 3 take delta = P*D/(|M|+1) with lt_div_iff0 and nlinarith; part 4 by unfold cap, simp, positivity. Then merge into the correction note. Optionally, if the historical files are made available, check the claim that no declaration depends on intelligence_bound with #print axioms."
+}

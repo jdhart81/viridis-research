@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 14,
+  "merged_runs": 15,
   "problems": 0,
-  "proven_statements": 7,
+  "proven_statements": 8,
   "sealed_statements": 13,
   "tested_claims": 1
  },
@@ -42,7 +42,8 @@
   "P2.Afforestation",
   "P2.CarbonContinuity",
   "P2.Harmonization",
-  "P2.Restoration"
+  "P2.Restoration",
+  "P5.UnrestrictedBoundFalse"
  ],
  "runs": [
   {
@@ -231,6 +232,20 @@
    "run_dir": "runs/2026-11-13_P5",
    "task": "P5-T001",
    "title": "Two Corrections to Early Intelligence Bound Sources: An Inconsistent Axiom and Finite Compensation Under a Power Ceiling"
+  },
+  {
+   "date": "2026-11-14",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "a37a36c1b00dc708ac0b9c6102df41a5c8a791153145d3c932f3c732005cfeba",
+   "paper_built": true,
+   "project": "P5",
+   "run_dir": "runs/2026-11-14_P5",
+   "task": "P5-T002",
+   "title": "A Correction Note on an Early Intelligence Bound Source: The Unrestricted Axiom Is False as Written"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -474,11 +489,22 @@
    "decision": "D-019",
    "path": "lean/ViridisStatements/P5/UnrestrictedBoundFalse.lean",
    "project": "P5",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "3f0110cc26b85d009881440a831c81d1ba092cd48135db5ca43685c1e855ba24",
+    "claim_id": "C1",
+    "date": "2026-11-14",
+    "doi": null,
+    "run_dir": "runs/2026-11-14_P5"
+   },
    "sealed_at": "2026-11-13T01:23:34Z",
    "sealed_by": "policy",
    "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P5-T001"
   }
  },

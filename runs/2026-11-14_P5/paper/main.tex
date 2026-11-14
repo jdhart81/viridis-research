@@ -1,0 +1,201 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,
+  frame=single,keywordstyle=\color{blue!60!black},commentstyle=\color{gray},
+  morekeywords={def,theorem,lemma,namespace,end,example,by,fun,import,noncomputable,section,open,intro,have,rw,at,exact,axiom},
+  morecomment=[l]{--},
+  literate={ℝ}{{$\mathbb{R}$}}1 {→}{{$\to$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1
+           {¬}{{$\neg$}}1 {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {↔}{{$\leftrightarrow$}}1
+           {∧}{{$\wedge$}}1 {δ}{{$\delta$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1 {⁻}{{$^{-}$}}1}
+
+\title{A Correction Note on an Early Intelligence Bound Source:\\
+The Unrestricted Axiom Is False as Written}
+\author{Justin Hart\\Viridis LLC}
+\date{14 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+An early Viridis Lean source of January 2026 declares an axiom, \texttt{intelligence\_bound},
+stating $\dot I\le \frac{P}{k_B T\ln 2}\,D$ for every real number $\dot I$, under the guards
+$k_B>0$, $T>0$, $P\ge0$ and $0\le D\le1$, with no hypothesis linking $\dot I$ to any system.
+The instance $\dot I=1$, $P=D=0$, $k_B=T=1$ meets every guard and reduces the conclusion to
+$1\le0$. We give a Lean~4 proof, against the sealed statement
+\texttt{P5.UnrestrictedBoundFalse}, that the universally quantified proposition is false, and a
+companion Lean lemma showing that, taken as a hypothesis, it proves every proposition. An
+environment that assumes the axiom is therefore inconsistent. According to a reading of the
+corpus, no declaration in the reviewed sources depended on it, so no recorded result is affected.
+We describe what a well-posed successor needs: a predicate that ties the rate to a modelled
+physical system, and separate empirical validation. This note is about one piece of formal
+text. It says nothing about the Intelligence Bound as a physical conjecture. A second correction,
+on finite compensation of a loss of $D$, is restated here as a conjecture pending its own proof.
+\end{abstract}
+
+\section{Introduction}
+A machine-checked development is only as reliable as the match between its formal text and what
+is said about it. A Lean \texttt{axiom} is not checked at all: the kernel accepts it as given. If
+the axiom is false, every theorem proved in its presence is vacuous, because a false hypothesis
+proves anything. A review of the Viridis research corpus on 11~November~2026 found two early Lean
+declarations whose formal text diverges from their surrounding prose. Project P5 checks both with
+the Lean kernel. The first session (P5-T001) proposed exact statements, and these were then sealed.
+This note covers the first finding: the historical \texttt{intelligence\_bound} axiom is false
+as written.
+
+The question matters for record keeping. The axiom was presented as a formal version of a
+physical bound on information processing. As written, though, it is a claim about all real
+numbers, and it fails for elementary reasons. Correcting it is not new mathematics. The aim is to
+keep false text from being cited as a foundation, and to state what a correct successor would
+have to contain.
+
+\section{Background and related work}
+Landauer's principle~\citep{landauer1961} associates a minimal dissipation of $k_B T\ln 2$ with
+each logically irreversible bit operation at temperature $T$. Dividing a power budget $P$ by this
+energy gives an upper bound on the rate of irreversible bit operations. The early sources define,
+over the reals,
+\[
+  \mathrm{landauerEnergy}(k_B,T)=k_B T\ln 2,\qquad
+  \mathrm{maxBitRate}(P,k_B,T)=\frac{P}{k_B T\ln 2},
+\]
+and multiply the result by a diversity factor $D\in[0,1]$. We use Lean~4~\citep{lean4} and
+Mathlib~\citep{mathlib2020}. The historical file \texttt{Gaia\_Intelligence\_Theorem.lean} is
+identified by its SHA-256 prefix \texttt{37c017145dcf\ldots2098c4}. It is quoted, not imported:
+the sealed statement restates the two definitions over Mathlib alone.
+
+\section{The historical axiom}
+The project README quotes the declaration as follows:
+\begin{lstlisting}
+axiom intelligence_bound :
+  ∀ (dI_dt P D k_B T : ℝ),
+  k_B > 0 → T > 0 → P ≥ 0 → D ≥ 0 → D ≤ 1 →
+  dI_dt ≤ max_bit_rate P k_B T * D
+\end{lstlisting}
+The rate \texttt{dI\_dt} is a bound variable that ranges over every real number. Nothing in the
+statement says whose rate it is. The axiom therefore asserts that every real number lies below
+$\mathrm{maxBitRate}(P,k_B,T)\cdot D$, which cannot hold, because the right-hand side is a fixed
+real number once the other variables are fixed.
+
+\section{Result}
+\begin{theorem}[sealed statement \texttt{P5.UnrestrictedBoundFalse}]\label{thm:main}
+It is not the case that for all real $\dot I,P,D,k_B,T$ with $k_B>0$, $T>0$, $P\ge0$, $D\ge0$
+and $D\le1$ we have $\dot I\le\mathrm{maxBitRate}(P,k_B,T)\cdot D$.
+\end{theorem}
+\begin{proof}[Counterinstance]
+Take $\dot I=1$, $P=0$, $D=0$, $k_B=T=1$. Every guard holds. The right-hand side is
+$\frac{0}{\ln 2}\cdot 0=0$, so the conclusion would be $1\le0$, which is false.
+\end{proof}
+
+We give a Lean proof of Theorem~\ref{thm:main}. The automated checker run during the session
+passed all five stages, and the only axioms used are \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound}. The candidate file is:
+\begin{lstlisting}
+lemma bound_zero_power (D kB T : ℝ) : maxBitRate 0 kB T * D = 0 := by
+  simp [maxBitRate]
+
+theorem main : ViridisStatements.P5.UnrestrictedBoundFalse.Statement := by
+  intro h
+  -- Counterinstance: dIdt = 1, P = 0, D = 0, kB = T = 1.
+  have h1 := h 1 0 0 1 1 one_pos one_pos le_rfl le_rfl zero_le_one
+  rw [bound_zero_power] at h1
+  exact absurd h1 (by norm_num)
+
+theorem bound_proves_anything
+    (h : ∀ dIdt P D kB T : ℝ, kB > 0 → T > 0 → P ≥ 0 → D ≥ 0 → D ≤ 1 →
+      dIdt ≤ maxBitRate P kB T * D)
+    (p : Prop) : p :=
+  absurd h main
+\end{lstlisting}
+
+\begin{remark}[The witness is not degenerate]
+The witness uses $P=0$ and $D=0$, but the falsity does not depend on these boundary values. For
+any admissible $P,D,k_B,T$, the rate $\dot I=\mathrm{maxBitRate}(P,k_B,T)\cdot D+1$ violates the
+bound. In particular this works for $P>0$ and $D=1$. The witness also does not rely on Lean's
+convention $x/0=0$: here the denominator is $\ln 2\neq0$.
+\end{remark}
+
+\paragraph{Consequence: inconsistency.} The lemma \texttt{bound\_proves\_anything} makes the
+consequence explicit. If the universally quantified bound is available as a hypothesis, or as an
+axiom, any proposition $p$ follows, including $p$ and $\neg p$ alike (\emph{ex falso
+quodlibet}). A Lean environment that declares \texttt{intelligence\_bound} as an axiom is
+therefore inconsistent. Every statement can be proved in it, and a successful compilation in that
+environment certifies nothing.
+
+\paragraph{Impact on the corpus.} The 2026-11-11 review reports that no declaration in
+\texttt{Gaia\_Intelligence\_Theorem.lean} uses the axiom and that no other file in the reviewed
+corpus imports it. If that is right, no recorded theorem inherits the inconsistency. This rests on
+reading the sources. It is not established by the Lean proof above, which concerns only the
+restated proposition.
+
+\section{What a well-posed successor needs}
+The negative control in the sealed module shows what is missing. Once the rate is tied to the
+bound by hypothesis, the implication holds trivially. A meaningful successor therefore cannot
+quantify the rate freely. It needs:
+\begin{enumerate}
+\item \emph{A predicate tying the rate to a physical system.} For example, a structure modelling
+  a system with power $P$ at temperature $T$, whose information rate is \emph{defined} from that
+  model, perhaps as a count of irreversible bit operations per unit time. The bound then becomes a
+  theorem about that structure, derived from an explicit Landauer-type hypothesis, rather than an
+  axiom about arbitrary reals. The role of $D$ also has to be defined inside the model, not just
+  multiplied in.
+\item \emph{Separate empirical validation.} Whether such a model describes real agents or
+  ecosystems is an empirical question. No Lean proof answers it. Its premises must be stated and
+  tested against data, and they must be labelled as assumptions until that is done.
+\end{enumerate}
+Neither item is attempted here.
+
+\section{The second correction (pending)}
+For the record, the second P5 finding is restated without change. Let $\mathrm{cap}(P,D,C)=PD/C$.
+The historical theorem \texttt{no\_finite\_compensation} actually proves that the finite power
+$PD/(D-\Delta D)$ restores the capacity after a partial loss $0<\Delta D<D$.
+\begin{conjecture}[sealed statement \texttt{P5.CompensationUnderCeiling}]
+Let $C>0$ and $P>0$. (1) If $0<\Delta D<D$, then $P'=PD/(D-\Delta D)$ is the unique power with
+$\mathrm{cap}(P',D-\Delta D,C)=\mathrm{cap}(P,D,C)$. (2) If moreover $P\le P_{\max}$, then such a
+$P'\le P_{\max}$ exists if and only if $\Delta D\le D(1-P/P_{\max})$. (3) For $D>0$,
+$PD/(D-\Delta D)\to\infty$ as $\Delta D\to D^-$. (4) For $D>0$ and every $P'$,
+$\mathrm{cap}(P',0,C)=0<\mathrm{cap}(P,D,C)$.
+\end{conjecture}
+\noindent The proof is task P5-T003. No proof of it is claimed in this note.
+
+\section{Limitations}
+This is a correction of one piece of formal text. It is elementary, and it is not a result about
+the Intelligence Bound conjecture. Showing that the unrestricted text is false says nothing about
+whether a correctly posed bound holds for any physical system. It also says nothing about
+whether any agent would preserve biodiversity. The statement that no corpus declaration depended
+on the axiom comes from reading the sources and is not machine-checked. The sealed statement
+restates the historical definitions instead of importing the historical file. Its fidelity to the
+original therefore rests on the quoted text and the file hash.
+
+\section{Reproducibility}
+The proof is \texttt{proofs/P5.UnrestrictedBoundFalse.lean}. It imports only Mathlib and the
+sealed module \texttt{ViridisStatements.P5.UnrestrictedBoundFalse} (SHA-256
+\path{3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d}). It compiles with
+toolchain \texttt{leanprover/lean4:v4.28.0} and Mathlib commit
+\path{8f9d9cff6bd728b17a24e163c9402775d9e6a365}, and it can be checked with
+\texttt{viridis-lean-check proofs/P5.UnrestrictedBoundFalse.lean P5.UnrestrictedBoundFalse}.
+No data or external code is used.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-13 (P5-T001): first version. Proposed both statements with sanity checks and
+negative controls, and noted the conditions the negative controls need.
+\item 2026-11-14 (P5-T002): refocused the note on the first correction. Added a Lean proof of
+the sealed \texttt{P5.UnrestrictedBoundFalse} and an explosion lemma, explained the
+inconsistency and its impact on the corpus, and set out the requirements for a well-posed
+successor. The second correction remains a conjecture.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

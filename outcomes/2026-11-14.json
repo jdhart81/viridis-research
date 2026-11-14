@@ -1,0 +1,43 @@
+{
+  "agent_minutes": 3.48,
+  "date": "2026-11-14",
+  "github": {
+    "event": "schedule",
+    "head_sha": "a4e2a4e6d79eafef9e80ae4f0d56ad1fb0a75ab0",
+    "run_attempt": 1,
+    "run_id": 43533409125,
+    "run_started_at": "2026-11-14T00:19:26Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43533409125",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "a37a36c1b00dc708ac0b9c6102df41a5c8a791153145d3c932f3c732005cfeba",
+  "paper_built": true,
+  "project": "P5",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P5.UnrestrictedBoundFalse"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-14_P5",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P5-T002",
+  "title": "A Correction Note on an Early Intelligence Bound Source: The Unrestricted Axiom Is False as Written",
+  "written_at": "2026-11-14T00:50:15Z",
+  "written_by": "verify",
+  "zip_sha256": "efede055d71cd0c1da1498a003c22c44d7a18430fefb1a05a3be750282435d7b"
+}

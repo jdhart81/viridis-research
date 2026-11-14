@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-14",
+  "engine_sha": "70b3b094b085b572b4a6e5bb9447c106a585932a",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "3f0110cc26b85d009881440a831c81d1ba092cd48135db5ca43685c1e855ba24",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "statement_sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "text": "It is not the case that for all reals dIdt, P, D, kB, T with kB>0, T>0, P>=0, 0<=D<=1 one has dIdt <= maxBitRate P kB T * D, where maxBitRate P kB T = P/(kB*T*log 2); counterinstance dIdt=1, P=D=0, kB=T=1. The historical unrestricted Intelligence Bound axiom is false as written.",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED",
+      "reason": "conjecture",
+      "text": "For cap P D C = P*D/C with C>0, P>0, 0<dD<D: P*D/(D-dD) is the unique power restoring capacity after the loss; under a ceiling P<=Pmax it is attainable iff dD <= D*(1-P/Pmax); it diverges as dD -> D from below; and at D=0 no power restores a positive capacity (sealed statement P5.CompensationUnderCeiling, to be proved in P5-T003)."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "3f0110cc26b85d009881440a831c81d1ba092cd48135db5ca43685c1e855ba24",
+      "durations": {
+        "check": 11.912,
+        "compile": 10.911,
+        "replay": 12.8
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "statement_sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 6,
+  "project": "P5",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 3,
+    "entries": 3,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1145/3372885.3373824",
+      "10.1147/rd.53.0183"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-14_P5",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P5-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}
