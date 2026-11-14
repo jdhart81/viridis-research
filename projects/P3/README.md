@@ -21,7 +21,8 @@ cost, a material's value or an environmental outcome. Those stay ASSUMED until f
 human review covers them. Statement 3 is a bound on modeled efficiency. It is not a Landauer bound,
 and it does not rely on the Intelligence Bound, which remains a conjecture.
 
-P3 has priority 3, so it runs only on nights when P1 and P2 have no eligible task.
+P3 has priority 1 from 2026-11-13: its four sealed statements are proved first, one per night, so the
+circular-economy kernel can be offered as a decision service.
 
 Sources: the canon at github.com/jdhart81/viridis-canon, commit
 17a0702fca0850fd1650a83de8ab160b6901b4f4. `series/RC/PaperFormalization.lean` is copied as
