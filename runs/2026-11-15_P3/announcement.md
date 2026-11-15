@@ -1,0 +1,1 @@
+Viridis Research P3: we give a Lean proof of the loop mass balance for a single-material recovery loop. Virgin input is D(1-r). A secondary stock with retention rho<1 converges geometrically to rD/(1-rho). Cumulative virgin input over T periods is T·D·(1-r) and falls strictly as recovery rises. These are accounting identities of a model, not claims about any real recovery rate.

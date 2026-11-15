@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-15",
+  "engine_sha": "29d372b669ac1ac96d23a0012a9745aadc25f789",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "0e110da9753e71462f1f2613eef5f7aa9e7fd1c6d8b368034fcc5210283a69b3",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P3.LoopMassBalance",
+      "statement_sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+      "text": "For demand D >= 0, recovery fraction r in [0,1], retention rho in [0,1) and any initial stock S0: virgin input V = D(1-r) lies in [0,D]; the secondary stock S(t+1) = rho S(t) + rD satisfies S(t) - S* = rho^t (S0 - S*) with S* = rD/(1-rho); S(t) converges to S*; cumulative virgin input over T periods equals T D (1-r); and for D > 0, T > 0 it is strictly decreasing in r on [0,1].",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "0e110da9753e71462f1f2613eef5f7aa9e7fd1c6d8b368034fcc5210283a69b3",
+      "durations": {
+        "check": 11.263,
+        "compile": 11.511,
+        "replay": 12.677
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P3.LoopMassBalance",
+      "statement_sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "project": "P3",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 4,
+    "entries": 4,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/j.jclepro.2016.12.048",
+      "10.1145/3372885.3373824",
+      "10.1146/annurev.energy.25.1.313"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-15_P3",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P3-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

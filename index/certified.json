@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 15,
+  "merged_runs": 16,
   "problems": 0,
-  "proven_statements": 8,
+  "proven_statements": 9,
   "sealed_statements": 13,
   "tested_claims": 1
  },
@@ -43,6 +43,7 @@
   "P2.CarbonContinuity",
   "P2.Harmonization",
   "P2.Restoration",
+  "P3.LoopMassBalance",
   "P5.UnrestrictedBoundFalse"
  ],
  "runs": [
@@ -246,6 +247,19 @@
    "run_dir": "runs/2026-11-14_P5",
    "task": "P5-T002",
    "title": "A Correction Note on an Early Intelligence Bound Source: The Unrestricted Axiom Is False as Written"
+  },
+  {
+   "date": "2026-11-15",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "7d56b5ceb755db8b9b1b5bb9416ed93fb54b07d544eb2250dbb8b7e55949ecce",
+   "paper_built": true,
+   "project": "P3",
+   "run_dir": "runs/2026-11-15_P3",
+   "task": "P3-T002",
+   "title": "Loop Mass Balance for a Single-Material Recovery Loop: A Lean Proof"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -450,11 +464,22 @@
    "decision": "D-011",
    "path": "lean/ViridisStatements/P3/LoopMassBalance.lean",
    "project": "P3",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "0e110da9753e71462f1f2613eef5f7aa9e7fd1c6d8b368034fcc5210283a69b3",
+    "claim_id": "C1",
+    "date": "2026-11-15",
+    "doi": null,
+    "run_dir": "runs/2026-11-15_P3"
+   },
    "sealed_at": "2026-11-08T14:33:10Z",
    "sealed_by": "owner",
    "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P3-T001"
   },
   "P3.RecoveryWorkFloor": {

@@ -1,0 +1,328 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\emergencystretch=2em
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,have,refine,intro,induction,with,simp,only,rw,unfold,exact,example,namespace,end,open,fun,Prop,by,noncomputable,section,import},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {→}{{$\to$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∈}{{$\in$}}1
+    {∑}{{$\sum$}}1
+    {∏}{{$\prod$}}1
+    {∧}{{$\wedge$}}1
+    {≤}{{$\le$}}1
+    {≠}{{$\ne$}}1
+    {⨆}{{$\bigsqcup$}}1
+    {ρ}{{$\rho$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {·}{{$\cdot$}}1
+    {𝓝}{{$\mathcal{N}$}}1
+    {₀}{{$_0$}}1
+    {⊢}{{$\vdash$}}1
+}
+
+\title{Loop Mass Balance for a Single-Material Recovery Loop:\\ A Lean Proof of the Fixed Point and the Virgin-Input Identity}
+\author{Justin Hart, Viridis LLC}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study the simplest dynamic model of a circular material loop. A constant demand $D\ge0$ is
+met partly by recovered material, a share $r\in[0,1]$, and partly by virgin input $V=D(1-r)$. A
+secondary stock evolves as $S(t+1)=\rho S(t)+rD$ with retention $\rho\in[0,1)$. We give a Lean~4
+proof, against Mathlib, of the sealed statement \texttt{P3.LoopMassBalance}. The statement has
+five parts. The virgin input satisfies $0\le V\le D$. The stock gap obeys the exact closed form
+$S(t)-S^\ast=\rho^t(S(0)-S^\ast)$ with fixed point $S^\ast=rD/(1-\rho)$. The stock converges to
+$S^\ast$ from any initial value. Cumulative virgin input over $T$ periods equals $TD(1-r)$. For
+$D>0$ and $T>0$, cumulative virgin input is strictly decreasing in $r$ on $[0,1]$. The proof is
+about fifty lines long and uses only standard Mathlib lemmas. These results are accounting
+identities of the model. They say nothing about any measured recovery rate, retention rate,
+demand or material.
+\end{abstract}
+
+\section{Introduction}
+Circular-economy policy is about closing material loops, which means substituting recovered
+material for virgin extraction \citep{geissdoerfer2017}. Any quantitative tool that reasons
+about such loops relies on a handful of accounting facts. Recovery reduces virgin input one for
+one. A secondary stock fed at a constant rate and leaking at a constant fraction settles at a
+predictable level. Raising the recovery share always lowers cumulative extraction when demand
+is positive. These facts are elementary, but a decision kernel that applies them automatically
+should rest on exact versions whose hypotheses are listed in full. The edge cases are where
+errors hide: full retention ($\rho=1$), zero demand and out-of-range recovery fractions.
+
+Project P3 of Viridis Research is building the formal core of such a kernel. The first session
+(P3-T001, 5~November 2026) proposed four statement modules. The program owner then sealed
+\texttt{P3.LoopMassBalance} under decision D-011. This note answers one question: \emph{does the
+sealed loop mass balance statement hold exactly as written?} We give a Lean proof that it does.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item A Lean~4 proof of \texttt{ViridisStatements.P3.LoopMassBalance.Statement}
+(Section~\ref{sec:proof}). It depends only on the standard axioms \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}.
+\item A short human-readable proof of the same facts (Section~\ref{sec:math}). It makes clear
+which hypothesis each part uses.
+\item A statement of what the result settles and what it leaves open
+(Section~\ref{sec:limits}).
+\end{itemize}
+
+\section{Background and related work}
+\paragraph{Circular economy and industrial symbiosis.}
+\citet{geissdoerfer2017} review how the circular-economy concept relates to sustainability.
+Its operational core is closing material loops. \citet{chertow2000} defined industrial
+symbiosis as the exchange of materials, energy, water and by-products among firms. The P3
+project also has statements on cascaded recovery and $N$-partner symbiosis, which are later
+tasks. The model here is the single-loop building block those statements generalise.
+
+\paragraph{The model as a linear recurrence.}
+The stock equation $S(t+1)=\rho S(t)+b$ with $b=rD$ is a first-order affine recurrence. The
+fixed point, the geometric decay of the gap and convergence for $|\rho|<1$ are textbook facts.
+We claim no mathematical novelty. The contribution is a machine-checkable version of exactly
+the statement that the project sealed, including Lean's conventions such as $x/0=0$.
+
+\paragraph{Formal tools.}
+The proof is written in Lean~4 \citep{moura2021lean4} (toolchain v4.28.0) against Mathlib
+\citep{mathlib2020} (commit \texttt{8f9d9cff}).
+
+\section{The model and the statement}
+\label{sec:model}
+\begin{definition}[Loop model]
+Fix demand $D$, recovery fraction $r$, retention $\rho$ and initial stock $S_0$, all real. Put
+\[
+V = D(1-r),\qquad S(0)=S_0,\quad S(t+1)=\rho S(t)+rD,\qquad S^\ast=\frac{rD}{1-\rho},
+\qquad C(T)=\sum_{t=0}^{T-1}V .
+\]
+\end{definition}
+
+\begin{theorem}[\texttt{P3.LoopMassBalance}]\label{thm:main}
+\begin{enumerate}
+\item If $D\ge0$, $0\le r\le1$ and $0\le\rho<1$, then for every $S_0$:
+ (a) $0\le V\le D$;
+ (b) $S(t)-S^\ast=\rho^t(S_0-S^\ast)$ for all $t\in\mathbb{N}$;
+ (c) $S(t)\to S^\ast$ as $t\to\infty$;
+ (d) $C(T)=TD(1-r)$ for all $T\in\mathbb{N}$.
+\item If $D>0$ and $T>0$, then $r\mapsto C(T)$ is strictly decreasing on $[0,1]$.
+\end{enumerate}
+\end{theorem}
+
+The sealed Lean text is reproduced below. In the sealed file $\mathcal{N}$ stands for
+Mathlib's neighbourhood filter \texttt{nhds}.
+
+\begin{lstlisting}[caption={Definitions and \texttt{Statement} from the sealed module \texttt{ViridisStatements.P3.LoopMassBalance} (docstrings omitted).}]
+def virgin (D r : ℝ) : ℝ := D * (1 - r)
+
+def stock (ρ r D S0 : ℝ) : ℕ → ℝ
+  | 0 => S0
+  | t + 1 => ρ * stock ρ r D S0 t + r * D
+
+def steadyStock (ρ r D : ℝ) : ℝ := r * D / (1 - ρ)
+
+def cumulativeVirgin (D r : ℝ) (T : ℕ) : ℝ := ∑ _t ∈ Finset.range T, virgin D r
+
+def Statement : Prop :=
+  (∀ D r ρ S0 : ℝ, 0 ≤ D → 0 ≤ r → r ≤ 1 → 0 ≤ ρ → ρ < 1 →
+    (0 ≤ virgin D r ∧ virgin D r ≤ D) ∧
+    (∀ t : ℕ, stock ρ r D S0 t - steadyStock ρ r D
+        = ρ ^ t * (S0 - steadyStock ρ r D)) ∧
+    Tendsto (stock ρ r D S0) atTop (𝓝 (steadyStock ρ r D)) ∧
+    (∀ T : ℕ, cumulativeVirgin D r T = (T : ℝ) * D * (1 - r))) ∧
+  (∀ (D : ℝ) (T : ℕ), 0 < D → 0 < T →
+    StrictAntiOn (fun r => cumulativeVirgin D r T) (Set.Icc 0 1))
+\end{lstlisting}
+
+\section{Mathematical proof}
+\label{sec:math}
+\begin{lemma}[Fixed point and gap recursion]\label{lem:gap}
+If $\rho\ne1$, then $\rho S^\ast+rD=S^\ast$. Hence $S(t+1)-S^\ast=\rho\,(S(t)-S^\ast)$.
+\end{lemma}
+\begin{proof}
+$\rho S^\ast+rD = \frac{\rho rD + rD(1-\rho)}{1-\rho}=\frac{rD}{1-\rho}=S^\ast$. Subtracting
+this from $S(t+1)=\rho S(t)+rD$ gives the recursion.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+(a) $V=D(1-r)$ is a product of non-negative numbers, and $D-V=Dr\ge0$.
+(b) Induct on $t$ using Lemma~\ref{lem:gap}. Only $\rho<1$ is needed, through $1-\rho\ne0$.
+(c) Since $0\le\rho<1$, $\rho^t\to0$. So $S(t)=S^\ast+\rho^t(S_0-S^\ast)\to S^\ast$.
+(d) The sum has $T$ equal terms $V$.
+(2) By (d), $C(T)$ is an affine function of $r$ with slope $-TD<0$. Note that part~(d) holds for
+every real $r$, so part~2 does not need the hypotheses of part~1.
+\end{proof}
+
+\begin{remark}
+The hypothesis $\rho\ge0$ is used only in (c). The convergence argument goes through for
+$|\rho|<1$, but the sealed statement assumes $\rho\in[0,1)$, which is the physically meaningful
+range for a retention fraction. The sealed module's negative controls show that the hypotheses
+$\rho<1$, $D>0$ and $r\le1$ are needed for parts (b), 2 and (a) respectively. With $\rho=1$,
+Lean's convention $x/0=0$ makes $S^\ast=0$ and the closed form fails.
+\end{remark}
+
+\section{The Lean development}
+\label{sec:proof}
+The candidate file \texttt{proofs/P3.LoopMassBalance.lean} follows Section~\ref{sec:math}
+closely. \texttt{gap\_succ} is Lemma~\ref{lem:gap}, proved by unfolding the recurrence and
+clearing the denominator $1-\rho\ne0$ with \texttt{field\_simp; ring}. \texttt{gap\_closed} is
+part~(b), by induction. \texttt{stock\_tendsto} is part~(c). It combines Mathlib's
+\texttt{tendsto\_pow\_atTop\_nhds\_zero\_of\_lt\_one} with \texttt{Tendsto.mul\_const} and
+\texttt{Tendsto.add\_const}, then transfers along the closed form with \texttt{Tendsto.congr'}.
+\texttt{cumulative\_eq} is part~(d), via \texttt{Finset.sum\_const}. The final theorem
+discharges the bounds on $V$ and the strict antitonicity with \texttt{nlinarith}. For
+antitonicity it is given the positivity of $TD$.
+
+\begin{lstlisting}[caption={The complete candidate proof \texttt{proofs/P3.LoopMassBalance.lean}.}]
+import Mathlib
+import ViridisStatements.P3.LoopMassBalance
+
+namespace Candidate
+
+open Filter Topology
+open ViridisStatements.P3.LoopMassBalance
+
+/-- One-step gap recursion: `S(t+1) - S* = ρ · (S(t) - S*)`. -/
+theorem gap_succ (ρ r D S0 : ℝ) (hρ : ρ < 1) (t : ℕ) :
+    stock ρ r D S0 (t + 1) - steadyStock ρ r D
+      = ρ * (stock ρ r D S0 t - steadyStock ρ r D) := by
+  have h : (1 - ρ) ≠ 0 := by linarith
+  simp only [stock, steadyStock]
+  field_simp
+  ring
+
+/-- Closed form of the stock gap. -/
+theorem gap_closed (ρ r D S0 : ℝ) (hρ : ρ < 1) (t : ℕ) :
+    stock ρ r D S0 t - steadyStock ρ r D = ρ ^ t * (S0 - steadyStock ρ r D) := by
+  induction t with
+  | zero => simp [stock]
+  | succ n ih => rw [gap_succ ρ r D S0 hρ, ih, pow_succ]; ring
+
+/-- Cumulative virgin input equals `T·D·(1 - r)`. -/
+theorem cumulative_eq (D r : ℝ) (T : ℕ) :
+    cumulativeVirgin D r T = (T : ℝ) * D * (1 - r) := by
+  simp [cumulativeVirgin, virgin, Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  ring
+
+/-- Convergence of the stock to the steady stock. -/
+theorem stock_tendsto (ρ r D S0 : ℝ) (h0 : 0 ≤ ρ) (hρ : ρ < 1) :
+    Tendsto (stock ρ r D S0) atTop (𝓝 (steadyStock ρ r D)) := by
+  have hp : Tendsto (fun t : ℕ => ρ ^ t) atTop (𝓝 0) :=
+    tendsto_pow_atTop_nhds_zero_of_lt_one h0 hρ
+  have hg : Tendsto (fun t : ℕ => ρ ^ t * (S0 - steadyStock ρ r D) + steadyStock ρ r D)
+      atTop (𝓝 (0 * (S0 - steadyStock ρ r D) + steadyStock ρ r D)) :=
+    (hp.mul_const _).add_const _
+  rw [zero_mul, zero_add] at hg
+  refine hg.congr' (Eventually.of_forall fun t => ?_)
+  have := gap_closed ρ r D S0 hρ t
+  linarith
+
+theorem main : ViridisStatements.P3.LoopMassBalance.Statement := by
+  refine ⟨?_, ?_⟩
+  · intro D r ρ S0 hD hr0 hr1 hρ0 hρ1
+    refine ⟨⟨?_, ?_⟩, gap_closed ρ r D S0 hρ1, stock_tendsto ρ r D S0 hρ0 hρ1,
+      cumulative_eq D r⟩
+    · unfold virgin; exact mul_nonneg hD (by linarith)
+    · unfold virgin; nlinarith
+  · intro D T hD hT a _ b _ hab
+    simp only [cumulative_eq]
+    have hT' : (0 : ℝ) < T := by exact_mod_cast hT
+    have : 0 < (T : ℝ) * D := mul_pos hT' hD
+    nlinarith
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+\label{sec:results}
+We ran the program's checker on the candidate file. It runs the same stages as the verifier:
+denylist, compile, statement match, axioms and kernel replay. The output was
+\texttt{PASSED (preview)}, and the reported axioms were \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. The proof worked on the first attempt,
+following the sketch recorded in the P3-T001 notebook. No automated prover was needed. The
+certification page that precedes this paper gives the verifier's own judgement.
+
+\section{What this settles and what it does not}
+\label{sec:limits}
+\paragraph{Settled.} Assuming the verifier accepts the file, the accounting identities of the
+one-material loop model hold exactly as sealed. These are the virgin/recovered split, the fixed
+point $S^\ast=rD/(1-\rho)$ with geometric convergence at rate $\rho$, the linear
+cumulative-virgin identity, and strict monotonicity in $r$. A kernel built on these definitions
+may rely on them for any parameter values in the stated ranges.
+
+\paragraph{Not settled.}
+\begin{itemize}
+\item \textbf{No empirical content.} Nothing here estimates or constrains any real recovery
+rate, retention rate, demand or material flow. Those remain field inputs. The theorem only says
+what follows once they are given.
+\item \textbf{Stylised dynamics.} Demand, $r$ and $\rho$ are constant. There is one material.
+Recovery does not depend on the stock: the model does not require $rD\le\rho S(t)$, so recovered
+supply is not limited by available stock. Quality loss, cascading and time lags are absent.
+A stock-limited variant was flagged as an open question in P3-T001.
+\item \textbf{Decoupling of $V$ and $S$.} In this model virgin input depends only on $r$, not on
+the stock. The fixed point describes the size of the secondary stock, not the extraction
+saving, which is $rD$ per period from the start.
+\end{itemize}
+
+\section{Reproducibility}
+\sloppy
+The proof file \texttt{proofs/P3.LoopMassBalance.lean} imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P3.LoopMassBalance}. It compiles under toolchain
+\texttt{leanprover/lean4:v4.28.0} and the Mathlib commit below. The checker invocation is also
+shown below. Alternatively, compile the file with \texttt{lean} and inspect
+\texttt{\#print axioms Candidate.main} in a scratch file.
+\begin{lstlisting}[language={},frame=none]
+sealed module sha256:
+  f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7
+Mathlib commit:
+  8f9d9cff6bd728b17a24e163c9402775d9e6a365
+viridis-lean-check proofs/P3.LoopMassBalance.lean P3.LoopMassBalance
+\end{lstlisting}
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-05 (P3-T001): first version. Proposed P3.LoopMassBalance, P3.CascadedRecovery,
+P3.RecoveryWorkFloor and P3.CyclicSymbiosis as statement modules, with controls, probe results
+and rationale.
+\item 2026-11-15 (P3-T002): P3.LoopMassBalance sealed (D-011). Narrowed the paper to a note on
+this statement and added a full Lean proof and a human-readable proof. Moved the other three
+proposals out of the paper body until they are sealed and proved. Dropped the two canon
+references, which this note does not use.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

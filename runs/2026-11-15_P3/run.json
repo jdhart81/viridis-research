@@ -1,0 +1,18 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P3",
+  "task": "P3-T002",
+  "title": "Loop Mass Balance for a Single-Material Recovery Loop: A Lean Proof",
+  "abstract": "We study the simplest dynamic model of a circular material loop. A constant demand D >= 0 is met partly by recovered material, a share r in [0,1], and partly by virgin input V = D(1-r). A secondary stock evolves as S(t+1) = rho S(t) + rD with retention rho in [0,1). We give a Lean 4 proof, against Mathlib, of the sealed statement P3.LoopMassBalance. The statement has five parts. The virgin input satisfies 0 <= V <= D. The stock gap obeys the exact closed form S(t) - S* = rho^t (S(0) - S*) with fixed point S* = rD/(1-rho). The stock converges to S* from any initial value. Cumulative virgin input over T periods equals T D (1-r). For D > 0 and T > 0, cumulative virgin input is strictly decreasing in r on [0,1]. The proof is about fifty lines long and uses only standard Mathlib lemmas. These results are accounting identities of the model. They say nothing about any measured recovery rate, retention rate, demand or material.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P3.LoopMassBalance",
+      "proof_file": "proofs/P3.LoopMassBalance.lean",
+      "text": "For demand D >= 0, recovery fraction r in [0,1], retention rho in [0,1) and any initial stock S0: virgin input V = D(1-r) lies in [0,D]; the secondary stock S(t+1) = rho S(t) + rD satisfies S(t) - S* = rho^t (S0 - S*) with S* = rD/(1-rho); S(t) converges to S*; cumulative virgin input over T periods equals T D (1-r); and for D > 0, T > 0 it is strictly decreasing in r on [0,1]."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "P3.LoopMassBalance has a candidate proof that passed viridis-lean-check (preview). Next: prove the other P3 statements once they are sealed. Proof sketches are in the 2026-11-05 notes. CascadedRecovery: Finset.prod_le_prod, Finset.mul_prod_erase, le_ciSup/ciSup_le. RecoveryWorkFloor: div_le_iff0 plus nlinarith. CyclicSymbiosis: prev is a bijection, Finset.prod_lt_prod_of_nonempty, and an explicit flow with lam = (prod v/c)^(1/N); about 120 lines, the hardest of the four. Open question for Justin: should a stock-limited loop variant (rD <= rho S(t)) be proposed as a follow-up statement?"
+}

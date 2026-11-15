@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 3.88,
+  "date": "2026-11-15",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "8391eb3bc48b46740217b9211b2b91192170ee0e",
+    "run_attempt": 1,
+    "run_id": 43689265794,
+    "run_started_at": "2026-11-15T07:17:13Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43689265794",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P3.LoopMassBalance",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "7d56b5ceb755db8b9b1b5bb9416ed93fb54b07d544eb2250dbb8b7e55949ecce",
+  "paper_built": true,
+  "project": "P3",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P3.LoopMassBalance"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-15_P3",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P3-T002",
+  "title": "Loop Mass Balance for a Single-Material Recovery Loop: A Lean Proof",
+  "written_at": "2026-11-15T07:51:19Z",
+  "written_by": "verify",
+  "zip_sha256": "59c3cec5daab518b736919e4e1375a4c95524f867c141c47e151e8b3a2ebffaf"
+}
