@@ -1,0 +1,18 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P3",
+  "task": "P3-T003",
+  "title": "Cascaded Recovery Bounds: A Lean Proof that a Cascade of Imperfect Stages Beats Each of Its Stages",
+  "abstract": "A material stream passes through n recovery stages in series. Stage i recovers a fraction r_i in [0,1] of what reaches it, so the virgin share of the original stream is the product of (1 - r_i). We give a Lean 4 proof, against Mathlib, of the sealed statement P3.CascadedRecovery. The virgin share lies in [0,1]. It is at least (1-m)^n for every uniform upper bound m <= 1 on the stage rates, and in particular at least (1 - max_i r_i)^n. It is never larger than the single-stage share 1 - r_j of any stage j. It is strictly smaller whenever r_j < 1 and some other stage recovers a positive fraction. The proof is about seventy lines and rests on splitting one stage off the product. These are properties of the series-cascade model. They make no claim about any real stage efficiency, material or recovery technology.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P3.CascadedRecovery",
+      "proof_file": "proofs/P3.CascadedRecovery.lean",
+      "text": "For every n and stage recovery fractions r : Fin n -> R with 0 <= r i <= 1, the virgin share prod_i (1 - r i) satisfies: it lies in [0,1]; (1-m)^n <= share for every m <= 1 bounding all r i; (1 - iSup r)^n <= share; share <= 1 - r j for every stage j; and share < 1 - r j whenever r j < 1 and some other stage k != j has r k > 0."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "P3.CascadedRecovery has a candidate proof that passed viridis-lean-check (preview) on the first attempt. Next: prove P3.RecoveryWorkFloor (sketch: div_le_iff0 plus nlinarith) and P3.CyclicSymbiosis (the hardest; sketch in 2026-11-05 notes: prev is a bijection, Finset.prod_lt_prod_of_nonempty, explicit flow with lam = (prod v/c)^(1/N)) once sealed. Open question for Justin: is a statement coupling the cascade to the loop model (effective r = 1 - virginShare) worth sealing, and should a correlated-stage variant be considered?"
+}

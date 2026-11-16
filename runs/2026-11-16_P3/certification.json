@@ -1,0 +1,67 @@
+{
+  "date": "2026-11-16",
+  "engine_sha": "9eacc46e45ce7c35c531c1f451e8805484107dfd",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "eaafbaaa17a780833c6d955cae570ece4c6676fd241accb2bf52bac6773b8f1c",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P3.CascadedRecovery",
+      "statement_sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+      "text": "For every n and stage recovery fractions r : Fin n -> R with 0 <= r i <= 1, the virgin share prod_i (1 - r i) satisfies: it lies in [0,1]; (1-m)^n <= share for every m <= 1 bounding all r i; (1 - iSup r)^n <= share; share <= 1 - r j for every stage j; and share < 1 - r j whenever r j < 1 and some other stage k != j has r k > 0.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "eaafbaaa17a780833c6d955cae570ece4c6676fd241accb2bf52bac6773b8f1c",
+      "durations": {
+        "check": 10.955,
+        "compile": 11.614,
+        "replay": 11.411
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P3.CascadedRecovery",
+      "statement_sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "project": "P3",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 4,
+    "entries": 4,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/j.jclepro.2016.12.048",
+      "10.1145/3372885.3373824",
+      "10.1146/annurev.energy.25.1.313"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-16_P3",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P3-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

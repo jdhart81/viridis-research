@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 3.36,
+  "date": "2026-11-16",
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "dd718d0d8a03a986822e38304cb4327361640215",
+    "run_attempt": 1,
+    "run_id": 43822764338,
+    "run_started_at": "2026-11-16T07:17:25Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/43822764338",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P3.CascadedRecovery",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "e27aac8297b8d7b8b66e37a988681e0ba6f6b4169aa8d9d1f8a2d7b18a4ad1c1",
+  "paper_built": true,
+  "project": "P3",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P3.CascadedRecovery"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-16_P3",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P3-T003",
+  "title": "Cascaded Recovery Bounds: A Lean Proof that a Cascade of Imperfect Stages Beats Each of Its Stages",
+  "written_at": "2026-11-16T07:49:12Z",
+  "written_by": "verify",
+  "zip_sha256": "f194eb9fa6386f6435881eb3e0f751ef8d8343cd6d9b43af8b9be8f9d5fd1a64"
+}

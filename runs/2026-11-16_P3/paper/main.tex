@@ -1,0 +1,358 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\emergencystretch=2em
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,rcases,haveI,subst,nlinarith,linarith,have,refine,intro,induction,with,simp,only,rw,unfold,exact,example,namespace,end,open,fun,Prop,by,noncomputable,section,import},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {→}{{$\to$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∈}{{$\in$}}1
+    {∑}{{$\sum$}}1
+    {∏}{{$\prod$}}1
+    {∧}{{$\wedge$}}1
+    {≤}{{$\le$}}1
+    {≠}{{$\ne$}}1
+    {⨆}{{$\bigsqcup$}}1
+    {∉}{{$\notin$}}1
+    {←}{{$\leftarrow$}}1
+    {ρ}{{$\rho$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {·}{{$\cdot$}}1
+    {𝓝}{{$\mathcal{N}$}}1
+    {₀}{{$_0$}}1
+    {⊢}{{$\vdash$}}1
+}
+
+\title{Cascaded Recovery Bounds:\\ A Lean Proof that a Cascade of Imperfect Stages Beats Each of Its Stages}
+\author{Justin Hart, Viridis LLC}
+\date{16 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A material stream passes through $n$ recovery stages in series. Stage $i$ recovers a fraction
+$r_i\in[0,1]$ of what reaches it. The share of the original stream that must still be met by
+virgin material, the \emph{virgin share}, is $\prod_i(1-r_i)$. We give a Lean~4 proof, against
+Mathlib, of the sealed statement \texttt{P3.CascadedRecovery}. The statement has four parts.
+The virgin share lies in $[0,1]$. It is at least $(1-m)^n$ for every uniform upper bound $m\le1$ on
+the stage rates, and in particular at least $(1-\max_i r_i)^n$. It is never larger than the
+single-stage share $1-r_j$ of any stage $j$. It is strictly smaller than $1-r_j$ whenever
+$r_j<1$ and some other stage recovers a positive fraction. The proof is about seventy lines and
+rests on one idea: split stage $j$ off the product and bound the rest by $1$. These results are
+properties of the series-cascade model. They make no claim about any real stage efficiency,
+material or recovery technology.
+\end{abstract}
+
+\section{Introduction}
+Recovery processes are rarely perfect. A sorting line misses some material, a re-processing step
+rejects some of what it receives, and a second or third pass is often added to catch what the
+first one missed. The circular-economy literature treats closing material loops as the core of
+the concept \citep{geissdoerfer2017}. Industrial symbiosis, where one firm's residue becomes
+another's input, extends this to chains of firms \citep{chertow2000}. In both settings a natural
+question for a decision kernel is: \emph{if several imperfect recovery stages act in series, how
+much virgin material is still needed, and is the cascade always at least as good as its best
+single stage?}
+
+In the series model the answer is a product, and the facts are elementary. Yet the edge cases
+matter for a kernel that applies them automatically. What happens with zero stages? With a stage
+that recovers everything? With a stage that recovers nothing? When is the improvement strict?
+Project P3 of Viridis Research proposed the statement \texttt{P3.CascadedRecovery} in session
+P3-T001 (5~November 2026). The program owner sealed it under decision D-012. This note gives a
+Lean proof that the sealed statement holds exactly as written.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item A Lean~4 proof of \texttt{ViridisStatements.P3.CascadedRecovery.Statement}
+(Section~\ref{sec:proof}). It depends only on the standard axioms \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}.
+\item A short human-readable proof (Section~\ref{sec:math}) that shows which hypothesis each
+part uses, including the role of Mathlib's convention for the supremum over an empty index set.
+\item An account of what the result settles and what it does not (Section~\ref{sec:limits}).
+\end{itemize}
+
+\section{Background and related work}
+\paragraph{Circular economy and cascades.}
+\citet{geissdoerfer2017} review how the circular economy relates to sustainability. Its
+operational core is substituting recovered material for virgin extraction. \citet{chertow2000}
+defined industrial symbiosis as the exchange of materials, energy, water and by-products among
+firms. Such exchanges often form chains, where the residue of one stage feeds the next. The
+previous P3 session (P3-T002, 15~November 2026) gave a Lean proof of the single-loop mass balance
+\texttt{P3.LoopMassBalance}, where virgin input is $D(1-r)$ for one recovery fraction $r$. The
+cascade model here generalises the factor $1-r$ to a product over stages.
+
+\paragraph{The mathematics.}
+That pass-through fractions of stages in series multiply, and that a product of numbers in
+$[0,1]$ is bounded by each factor, are textbook facts. The same structure appears in the
+reliability of series systems and in serial separation efficiencies. We claim no mathematical
+novelty. The contribution is a machine-checkable proof of exactly the sealed statement,
+including its strictness condition and its degenerate cases.
+
+\paragraph{Formal tools.}
+The proof is written in Lean~4 \citep{moura2021lean4} (toolchain v4.28.0) against Mathlib
+\citep{mathlib2020} (commit \texttt{8f9d9cff}).
+
+\section{The model and the statement}
+\label{sec:model}
+\begin{definition}[Cascade model]
+Let $n\in\mathbb{N}$ and $r:\{0,\dots,n-1\}\to\mathbb{R}$. The \emph{virgin share} of the cascade
+is
+\[
+\mathrm{VS}(r)=\prod_{i<n}(1-r_i).
+\]
+\end{definition}
+The reading is as follows. One unit of material enters stage $0$. Stage $i$ recovers the fraction
+$r_i$ of what reaches it and passes the fraction $1-r_i$ on unrecovered. After all $n$ stages the
+unrecovered fraction is $\mathrm{VS}(r)$, and this is the share of demand that virgin material
+must cover.
+
+\begin{theorem}[\texttt{P3.CascadedRecovery}]\label{thm:main}
+Let $0\le r_i\le1$ for all $i$. Then:
+\begin{enumerate}
+\item $0\le\mathrm{VS}(r)\le1$;
+\item for every $m$ with $r_i\le m$ for all $i$ and $m\le1$: $(1-m)^n\le\mathrm{VS}(r)$;
+\item $(1-\sup_i r_i)^n\le\mathrm{VS}(r)$, where $\sup$ is Mathlib's $\bigsqcup_i r_i$ in the
+conditionally complete lattice $\mathbb{R}$;
+\item for every stage $j$: $\mathrm{VS}(r)\le 1-r_j$;
+\item for all stages $j\ne k$ with $0<r_k$ and $r_j<1$: $\mathrm{VS}(r)<1-r_j$.
+\end{enumerate}
+\end{theorem}
+
+The sealed Lean text is reproduced below.
+
+\begin{lstlisting}[caption={Definition and \texttt{Statement} from the sealed module \texttt{ViridisStatements.P3.CascadedRecovery} (docstrings omitted).}]
+def virginShare {n : ℕ} (r : Fin n → ℝ) : ℝ := ∏ i, (1 - r i)
+
+def Statement : Prop :=
+  ∀ (n : ℕ) (r : Fin n → ℝ), (∀ i, 0 ≤ r i) → (∀ i, r i ≤ 1) →
+    (0 ≤ virginShare r ∧ virginShare r ≤ 1) ∧
+    (∀ m : ℝ, (∀ i, r i ≤ m) → m ≤ 1 → (1 - m) ^ n ≤ virginShare r) ∧
+    (1 - ⨆ i, r i) ^ n ≤ virginShare r ∧
+    (∀ j, virginShare r ≤ 1 - r j) ∧
+    (∀ j k, k ≠ j → 0 < r k → r j < 1 → virginShare r < 1 - r j)
+\end{lstlisting}
+
+\section{Mathematical proof}
+\label{sec:math}
+Write $f_i=1-r_i$. The hypotheses give $0\le f_i\le1$ for every $i$.
+
+\begin{lemma}[Splitting off a stage]\label{lem:split}
+For every stage $j$, $\mathrm{VS}(r)=f_j\cdot P_j$, where $P_j=\prod_{i\ne j}f_i\in[0,1]$.
+\end{lemma}
+\begin{proof}
+Commutativity of the product gives the identity. A product of numbers in $[0,1]$ lies in
+$[0,1]$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+(1) Every factor lies in $[0,1]$, so the product does too.
+
+(2) From $r_i\le m\le1$ we get $0\le1-m\le f_i$. The product of $n$ copies of $1-m$ is
+$(1-m)^n$. Products of non-negative numbers are monotone in each factor, so
+$(1-m)^n\le\prod_i f_i$. This part does not need $r_i\ge0$.
+
+(3) If $n=0$, the empty product is $1$ and $(1-s)^0=1$ for any $s$, so the claim holds with
+equality. Mathlib's value of $\bigsqcup$ over the empty type, which is $0$, never matters. If
+$n>0$, the index set is finite and non-empty, so $s=\sup_i r_i$ is a true maximum. Then $r_i\le
+s$ for all $i$ and $s\le1$, and part~(2) with $m=s$ applies.
+
+(4) By Lemma~\ref{lem:split}, $\mathrm{VS}(r)=f_jP_j\le f_j$, because $f_j\ge0$ and $P_j\le1$.
+
+(5) Since $k\ne j$, split $k$ off $P_j$: $P_j=f_k\cdot Q$ with $Q=\prod_{i\ne j,k}f_i\in[0,1]$.
+Then $P_j\le f_k=1-r_k<1$. Since $r_j<1$, $f_j>0$, so $\mathrm{VS}(r)=f_jP_j<f_j$.
+\end{proof}
+
+\begin{remark}
+The sealed module's negative controls show that every hypothesis of part~(5) is needed. If
+every other stage recovers nothing, the cascade equals stage $j$ alone. If $r_j=1$, both sides
+are $0$. Both bounds $0\le r_i$ and $r_i\le1$ are needed too. A ``stage'' with $r=2$ makes the
+share negative. A ``stage'' with $r=-1$, one that adds demand, pushes the share above another
+stage's share.
+\end{remark}
+
+\paragraph{Interpretation.} Parts~(4) and~(5) say that adding stages never hurts and that it
+helps strictly as soon as another stage does any work. So a cascade of imperfect stages beats
+any one of its stages, including the best one. Parts~(2) and~(3) bound how much the cascade can
+achieve. With every stage at most as good as the best one, rate $m$, the virgin share cannot fall
+below what $n$ copies of that best stage would leave, which is $(1-m)^n$. For example, two stages
+at $1/2$ give share $1/4$: equal to the lower bound and strictly below the single-stage share
+$1/2$. The stages $1/2,1/4,0$ give $3/8$, between $(1/2)^3=1/8$ and $1/2$.
+
+\section{The Lean development}
+\label{sec:proof}
+The candidate file \texttt{proofs/P3.CascadedRecovery.lean} follows Section~\ref{sec:math}.
+\texttt{subprod\_le\_one} and \texttt{subprod\_nonneg} bound any sub-product, via
+\texttt{Finset.prod\_le\_one} and \texttt{Finset.prod\_nonneg}. \texttt{split} is
+Lemma~\ref{lem:split}, which is \texttt{Finset.mul\_prod\_erase}. \texttt{lower\_bound} is
+part~(2). It rewrites $(1-m)^n$ as a constant product with \texttt{Finset.prod\_const} and
+\texttt{Fintype.card\_fin}, then applies \texttt{Finset.prod\_le\_prod}. In \texttt{main}, part~(3)
+splits on $n=0$. For $n>0$ it uses \texttt{le\_ciSup} with boundedness from
+\texttt{Set.finite\_range}, and \texttt{ciSup\_le} with non-emptiness. Parts~(4) and~(5) are closed
+by \texttt{nlinarith} after the split, with stage $k$ split off a second time in part~(5).
+
+\begin{lstlisting}[caption={The complete candidate proof \texttt{proofs/P3.CascadedRecovery.lean}.}]
+import Mathlib
+import ViridisStatements.P3.CascadedRecovery
+
+namespace Candidate
+
+open ViridisStatements.P3.CascadedRecovery
+
+/-- Every factor `1 - r i` lies in `[0, 1]`. -/
+theorem factor_nonneg {n : ℕ} (r : Fin n → ℝ) (h1 : ∀ i, r i ≤ 1) (i : Fin n) :
+    0 ≤ 1 - r i := by linarith [h1 i]
+
+theorem factor_le_one {n : ℕ} (r : Fin n → ℝ) (h0 : ∀ i, 0 ≤ r i) (i : Fin n) :
+    1 - r i ≤ 1 := by linarith [h0 i]
+
+/-- Any sub-product of the factors lies in `[0, 1]`. -/
+theorem subprod_le_one {n : ℕ} (r : Fin n → ℝ) (h0 : ∀ i, 0 ≤ r i) (h1 : ∀ i, r i ≤ 1)
+    (s : Finset (Fin n)) : ∏ i ∈ s, (1 - r i) ≤ 1 :=
+  Finset.prod_le_one (fun i _ => factor_nonneg r h1 i) (fun i _ => factor_le_one r h0 i)
+
+theorem subprod_nonneg {n : ℕ} (r : Fin n → ℝ) (h1 : ∀ i, r i ≤ 1)
+    (s : Finset (Fin n)) : 0 ≤ ∏ i ∈ s, (1 - r i) :=
+  Finset.prod_nonneg (fun i _ => factor_nonneg r h1 i)
+
+/-- Splitting off stage `j`: `virginShare r = (1 - r j) · ∏_{i ≠ j} (1 - r i)`. -/
+theorem split {n : ℕ} (r : Fin n → ℝ) (j : Fin n) :
+    virginShare r = (1 - r j) * ∏ i ∈ Finset.univ.erase j, (1 - r i) :=
+  (Finset.mul_prod_erase Finset.univ (fun i => 1 - r i) (Finset.mem_univ j)).symm
+
+/-- Uniform lower bound `(1 - m)^n ≤ virginShare r`. -/
+theorem lower_bound {n : ℕ} (r : Fin n → ℝ) (m : ℝ) (hm : ∀ i, r i ≤ m) (hm1 : m ≤ 1) :
+    (1 - m) ^ n ≤ virginShare r := by
+  have hc : (1 - m) ^ n = ∏ _i : Fin n, (1 - m) := by
+    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+  rw [hc, virginShare]
+  exact Finset.prod_le_prod (fun _ _ => by linarith) (fun i _ => by linarith [hm i])
+
+theorem main : ViridisStatements.P3.CascadedRecovery.Statement := by
+  intro n r h0 h1
+  refine ⟨⟨subprod_nonneg r h1 _, subprod_le_one r h0 h1 _⟩,
+    fun m hm hm1 => lower_bound r m hm hm1, ?_, ?_, ?_⟩
+  · -- the supremum bound
+    rcases Nat.eq_zero_or_pos n with hn | hn
+    · subst hn
+      simp [virginShare]
+    · haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+      have hbdd : BddAbove (Set.range r) := (Set.finite_range r).bddAbove
+      exact lower_bound r _ (fun i => le_ciSup hbdd i) (ciSup_le h1)
+  · intro j
+    rw [split r j]
+    have hP := subprod_le_one r h0 h1 (Finset.univ.erase j)
+    have hj := factor_nonneg r h1 j
+    nlinarith
+  · intro j k hkj hk hj
+    rw [split r j]
+    have hkmem : k ∈ Finset.univ.erase j := Finset.mem_erase.mpr ⟨hkj, Finset.mem_univ k⟩
+    have hsplit := Finset.mul_prod_erase (Finset.univ.erase j) (fun i => 1 - r i) hkmem
+    have hQ := subprod_le_one r h0 h1 ((Finset.univ.erase j).erase k)
+    have hQ0 := subprod_nonneg r h1 ((Finset.univ.erase j).erase k)
+    have hP : ∏ i ∈ Finset.univ.erase j, (1 - r i) < 1 := by
+      rw [← hsplit]
+      have hk1 := factor_nonneg r h1 k
+      nlinarith
+    have hj' : 0 < 1 - r j := by linarith
+    nlinarith
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+\label{sec:results}
+We ran the program's checker on the candidate file. It runs the same stages as the verifier:
+denylist, compile, statement match, axioms and kernel replay. The output was
+\texttt{PASSED (preview)}, and the reported axioms were \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. The proof worked on the first attempt,
+following the sketch recorded in the P3-T002 run's next steps. No automated prover was used. The
+certification page that precedes this paper gives the verifier's own judgement.
+
+\section{What this settles and what it does not}
+\label{sec:limits}
+\paragraph{Settled.} Assuming the verifier accepts the file, the bounds of the series-cascade
+model hold exactly as sealed, for every number of stages including zero and for every rate
+vector in $[0,1]^n$. A kernel built on this definition may rely on them.
+
+\paragraph{Not settled.}
+\begin{itemize}
+\item \textbf{No empirical content.} Nothing here estimates or constrains any real stage
+efficiency, material, or recovery technology. Stage rates are inputs. The theorem only says what
+follows once they are given.
+\item \textbf{Independence of stages.} The model assumes each stage recovers a fixed fraction of
+what reaches it, whatever earlier stages did. Real stages may be correlated. For example, the
+material a first sorter misses may be exactly the material a second sorter also misses, and then
+the real cascade does worse than the product. The theorem says nothing about such cases.
+\item \textbf{No costs, energy or quality.} Extra stages cost energy, money and possibly
+material quality. The statement ``the cascade beats each stage'' concerns virgin share only. It
+is not a claim that adding stages is worthwhile. Recovery work is the subject of the separate
+statement \texttt{P3.RecoveryWorkFloor}.
+\item \textbf{Static model.} There are no stocks or time lags. The cascade is a one-pass map;
+coupling it to the loop dynamics of \texttt{P3.LoopMassBalance} (effective recovery
+$r=1-\mathrm{VS}(r)$) is left for later work and is not part of any sealed statement.
+\end{itemize}
+
+\section{Reproducibility}
+\sloppy
+The proof file \texttt{proofs/P3.CascadedRecovery.lean} imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P3.CascadedRecovery}. It compiles under toolchain
+\texttt{leanprover/lean4:v4.28.0} and the Mathlib commit below. The checker invocation is also
+shown below.
+\begin{lstlisting}[language={},frame=none]
+sealed module sha256:
+  a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115
+Mathlib commit:
+  8f9d9cff6bd728b17a24e163c9402775d9e6a365
+viridis-lean-check proofs/P3.CascadedRecovery.lean P3.CascadedRecovery
+\end{lstlisting}
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-05 (P3-T001): first version. Proposed P3.LoopMassBalance, P3.CascadedRecovery,
+P3.RecoveryWorkFloor and P3.CyclicSymbiosis as statement modules, with controls, probe results
+and rationale.
+\item 2026-11-15 (P3-T002): P3.LoopMassBalance sealed (D-011). Narrowed the paper to a note on
+this statement with a full Lean proof and a human-readable proof.
+\item 2026-11-16 (P3-T003): P3.CascadedRecovery sealed (D-012). This version is a note on the
+cascade statement with a full Lean proof. The single-loop result from P3-T002 is now summarised
+in the background section. Its proof stays in the 2026-11-15 run package.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
