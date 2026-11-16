@@ -53,7 +53,7 @@
       "P5": {
         "approved_by": "D-017",
         "concept_recid": null,
-        "latest_deposition_id": null,
+        "latest_deposition_id": 24281822,
         "record_note": "Scope and novelty. Project P5 is a correction. It checks with the Lean kernel that an unrestricted axiom in an early Viridis source (January 2026) is false as written, and that an early theorem named no_finite_compensation proves the opposite of its name. The statements proved here are elementary facts about the algebra cap = P*D/C and are not new theorems. They say nothing about whether any agent preserves biodiversity, about any measured quantity, or about the Intelligence Bound as a physical conjecture, which remains a conjecture."
       }
     },
@@ -98,6 +98,13 @@
         "doi_url": "https://doi.org/10.5281/zenodo.24281803",
         "project": "P4",
         "record_id": 24281803,
+        "week": "2026-W46"
+      },
+      "2026-11-14_P5": {
+        "doi": "10.5281/zenodo.24281822",
+        "doi_url": "https://doi.org/10.5281/zenodo.24281822",
+        "project": "P5",
+        "record_id": 24281822,
         "week": "2026-W46"
       }
     },
