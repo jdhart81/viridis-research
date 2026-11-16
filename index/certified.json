@@ -198,7 +198,7 @@
   },
   {
    "date": "2026-11-10",
-   "doi": null,
+   "doi": "10.5281/zenodo.24281796",
    "labels": {
     "PROVEN": 1
    },
@@ -317,7 +317,7 @@
     "candidate_sha256": "ae3490865be63f9fc80518f96e5e9c0aa618e951d6fd7f3689e963144385a2af",
     "claim_id": "C1",
     "date": "2026-11-10",
-    "doi": null,
+    "doi": "10.5281/zenodo.24281796",
     "run_dir": "runs/2026-11-10_P1"
    },
    "sealed_at": "2026-11-08T14:32:54Z",
