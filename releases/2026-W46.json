@@ -8,9 +8,11 @@
     "url": "https://github.com/jdhart81/viridis-research/releases/tag/week-2026-W46"
   },
   "linkedin": {
+    "posted_at": "2026-11-16T13:29:29Z",
     "run_dir": "runs/2026-11-15_P3",
-    "status": "pending",
-    "text": "New from Viridis Research: Loop Mass Balance for a Single-Material Recovery Loop: A Lean Proof\n\nViridis Research P3: we give a Lean proof of the loop mass balance for a single-material recovery loop. Virgin input is D(1-r). A secondary stock with retention rho<1 converges geometrically to rD/(1-rho). Cumulative virgin input over T periods is T·D·(1-r) and falls strictly as recovery rises. These are accounting identities of a model, not claims about any real recovery rate.\n\nWhat was verified: a Lean 4 proof of P3.LoopMassBalance, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24281827\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent."
+    "status": "posted",
+    "text": "New from Viridis Research: Loop Mass Balance for a Single-Material Recovery Loop: A Lean Proof\n\nViridis Research P3: we give a Lean proof of the loop mass balance for a single-material recovery loop. Virgin input is D(1-r). A secondary stock with retention rho<1 converges geometrically to rD/(1-rho). Cumulative virgin input over T periods is T·D·(1-r) and falls strictly as recovery rises. These are accounting identities of a model, not claims about any real recovery rate.\n\nWhat was verified: a Lean 4 proof of P3.LoopMassBalance, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24281827\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent.",
+    "urn": "urn:li:share:7528086845251952640"
   },
   "runs": [
     "runs/2026-11-09_P1",
