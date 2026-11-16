@@ -20,9 +20,16 @@
   "week": "2026-W46",
   "zenodo": {
     "2026-11-09_P1": {
+      "concept_doi": "10.5281/zenodo.24281786",
+      "concept_recid": 24281786,
+      "deposition_id": 24281787,
+      "doi": "10.5281/zenodo.24281787",
+      "doi_url": "https://doi.org/10.5281/zenodo.24281787",
       "project": "P1",
+      "record_id": 24281787,
       "run_dir": "runs/2026-11-09_P1",
-      "status": "pending",
+      "status": "done",
+      "url": "https://zenodo.org/records/24281787",
       "version": "2026-11-09_P1"
     }
   }
