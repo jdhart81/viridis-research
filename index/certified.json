@@ -211,7 +211,7 @@
   },
   {
    "date": "2026-11-12",
-   "doi": null,
+   "doi": "10.5281/zenodo.24281803",
    "labels": {
     "TESTED": 1
    },
@@ -562,7 +562,7 @@
   {
    "claim_id": "C1",
    "date": "2026-11-12",
-   "doi": null,
+   "doi": "10.5281/zenodo.24281803",
    "entry": "code/rerun_p1c.py",
    "pinned_inputs": 11,
    "project": "P4",

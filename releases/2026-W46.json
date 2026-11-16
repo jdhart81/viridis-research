@@ -46,9 +46,16 @@
       "version": "2026-11-10_P1"
     },
     "2026-11-12_P4": {
+      "concept_doi": "10.5281/zenodo.24281802",
+      "concept_recid": 24281802,
+      "deposition_id": 24281803,
+      "doi": "10.5281/zenodo.24281803",
+      "doi_url": "https://doi.org/10.5281/zenodo.24281803",
       "project": "P4",
+      "record_id": 24281803,
       "run_dir": "runs/2026-11-12_P4",
-      "status": "pending",
+      "status": "done",
+      "url": "https://zenodo.org/records/24281803",
       "version": "2026-11-12_P4"
     }
   }
