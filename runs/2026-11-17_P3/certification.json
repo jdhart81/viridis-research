@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-17",
+  "engine_sha": "6d930fef994f1b5c0e089c6e6877f31b41b84886",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "cc32f316cea84d47a13a8a80ca3d48534befd045436a9bebb97a74d626ee438d",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P3.RecoveryWorkFloor",
+      "statement_sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+      "text": "For all reals wf, wr, ef, er, emax, T with wf, wr >= 0, 0 <= ef, er <= emax and emax > 0: if T <= ef*wf + er*wr then (T - emax*wr)/emax <= wf. For all wr >= 0, emax > 0 and T >= emax*wr: (T - emax*wr)/emax >= 0 and emax*((T - emax*wr)/emax) + emax*wr = T.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "cc32f316cea84d47a13a8a80ca3d48534befd045436a9bebb97a74d626ee438d",
+      "durations": {
+        "check": 10.103,
+        "compile": 10.157,
+        "replay": 10.553
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P3.RecoveryWorkFloor",
+      "statement_sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "project": "P3",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 6,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1016/j.jclepro.2016.12.048",
+      "10.1145/3372885.3373824",
+      "10.1146/annurev.energy.25.1.313",
+      "10.1147/rd.53.0183",
+      "10.5281/zenodo.22736716"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-17_P3",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P3-T004",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P3",
+  "task": "P3-T004",
+  "title": "A Recovery-Adjusted Work Floor: A Lean Proof that Recovered Supply Lowers, and Exactly Attains, the Fresh-Supply Requirement",
+  "abstract": "A recovery process supplies work to reach a useful-work target T from two sources: fresh supply wf and recovered supply wr, converted at modeled efficiencies ef and er that share a common cap emax > 0. We give a Lean 4 proof, against Mathlib, of the sealed statement P3.RecoveryWorkFloor. Part 1 (floor): if useful work ef*wf + er*wr reaches T, then the fresh supply is at least (T - emax*wr)/emax. Part 2 (attainment): whenever emax*wr <= T, the fresh supply (T - emax*wr)/emax is nonnegative and, run at the cap, delivers exactly T, so the floor cannot be raised. The proof derives the floor from a restatement of target_requires_supply of the Useful and Dissipated Work Ledger (Run-163): total supply must be at least T/emax, and the recovered part moves across the inequality. The floor is a bound on modeled efficiency only. It is not a Landauer bound, it does not use the Intelligence Bound conjecture, and it makes no claim about any real efficiency or recovered supply.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P3.RecoveryWorkFloor",
+      "proof_file": "proofs/P3.RecoveryWorkFloor.lean",
+      "text": "For all reals wf, wr, ef, er, emax, T with wf, wr >= 0, 0 <= ef, er <= emax and emax > 0: if T <= ef*wf + er*wr then (T - emax*wr)/emax <= wf. For all wr >= 0, emax > 0 and T >= emax*wr: (T - emax*wr)/emax >= 0 and emax*((T - emax*wr)/emax) + emax*wr = T."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "P3.RecoveryWorkFloor has a candidate proof that passed viridis-lean-check (preview). The floor is derived from a restated Run-163 target_requires_supply. Next: prove P3.CyclicSymbiosis, the last P3 statement (sketch in 2026-11-05 notes: prev is a bijection on the cycle, Finset.prod_lt_prod_of_nonempty for one direction, explicit flow with lam = (prod v/c)^(1/N) for the other). Open question for Justin: is a per-source-cap variant (ef <= ef_max, er <= er_max) or a coupling of wr to the loop model (wr proportional to r*D) worth sealing?"
+}

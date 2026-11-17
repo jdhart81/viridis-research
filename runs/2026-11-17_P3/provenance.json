@@ -1,0 +1,78 @@
+{
+  "agent": {
+    "duration_api_ms": 135122,
+    "duration_ms": 251337,
+    "final_message": "I wrote a Lean proof of `P3.RecoveryWorkFloor`, and it passes `viridis-lean-check`: `PASSED (preview)`, using only the axioms `propext`, `Classical.choice` and `Quot.sound`. The verifier still decides whether it counts as PROVEN.\n\n**The proof** (`out/proofs/P3.RecoveryWorkFloor.lean`)\n- **Built on Run-163, as the brief asks.** The proof may import only Mathlib and the sealed module, so I restated two Run-163 lemmas, `uniform_efficiency_bound` and `target_requires_supply`, and proved them the same way. The second says total supply must be at least T/emax.\n- **Part 1 (the floor):** rewriting the floor as `(T − emax·wr)/emax = T/emax − wr` reduces it to `linarith` on that lemma.\n- **Part 2 (attainment):** `div_nonneg`, then `field_simp` and `ring`.\n- **History:** a shorter direct version also passed on the first try. I restructured it so the floor is visibly a corollary of the Run-163 lemma, and it passed again.\n- **Unused hypotheses:** part 1 doesn't use `0 ≤ ef` or `0 ≤ er`, and part 2 doesn't use `0 ≤ wr`. Part 1 does need `0 ≤ wr`. The paper records this.\n\n**The paper** (`out/paper/main.tex`)\n- It starts from the 2026-11-16 paper and is now a note on the work floor: model, theorem, a hand-written proof, the full Lean listing, limitations, reproducibility and changelog.\n- It says plainly that the floor is a modeled-efficiency bound, not a Landauer bound, and does not depend on the Intelligence Bound.\n- It compiles with `latexmk -pdf` in a clean directory with no warnings and no overfull boxes.\n- I added two references and confirmed both exist: Landauer (1961), doi:10.1147/rd.53.0183, and the Run-163 Zenodo record, doi:10.5281/zenodo.22736716.\n\n**Other files:** `out/run.json` (one formal claim, valid JSON), `out/notes.md` and a 397-character `out/announcement.md`. There were no pending Aristotle jobs from earlier runs and I didn't use Aristotle tonight. Next step is `P3.CyclicSymbiosis`, the last P3 statement.\n\nSources:\n- [Landauer 1961, IBM J. Res. Dev. (ACM DL)](https://dl.acm.org/doi/10.1147/rd.53.0183)\n- [Run-163 Zenodo record](https://zenodo.org/doi/10.5281/zenodo.22736716)",
+    "is_error": false,
+    "num_turns": 18,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "9b4c9b3b-bf4f-4993-ad8d-af9ab119e5fb",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.8254273000000001,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 45371,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 45371,
+      "cache_read_input_tokens": 403458,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 28,
+      "iterations": [],
+      "output_tokens": 15171,
+      "output_tokens_details": {
+        "thinking_tokens": 684
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 7,
+      "doi.org": 1,
+      "zenodo.org": 2
+    },
+    "bytes_down": 203688,
+    "bytes_up": 1188472,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "dd718d0d8a03a986822e38304cb4327361640215",
+    "run_attempt": 1,
+    "run_id": 44003064210,
+    "run_started_at": "2026-11-17T02:27:03Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44003064210",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-17",
+    "prior_runs": [
+      "runs/2026-11-16_P3",
+      "runs/2026-11-15_P3",
+      "runs/2026-11-05_P3"
+    ],
+    "project": "P3",
+    "run_started_at": "2026-11-17T02:27:03Z",
+    "task": "P3-T004",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}

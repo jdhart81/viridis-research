@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\emergencystretch=2em
+
+\lstdefinelanguage{lean}{
+  morekeywords={field_simp,ring,div_nonneg,def,theorem,rcases,haveI,subst,nlinarith,linarith,have,refine,intro,induction,with,simp,only,rw,unfold,exact,example,namespace,end,open,fun,Prop,by,noncomputable,section,import},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {→}{{$\to$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∈}{{$\in$}}1
+    {∑}{{$\sum$}}1
+    {∏}{{$\prod$}}1
+    {∧}{{$\wedge$}}1
+    {≤}{{$\le$}}1
+    {≥}{{$\ge$}}1
+    {≠}{{$\ne$}}1
+    {⨆}{{$\bigsqcup$}}1
+    {∉}{{$\notin$}}1
+    {←}{{$\leftarrow$}}1
+    {ρ}{{$\rho$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {·}{{$\cdot$}}1
+    {𝓝}{{$\mathcal{N}$}}1
+    {₀}{{$_0$}}1
+    {⊢}{{$\vdash$}}1
+}
+
+\title{A Recovery-Adjusted Work Floor:\\ A Lean Proof that Recovered Supply Lowers, and Exactly Attains, the Fresh-Supply Requirement}
+\author{Justin Hart, Viridis LLC}
+\date{17 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A process must deliver a useful-work target $T$ from two sources: a \emph{fresh} supply $w_f$
+and a \emph{recovered} supply $w_r$, converted at modeled efficiencies $e_f$ and $e_r$ that share
+a common cap $e_{\max}>0$. We give a Lean~4 proof, against Mathlib, of the sealed statement
+\texttt{P3.RecoveryWorkFloor}. Part~1 (floor): if the useful work $e_fw_f+e_rw_r$ reaches $T$,
+then $w_f\ge (T-e_{\max}w_r)/e_{\max}$. Part~2 (attainment): whenever $e_{\max}w_r\le T$, the
+fresh supply $(T-e_{\max}w_r)/e_{\max}$ is non-negative and, run at the cap, delivers exactly $T$,
+so the floor cannot be raised. The proof derives the floor from a restatement of
+\texttt{target\_requires\_supply} from the Useful and Dissipated Work Ledger (Run-163): total supply
+must be at least $T/e_{\max}$, and the recovered part moves across the inequality. The floor is a
+bound on \emph{modeled} efficiency only. It is not a Landauer bound, it does not use the
+Intelligence Bound conjecture, and it makes no claim about any real efficiency or recovered supply.
+\end{abstract}
+
+\section{Introduction}
+Recovering material or energy from residues reduces what must be drawn from fresh sources. That
+is the operational core of the circular economy \citep{geissdoerfer2017} and of industrial
+symbiosis, where one firm's residue becomes another's input \citep{chertow2000}. A decision
+kernel that credits recovery needs a precise answer to a simple question: \emph{if a target amount
+of useful work must be delivered and some of the supply is recovered, how much fresh supply is
+still required at minimum?}
+
+Under a linear conversion model with a common efficiency cap the answer is a one-line formula,
+\[
+w_f\ \ge\ \frac{T-e_{\max}w_r}{e_{\max}}=\frac{T}{e_{\max}}-w_r ,
+\]
+and the bound is tight. Each unit of recovered supply lowers the fresh-supply floor by exactly one
+unit, and no more. The formula is elementary. What a kernel needs is the exact list of hypotheses
+under which it may be applied automatically, and the assurance that the floor is the best possible
+one. Project P3 of Viridis Research proposed \texttt{P3.RecoveryWorkFloor} in session P3-T001
+(5~November 2026), and the program owner sealed it under decision D-013. This note gives a Lean
+proof that the sealed statement holds exactly as written.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item A Lean~4 proof of \texttt{ViridisStatements.P3.RecoveryWorkFloor.Statement}
+(Section~\ref{sec:proof}), structured as an extension of the Run-163 lemma
+\texttt{target\_requires\_supply} \citep{hart2026udwl}. It depends only on the standard axioms
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+\item A short human-readable proof (Section~\ref{sec:math}) that records which hypotheses each part
+actually uses.
+\item A plain statement of what kind of bound this is and is not (Section~\ref{sec:limits}).
+\end{itemize}
+
+\section{Background and related work}
+\paragraph{Circular economy and symbiosis.}
+\citet{geissdoerfer2017} review the circular economy as a sustainability paradigm, centred on
+substituting recovered resources for virgin ones. \citet{chertow2000} defined industrial symbiosis
+as the exchange of materials, energy, water and by-products among firms. Earlier P3 sessions gave
+Lean proofs of two material-accounting statements. \texttt{P3.LoopMassBalance} (P3-T002) says that
+with recovery fraction $r$ the virgin input is $D(1-r)$. \texttt{P3.CascadedRecovery} (P3-T003)
+says that the virgin share of $n$ stages in series is $\prod_i(1-r_i)$, which is no larger than
+any single stage's share. This note turns from material to work.
+
+\paragraph{The Useful and Dissipated Work Ledger.}
+Run-163 of the Viridis canon \citep{hart2026udwl} models two supplies $w_1,w_2\ge0$ converted at
+efficiencies $e_1,e_2$, with useful work $e_1w_1+e_2w_2$ and modeled dissipation
+$(1-e_1)w_1+(1-e_2)w_2$. Its lemma \texttt{target\_requires\_supply} says that if both efficiencies
+are at most $e_{\max}>0$ and useful work reaches $T$, then the total supply is at least
+$T/e_{\max}$. \texttt{P3.RecoveryWorkFloor} reads $w_1$ as fresh and $w_2$ as recovered supply,
+and asks for the bound on the fresh part alone, together with its tightness.
+
+\paragraph{What this is not.}
+\citet{landauer1961} showed that logically irreversible operations entail a minimum heat
+generation of order $kT$ per operation. That is a physical lower bound that holds for every
+device. The floor proved here is a different kind of statement. Its only physics is the modeling
+assumption $e\le e_{\max}$, where $e_{\max}$ is a number chosen by the modeler. It is not a
+Landauer bound. It also does not rely on the program's Intelligence Bound, which remains a
+conjecture.
+
+\paragraph{Formal tools.}
+The proof is written in Lean~4 \citep{moura2021lean4} (toolchain v4.28.0) against Mathlib
+\citep{mathlib2020} (commit \texttt{8f9d9cff}).
+
+\section{The model and the statement}
+\label{sec:model}
+\begin{definition}[Recovery work model]
+For fresh supply $w_f$, recovered supply $w_r$ and efficiencies $e_f,e_r$, the \emph{useful work}
+is $U(w_f,w_r,e_f,e_r)=e_fw_f+e_rw_r$. For a target $T$, recovered supply $w_r$ and cap
+$e_{\max}$, the \emph{fresh floor} is $F(T,w_r,e_{\max})=(T-e_{\max}w_r)/e_{\max}$.
+\end{definition}
+
+\begin{theorem}[\texttt{P3.RecoveryWorkFloor}]\label{thm:main}
+\begin{enumerate}
+\item (Floor.) Let $w_f,w_r\ge0$, $0\le e_f\le e_{\max}$, $0\le e_r\le e_{\max}$ and $e_{\max}>0$.
+If $T\le U(w_f,w_r,e_f,e_r)$, then $F(T,w_r,e_{\max})\le w_f$.
+\item (Attainment.) Let $e_{\max}>0$, $w_r\ge0$ and $e_{\max}w_r\le T$. Then
+$F(T,w_r,e_{\max})\ge0$ and $U(F(T,w_r,e_{\max}),w_r,e_{\max},e_{\max})=T$.
+\end{enumerate}
+\end{theorem}
+
+\begin{lstlisting}[caption={Definitions and \texttt{Statement} from the sealed module \texttt{ViridisStatements.P3.RecoveryWorkFloor} (docstrings omitted).}]
+def useful (wf wr ef er : ℝ) : ℝ := ef * wf + er * wr
+
+def freshFloor (T wr emax : ℝ) : ℝ := (T - emax * wr) / emax
+
+def Statement : Prop :=
+  (∀ wf wr ef er emax T : ℝ, 0 ≤ wf → 0 ≤ wr →
+    0 ≤ ef → ef ≤ emax → 0 ≤ er → er ≤ emax → 0 < emax →
+    T ≤ useful wf wr ef er → freshFloor T wr emax ≤ wf) ∧
+  (∀ wr emax T : ℝ, 0 < emax → 0 ≤ wr → emax * wr ≤ T →
+    0 ≤ freshFloor T wr emax ∧ useful (freshFloor T wr emax) wr emax emax = T)
+\end{lstlisting}
+
+\section{Mathematical proof}
+\label{sec:math}
+\begin{lemma}[Run-163, \texttt{uniform\_efficiency\_bound}]\label{lem:ueb}
+If $w_f,w_r\ge0$ and $e_f,e_r\le e_{\max}$, then $U(w_f,w_r,e_f,e_r)\le e_{\max}(w_f+w_r)$.
+\end{lemma}
+\begin{proof}
+$e_{\max}(w_f+w_r)-U=(e_{\max}-e_f)w_f+(e_{\max}-e_r)w_r$, a sum of products of non-negative
+numbers.
+\end{proof}
+
+\begin{lemma}[Run-163, \texttt{target\_requires\_supply}]\label{lem:trs}
+Under the hypotheses of Lemma~\ref{lem:ueb}, if also $e_{\max}>0$ and $T\le U$, then
+$T/e_{\max}\le w_f+w_r$.
+\end{lemma}
+\begin{proof}
+$T\le U\le e_{\max}(w_f+w_r)$; divide by $e_{\max}>0$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+(1) For $e_{\max}\ne0$, $F(T,w_r,e_{\max})=T/e_{\max}-w_r$. By Lemma~\ref{lem:trs},
+$T/e_{\max}-w_r\le w_f$.
+
+(2) $T-e_{\max}w_r\ge0$ and $e_{\max}>0$, so $F\ge0$. At the cap,
+$U(F,w_r,e_{\max},e_{\max})=e_{\max}\cdot\frac{T-e_{\max}w_r}{e_{\max}}+e_{\max}w_r=T$.
+\end{proof}
+
+\begin{remark}[Which hypotheses are used]
+Part~(1) does not use $e_f\ge0$ or $e_r\ge0$; the sealed statement includes them because they are
+part of the physical model. It does use $w_r\ge0$. If $w_r<0$ and $e_r<e_{\max}$, the term
+$(e_{\max}-e_r)w_r$ is negative and the bound can fail. Part~(2) does not use $w_r\ge0$; it uses
+$e_{\max}w_r\le T$, and the sealed module's negative control shows that this condition is needed:
+with $e_{\max}=1/2$, $w_r=4$ and $T=1$ the floor is $-2$. The cap is also essential. The sealed
+module shows that with efficiencies $1$ above a cap of $1/2$, the target $8$ is reached with fresh
+supply $4$, below the floor $12$.
+\end{remark}
+
+\paragraph{Interpretation.} With cap $e_{\max}=1/2$ and target $T=8$, no recovery needs at least
+$16$ units of fresh supply. Four units of recovered supply lower the floor to $12$, and twelve
+units at the cap reach $8$ exactly, while eleven reach only $15/2$. Every unit of recovered supply
+reduces the fresh-supply floor by exactly one unit. That is so because both sources share one cap.
+Recovery is credited one for one, no more, and only up to the point $w_r=T/e_{\max}$ where recovery
+alone covers the target.
+
+\section{The Lean development}
+\label{sec:proof}
+The candidate file \texttt{proofs/P3.RecoveryWorkFloor.lean} follows Section~\ref{sec:math}. The
+proof may import only Mathlib and the sealed module, so the Run-163 file cannot be imported. Its
+two lemmas \texttt{uniform\_efficiency\_bound} and \texttt{target\_requires\_supply} are restated
+over the sealed \texttt{useful} and proved the same way: \texttt{nlinarith} with the two gap terms,
+then \texttt{div\_le\_iff\textsubscript{0}}. \texttt{freshFloor\_eq} rewrites the floor as
+$T/e_{\max}-w_r$ by \texttt{field\_simp}. Part~1 is then \texttt{linarith}. Part~2 is
+\texttt{div\_nonneg} followed by \texttt{field\_simp} and \texttt{ring}.
+
+\begin{lstlisting}[caption={The complete candidate proof \texttt{proofs/P3.RecoveryWorkFloor.lean}.}]
+import Mathlib
+import ViridisStatements.P3.RecoveryWorkFloor
+
+namespace Candidate
+
+open ViridisStatements.P3.RecoveryWorkFloor
+
+/-- Uniform efficiency bound (Run-163 `uniform_efficiency_bound`, restated for the sealed
+`useful`): useful work is at most `emax · (wf + wr)`. -/
+theorem uniform_efficiency_bound (wf wr ef er emax : ℝ) (hwf : 0 ≤ wf) (hwr : 0 ≤ wr)
+    (hef : ef ≤ emax) (her : er ≤ emax) :
+    useful wf wr ef er ≤ emax * (wf + wr) := by
+  have h1 : 0 ≤ (emax - ef) * wf := mul_nonneg (sub_nonneg.mpr hef) hwf
+  have h2 : 0 ≤ (emax - er) * wr := mul_nonneg (sub_nonneg.mpr her) hwr
+  unfold useful
+  nlinarith
+
+/-- Run-163 `target_requires_supply`, restated: reaching `T` needs total supply `≥ T / emax`. -/
+theorem target_requires_supply (wf wr ef er emax T : ℝ) (hwf : 0 ≤ wf) (hwr : 0 ≤ wr)
+    (hef : ef ≤ emax) (her : er ≤ emax) (he : 0 < emax) (hT : T ≤ useful wf wr ef er) :
+    T / emax ≤ wf + wr := by
+  have hu := uniform_efficiency_bound wf wr ef er emax hwf hwr hef her
+  rw [div_le_iff₀ he]
+  linarith [mul_comm emax (wf + wr)]
+
+/-- The floor is the total-supply bound with the recovered part moved across:
+`(T - emax·wr)/emax = T/emax - wr`. -/
+theorem freshFloor_eq (T wr emax : ℝ) (he : 0 < emax) :
+    freshFloor T wr emax = T / emax - wr := by
+  unfold freshFloor
+  field_simp
+
+/-- Part 1 (floor). -/
+theorem floor (wf wr ef er emax T : ℝ) (hwf : 0 ≤ wf) (hwr : 0 ≤ wr)
+    (hef : ef ≤ emax) (her : er ≤ emax) (he : 0 < emax)
+    (hT : T ≤ useful wf wr ef er) : freshFloor T wr emax ≤ wf := by
+  rw [freshFloor_eq T wr emax he]
+  linarith [target_requires_supply wf wr ef er emax T hwf hwr hef her he hT]
+
+/-- Part 2 (attainment): the floor is nonnegative and, at `ef = er = emax`, delivers `T`. -/
+theorem attain (wr emax T : ℝ) (he : 0 < emax) (hT : emax * wr ≤ T) :
+    0 ≤ freshFloor T wr emax ∧ useful (freshFloor T wr emax) wr emax emax = T := by
+  unfold freshFloor useful
+  refine ⟨div_nonneg (by linarith) he.le, ?_⟩
+  field_simp
+  ring
+
+theorem main : ViridisStatements.P3.RecoveryWorkFloor.Statement :=
+  ⟨fun wf wr ef er emax T hwf hwr _ hef _ her he hT =>
+      floor wf wr ef er emax T hwf hwr hef her he hT,
+   fun wr emax T he _ hT => attain wr emax T he hT⟩
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+\label{sec:results}
+We ran the program's checker on the candidate file. It runs the same stages as the verifier:
+denylist, compile, statement match, axioms and kernel replay. The output was
+\texttt{PASSED (preview)}, and the reported axioms were \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. A first, direct version of the proof (without
+the Run-163 lemmas) also passed on its first attempt. We then restructured it so that the floor is
+visibly a corollary of \texttt{target\_requires\_supply}, and it passed again. No automated prover
+was used. The certification page that precedes this paper gives the verifier's own judgement.
+
+\section{What this settles and what it does not}
+\label{sec:limits}
+\paragraph{Settled.} Assuming the verifier accepts the file, the floor and its attainment hold
+exactly as sealed, for all real inputs that satisfy the hypotheses.
+
+\paragraph{Not settled.}
+\begin{itemize}
+\item \textbf{A modeled-efficiency bound.} $e_{\max}$ is an input chosen by the modeler. The theorem
+says what follows if every conversion efficiency is at most $e_{\max}$. It does not say what
+$e_{\max}$ is for any real process. It is not a Landauer bound or any other physical limit
+\citep{landauer1961}. It does not follow from, and gives no evidence for, the Intelligence Bound
+conjecture.
+\item \textbf{No empirical content.} Nothing here estimates any real efficiency, recovered supply
+or target. Those stay assumed.
+\item \textbf{One common cap.} Recovered work is often of lower quality than fresh work, so a
+per-source cap $e_r\le e_{r,\max}<e_{f,\max}$ would be more realistic. Then the floor becomes
+$(T-e_{r,\max}w_r)/e_{f,\max}$. That variant is not sealed and is not proved here.
+\item \textbf{Recovery is free in the model.} The model does not charge any work for recovering
+$w_r$. Coupling $w_r$ to the loop and cascade models (for example, $w_r$ proportional to
+recovered mass $rD$) and charging recovery work is left for later work.
+\end{itemize}
+
+\section{Reproducibility}
+\sloppy
+The proof file \texttt{proofs/P3.RecoveryWorkFloor.lean} imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P3.RecoveryWorkFloor}. It compiles under toolchain
+\texttt{leanprover/lean4:v4.28.0} and the Mathlib commit below.
+\begin{lstlisting}[language={},frame=none]
+sealed module sha256:
+  5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c
+Mathlib commit:
+  8f9d9cff6bd728b17a24e163c9402775d9e6a365
+viridis-lean-check proofs/P3.RecoveryWorkFloor.lean P3.RecoveryWorkFloor
+\end{lstlisting}
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-05 (P3-T001): first version. Proposed P3.LoopMassBalance, P3.CascadedRecovery,
+P3.RecoveryWorkFloor and P3.CyclicSymbiosis as statement modules, with controls, probe results
+and rationale.
+\item 2026-11-15 (P3-T002): P3.LoopMassBalance sealed (D-011). Narrowed the paper to a note on
+this statement with a full Lean proof and a human-readable proof.
+\item 2026-11-16 (P3-T003): P3.CascadedRecovery sealed (D-012). Note on the cascade statement with
+a full Lean proof.
+\item 2026-11-17 (P3-T004): P3.RecoveryWorkFloor sealed (D-013). This version is a note on the
+recovery-adjusted work floor with a full Lean proof built on Run-163's
+\texttt{target\_requires\_supply}. Added references to Run-163 and to Landauer (1961). Earlier
+results are summarised in the background section; their proofs stay in the earlier run packages.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
