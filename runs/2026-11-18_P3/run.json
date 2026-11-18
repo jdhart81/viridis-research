@@ -1,0 +1,23 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P3",
+  "task": "P3-T005",
+  "title": "Cyclic Industrial Symbiosis: A Lean Proof of the N-Partner Product Condition",
+  "abstract": "N >= 2 firms are arranged in a cycle. Firm i ships a by-product flow x_i to its successor at unit cost c_i > 0 and receives its predecessor's flow, worth v_i > 0 per unit to it, so its net benefit is v_i x_{i-1} - c_i x_i (indices mod N). We give a Lean 4 proof, against Mathlib, of the sealed statement P3.CyclicSymbiosis: a strictly positive flow giving every firm a strictly positive net benefit exists if and only if prod c_i < prod v_i. Necessity follows by multiplying the N strict inequalities c_i x_i < v_i x_{i-1} and cancelling prod x_i, which is possible because the predecessor map is a bijection of the cycle. For sufficiency we construct an explicit flow. With s = (prod v / prod c)^(1/N) > 1, each link carries the ratio x_i/x_{i-1} = v_i/(c_i s), these ratios multiply to one around the cycle, and each firm keeps the fraction 1 - 1/s of the value it receives. For N = 2 the statement reduces to the Reciprocity Corridor's product condition c_X c_Y < v_X v_Y (Run-128), and we include a Lean derivation of the two-partner feasibility test from the N-partner theorem. The result is a statement about a linear, one-period model. It says nothing about real costs, values, logistics, contracts or how gains are shared.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P3.CyclicSymbiosis",
+      "proof_file": "proofs/P3.CyclicSymbiosis.lean",
+      "text": "For every N >= 2 and all costs c, values v : Fin N -> R with every c i > 0 and v i > 0, there exists a flow x with every x i > 0 and every net benefit v i * x (prev i) - c i * x i > 0 (prev i = (i + N - 1) mod N) if and only if the product of the c i is strictly less than the product of the v i."
+    },
+    {
+      "id": "C2",
+      "kind": "conjecture",
+      "text": "For a general strongly connected exchange network with linear separable payoffs, a strictly beneficial positive flow exists iff a cycle-product (spectral-type) condition on the per-link value/cost ratios holds. This generalises the simple-cycle result; it is not stated precisely or proved here."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "P3.CyclicSymbiosis has a candidate proof that passed viridis-lean-check (preview), with a helper corollary deriving Run-128's two-partner feasibility test at N = 2. All four P3 sealed statements now have passing candidates. Next: ask Justin whether to seal an extension, such as (a) general strongly connected exchange graphs, (b) fixed costs or capacity limits on links, (c) an N-partner bargaining split generalising Run-128 Theorem 3, or (d) coupling RecoveryWorkFloor's recovered supply to the loop model. Otherwise, assemble the four P3 notes into one kernel paper."
+}

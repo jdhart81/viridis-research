@@ -1,0 +1,43 @@
+{
+  "agent_minutes": 4.88,
+  "date": "2026-11-18",
+  "github": {
+    "event": "schedule",
+    "head_sha": "0a36eb0b4bdc614aaddfd128bd1ac5de3fb3c648",
+    "run_attempt": 1,
+    "run_id": 44217024574,
+    "run_started_at": "2026-11-18T01:35:55Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44217024574",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P3.CyclicSymbiosis",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "49721d01856a472eb3b427d1511fd7f90659d002fbe4e968ef0e1c4bbea63073",
+  "paper_built": true,
+  "project": "P3",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P3.CyclicSymbiosis"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-18_P3",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P3-T005",
+  "title": "Cyclic Industrial Symbiosis: A Lean Proof of the N-Partner Product Condition",
+  "written_at": "2026-11-18T02:07:46Z",
+  "written_by": "verify",
+  "zip_sha256": "5320282b895d10e975a8710cd296350af528d30d066e4951ce243361f277885b"
+}

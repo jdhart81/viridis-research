@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 18,
+  "merged_runs": 19,
   "problems": 0,
-  "proven_statements": 11,
+  "proven_statements": 12,
   "sealed_statements": 13,
   "tested_claims": 1
  },
@@ -44,6 +44,7 @@
   "P2.Harmonization",
   "P2.Restoration",
   "P3.CascadedRecovery",
+  "P3.CyclicSymbiosis",
   "P3.LoopMassBalance",
   "P3.RecoveryWorkFloor",
   "P5.UnrestrictedBoundFalse"
@@ -288,6 +289,20 @@
    "run_dir": "runs/2026-11-17_P3",
    "task": "P3-T004",
    "title": "A Recovery-Adjusted Work Floor: A Lean Proof that Recovered Supply Lowers, and Exactly Attains, the Fresh-Supply Requirement"
+  },
+  {
+   "date": "2026-11-18",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 1,
+    "PROVEN": 1
+   },
+   "manifest_sha256": "49721d01856a472eb3b427d1511fd7f90659d002fbe4e968ef0e1c4bbea63073",
+   "paper_built": true,
+   "project": "P3",
+   "run_dir": "runs/2026-11-18_P3",
+   "task": "P3-T005",
+   "title": "Cyclic Industrial Symbiosis: A Lean Proof of the N-Partner Product Condition"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -490,11 +505,22 @@
    "decision": "D-014",
    "path": "lean/ViridisStatements/P3/CyclicSymbiosis.lean",
    "project": "P3",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "1ca1065a18f2125164357eee756b3c48626dd7188a58baf22606466da8f57903",
+    "claim_id": "C1",
+    "date": "2026-11-18",
+    "doi": null,
+    "run_dir": "runs/2026-11-18_P3"
+   },
    "sealed_at": "2026-11-08T14:34:07Z",
    "sealed_by": "owner",
    "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P3-T001"
   },
   "P3.LoopMassBalance": {

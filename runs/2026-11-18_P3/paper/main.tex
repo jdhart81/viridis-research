@@ -1,0 +1,486 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\emergencystretch=2em
+
+\lstdefinelanguage{lean}{
+  morekeywords={lemma,set,split_ifs,obtain,constructor,rintro,fin_cases,simpa,positivity,congr,apply,ext,decide,field_simp,ring,div_nonneg,def,theorem,rcases,haveI,subst,nlinarith,linarith,have,refine,intro,induction,with,simp,only,rw,unfold,exact,example,namespace,end,open,fun,Prop,by,noncomputable,section,import},
+  sensitive=true,
+  morecomment=[l]{--},
+  morecomment=[s]{/-}{-/},
+}
+\lstset{
+  language=lean,
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!60!black}\bfseries,
+  commentstyle=\color{gray},
+  columns=fullflexible,
+  keepspaces=true,
+  breaklines=true,
+  frame=single,
+  extendedchars=true,
+  literate=
+    {ℝ}{{$\mathbb{R}$}}1
+    {ℕ}{{$\mathbb{N}$}}1
+    {→}{{$\to$}}1
+    {↔}{{$\leftrightarrow$}}1
+    {∀}{{$\forall$}}1
+    {∃}{{$\exists$}}1
+    {∈}{{$\in$}}1
+    {∑}{{$\sum$}}1
+    {∏}{{$\prod$}}1
+    {∧}{{$\wedge$}}1
+    {≤}{{$\le$}}1
+    {≥}{{$\ge$}}1
+    {≠}{{$\ne$}}1
+    {⨆}{{$\bigsqcup$}}1
+    {∉}{{$\notin$}}1
+    {←}{{$\leftarrow$}}1
+    {ρ}{{$\rho$}}1
+    {⟨}{{$\langle$}}1
+    {⟩}{{$\rangle$}}1
+    {·}{{$\cdot$}}1
+    {𝓝}{{$\mathcal{N}$}}1
+    {₀}{{$_0$}}1
+    {⁻}{{$^{-}$}}1
+    {¹}{{$^{1}$}}1
+    {↦}{{$\mapsto$}}1
+    {⊢}{{$\vdash$}}1
+}
+
+\title{Cyclic Industrial Symbiosis:\\ A Lean Proof of the $N$-Partner Product Condition}
+\author{Justin Hart, Viridis LLC}
+\date{18 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+$N\ge2$ firms are arranged in a cycle. Firm $i$ ships a by-product flow $x_i$ to its successor at
+unit cost $c_i>0$ and receives its predecessor's flow, worth $v_i>0$ per unit to it. Its net benefit
+is $v_ix_{i-1}-c_ix_i$, with indices taken mod $N$. We give a Lean~4 proof, against Mathlib, of the
+sealed statement \texttt{P3.CyclicSymbiosis}: a strictly positive flow that gives every firm a
+strictly positive net benefit exists if and only if $\prod_i c_i<\prod_i v_i$. Necessity follows by
+multiplying the $N$ strict inequalities $c_ix_i<v_ix_{i-1}$ and cancelling $\prod_i x_i$. The
+cancellation works because the predecessor map is a bijection of the cycle. For sufficiency we
+construct an explicit flow. With $s=(\prod v/\prod c)^{1/N}>1$, every link carries the ratio
+$x_i/x_{i-1}=v_i/(c_is)$, and these ratios multiply to one around the cycle. Each firm then keeps the
+fraction $1-1/s$ of the value it receives. For $N=2$ the statement reduces to the product condition
+$c_Xc_Y<v_Xv_Y$ of the Reciprocity Corridor (Run-128). We include a Lean derivation of the two-partner
+feasibility test from the $N$-partner theorem. The result is a statement about a linear,
+one-period model. It says nothing about real costs, values, logistics, contracts or how gains are
+shared.
+\end{abstract}
+
+\section{Introduction}
+In industrial symbiosis one firm's residue becomes another firm's input \citep{chertow2000}. The
+canonical example is the Kalundborg network, and many exchanges form chains or loops rather than
+isolated pairs. The circular economy depends on such exchanges, in which recovered resources
+replace virgin ones \citep{geissdoerfer2017}. A decision kernel that proposes exchanges needs a
+test for when a loop of exchanges can make \emph{every} participant strictly better off. Without
+one, the kernel could propose a loop that one participant would rationally leave.
+
+For two partners the Viridis canon already has this test. The Reciprocity Corridor (Run-128,
+\citealp{hart2026rc}) shows that strictly positive flows benefiting both partners exist if and
+only if $c_Xc_Y<v_Xv_Y$. This note proves the $N$-partner version for a cycle:
+\[
+\exists\,x>0\ \ \forall i:\ v_i\,x_{i-1}-c_i\,x_i>0
+\quad\Longleftrightarrow\quad
+\prod_{i=0}^{N-1}c_i<\prod_{i=0}^{N-1}v_i .
+\]
+Locally the condition is surprising, globally it is not. A single link can be a loss in isolation
+($v_i<c_i$), and the loop can still be feasible as long as the other links make up the shortfall
+\emph{multiplicatively}. Project P3 proposed \texttt{P3.CyclicSymbiosis} in session P3-T001
+(5~November 2026), and the program owner sealed it under decision D-014. It is the last of the
+four P3 statements.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item A Lean~4 proof of \texttt{ViridisStatements.P3.CyclicSymbiosis.Statement}
+(Section~\ref{sec:proof}). It depends only on the standard axioms \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}.
+\item A human-readable proof with an explicit beneficial flow (Section~\ref{sec:math}).
+\item A Lean corollary that derives the two-partner feasibility test of Run-128 from the
+$N$-partner theorem (Section~\ref{sec:n2}).
+\item A list of what the model leaves open (Section~\ref{sec:limits}).
+\end{itemize}
+
+\section{Background and related work}
+\paragraph{Industrial symbiosis and the circular economy.}
+\citet{chertow2000} defined industrial symbiosis as the exchange of materials, energy, water and
+by-products among firms and gave a taxonomy of exchange types. \citet{geissdoerfer2017} review the
+circular economy as a sustainability paradigm built on substituting recovered resources for virgin
+ones. Earlier P3 sessions gave Lean proofs of three accounting statements.
+\texttt{P3.LoopMassBalance} (P3-T002) says that virgin input is $D(1-r)$ under recovery fraction
+$r$. \texttt{P3.CascadedRecovery} (P3-T003) says that the virgin share of $n$ stages is
+$\prod_i(1-r_i)$. \texttt{P3.RecoveryWorkFloor} (P3-T004) says that fresh supply is at least
+$(T-e_{\max}w_r)/e_{\max}$, building on the Useful and Dissipated Work Ledger
+\citep{hart2026udwl}. Those statements are about physical accounting. This one is about incentives.
+
+\paragraph{The Reciprocity Corridor.}
+Run-128 \citep{hart2026rc} studies two partners $X,Y$ with flows $x,y>0$ and payoffs
+$u_X=v_Xy-c_Xx$ and $u_Y=v_Yx-c_Yy$. Both payoffs are positive exactly when
+$c_X/v_X<y/x<v_Y/c_Y$, and that corridor is non-empty exactly when $c_Xc_Y<v_Xv_Y$. The cyclic
+model keeps Run-128's standing assumptions: payoffs are linear and separable, there is one period,
+disagreement utilities are zero, there are no externalities, and coefficients are known and
+positive.
+
+\paragraph{Formal tools.}
+The proof is written in Lean~4 \citep{moura2021lean4} (toolchain v4.28.0) against Mathlib
+\citep{mathlib2020} (commit \texttt{8f9d9cff}).
+
+\section{The model and the statement}
+\label{sec:model}
+\begin{definition}[Cyclic symbiosis model]
+Partners are indexed by $\mathrm{Fin}\,N$. The predecessor is
+$\mathrm{prev}(i)=(i+N-1)\bmod N$. For costs $c$, values $v$ and flow $x$, the net benefit of
+partner $i$ is $\mathrm{net}_i=v_i\,x_{\mathrm{prev}(i)}-c_i\,x_i$. A flow is \emph{strictly
+beneficial} if $x_i>0$ and $\mathrm{net}_i>0$ for every $i$.
+\end{definition}
+
+\begin{theorem}[\texttt{P3.CyclicSymbiosis}]\label{thm:main}
+Let $N\ge2$ and $c_i,v_i>0$ for all $i$. A strictly beneficial flow exists if and only if
+$\prod_ic_i<\prod_iv_i$.
+\end{theorem}
+
+\begin{lstlisting}[caption={Definitions and \texttt{Statement} from the sealed module \texttt{ViridisStatements.P3.CyclicSymbiosis} (docstrings omitted).}]
+def prev {N : ℕ} (i : Fin N) : Fin N :=
+  ⟨(i.val + (N - 1)) % N, Nat.mod_lt _ (Nat.zero_lt_of_lt i.isLt)⟩
+
+def net {N : ℕ} (c v x : Fin N → ℝ) (i : Fin N) : ℝ := v i * x (prev i) - c i * x i
+
+def StrictlyBeneficialFlow {N : ℕ} (c v x : Fin N → ℝ) : Prop :=
+  (∀ i, 0 < x i) ∧ ∀ i, 0 < net c v x i
+
+def CycleProductCondition {N : ℕ} (c v : Fin N → ℝ) : Prop := ∏ i, c i < ∏ i, v i
+
+def Statement : Prop :=
+  ∀ (N : ℕ), 2 ≤ N → ∀ c v : Fin N → ℝ, (∀ i, 0 < c i) → (∀ i, 0 < v i) →
+    ((∃ x : Fin N → ℝ, StrictlyBeneficialFlow c v x) ↔ CycleProductCondition c v)
+\end{lstlisting}
+
+\section{Mathematical proof}
+\label{sec:math}
+\begin{lemma}[The cycle]\label{lem:prev}
+$\mathrm{prev}(0)=N-1$ and $\mathrm{prev}(i)=i-1$ for $1\le i<N$. Hence $\mathrm{prev}$ is a
+bijection of $\mathrm{Fin}\,N$, and $\prod_ix_{\mathrm{prev}(i)}=\prod_ix_i$ for every $x$.
+\end{lemma}
+\begin{proof}
+For $i=0$, $(N-1)\bmod N=N-1$. For $i\ge1$, $i+N-1=(i-1)+N$, so the remainder is $i-1$. The
+explicit form is injective, and an injective self-map of a finite set is a bijection. Reindexing a
+product along a bijection does not change it.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, necessity]
+Let $x$ be strictly beneficial. Then $0<c_ix_i<v_ix_{\mathrm{prev}(i)}$ for every $i$. The index set
+is non-empty, so multiplying these strict inequalities between positive numbers gives
+$\prod_ic_i\prod_ix_i<\prod_iv_i\prod_ix_{\mathrm{prev}(i)}=\prod_iv_i\prod_ix_i$ by
+Lemma~\ref{lem:prev}. Since $\prod_ix_i>0$, we can cancel it.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}, sufficiency]
+Let $P=\prod_iv_i/\prod_ic_i>1$ and $s=P^{1/N}>1$, so that $s^N=P$. Put $a_i=v_i/(c_is)>0$. Then
+$\prod_ia_i=\prod_iv_i/(\prod_ic_i\cdot s^N)=1$. Define the prefix products
+$x_i=\prod_{j=0}^{i}a_j>0$. For $i\ge1$, $x_i=a_i\,x_{i-1}=a_i\,x_{\mathrm{prev}(i)}$. For $i=0$,
+$x_{\mathrm{prev}(0)}=x_{N-1}=\prod_ja_j=1$, so again $x_0=a_0=a_0\,x_{\mathrm{prev}(0)}$. Hence for
+every $i$,
+\[
+\mathrm{net}_i=v_ix_{\mathrm{prev}(i)}-c_ia_ix_{\mathrm{prev}(i)}
+=v_ix_{\mathrm{prev}(i)}\Bigl(1-\frac1s\Bigr)>0. \qedhere
+\]
+\end{proof}
+
+\begin{remark}[Reading the construction]
+Writing $\rho_i=x_i/x_{\mathrm{prev}(i)}$, partner $i$ benefits if and only if $\rho_i<v_i/c_i$.
+Around the cycle the ratios must multiply to $\prod_i\rho_i=1$. A beneficial flow therefore exists
+exactly when $1<\prod_iv_i/c_i$, which is the product condition. The construction splits the
+surplus factor $P$ evenly in geometric terms: every link gets $\rho_i=(v_i/c_i)/s$. This is
+\emph{one} feasible choice. We do not claim it is fair or efficient, or that partners would agree to
+it. For $N=2$ the per-link condition $\rho_i<v_i/c_i$ is exactly Run-128's corridor
+$c_X/v_X<y/x<v_Y/c_Y$.
+\end{remark}
+
+\begin{remark}[Which hypotheses are used]
+Necessity does not use $v_i>0$, and it uses $N\ge2$ only to get a non-empty index set. The
+equivalence also holds for $N=1$, where the cycle is a self-loop and the condition reads $c_0<v_0$.
+It fails for $N=0$, where every flow is vacuously beneficial but $1<1$ is false. Sufficiency uses
+$c_i,v_i>0$. The strict inequality is needed: the sealed module's control
+$c=v=(1,1)$ shows that equality of the products is not enough.
+\end{remark}
+
+\paragraph{Example.} The sealed module's three-partner example has $c=(1,1,1)$ and $v=(4,1/2,1)$.
+Partner~1 values its input at only half its unit cost, yet $\prod c=1<2=\prod v$. The uniform flow
+leaves partner~1 with net benefit $-1/2$. The tuned flow $(1,9/20,2/5)$ gives net benefits
+$(3/5,1/20,1/20)$. Our construction gives $s=2^{1/3}$ and flow
+$x=(4/s,\;2/s^2,\;2/s^3)=(4/s,\;2/s^2,\;1)$. Each partner keeps the fraction
+$1-2^{-1/3}\approx0.206$ of the value it receives.
+
+\section{The \texorpdfstring{$N=2$}{N = 2} case: recovering the Reciprocity Corridor}
+\label{sec:n2}
+Instantiate the cycle with $N=2$, $c=(c_X,c_Y)$, $v=(v_X,v_Y)$ and $x=(x,y)$. Then
+$\mathrm{prev}(0)=1$ and $\mathrm{prev}(1)=0$. The net benefits are Run-128's $u_X=v_Xy-c_Xx$ and
+$u_Y=v_Yx-c_Yy$, and $\prod c<\prod v$ is Run-128's \texttt{ProductCondition}. The candidate file
+contains a corollary, \texttt{two\_partner\_corridor}, that derives from \texttt{main} the
+two-partner feasibility statement
+\[
+\bigl(\exists\,x,y>0:\ v_Xy-c_Xx>0\ \wedge\ v_Yx-c_Yy>0\bigr)\iff c_Xc_Y<v_Xv_Y .
+\]
+Through Run-128's Theorem~1 (benefit iff corridor) this is the content of its Theorem~2 (the
+corridor is non-empty iff the product condition holds). The corollary is a helper in the candidate
+file and not a sealed statement, so the verifier's label applies only to \texttt{main}.
+
+\section{The Lean development}
+\label{sec:proof}
+The candidate file has five parts. \texttt{prev\_val} gives the explicit form of the predecessor by
+case split and \texttt{Nat.add\_mod\_right}. \texttt{prev\_bijective} gets bijectivity from
+injectivity on a finite type, and \texttt{prod\_prev} reindexes with
+\texttt{Fintype.prod\_bijective}. \texttt{necessity} uses
+\texttt{Finset.prod\_lt\_prod\_of\_nonempty}, \texttt{Finset.prod\_mul\_distrib} and
+\texttt{lt\_of\_mul\_lt\_mul\_right}. \texttt{sufficiency} builds $s$ with \texttt{Real.rpow},
+proves $s>1$ with \texttt{Real.one\_lt\_rpow} and $s^N=P$ with
+\texttt{Real.rpow\_inv\_natCast\_pow}. It then defines the prefix products over
+\texttt{Finset.range}, proves the cycle recursion $x_i=a_i\,x_{\mathrm{prev}(i)}$ and finishes with
+\texttt{field\_simp} and \texttt{nlinarith}.
+
+\begin{lstlisting}[caption={The complete candidate proof \texttt{proofs/P3.CyclicSymbiosis.lean}.}]
+import Mathlib
+import ViridisStatements.P3.CyclicSymbiosis
+
+namespace Candidate
+
+open ViridisStatements.P3.CyclicSymbiosis
+
+/-- Explicit form of the predecessor: `0 ↦ N - 1`, `i ↦ i - 1` otherwise. -/
+lemma prev_val {N : ℕ} (i : Fin N) :
+    (prev i).val = if i.val = 0 then N - 1 else i.val - 1 := by
+  have hN := i.isLt
+  unfold prev
+  split_ifs with h
+  · simp only [h, zero_add]
+    exact Nat.mod_eq_of_lt (by omega)
+  · have : i.val + (N - 1) = (i.val - 1) + N := by omega
+    simp only [this, Nat.add_mod_right]
+    exact Nat.mod_eq_of_lt (by omega)
+
+/-- The predecessor map is injective, hence a bijection of the finite cycle. -/
+lemma prev_bijective {N : ℕ} : Function.Bijective (prev : Fin N → Fin N) := by
+  rw [← Finite.injective_iff_bijective]
+  intro a b hab
+  have ha := prev_val a
+  have hb := prev_val b
+  have := congrArg Fin.val hab
+  have := a.isLt
+  have := b.isLt
+  ext
+  split_ifs at ha hb <;> omega
+
+/-- Reindexing along the cycle: `∏ x (prev i) = ∏ x i`. -/
+lemma prod_prev {N : ℕ} (x : Fin N → ℝ) : ∏ i, x (prev i) = ∏ i, x i :=
+  Fintype.prod_bijective prev prev_bijective _ _ (fun _ => rfl)
+
+/-- Necessity: a strictly beneficial flow forces `∏ c < ∏ v`. -/
+lemma necessity (N : ℕ) (hN : 2 ≤ N) (c v : Fin N → ℝ) (hc : ∀ i, 0 < c i)
+    (x : Fin N → ℝ) (hx : StrictlyBeneficialFlow c v x) : CycleProductCondition c v := by
+  obtain ⟨hxpos, hnet⟩ := hx
+  have hne : (Finset.univ : Finset (Fin N)).Nonempty := ⟨⟨0, by omega⟩, Finset.mem_univ _⟩
+  have hlt : ∏ i, (c i * x i) < ∏ i, (v i * x (prev i)) := by
+    apply Finset.prod_lt_prod_of_nonempty _ _ hne
+    · intro i _; exact mul_pos (hc i) (hxpos i)
+    · intro i _
+      have := hnet i
+      unfold net at this
+      linarith
+  rw [Finset.prod_mul_distrib, Finset.prod_mul_distrib, prod_prev] at hlt
+  have hX : 0 < ∏ i, x i := Finset.prod_pos (fun i _ => hxpos i)
+  exact lt_of_mul_lt_mul_right hlt hX.le
+
+/-- Sufficiency: under `∏ c < ∏ v` an explicit flow benefits every partner. -/
+lemma sufficiency (N : ℕ) (hN : 2 ≤ N) (c v : Fin N → ℝ) (hc : ∀ i, 0 < c i)
+    (hv : ∀ i, 0 < v i) (hP : CycleProductCondition c v) :
+    ∃ x : Fin N → ℝ, StrictlyBeneficialFlow c v x := by
+  unfold CycleProductCondition at hP
+  have hCpos : 0 < ∏ i, c i := Finset.prod_pos (fun i _ => hc i)
+  have hVpos : 0 < ∏ i, v i := Finset.prod_pos (fun i _ => hv i)
+  set P : ℝ := (∏ i, v i) / (∏ i, c i) with hPdef
+  have hP1 : 1 < P := by rw [hPdef, one_lt_div hCpos]; exact hP
+  set s : ℝ := P ^ ((N : ℝ)⁻¹) with hsdef
+  have hs1 : 1 < s := Real.one_lt_rpow hP1 (by positivity)
+  have hs0 : 0 < s := by linarith
+  have hsN : s ^ N = P := Real.rpow_inv_natCast_pow (by linarith) (by omega)
+  -- per-partner ratios, with product one
+  set a : Fin N → ℝ := fun i => v i / (c i * s) with hadef
+  have hapos : ∀ i, 0 < a i := fun i => div_pos (hv i) (mul_pos (hc i) hs0)
+  have haprod : ∏ i, a i = 1 := by
+    simp only [hadef, Finset.prod_div_distrib, Finset.prod_mul_distrib, Finset.prod_const,
+      Finset.card_univ, Fintype.card_fin, hsN, hPdef]
+    field_simp
+  -- extend to ℕ and take prefix products
+  set a' : ℕ → ℝ := fun j => if h : j < N then a ⟨j, h⟩ else 1 with ha'def
+  have ha'pos : ∀ j, 0 < a' j := by
+    intro j; simp only [ha'def]; split_ifs
+    · exact hapos _
+    · exact one_pos
+  set y : ℕ → ℝ := fun k => ∏ j ∈ Finset.range (k + 1), a' j with hydef
+  have hypos : ∀ k, 0 < y k := fun k => Finset.prod_pos (fun j _ => ha'pos j)
+  set x : Fin N → ℝ := fun i => y i.val with hxdef
+  -- the key recursion around the cycle
+  have hrec : ∀ i, x i = a i * x (prev i) := by
+    intro i
+    have hpv := prev_val i
+    have hi := i.isLt
+    simp only [hxdef]
+    split_ifs at hpv with h0
+    · rw [hpv, h0]
+      have hyN : y (N - 1) = 1 := by
+        simp only [hydef]
+        rw [show N - 1 + 1 = N by omega, ← haprod, ← Fin.prod_univ_eq_prod_range]
+        apply Finset.prod_congr rfl
+        intro j _
+        simp [ha'def, j.isLt]
+      rw [hyN, mul_one]
+      simp only [hydef, zero_add, Finset.prod_range_one, ha'def]
+      rw [dif_pos (by omega)]
+      congr 1
+      ext; simp [h0]
+    · rw [hpv]
+      simp only [hydef]
+      rw [show i.val + 1 = (i.val - 1 + 1) + 1 by omega, Finset.prod_range_succ,
+        show i.val - 1 + 1 = i.val by omega, mul_comm]
+      congr 1
+      simp only [ha'def, dif_pos hi]
+  refine ⟨x, fun i => hypos _, fun i => ?_⟩
+  unfold net
+  rw [hrec i]
+  have hX : 0 < x (prev i) := hypos _
+  have hci := hc i
+  have hvi := hv i
+  have : c i * (a i * x (prev i)) = v i * x (prev i) / s := by
+    simp only [hadef]; field_simp
+  rw [this]
+  have hvx : 0 < v i * x (prev i) := mul_pos hvi hX
+  rw [sub_pos, div_lt_iff₀ hs0]
+  nlinarith
+
+theorem main : ViridisStatements.P3.CyclicSymbiosis.Statement := by
+  intro N hN c v hc hv
+  exact ⟨fun ⟨x, hx⟩ => necessity N hN c v hc x hx, sufficiency N hN c v hc hv⟩
+
+/-- `N = 2` corollary: specialising `main` to the two-partner cycle gives Run-128's strict
+feasibility test (Theorem 2): strictly positive flows `x, y` with both payoffs
+`uX = vX*y - cX*x` and `uY = vY*x - cY*y` strictly positive exist iff
+`ProductCondition vX cX vY cY`. -/
+theorem two_partner_corridor (vX cX vY cY : ℝ) (hvX : 0 < vX) (hcX : 0 < cX)
+    (hvY : 0 < vY) (hcY : 0 < cY) :
+    (∃ x y : ℝ, 0 < x ∧ 0 < y ∧ 0 < vX * y - cX * x ∧ 0 < vY * x - cY * y) ↔
+      ProductCondition vX cX vY cY := by
+  have h0 : prev (0 : Fin 2) = 1 := by decide
+  have h1 : prev (1 : Fin 2) = 0 := by decide
+  have hc : ∀ i, 0 < (![cX, cY] : Fin 2 → ℝ) i := by
+    intro i; fin_cases i <;> simp [hcX, hcY]
+  have hv : ∀ i, 0 < (![vX, vY] : Fin 2 → ℝ) i := by
+    intro i; fin_cases i <;> simp [hvX, hvY]
+  have key := main 2 le_rfl ![cX, cY] ![vX, vY] hc hv
+  have hcond : CycleProductCondition ![cX, cY] ![vX, vY] ↔ ProductCondition vX cX vY cY := by
+    simp [CycleProductCondition, ProductCondition, Fin.prod_univ_two]
+  rw [← hcond, ← key]
+  constructor
+  · rintro ⟨x, y, hx, hy, hX, hY⟩
+    refine ⟨![x, y], ?_, ?_⟩
+    · intro i; fin_cases i <;> simp [hx, hy]
+    · intro i
+      fin_cases i
+      · simpa [net, h0] using hX
+      · simpa [net, h1] using hY
+  · rintro ⟨f, hpos, hnet⟩
+    refine ⟨f 0, f 1, hpos 0, hpos 1, ?_, ?_⟩
+    · simpa [net, h0] using hnet 0
+    · simpa [net, h1] using hnet 1
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+\label{sec:results}
+We ran the program's checker on the candidate file. It runs the same stages as the verifier:
+denylist, compile, statement match, axioms and kernel replay. The output was
+\texttt{PASSED (preview)}, and the reported axioms were \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. The first version of the proof passed on its
+first attempt. We then added the $N=2$ corollary, and the file passed again. Compiling it with
+\texttt{lean} gave no warnings. No automated prover was used. The certification page that precedes
+this paper gives the verifier's own judgement.
+
+With this result all four statements planned for P3 (loop mass balance, cascaded recovery, the
+recovery-adjusted work floor and cyclic symbiosis) have candidate proofs that passed the preview
+check.
+
+\section{What this settles and what it does not}
+\label{sec:limits}
+\paragraph{Settled.} Assuming the verifier accepts the file, the product condition is exactly the
+feasibility condition for strictly beneficial flows on a cycle, for every $N\ge2$ and all positive
+real coefficients.
+
+\paragraph{Not settled.}
+\begin{itemize}
+\item \textbf{No real coefficients.} Nothing here estimates any real cost $c_i$ or value $v_i$.
+Whether a real loop satisfies the condition is an empirical question, and the answer stays
+assumed.
+\item \textbf{Model assumptions.} Payoffs are linear and separable, there is one period, there are
+no fixed costs, no capacity limits and no externalities, and coefficients are known. Fixed
+costs, transport and storage logistics, capacity limits or quality loss along the loop could all
+change the answer.
+\item \textbf{Contracts and bargaining.} The theorem says a beneficial flow \emph{exists}. It does
+not say which flow partners would agree on, how the surplus would be split, or how an agreement
+would be enforced. Run-128 studies a Nash-bargaining split for $N=2$. Nothing like that is
+proved here for $N>2$.
+\item \textbf{Only simple cycles.} General exchange networks (several suppliers, branching flows,
+several materials) are not covered. Generalising to a strongly connected exchange graph, where
+we conjecture the condition becomes a cycle-mean or spectral-radius condition, is open.
+\end{itemize}
+
+\section{Reproducibility}
+\sloppy
+The proof file \texttt{proofs/P3.CyclicSymbiosis.lean} imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P3.CyclicSymbiosis}. It compiles under toolchain
+\texttt{leanprover/lean4:v4.28.0} and the Mathlib commit below.
+\begin{lstlisting}[language={},frame=none]
+sealed module sha256:
+  a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4
+Mathlib commit:
+  8f9d9cff6bd728b17a24e163c9402775d9e6a365
+viridis-lean-check proofs/P3.CyclicSymbiosis.lean P3.CyclicSymbiosis
+\end{lstlisting}
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-05 (P3-T001): first version. Proposed P3.LoopMassBalance, P3.CascadedRecovery,
+P3.RecoveryWorkFloor and P3.CyclicSymbiosis as statement modules, with controls, probe results
+and rationale.
+\item 2026-11-15 (P3-T002): P3.LoopMassBalance sealed (D-011). Narrowed the paper to a note on
+this statement with a full Lean proof and a human-readable proof.
+\item 2026-11-16 (P3-T003): P3.CascadedRecovery sealed (D-012). Note on the cascade statement with
+a full Lean proof.
+\item 2026-11-17 (P3-T004): P3.RecoveryWorkFloor sealed (D-013). Note on the recovery-adjusted
+work floor with a full Lean proof built on Run-163.
+\item 2026-11-18 (P3-T005): P3.CyclicSymbiosis sealed (D-014). This version is a note on the
+$N$-partner product condition, with a full Lean proof, an explicit beneficial flow and a Lean
+corollary that recovers the Run-128 two-partner test. Added the Run-128 Zenodo reference. Earlier
+results are summarised in the background section; their proofs stay in the earlier run packages.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

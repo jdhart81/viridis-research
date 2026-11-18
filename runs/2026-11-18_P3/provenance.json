@@ -1,0 +1,78 @@
+{
+  "agent": {
+    "duration_api_ms": 186564,
+    "duration_ms": 292971,
+    "final_message": "I've written a Lean proof of the sealed statement `P3.CyclicSymbiosis`. It passed `viridis-lean-check` on the first attempt and uses only the standard axioms (`propext`, `Classical.choice`, `Quot.sound`). Plain `lean` reports no warnings. The verifier still has to award PROVEN.\n\n**The statement:** N ≥ 2 partners sit in a cycle, each shipping a by-product to the next. A flow that gives every partner a strictly positive net benefit exists exactly when the product of the unit costs is below the product of the unit values (∏cᵢ < ∏vᵢ).\n\n**How the proof works** (`out/proofs/P3.CyclicSymbiosis.lean`):\n- **Cycle step:** the \"predecessor\" map is a bijection of the cycle, so a product over predecessors equals the product over partners.\n- **Only if:** multiply the N strict inequalities cᵢxᵢ < vᵢx₍ᵢ₋₁₎ together, then cancel ∏xᵢ.\n- **If:** set s = (∏v/∏c)^(1/N), which is greater than 1. Choose each link's flow ratio as xᵢ/x₍ᵢ₋₁₎ = vᵢ/(cᵢs). These ratios multiply to 1 around the cycle, so the flows close up. Each partner keeps the fraction 1 − 1/s of the value it receives.\n- **Two-partner case:** I added a helper, `two_partner_corridor`, that derives Run-128's two-partner test (Reciprocity Corridor) from the N-partner theorem. It is in the same file and passes the check, but it isn't a sealed statement, so it won't get its own label.\n\n**Outputs in `out/`:**\n- **Paper:** `paper/main.tex` builds on the 2026-11-17 version. It now covers the model, a hand proof with the explicit flow, a worked three-partner example, the two-partner section, the full Lean listing, what the result does not settle (real costs and values, logistics, contracts, bargaining, networks that aren't simple cycles), reproducibility and the changelog. It compiles with `latexmk -pdf` with no overfull boxes or missing characters.\n- **Bibliography:** I added the Run-128 Zenodo record (doi:10.5281/zenodo.21971047) after confirming it exists with WebFetch.\n- **`run.json`:** one formal claim (C1, the sealed statement) and one conjecture (C2): for general connected exchange networks, a similar product condition on cycles decides whether a beneficial flow exists. C2 is unproved.\n- **`notes.md`:** the steps above, and that Aristotle wasn't used. No Aristotle jobs are pending from earlier runs.\n- **`announcement.md`:** a 467-character plain-language summary.\n\n`out/` holds only files the contract allows.\n\nWith this, all four P3 statements have proofs that passed the preview check. The suggested next step is for Justin to decide whether to seal an extension (general networks, fixed costs or capacity limits, or a bargaining split for N partners), or to combine the four notes into one paper.",
+    "is_error": false,
+    "num_turns": 18,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "1193425b-29b6-4fbe-a02d-c61071ac789d",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.9924518,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 54125,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 54125,
+      "cache_read_input_tokens": 550564,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 34,
+      "iterations": [],
+      "output_tokens": 22420,
+      "output_tokens_details": {
+        "thinking_tokens": 3978
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 6,
+      "doi.org": 1,
+      "zenodo.org": 2
+    },
+    "bytes_down": 206810,
+    "bytes_up": 1585744,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "0a36eb0b4bdc614aaddfd128bd1ac5de3fb3c648",
+    "run_attempt": 1,
+    "run_id": 44217024574,
+    "run_started_at": "2026-11-18T01:35:55Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44217024574",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-18",
+    "prior_runs": [
+      "runs/2026-11-17_P3",
+      "runs/2026-11-16_P3",
+      "runs/2026-11-15_P3"
+    ],
+    "project": "P3",
+    "run_started_at": "2026-11-18T01:35:55Z",
+    "task": "P3-T005",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}
