@@ -1,0 +1,46 @@
+{
+  "agent_minutes": 6.81,
+  "date": "2026-11-19",
+  "github": {
+    "event": "schedule",
+    "head_sha": "0a36eb0b4bdc614aaddfd128bd1ac5de3fb3c648",
+    "run_attempt": 1,
+    "run_id": 44434875048,
+    "run_started_at": "2026-11-19T01:10:36Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44434875048",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P5.CompensationUnderCeiling",
+      "trivial": false
+    },
+    "C2": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "60fc61b485b6266a345a2e46251036ad175c2ecca8aa2c04440eb5d75fb23ced",
+  "paper_built": true,
+  "project": "P5",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P5.CompensationUnderCeiling",
+    "P5.UnrestrictedBoundFalse"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-19_P5",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P5-T003",
+  "title": "A Correction Note on Two Early Intelligence Bound Sources: The Unrestricted Axiom Is False, and \"No Finite Compensation\" Proves Finite Compensation",
+  "written_at": "2026-11-19T01:49:49Z",
+  "written_by": "verify",
+  "zip_sha256": "fa93f26462aeaae4891e71f22c162d8b38ccf19c6d497e7caef3675f84b13d0a"
+}

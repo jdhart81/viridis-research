@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-19",
+  "engine_sha": "eeb05879a873acf39aea038d1a1dde44d04992d5",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "f45607f8fb00d673f1f735412818e940a4c1b4490aa50b0c54d9c3190055d764",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P5.CompensationUnderCeiling",
+      "statement_sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+      "text": "For cap P D C = P*D/C with C>0 and P>0: (1) if 0<dD<D, the power P*D/(D-dD) restores cap P D C at diversity D-dD and is the only power that does; (2) if moreover P<=Pmax, some P'<=Pmax restores it iff dD <= D*(1-P/Pmax); (3) if D>0, for every M there is delta>0 with P*D/(D-dD) > M whenever D-delta<dD<D; (4) if D>0, every power P' gives cap P' 0 C = 0 < cap P D C.",
+      "trivial": false
+    },
+    "C2": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "3f0110cc26b85d009881440a831c81d1ba092cd48135db5ca43685c1e855ba24",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "statement_sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "text": "It is not the case that for all reals dIdt, P, D, kB, T with kB>0, T>0, P>=0, 0<=D<=1 one has dIdt <= P/(kB*T*log 2) * D (counterinstance dIdt=1, P=D=0, kB=T=1). Proof carried forward unchanged from P5-T002.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "f45607f8fb00d673f1f735412818e940a4c1b4490aa50b0c54d9c3190055d764",
+      "durations": {
+        "check": 9.401,
+        "compile": 10.501,
+        "replay": 9.851
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P5.CompensationUnderCeiling",
+      "statement_sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+      "violations": []
+    },
+    "C2": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "3f0110cc26b85d009881440a831c81d1ba092cd48135db5ca43685c1e855ba24",
+      "durations": {
+        "check": 10.146,
+        "compile": 8.755,
+        "replay": 9.621
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P5.UnrestrictedBoundFalse",
+      "statement_sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 11,
+  "project": "P5",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1145/3372885.3373824",
+      "10.1147/rd.53.0183",
+      "10.2307/2296369",
+      "10.2307/2296370"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-19_P5",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P5-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}
