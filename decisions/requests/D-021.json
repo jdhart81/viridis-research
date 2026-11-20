@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-021",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-20T03:00:08Z",
+  "posted_comment_id": 7028972630,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-7028972630",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.Tempo proposed by runs/2026-11-20_P2"
 }
