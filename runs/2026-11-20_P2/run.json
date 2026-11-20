@@ -1,0 +1,22 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P2",
+ "task": "P2-T014",
+ "title": "Re-certifying the Viridis OS Decision Kernels: Four Proved Cores and a Reconstructed Statement for the Tempo Cadence Kernel",
+ "abstract": "Viridis OS runs decision kernels whose formal cores were checked by tools that can no longer be re-run. This program restates each kernel's formal core as a sealed, self-contained Lean 4 statement and re-proves it under a pinned toolchain (Lean v4.28.0, Mathlib 8f9d9cff); four kernels (Carbon Continuity, Restoration, Afforestation, Harmonization) have Lean proofs from earlier sessions, which are retained. This revision proposes a sealed statement, P2.Tempo, for the Tempo stewardship-cadence kernel, which chooses a monitoring cadence t > 0 for a haste cost h > 0 and a neglect cost n > 0 under the cost model Sigma(t) = h/t + n t. The canon repository holds no Lean source for this kernel, so the formal core is reconstructed from the kernel's reference runner. The statement has one numbered part per theorem named in the registry: (1) Sigma is strictly convex on the positive reals; (2) Sigma(t) >= 2 sqrt(hn); (3) equality holds at t* = sqrt(h/n); (4) t* is the only positive cadence attaining the floor; (5) the normalised cost Sigma(t)/(2 sqrt(hn)) equals cosh(log(t/t*)); (6) this tax is at least 1, with equality exactly at t*. All six parts as briefed are true, and the published example (h = 4, n = 1, t = 2: optimum 2, floor 4, cost 4, tax 1) checks. While resolving the registry DOI we found that its Zenodo record lists a StewardshipTempo.lean file. According to a tool-relayed quotation of its theorem signatures, not verified byte for byte, the first four deposited theorems match ours exactly, while the deposited haste_neglect_cosh is the bare identity (u + 1/u)/2 = cosh(log u) and the deposited governability_tax is the cosh formula with the ratio inverted. Parts (5) and (6) of the proposal therefore include both forms, so a proof would imply every briefed and every deposited claim. The module includes witnesses and negative controls (off-optimum cost 5 > 4; failures at t < 0, n = 0 and h = 0) and resists 17 one-shot tactics. The mathematics is elementary: the two-term arithmetic-geometric mean inequality and a cosh identity. The cost model with constant costs is an assumption about stewardship, not a result.",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "conjecture",
+   "text": "Observation, not a sealed claim: according to a WebFetch-relayed quotation (not a byte-level read; file not hashed or compiled) of StewardshipTempo.lean in Zenodo record 10.5281/zenodo.20705183, the deposited theorems Sigma_strictConvexOn, tempo_floor, tempo_optimum and tempo_unique_minimizer coincide with parts (1)-(4) of the briefed Tempo statement, whereas the deposited haste_neglect_cosh is the identity (u + 1/u)/2 = cosh(log u) for u > 0 and the deposited governability_tax is (A/t + B t)/(2 sqrt(A B)) = cosh(log(sqrt(A/B)/t)); no deposited theorem states that the tax is at least 1 or equals 1 only at the optimum."
+  }
+ ],
+ "proposals": [
+  {
+   "statement_id": "P2.Tempo",
+   "file": "proposals/P2.Tempo.lean",
+   "rationale_file": "proposals/P2.Tempo.md"
+  }
+ ],
+ "next_steps": "1) Before sealing P2.Tempo: obtain a verified copy of StewardshipTempo.lean from Zenodo record 10.5281/zenodo.20705183 (and its newer version), record its sha256, compile it under the pinned toolchain, and diff its six theorem signatures against parts (1)-(6) of the proposal; this session saw them only through a summarising web tool. Decide whether to seal the merged form (brief + deposited conjuncts) or the brief's six-part form (delete the two deposited conjuncts). 2) P2-T015: prove the sealed P2.Tempo. A scratch derivation compiled this session: gap identity Sigma(t) - 2 sqrt(hn) = (sqrt h - sqrt n t)^2 / t via Real.sqrt_mul and Real.sqrt_div'; strict convexity directly from the definition via (a h/x + b h/y)(a x + b y) = h + h a b (x-y)^2/(xy); cosh parts via Real.cosh_log, Real.one_lt_cosh, Real.log_eq_zero, and Real.cosh_neg with Real.log_inv for the inverted orientation. 3) Flag to Justin: the registry lists h and n both as 'cost per cycle', which is dimensionally inconsistent with h/t + n t. 4) Remaining P2 kernels (T006-T008). STATEMENT_PROPOSAL.md is still absent from inputs/context. Aristotle not used; nothing pending."
+}

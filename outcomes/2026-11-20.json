@@ -1,0 +1,40 @@
+{
+  "agent_minutes": 17.62,
+  "date": "2026-11-20",
+  "decision_requests": [
+    "D-021"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "193e86ef15c43ae06795793dadb936f02647c8f1",
+    "run_attempt": 1,
+    "run_id": 44652213299,
+    "run_started_at": "2026-11-20T01:15:09Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44652213299",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "42c1a81a29379d920972bfa4b8f89b35fd1cac78ea7aacc053fe1a68bfdcfdfd",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [
+    "P2.Tempo"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-20_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T014",
+  "title": "Re-certifying the Viridis OS Decision Kernels: Four Proved Cores and a Reconstructed Statement for the Tempo Cadence Kernel",
+  "written_at": "2026-11-20T03:00:04Z",
+  "written_by": "verify",
+  "zip_sha256": "3c057594cec5a5f8eda88e545f2267a8dd3b5f0dba512431dab1c72aec3a1082"
+}
