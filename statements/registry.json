@@ -155,6 +155,28 @@
       "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
       "task": "P2-T002"
     },
+    "P2.Tempo": {
+      "constant": "ViridisStatements.P2.Tempo.Statement",
+      "decision": "D-021",
+      "module": "ViridisStatements.P2.Tempo",
+      "path": "lean/ViridisStatements/P2/Tempo.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P2",
+      "sealed_at": "2026-11-20T07:45:33Z",
+      "sha256": "a966ef3b1e3bb10cb9336686d71ec5c8b85c442fc1a21e6d3c2a13c7b6622179",
+      "task": "P2-T014"
+    },
     "P3.CascadedRecovery": {
       "constant": "ViridisStatements.P3.CascadedRecovery.Statement",
       "decision": "D-012",

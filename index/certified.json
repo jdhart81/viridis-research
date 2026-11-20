@@ -4,7 +4,7 @@
   "merged_runs": 21,
   "problems": 0,
   "proven_statements": 13,
-  "sealed_statements": 13,
+  "sealed_statements": 14,
   "tested_claims": 1
  },
  "problems": [],
@@ -501,6 +501,19 @@
    "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
    "status": "PROVEN",
    "task": "P2-T002"
+  },
+  "P2.Tempo": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.Tempo.Statement",
+   "decision": "D-021",
+   "path": "lean/ViridisStatements/P2/Tempo.lean",
+   "project": "P2",
+   "proof": null,
+   "sealed_at": "2026-11-20T07:45:33Z",
+   "sealed_by": "policy",
+   "sha256": "a966ef3b1e3bb10cb9336686d71ec5c8b85c442fc1a21e6d3c2a13c7b6622179",
+   "status": "SEALED_UNPROVEN",
+   "task": "P2-T014"
   },
   "P3.CascadedRecovery": {
    "closed_by_single_tactic": false,
