@@ -1,0 +1,18 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P2",
+ "task": "P2-T015",
+ "title": "Re-certifying the Tempo Cadence Kernel of Viridis OS: A Lean Proof of its Six-Part Cost-Model Core",
+ "abstract": "This note re-certifies the Tempo kernel of Viridis OS, which recommends a monitoring cadence (the interval between stewardship visits). The result certifies the mathematics the kernel applies and not any field input or stewardship outcome. Given a haste cost h > 0 and a neglect cost n > 0, the kernel assumes that the cost per unit time of visiting every t > 0 time units is Sigma(t) = h/t + n t. The cost model and its two coefficients are inputs that a user declares; nothing here shows that they describe any stewardship programme. Until now, the kernel's formal assurance rested on a single receipt from the retired Comparator verifier, for a Lean module StewardshipTempo whose source is not on file in the canon repository. A sealed statement, P2.Tempo, was therefore reconstructed from the kernel's reference runner and from the theorem signatures of a deposited file as relayed by a web tool. We give a Lean proof of that statement under Lean v4.28.0 and a pinned Mathlib. It has six parts, one for each theorem named in the registry: (1) Sigma is strictly convex on (0, inf); (2) Sigma(t) >= 2 sqrt(hn) for t > 0; (3) the floor is attained at t* = sqrt(h/n); (4) t* is the only positive cadence attaining it; (5) (u + 1/u)/2 = cosh(log u) for u > 0, so the normalised cost Sigma(t)/(2 sqrt(hn)) equals the haste-neglect tax cosh(log(t/t*)); (6) the normalised cost also equals cosh(log(t*/t)), and the tax is at least 1 and equals 1 exactly at t*. The proof substitutes h = s^2, n = r^2 and rests on the gap identity Sigma(t) - 2sr = (s - rt)^2/t; strict convexity is proved from the definition. Only the axioms propext, Classical.choice and Quot.sound are used; no automated prover was used. The six parts settle that the runner's optimum, floor, normalised cost and tax are mutually consistent consequences of the declared model. They do not settle the form of the model, the values or units of h and n, the runner's floating-point tolerance, or whether the deployed code matches the runner. Lean proofs for four other kernels from earlier sessions are retained.",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "formal",
+   "statement_id": "P2.Tempo",
+   "proof_file": "proofs/P2.Tempo.lean",
+   "text": "For all real h > 0 and n > 0, with Sigma(t) = h/t + n t, optimum sqrt(h/n), floor 2 sqrt(h n), normalised cost Sigma/floor and tax cosh(log(t/optimum)): (1) Sigma is strictly convex on (0, inf); (2) floor <= Sigma(t) for t > 0; (3) Sigma(optimum) = floor; (4) any t > 0 with Sigma(t) = floor equals the optimum; (5) (u + 1/u)/2 = cosh(log u) for u > 0, and normalised cost = tax for t > 0; (6) for t > 0, normalised cost = cosh(log(optimum/t)), 1 <= tax, and tax = 1 iff t = optimum."
+  }
+ ],
+ "proposals": [],
+ "next_steps": "1) P2.Tempo is done if the verifier confirms PROVEN; no Aristotle jobs pending. 2) Still open from T014: obtain a verified byte-level copy of StewardshipTempo.lean from Zenodo record 10.5281/zenodo.20705183 (and its newer version), hash it, compile it under the pinned toolchain, and diff its signatures against the sealed P2.Tempo; ask for it to be deposited in viridis-canon so the registry reconciliation note can be cleared. 3) Flag to Justin the unit inconsistency: registry lists h and n both as 'cost per cycle', inconsistent with h/t + n t. 4) Move to the remaining P2 kernels (T006-T008). STATEMENT_PROPOSAL.md is still absent from inputs/context."
+}

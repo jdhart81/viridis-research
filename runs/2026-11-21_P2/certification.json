@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-21",
+  "engine_sha": "53ac33aedfa5dfbd6d4ef76e0c6f864758c69eaf",
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "6502b5145eab78bd47248b85ca1283470cb7c57968a6f523a1f504f05db93f1b",
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P2.Tempo",
+      "statement_sha256": "a966ef3b1e3bb10cb9336686d71ec5c8b85c442fc1a21e6d3c2a13c7b6622179",
+      "text": "For all real h > 0 and n > 0, with Sigma(t) = h/t + n t, optimum sqrt(h/n), floor 2 sqrt(h n), normalised cost Sigma/floor and tax cosh(log(t/optimum)): (1) Sigma is strictly convex on (0, inf); (2) floor <= Sigma(t) for t > 0; (3) Sigma(optimum) = floor; (4) any t > 0 with Sigma(t) = floor equals the optimum; (5) (u + 1/u)/2 = cosh(log u) for u > 0, and normalised cost = tax for t > 0; (6) for t > 0, normalised cost = cosh(log(optimum/t)), 1 <= tax, and tax = 1 iff t = optimum.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "6502b5145eab78bd47248b85ca1283470cb7c57968a6f523a1f504f05db93f1b",
+      "durations": {
+        "check": 12.359,
+        "compile": 15.427,
+        "replay": 11.559
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P2.Tempo",
+      "statement_sha256": "a966ef3b1e3bb10cb9336686d71ec5c8b85c442fc1a21e6d3c2a13c7b6622179",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 23,
+  "project": "P2",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 6,
+    "resolved": [
+      "10.1016/B978-0-7506-4682-6.X5000-8",
+      "10.1017/CBO9780511804441",
+      "10.1137/1.9781611971262",
+      "10.1145/3372885.3373824",
+      "10.5281/zenodo.20705183",
+      "10.5281/zenodo.21855690"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-21_P2",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P2-T015",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

@@ -1,0 +1,76 @@
+{
+  "agent": {
+    "duration_api_ms": 157096,
+    "duration_ms": 291531,
+    "final_message": "I wrote a Lean proof of the sealed statement `P2.Tempo`, and `viridis-lean-check` reports **PASSED** on all five stages. It uses only the axioms `propext`, `Classical.choice` and `Quot.sound`. Only the verifier can award PROVEN. Before starting I confirmed the sealed module's hash matches the one in the task prompt.\n\n**How the proof works** (`out/proofs/P2.Tempo.lean`, 127 lines):\n- **Setup:** it writes h = s² and n = r², with s = √h and r = √n. Then the optimum is s/r and the floor is 2sr.\n- **Parts 2–4:** these follow from one identity, Σ(t) − 2sr = (s − rt)²/t. That gives the floor, shows it is reached at s/r, and shows it is reached nowhere else.\n- **Parts 5 and 6:** Mathlib's `Real.cosh_log` handles both directions of the cosh formula. For \"tax = 1 exactly at the optimum\", the proof uses parts 3 and 4 rather than properties of cosh.\n- **Part 1:** strict convexity is proved directly from the definition, using (ah/x + bh/y)(ax + by) = h + hab(x−y)²/(xy).\n- **Fixes along the way:** two small edits got it passing. The name `Sigma` clashes with Lean's built-in `Sigma`, so it is written out in full. One `ring` step had nothing left to do, so it is wrapped in `try`.\n\n**Paper** (`out/paper/main.tex`): it builds with `latexmk -pdf` with no errors or undefined references. I haven't looked at the rendered PDF, because there is no PDF-to-text tool here. I retitled it as the Tempo re-certification note and rewrote the abstract. The abstract says the result covers the kernel's mathematics and not any field input or stewardship outcome. It also says the kernel's earlier assurance was a Comparator receipt for source that is not on file, and that the cost model and both coefficients are values the user declares. I added:\n- a new proof section, with the helper lemmas and the final step in a listing;\n- an updated status table, results and reproducibility section;\n- the retired receipt and the user-declared inputs in the \"what this does not settle\" part;\n- a changelog entry.\n\n**Other outputs:**\n- `run.json` has one formal claim for `P2.Tempo`.\n- `notes.md` records what I tried and what failed.\n- `announcement.md` is 510 characters.\n\nAristotle wasn't used, so there are no project IDs, and no earlier jobs were pending.\n\n**Still open for the next session:**\n- We still don't have a byte-for-byte copy of the deposited `StewardshipTempo.lean` from Zenodo. It needs to be hashed, compiled and compared against the sealed statement.\n- The registry gives h and n the same unit (\"cost per cycle\"), which doesn't fit the formula h/t + n·t. This should go to Justin.\n- `STATEMENT_PROPOSAL.md` is still missing from `inputs/context`.",
+    "is_error": false,
+    "num_turns": 17,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "8dfa9ade-5b11-4135-b18a-14606dcaad68",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.8875411999999998,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 56488,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 56488,
+      "cache_read_input_tokens": 516546,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 32,
+      "iterations": [],
+      "output_tokens": 16610,
+      "output_tokens_details": {
+        "thinking_tokens": 2101
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 4
+    },
+    "bytes_down": 127509,
+    "bytes_up": 1480010,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "beca6a53ade8b1d53f5fa08cc36fc2f42d6cdd42",
+    "run_attempt": 1,
+    "run_id": 44846143497,
+    "run_started_at": "2026-11-21T00:47:28Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44846143497",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-21",
+    "prior_runs": [
+      "runs/2026-11-20_P2",
+      "runs/2026-11-02_P2",
+      "runs/2026-11-01_P2"
+    ],
+    "project": "P2",
+    "run_started_at": "2026-11-21T00:47:28Z",
+    "task": "P2-T015",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}

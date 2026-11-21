@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 4.86,
+  "date": "2026-11-21",
+  "github": {
+    "event": "schedule",
+    "head_sha": "beca6a53ade8b1d53f5fa08cc36fc2f42d6cdd42",
+    "run_attempt": 1,
+    "run_id": 44846143497,
+    "run_started_at": "2026-11-21T00:47:28Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44846143497",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P2.Tempo",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "2ec53e66231985630c2ba6009ccab63cd48d1d7a679b89d3e5ce35e19167e9d8",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P2.Tempo"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-21_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T015",
+  "title": "Re-certifying the Tempo Cadence Kernel of Viridis OS: A Lean Proof of its Six-Part Cost-Model Core",
+  "written_at": "2026-11-21T01:18:14Z",
+  "written_by": "verify",
+  "zip_sha256": "40b7d4a3e63b8f6c66ea290343230fdc2444e51a37535a9cafe147568a49e6ac"
+}
