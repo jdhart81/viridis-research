@@ -1,0 +1,32 @@
+{
+ "schema": "viridis-run-v1",
+ "project": "P2",
+ "task": "P2-T006",
+ "title": "Re-certifying the Live Viridis OS Decision Kernels: Sealed-Statement Proposals for Decision-Information Capacity and Multi-Ring Alignment",
+ "abstract": "This revision of the P2 re-certification program proposes sealed statements for two live Viridis OS kernels in the Intelligence Bound family. Both kernels report capacity ceilings on an information rate, and in both the physics enters through an assumption rather than a theorem. A sealed statement must keep that assumption in view. P2.DecisionInformationCapacity restates, over the canon's measure-theoretic definitions (mutual information as a Kullback-Leibler divergence, processes on [0,t], a limsup rate), the conditional Intelligence Bound dI/dt <= min(rho*B, P/(kB*T*ln 2)) and its three parts: the thermodynamic lemma, the Landauer dissipation lemma and the data-processing lemma. The Landauer limit appears as an explicit hypothesis, SatisfiesLandauerLimit, and nothing in the statement proves it for any physical system. Without such a hypothesis the bound is false, as the sealed P5.UnrestrictedBoundFalse shows. Only the data-processing lemma has mathematical content beyond rearranging the hypothesis. P2.MultiRingAlignment restates four elementary facts about the defined multi-ring ceiling (P*Dbar/kappa)*prod_k c_k: the geometric-mean factor Dbar is at most the arithmetic mean; the ceiling never exceeds the unaligned base rate at the same rings; it equals the base rate under perfect alignment; and with one ring it is P*D/kappa. These are facts about a defined number. They do not show that any layered system attains or obeys it. We note three points about the canon text. A docstring claims that adding rings can only shrink the budget, which the theorem does not say, and a concrete example shows it is false. The rates are in nats while the Landauer factor is per bit. The canon's self-information entropy is infinite for atomless laws. Both modules compile under Lean v4.28.0 with a pinned Mathlib, carry sanity examples and negative controls, and resist a set of one-shot tactic probes. Private ports of the canon proofs suggest that both targets are true; no proof is claimed. Lean proofs for five kernels from earlier sessions (Carbon Continuity, Restoration, Afforestation, Harmonization, Tempo) are retained.",
+ "claims": [
+  {
+   "id": "C1",
+   "kind": "conjecture",
+   "text": "Observation, not a sealed claim: the canon docstring of MRAB.mrab_bound_le_baseRate (MRAB.lean, sha256 f56396bf...54db2e7) says adding rings can only shrink the joint budget, but the theorem compares mrabBound with baseRate at the same K. With P = kB = T = 1, one ring D = (1/4), c = (1) gives ceiling (1/4)/ln 2, while adding a perfectly aligned ring D = (1/4, 1), c = (1, 1) gives (1/2)/ln 2; this inequality is an elaborated example in proposals/P2.MultiRingAlignment.lean."
+  },
+  {
+   "id": "C2",
+   "kind": "conjecture",
+   "text": "Observation, not a sealed claim: in the canon Intelligence Bound definitions, mutual information is Mathlib's klDiv (natural log), so rates are in nats while the Landauer factor kB*T*ln 2 is per bit; SatisfiesLandauerLimit is thus weaker by a factor ln 2 than the per-nat Landauer inequality. Also, entropy defined as self-information I(V;V) is infinite for a real variable with an atomless law (argued, not formalised)."
+  }
+ ],
+ "proposals": [
+  {
+   "statement_id": "P2.DecisionInformationCapacity",
+   "file": "proposals/P2.DecisionInformationCapacity.lean",
+   "rationale_file": "proposals/P2.DecisionInformationCapacity.md"
+  },
+  {
+   "statement_id": "P2.MultiRingAlignment",
+   "file": "proposals/P2.MultiRingAlignment.lean",
+   "rationale_file": "proposals/P2.MultiRingAlignment.md"
+  }
+ ],
+ "next_steps": "1) After Justin seals P2.DecisionInformationCapacity and P2.MultiRingAlignment, run the proof tasks (P2-T009/T010 wait on T006): port the canon proofs. Repairs found tonight (scratch files, not submitted): eventually_finite_entropy must be reproved via Filter.le_limsup_of_frequently_le (canon simp_all proof breaks under the pinned Mathlib); ENNReal.limsup_mul_le' needs (Or.inr hB) (Or.inl hRho); the canon indep_self lemma ports with ENNReal.toReal_eq_toReal_iff'. MRAB ports verbatim. 2) Flag to Justin: the MRAB docstring monotonicity-in-K overreach, and the nats-vs-bits units point for the Decision-information capacity kernel's documentation. 3) Then P2-T007 and P2-T008 (remaining second-wave proposals: Symbiotic surplus, Ecological-thermodynamic allocation, Inverse-square shadow price). 4) projects/P5/README.md and context/STATEMENT_PROPOSAL.md were absent from inputs again. No Aristotle jobs pending."
+}

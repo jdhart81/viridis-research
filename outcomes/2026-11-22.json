@@ -1,0 +1,46 @@
+{
+  "agent_minutes": 15.76,
+  "date": "2026-11-22",
+  "decision_requests": [
+    "D-022",
+    "D-023"
+  ],
+  "github": {
+    "event": "workflow_dispatch",
+    "head_sha": "beca6a53ade8b1d53f5fa08cc36fc2f42d6cdd42",
+    "run_attempt": 1,
+    "run_id": 44997549882,
+    "run_started_at": "2026-11-22T07:17:25Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/44997549882",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    },
+    "C2": {
+      "kind": "conjecture",
+      "label": "ASSUMED"
+    }
+  },
+  "manifest_sha256": "fa888ce50c7e6fa6d453aebd1afdfef114851f04c652614dd8f53727aeab4b82",
+  "paper_built": true,
+  "project": "P2",
+  "proposed_statements": [
+    "P2.DecisionInformationCapacity",
+    "P2.MultiRingAlignment"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-22_P2",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P2-T006",
+  "title": "Re-certifying the Live Viridis OS Decision Kernels: Sealed-Statement Proposals for Decision-Information Capacity and Multi-Ring Alignment",
+  "written_at": "2026-11-22T08:04:15Z",
+  "written_by": "verify",
+  "zip_sha256": "1da977d8034a730fd97cae2a23ab1c06f18e388e4ee726b38e52b185bd239a58"
+}

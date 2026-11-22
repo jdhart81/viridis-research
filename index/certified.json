@@ -1,7 +1,7 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
  "counts": {
-  "merged_runs": 22,
+  "merged_runs": 23,
   "problems": 0,
   "proven_statements": 14,
   "sealed_statements": 14,
@@ -344,6 +344,19 @@
    "run_dir": "runs/2026-11-21_P2",
    "task": "P2-T015",
    "title": "Re-certifying the Tempo Cadence Kernel of Viridis OS: A Lean Proof of its Six-Part Cost-Model Core"
+  },
+  {
+   "date": "2026-11-22",
+   "doi": null,
+   "labels": {
+    "ASSUMED": 2
+   },
+   "manifest_sha256": "fa888ce50c7e6fa6d453aebd1afdfef114851f04c652614dd8f53727aeab4b82",
+   "paper_built": true,
+   "project": "P2",
+   "run_dir": "runs/2026-11-22_P2",
+   "task": "P2-T006",
+   "title": "Re-certifying the Live Viridis OS Decision Kernels: Sealed-Statement Proposals for Decision-Information Capacity and Multi-Ring Alignment"
   }
  ],
  "schema": "viridis-certified-index-v1",
