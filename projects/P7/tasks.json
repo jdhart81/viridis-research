@@ -1,0 +1,49 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P7-T001",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the habitat-loss kernel",
+      "produces": [
+        "P7.HabitatThreshold",
+        "P7.SpeciesArea"
+      ],
+      "links": [
+        "P6"
+      ],
+      "brief": "Draft 2 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle."
+    },
+    {
+      "id": "P7-T002",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P7-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P7.HabitatThreshold",
+      "title": "Prove the extinction threshold of the Levins model with habitat loss",
+      "links": [
+        "P6"
+      ],
+      "brief": "Prove the sealed statement P7.HabitatThreshold. The paper states the model, the threshold e/c and the Levins rule, gives the proof, and says what it settles (the sign of the growth term in the model) and what it does not (solutions of the differential equation, whether any species follows the model, any value of c, e or h). Explain in one paragraph that corridor networks (project P6) enter this model only through the colonisation rate c, and that the paper does not claim how a network changes c. Credit Levins 1969, Lande 1987 and Nee and May 1992."
+    },
+    {
+      "id": "P7-T003",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P7-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P7.SpeciesArea",
+      "title": "Prove the species-area bounds on retained species and needed area",
+      "links": [],
+      "brief": "Prove the sealed statement P7.SpeciesArea. The paper states the power-law assumption, the four parts and the proof, and gives one worked example with z = 1/2. Say plainly that the power law is an assumed empirical regularity, that the constant cancels, and that the result is silent on extinction debt, on which species are lost and on any value of z."
+    }
+  ]
+}

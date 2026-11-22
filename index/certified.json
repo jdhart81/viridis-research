@@ -33,6 +33,21 @@
    "priority": 2,
    "status": "active",
    "title": "Intelligence Bound audit: compensation, ceilings and the unrestricted axiom"
+  },
+  "P6": {
+   "priority": 3,
+   "status": "active",
+   "title": "Habitat networks: minimal corridors, redundancy and route reliability"
+  },
+  "P7": {
+   "priority": 3,
+   "status": "active",
+   "title": "Persistence thresholds: how much habitat a population and a biota need"
+  },
+  "P8": {
+   "priority": 3,
+   "status": "active",
+   "title": "Agroforestry accounting: land equivalent ratio and the shared light budget"
   }
  },
  "proven": [
