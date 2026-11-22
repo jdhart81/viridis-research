@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-023",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-22T08:04:18Z",
+  "posted_comment_id": 7076290992,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-7076290992",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P2.MultiRingAlignment proposed by runs/2026-11-22_P2"
 }
