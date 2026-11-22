@@ -4,7 +4,7 @@
   "merged_runs": 23,
   "problems": 0,
   "proven_statements": 14,
-  "sealed_statements": 14,
+  "sealed_statements": 16,
   "tested_claims": 1
  },
  "problems": [],
@@ -481,6 +481,19 @@
    "status": "PROVEN",
    "task": "P2-T001"
   },
+  "P2.DecisionInformationCapacity": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.DecisionInformationCapacity.Statement",
+   "decision": "D-022",
+   "path": "lean/ViridisStatements/P2/DecisionInformationCapacity.lean",
+   "project": "P2",
+   "proof": null,
+   "sealed_at": "2026-11-22T19:58:10Z",
+   "sealed_by": "policy",
+   "sha256": "6cacf42553cfce79999becc6a7a15f64ef9171da65aada4a5385f7e18336e377",
+   "status": "SEALED_UNPROVEN",
+   "task": "P2-T006"
+  },
   "P2.Harmonization": {
    "closed_by_single_tactic": false,
    "constant": "ViridisStatements.P2.Harmonization.Statement",
@@ -504,6 +517,19 @@
    "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
    "status": "PROVEN",
    "task": "P2-T002"
+  },
+  "P2.MultiRingAlignment": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P2.MultiRingAlignment.Statement",
+   "decision": "D-023",
+   "path": "lean/ViridisStatements/P2/MultiRingAlignment.lean",
+   "project": "P2",
+   "proof": null,
+   "sealed_at": "2026-11-22T19:58:10Z",
+   "sealed_by": "policy",
+   "sha256": "0ab79c574cc5e07fc5e5050c4b772ee33d7b5c1c8df77f7e8b37f287c35e0458",
+   "status": "SEALED_UNPROVEN",
+   "task": "P2-T006"
   },
   "P2.Restoration": {
    "closed_by_single_tactic": false,
