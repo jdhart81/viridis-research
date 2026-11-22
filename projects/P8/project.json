@@ -1,0 +1,14 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P8/README.md",
+    "projects/P8/context/STATEMENT_PROPOSAL.md"
+  ],
+  "id": "P8",
+  "priority": 3,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of two calculations used to judge a mixed tree-crop system against separate plots: the land equivalent ratio as the least matching sole-crop area, and the Beer-Lambert light budget of a tree layer above a crop, each sealed as a statement by Justin's decision and proved under the pinned Lean toolchain.",
+  "title": "Agroforestry accounting: land equivalent ratio and the shared light budget"
+}

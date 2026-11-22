@@ -1,0 +1,14 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P6/README.md",
+    "projects/P6/context/STATEMENT_PROPOSAL.md"
+  ],
+  "id": "P6",
+  "priority": 3,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of a corridor-network kernel for Hierarchical Dendritic Forest Management: the least number of corridors that connects a set of habitat patches, the price of surviving the loss of any one corridor, and serial and parallel route reliability, each sealed as a statement by Justin's decision and proved under the pinned Lean toolchain.",
+  "title": "Habitat networks: minimal corridors, redundancy and route reliability"
+}

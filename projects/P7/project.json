@@ -1,0 +1,14 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P7/README.md",
+    "projects/P7/context/STATEMENT_PROPOSAL.md"
+  ],
+  "id": "P7",
+  "priority": 3,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of a habitat-loss kernel from two textbook models: the extinction threshold of the Levins metapopulation model with habitat loss, and the bounds that follow from a power-law species-area relationship, each sealed as a statement by Justin's decision and proved under the pinned Lean toolchain.",
+  "title": "Persistence thresholds: how much habitat a population and a biota need"
+}

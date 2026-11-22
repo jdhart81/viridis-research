@@ -1,0 +1,68 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P6-T001",
+      "kind": "proposal",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the corridor-network kernel",
+      "produces": [
+        "P6.MinimalNetwork",
+        "P6.SingleFailureRobust",
+        "P6.SerialParallel"
+      ],
+      "links": [
+        "P1",
+        "P3"
+      ],
+      "brief": "Draft 3 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle. Mathlib's graph lemma names in the specification are hints: check each against the pinned Mathlib and restate what you need."
+    },
+    {
+      "id": "P6-T002",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P6-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P6.MinimalNetwork",
+      "title": "Prove that trees are the minimal connected corridor networks",
+      "links": [
+        "P1"
+      ],
+      "brief": "Prove the sealed statement P6.MinimalNetwork. The paper is a short note for a corridor planner: state the three parts, give the proof, and explain the trade-off they fix (a dendritic network uses the fewest corridors and therefore has no spare one). Say plainly that these are classical facts about finite graphs, that the graph carries no geometry, width, quality or cost, and that it does not discharge the FaceCount assumption of Trees Cannot Cut (project P1)."
+    },
+    {
+      "id": "P6-T003",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P6-T001"
+      ],
+      "max_runs": 7,
+      "statement_id": "P6.SingleFailureRobust",
+      "title": "Prove the corridor count needed to survive any single loss",
+      "links": [
+        "P1"
+      ],
+      "brief": "Prove the sealed statement P6.SingleFailureRobust, with its two attainment witnesses. The paper states the bound, shows the triangle and the 4-cycle attain it, and puts it beside P6.MinimalNetwork: one extra corridor is the least price of surviving any single loss, and where that corridor goes matters. It claims nothing about which corridors a real landscape should add."
+    },
+    {
+      "id": "P6-T004",
+      "kind": "formal",
+      "complete_when": "proven",
+      "depends_on": [
+        "P6-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P6.SerialParallel",
+      "title": "Prove the serial and parallel route-reliability bounds",
+      "links": [
+        "P3"
+      ],
+      "brief": "Prove the sealed statement P6.SerialParallel. The paper explains the weakest-link bound for a route and the gain from alternative routes, states the two-route equality case, and says plainly that the parallel formula assumes independent routes, which is a field assumption. Note that the serial bound is the same inequality as the upper bound of P3.CascadedRecovery and cite that run."
+    }
+  ]
+}
