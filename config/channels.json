@@ -41,7 +41,7 @@
       "P3": {
         "approved_by": "D-015",
         "concept_recid": null,
-        "latest_deposition_id": 24281827,
+        "latest_deposition_id": 24456101,
         "record_note": "Scope and novelty. Project P3 states and proves the formal core of a circular-economy kernel for Viridis OS: loop mass balance, cascaded recovery, a recovery-adjusted work floor and an N-partner symbiosis condition. These are elementary accounting and inequality results about the stated models, not new theorems. The N-partner condition generalises the two-partner Reciprocity Corridor (doi:10.5281/zenodo.21971047), and the work floor extends the Useful and Dissipated Work Ledger (doi:10.5281/zenodo.22736716). We have not searched the literature exhaustively and claim no novelty. Each result holds only inside its stated model. It says nothing about any measured recovery rate, retention, cost, value or material, about whether deployed kernel code implements the rule faithfully, or about any environmental outcome. The work floor is a bound on modelled efficiency; it is not a Landauer bound and does not rely on the Intelligence Bound, which remains a conjecture."
       },
       "P4": {
@@ -113,6 +113,13 @@
         "project": "P3",
         "record_id": 24281827,
         "week": "2026-W46"
+      },
+      "2026-11-16_P3": {
+        "doi": "10.5281/zenodo.24456101",
+        "doi_url": "https://doi.org/10.5281/zenodo.24456101",
+        "project": "P3",
+        "record_id": 24456101,
+        "week": "2026-W47"
       }
     },
     "sandbox_base_url": "https://sandbox.zenodo.org/api"
