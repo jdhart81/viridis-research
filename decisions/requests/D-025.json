@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-025",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-23T01:23:35Z",
+  "posted_comment_id": 7089105871,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-7089105871",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P6.SingleFailureRobust proposed by runs/2026-11-23_P6"
 }

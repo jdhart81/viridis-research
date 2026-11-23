@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-026",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-23T01:23:36Z",
+  "posted_comment_id": 7089105980,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-7089105980",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P6.SerialParallel proposed by runs/2026-11-23_P6"
 }
