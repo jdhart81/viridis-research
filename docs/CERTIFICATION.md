@@ -70,12 +70,13 @@ verifier, and one status derived from them. The label above is never changed by 
 | E4 | Unconditional needs a review: `statements/premises.json` must hold an entry bound to the sealed hash with an empty `premises` list. | `test_unconditional_needs_an_empty_reviewed_premise_list` |
 | E5 | A verdict needs a plan fixed in advance (below). Any break in the chain leaves the claim REPRODUCED. | `test_a_registered_plan_gives_its_verdict`, `test_every_break_in_the_chain_falls_back_to_reproduced`, `test_a_fabricated_verdict_is_not_tested_so_it_is_untested` |
 | E6 | Caution on error: the weaker value with the reason; nothing raises and nothing fails a night. | `test_annotate_never_raises` |
-| E7 | The agent cannot write the premise review or a plan: both are outside the artifact and outside `gitio.WRITE_ROOTS`. | `test_the_agent_cannot_write_premises_or_plans` |
+| E7 | The agent cannot write the premise review or a plan: both are outside the artifact. A plan has no automated writer. The review is written by a pull request Justin merges, or by the verify job under PV1 to PV9 below. | `test_the_agent_cannot_write_premises_or_plans`, `test_the_agent_cannot_ship_the_file_itself` |
 | E8 | A premise can point at the empirical claims that test it; the index attaches each one's track and flags a contradicted premise. | `test_index_reports_both_tracks_and_links_premises_to_tests`, `test_index_reports_bad_premise_pointers_and_unknown_statements` |
 | E9 | One plan, one verdict: the earliest merged run under a plan holds its verdict of record; later runs under it stay REPRODUCED. | `test_one_plan_gives_one_verdict`, `test_index_drops_a_verdict_whose_plan_changed_or_left` |
 
-**The premise review** (`statements/premises.json`, schema `viridis-premises-v1`, changed only by a pull
-request Justin merges). One entry per sealed statement:
+**The premise review** (`statements/premises.json`, schema `viridis-premises-v1`, written by a pull
+request Justin merges or by the verify job, see "Automated premise review"). One entry per sealed
+statement:
 
 ```json
 {"schema": "viridis-premises-v1", "statements": {
@@ -88,6 +89,29 @@ request Justin merges). One entry per sealed statement:
 A premise is a hypothesis of the theorem that says something about the world (`physical`, `empirical`)
 or about how well a model fits it (`modelling`). An empty list says the statement is pure mathematics.
 No entry means nobody has looked, and the proof is reported as conditional.
+
+### Automated premise review (`engine/premise_review.py`, I25)
+
+A run may carry `premise_reviews` in `run.json`: for a proved statement, the premises it rests on and a
+short rationale. The verify job decides each one and writes the file in the outcome commit. The index
+marks each reviewed statement `reviewed_by` `owner` (a merged pull request) or `policy` (these rules), and
+lists under `epistemic.frontier` the untested premises ordered by how many proved statements rest on each.
+
+| ID | Rule | Checked by (`tests/test_premise_review.py`) |
+|---|---|---|
+| PV1 | Off unless the record's `config/engine.json` sets `premise_review.enabled` to `true`. | `test_off_by_default_writes_nothing` |
+| PV2 | Only a sealed statement that is PROVEN in the index, or by the run itself; every entry is bound to the sealed hash. | `test_only_well_formed_reviews_of_proved_statements`, `test_a_statement_proved_tonight_can_be_reviewed_tonight`, `test_a_review_of_an_older_text_is_replaced_not_trusted` |
+| PV3 | Well formed; a rationale of 1 to 2000 characters; at most five reviews per run. | `test_only_well_formed_reviews_of_proved_statements`, `test_at_most_five_and_never_raises` |
+| PV4 | A review that lists a premise is recorded at once: it can only make the status more cautious. | `test_a_listed_premise_is_recorded_at_once` |
+| PV5 | A review that lists none is held; the statement becomes `FORMALLY_PROVED` only when a second review from a different run also lists none. A review listing a premise in between wins. | `test_unconditional_needs_two_independent_runs`, `test_a_dissenting_review_beats_a_pending_empty_one` |
+| PV6 | A ratchet: automation adds premises to an entry it wrote; it never removes, rewrites or empties. | `test_the_ratchet_only_adds_caution` |
+| PV7 | An entry merged by pull request (no `reviewed_by: policy`) is never changed. | `test_the_owners_review_is_final` |
+| PV8 | `tested_by` pointers are dropped from automated reviews. | `test_links_to_tests_are_not_taken_from_a_run` |
+| PV9 | Written by the verify job, never the agent; every decision is listed under `premise_reviews` in `certification.json`; nothing raises or fails a night. | `test_the_agent_cannot_ship_the_file_itself`, `test_at_most_five_and_never_raises` |
+
+`reviewed_by: policy` means one or two agent sessions read the sealed module and the verifier applied the
+rules above. It does not mean a person checked the list. Two agent sessions agreeing that a statement
+assumes nothing about the world is weaker than the owner's review; read the module.
 
 **A registered plan** (`preregistrations/registry.json`, schema `viridis-preregistrations-v1`, and the
 plan text at `preregistrations/<PLAN-ID>.md`, both changed only by a pull request Justin merges):

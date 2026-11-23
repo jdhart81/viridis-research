@@ -197,8 +197,13 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
         listed, contradicted, found = epistemic.resolve_premises(listed, claim_tracks)
         problems += [f"statement {sid}: {f}" for f in found]
         status = epistemic.status_of("formal", formal, "NOT_APPLICABLE")
+        entry = premises.get(sid)
+        reviewed_by = None
+        if isinstance(listed, list) and isinstance(entry, dict):          # who listed them: the owner, or I25
+            reviewed_by = "policy" if entry.get("reviewed_by") == "policy" else "owner"
         statement_epistemic[sid] = {"status": status, "formal": formal, "premises": listed,
-                                    "premise_contradicted": contradicted, "reason": reason}
+                                    "premise_contradicted": contradicted, "reason": reason,
+                                    "reviewed_by": reviewed_by}
         statement_status[status] = statement_status.get(status, 0) + 1
     for sid in sorted(set(premises) - set(statements)):
         problems.append(f"{epistemic.PREMISES_REL}: {sid} is not a sealed statement")
@@ -210,6 +215,7 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
                           "tested_claims": sorted(tested_status, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
                           "counts": {"statements": dict(sorted(statement_status.items())),
                                      "claims": dict(sorted(claim_status.items()))},
+                          "frontier": epistemic.frontier(statement_epistemic),
                           "registered_plans": sorted(plans), "plan_verdicts": dict(sorted(plan_verdicts.items()))},
             "tested_claims": sorted(tested, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
             "runs": sorted(runs, key=lambda r: (str(r["date"]), r["run_dir"])),
