@@ -58,6 +58,12 @@
       "status": "done",
       "url": "https://zenodo.org/records/24456121",
       "version": "2026-11-18_P3"
+    },
+    "2026-11-19_P5": {
+      "project": "P5",
+      "run_dir": "runs/2026-11-19_P5",
+      "status": "pending",
+      "version": "2026-11-19_P5"
     }
   }
 }
