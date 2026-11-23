@@ -2,7 +2,8 @@
   "keys": [
     "proven:P2.Restoration",
     "proven:P2.Harmonization",
-    "proven:P3.LoopMassBalance"
+    "proven:P3.LoopMassBalance",
+    "proven:P3.CyclicSymbiosis"
   ],
   "schema": "viridis-announced-v1"
 }

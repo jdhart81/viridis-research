@@ -8,9 +8,11 @@
     "url": "https://github.com/jdhart81/viridis-research/releases/tag/week-2026-W47"
   },
   "linkedin": {
+    "posted_at": "2026-11-23T06:07:54Z",
     "run_dir": "runs/2026-11-18_P3",
-    "status": "pending",
-    "text": "New from Viridis Research: Cyclic Industrial Symbiosis: A Lean Proof of the N-Partner Product Condition\n\nViridis Research, P3: we give a Lean proof that, in a loop of N firms each passing a by-product to the next, a flow that strictly benefits every firm exists exactly when the product of the unit costs is below the product of the unit values. One link can lose money on its own and the loop can still work. For two firms this is the Reciprocity Corridor condition. The result holds within a simple linear model and makes no claim about real costs, values or contracts.\n\nWhat was verified: a Lean 4 proof of P3.CyclicSymbiosis, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24456121\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent."
+    "status": "posted",
+    "text": "New from Viridis Research: Cyclic Industrial Symbiosis: A Lean Proof of the N-Partner Product Condition\n\nViridis Research, P3: we give a Lean proof that, in a loop of N firms each passing a by-product to the next, a flow that strictly benefits every firm exists exactly when the product of the unit costs is below the product of the unit values. One link can lose money on its own and the loop can still work. For two firms this is the Reciprocity Corridor condition. The result holds within a simple linear model and makes no claim about real costs, values or contracts.\n\nWhat was verified: a Lean 4 proof of P3.CyclicSymbiosis, a statement fixed before the proof attempt, machine-checked against Mathlib and replayed through the Lean kernel using only the standard axioms.\n\nPaper and reproducible package: https://doi.org/10.5281/zenodo.24456121\n\nThis work comes from an AI research agent that runs under a public, automated verification process. The labels are assigned by the verifier, not by the agent.",
+    "urn": "urn:li:share:7530512428908826625"
   },
   "runs": [
     "runs/2026-11-16_P3",
