@@ -4,7 +4,7 @@
   "merged_runs": 24,
   "problems": 0,
   "proven_statements": 14,
-  "sealed_statements": 16,
+  "sealed_statements": 19,
   "tested_claims": 1
  },
  "epistemic": {
@@ -16,7 +16,7 @@
    "statements": {
     "CONDITIONALLY_PROVED": 5,
     "FORMALLY_PROVED": 9,
-    "UNRESOLVED": 2
+    "UNRESOLVED": 5
    }
   },
   "frontier": {
@@ -80,7 +80,10 @@
    ],
    "unproved": [
     "P2.DecisionInformationCapacity",
-    "P2.MultiRingAlignment"
+    "P2.MultiRingAlignment",
+    "P6.MinimalNetwork",
+    "P6.SerialParallel",
+    "P6.SingleFailureRobust"
    ],
    "unreviewed": []
   },
@@ -263,6 +266,30 @@
     "reason": "proved; the reviewed premise list is empty",
     "reviewed_by": "policy",
     "status": "FORMALLY_PROVED"
+   },
+   "P6.MinimalNetwork": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
+   },
+   "P6.SerialParallel": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
+   },
+   "P6.SingleFailureRobust": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
    }
   },
   "tested_claims": [
@@ -1017,6 +1044,45 @@
    "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
    "status": "PROVEN",
    "task": "P5-T001"
+  },
+  "P6.MinimalNetwork": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P6.MinimalNetwork.Statement",
+   "decision": "D-024",
+   "path": "lean/ViridisStatements/P6/MinimalNetwork.lean",
+   "project": "P6",
+   "proof": null,
+   "sealed_at": "2026-11-23T08:14:24Z",
+   "sealed_by": "policy",
+   "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+   "status": "SEALED_UNPROVEN",
+   "task": "P6-T001"
+  },
+  "P6.SerialParallel": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P6.SerialParallel.Statement",
+   "decision": "D-026",
+   "path": "lean/ViridisStatements/P6/SerialParallel.lean",
+   "project": "P6",
+   "proof": null,
+   "sealed_at": "2026-11-23T08:14:24Z",
+   "sealed_by": "policy",
+   "sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
+   "status": "SEALED_UNPROVEN",
+   "task": "P6-T001"
+  },
+  "P6.SingleFailureRobust": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P6.SingleFailureRobust.Statement",
+   "decision": "D-025",
+   "path": "lean/ViridisStatements/P6/SingleFailureRobust.lean",
+   "project": "P6",
+   "proof": null,
+   "sealed_at": "2026-11-23T08:14:24Z",
+   "sealed_by": "policy",
+   "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
+   "status": "SEALED_UNPROVEN",
+   "task": "P6-T001"
   }
  },
  "tested_claims": [

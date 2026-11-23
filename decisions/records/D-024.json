@@ -1,0 +1,58 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-11-23T08:14:24Z",
+  "author": "sealing-policy",
+  "authority": "policy",
+  "body": null,
+  "comment_id": null,
+  "comment_url": null,
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P6",
+    "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+    "source_path": "runs/2026-11-23_P6/proposals/P6.MinimalNetwork.lean",
+    "statement_id": "P6.MinimalNetwork",
+    "task": "P6-T001",
+    "type": "seal_statement"
+  },
+  "effect_result": {
+    "applied": true,
+    "sealed": "P6.MinimalNetwork"
+  },
+  "gate": {
+    "checks": {
+      "G1_written_by_verifier": true,
+      "G2_not_trivial": true,
+      "G3_statement_set_by_task": true,
+      "G4_file_unchanged": true,
+      "G5_not_sealed": true
+    },
+    "probe_tactics": [
+      "aesop",
+      "decide",
+      "linarith",
+      "norm_num",
+      "omega",
+      "rfl",
+      "simp",
+      "simp_all",
+      "tauto",
+      "trivial"
+    ]
+  },
+  "id": "D-024",
+  "policy_decision": "D-018",
+  "recorded_at": "2026-11-23T08:14:24Z",
+  "schema": "viridis-decision-record-v1"
+}
