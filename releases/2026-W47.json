@@ -1,0 +1,23 @@
+{
+  "complete": false,
+  "errors": [],
+  "github_release": {
+    "id": 455045312,
+    "status": "done",
+    "tag": "week-2026-W47",
+    "url": "https://github.com/jdhart81/viridis-research/releases/tag/week-2026-W47"
+  },
+  "linkedin": {},
+  "runs": [
+    "runs/2026-11-16_P3",
+    "runs/2026-11-17_P3",
+    "runs/2026-11-18_P3",
+    "runs/2026-11-19_P5",
+    "runs/2026-11-20_P2",
+    "runs/2026-11-21_P2",
+    "runs/2026-11-22_P2"
+  ],
+  "schema": "viridis-week-v1",
+  "week": "2026-W47",
+  "zenodo": {}
+}
