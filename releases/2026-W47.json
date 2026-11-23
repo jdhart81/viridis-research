@@ -71,6 +71,18 @@
       "status": "done",
       "url": "https://zenodo.org/records/24456129",
       "version": "2026-11-19_P5"
+    },
+    "2026-11-20_P2": {
+      "project": "P2",
+      "reason": "no compiled paper with a non-trivial PROVEN or TESTED claim (GitHub only)",
+      "run_dir": "runs/2026-11-20_P2",
+      "status": "skipped"
+    },
+    "2026-11-21_P2": {
+      "project": "P2",
+      "run_dir": "runs/2026-11-21_P2",
+      "status": "pending",
+      "version": "2026-11-21_P2"
     }
   }
 }
