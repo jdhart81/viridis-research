@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-23",
+  "engine_sha": "97a29e9bf0f956416877c85cb2324709b7b05526",
+  "labels": {},
+  "lean": {},
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 5,
+  "project": "P6",
+  "proposals": [
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+      "statement_id": "P6.MinimalNetwork",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
+      "statement_id": "P6.SingleFailureRobust",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    },
+    {
+      "compiled": true,
+      "messages": [],
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
+      "statement_id": "P6.SerialParallel",
+      "status": "compiled; no probe tactic closes it; submitted for sealing",
+      "trivial": false,
+      "violations": []
+    }
+  ],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 5,
+    "entries": 5,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1007/978-3-662-53622-3",
+      "10.1016/0016-0032(56)90559-2",
+      "10.1145/3372885.3373824",
+      "10.1890/0012-9658(2001)082[1205:LCAGTP]2.0.CO;2"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-23_P6",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P6-T001",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

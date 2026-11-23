@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 6.76,
+  "date": "2026-11-23",
+  "decision_requests": [
+    "D-024",
+    "D-025",
+    "D-026"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "beca6a53ade8b1d53f5fa08cc36fc2f42d6cdd42",
+    "run_attempt": 1,
+    "run_id": 45087714160,
+    "run_started_at": "2026-11-23T00:15:38Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45087714160",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": "c77efc0bb4b8846ecc3cda5bceb5f7d24802cf309d9e555d900841c44f0745bf",
+  "paper_built": true,
+  "project": "P6",
+  "proposed_statements": [
+    "P6.MinimalNetwork",
+    "P6.SerialParallel",
+    "P6.SingleFailureRobust"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-23_P6",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P6-T001",
+  "title": "The formal core of a corridor-network kernel: minimal corridors, single-failure redundancy and route reliability (statement proposals)",
+  "written_at": "2026-11-23T01:23:31Z",
+  "written_by": "verify",
+  "zip_sha256": "7c0294d69c388193511f259a339eefcc8ebc2c4424820c04ed6cd48d25014664"
+}

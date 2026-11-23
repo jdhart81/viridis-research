@@ -1,0 +1,208 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,example,namespace,end,import,where,instance,fun,by,decide,Prop,Type},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"
+}
+\lstset{language=lean, basicstyle=\ttfamily\small, breaklines=true, columns=fullflexible,
+  keywordstyle=\color{blue!60!black}\bfseries, commentstyle=\color{gray},
+  literate={∀}{{$\forall$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {∧}{{$\land$}}1
+    {∨}{{$\lor$}}1 {¬}{{$\neg$}}1 {∈}{{$\in$}}1 {≤}{{$\le$}}1 {∏}{{$\prod$}}1
+    {ℝ}{{$\mathbb{R}$}}1 {ℕ}{{$\mathbb{N}$}}1 {ι}{{$\iota$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {⊤}{{$\top$}}1 {⊥}{{$\bot$}}1}
+
+\newtheorem{proposal}{Proposed statement}
+
+\title{The formal core of a corridor-network kernel:\\ minimal corridors, single-failure redundancy and route reliability (statement proposals)}
+\author{Justin Hart\\Viridis LLC}
+\date{23 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped corridor networks between
+habitat patches. A planner needs two facts made precise. A dendritic network is the cheapest way to
+connect patches, and for exactly that reason it has no spare corridor. We propose three Lean~4
+statements over Mathlib that capture the formal core of a corridor-network kernel.
+\texttt{P6.MinimalNetwork}: a connected network on $n$ patches has at least $n-1$ corridors, exactly
+$n-1$ if and only if it is a tree, and every corridor of a tree is a bridge.
+\texttt{P6.SingleFailureRobust}: a network on $n\ge 2$ patches that survives the loss of any one
+corridor has at least $n$ corridors.
+\texttt{P6.SerialParallel}: a chained route is no more reliable than its weakest link, a
+family of alternative routes (under independence) is no less reliable than its best member, and for
+two routes the gain is zero exactly when the worse route is $0$ or the better one is $1$. Each
+module compiles under the pinned toolchain and contains checked witnesses and negative controls.
+The results are classical. The contribution is a precise, self-contained formal target whose
+hypotheses are listed in full, together with an account of what a formal proof of it would and would not
+certify. This paper proposes the targets only and claims no proof of them.
+\end{abstract}
+
+\section{Introduction}
+Graph models of landscape connectivity represent habitat patches as vertices and functional
+links between them as edges~\citep{urbankeitt2001}. Urban and Keitt argued that the minimum spanning tree is a useful guide to
+which patches and links matter most to connectivity~\citep{urbankeitt2001}. HDFM pushes this
+further and \emph{designs} dendritic (tree-shaped) corridor networks. That raises a trade-off. A tree uses as
+few corridors as possible, yet each of its corridors is a single point of failure.
+
+Project P6 of Viridis Research turns this trade-off into machine-checkable mathematics. This first session
+(task P6-T001) drafts the three statements that later sessions will try to prove (tasks
+P6-T002 to P6-T004). Statements are sealed only by Justin Hart's decision. Until then they are
+proposals.
+
+\paragraph{Questions.} (i) How few corridors can connect $n$ patches, and which networks achieve it?
+(ii) What is the least number of corridors for a network that survives any single corridor loss?
+(iii) How does the reliability of a route, or of a family of alternative routes, compare with that of its parts?
+
+\section{Background and related work}
+Parts (i) and (ii) are textbook graph theory~\citep{diestel2017}. A connected graph on $n$ vertices
+has at least $n-1$ edges, with equality exactly for trees. An edge is a bridge exactly when it lies on
+no cycle, so a graph is acyclic iff every edge is a bridge. A 2-edge-connected graph has minimum
+degree at least $2$ and hence at least $n$ edges. Cycles attain this bound. The series--parallel
+reliability calculus in (iii) goes back at least to Moore and Shannon's analysis of relay
+networks~\citep{mooreshannon1956}. The formalisation uses Lean~4~\citep{lean4} and
+Mathlib~\citep{mathlib2020}. Mathlib already contains the key graph facts, stated with
+\texttt{Nat.card}:
+\texttt{SimpleGraph.Connected.card\_vert\_le\_card\_edgeSet\_add\_one},
+\texttt{SimpleGraph.isTree\_iff\_connected\_and\_card},
+\texttt{SimpleGraph.isAcyclic\_iff\_forall\_edge\_isBridge} and \texttt{SimpleGraph.isBridge\_iff}.
+We checked each of these names against the pinned Mathlib commit \texttt{8f9d9cff}.
+
+The serial bound in (iii) is the inequality already sealed as part~3 of \texttt{P3.CascadedRecovery}
+($\prod_i(1-r_i)\le 1-r_j$), with $p_i=1-r_i$. P6 restates it over an arbitrary \texttt{Finset}
+and does not import it.
+
+\section{Formal development}
+\subsection{Model}
+Patches form a finite type \texttt{V : Type} with decidable equality. Corridors are the edges of a
+\texttt{G : SimpleGraph V} with decidable adjacency. We write $n=\texttt{Fintype.card V}$ and
+$m=\texttt{G.edgeFinset.card}$, and removing corridor $e$ is \texttt{G.deleteEdges \{e\}}. The model has no geometry,
+width, quality or cost. For reliability, link and route success probabilities are real numbers in
+$[0,1]$ indexed by a \texttt{Finset}.
+
+\begin{proposal}[\texttt{P6.MinimalNetwork}]
+For every finite $V$ and every $G$:
+(1) if $G$ is connected then $n\le m+1$;
+(2) $G$ is connected with $m+1=n$ iff $G$ is a tree;
+(3) if $G$ is a tree, then $G$ minus any one of its edges is disconnected.
+\end{proposal}
+
+\begin{proposal}[\texttt{P6.SingleFailureRobust}]
+If $n\ge 2$, $G$ is connected and $G$ minus $e$ is connected for every edge $e$, then $n\le m$.
+\end{proposal}
+
+\begin{proposal}[\texttt{P6.SerialParallel}]
+(1) If $p_i\in[0,1]$ for $i\in s$ then $\prod_{i\in s}p_i\le p_j$ for every $j\in s$.
+(2) If $q_i\in[0,1]$ for $i\in s$ then $q_j\le 1-\prod_{i\in s}(1-q_i)\le 1$ for every $j\in s$.
+(3) For $p,q\in[0,1]$: $1-(1-p)(1-q)=\max(p,q)\iff \min(p,q)=0\lor\max(p,q)=1$.
+\end{proposal}
+
+The Lean definitions of the three targets are given below. The full modules, with their docstrings and
+sanity checks, are in \texttt{proposals/}.
+
+\begin{lstlisting}
+-- P6.MinimalNetwork
+def Statement : Prop :=
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+    (G.Connected → patchCount V ≤ corridorCount G + 1) ∧
+    (G.Connected ∧ corridorCount G + 1 = patchCount V ↔ G.IsTree) ∧
+    (G.IsTree → ∀ e ∈ G.edgeSet, ¬ (G.deleteEdges {e}).Connected)
+
+-- P6.SingleFailureRobust
+def SurvivesSingleFailure {V : Type} (G : SimpleGraph V) : Prop :=
+  G.Connected ∧ ∀ e ∈ G.edgeSet, (G.deleteEdges {e}).Connected
+def Statement : Prop :=
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+    2 ≤ patchCount V → SurvivesSingleFailure G → patchCount V ≤ corridorCount G
+
+-- P6.SerialParallel
+def serial {ι : Type} (s : Finset ι) (p : ι → ℝ) : ℝ := ∏ i ∈ s, p i
+def parallel {ι : Type} (s : Finset ι) (q : ι → ℝ) : ℝ := 1 - ∏ i ∈ s, (1 - q i)
+def Statement : Prop :=
+  (∀ (ι : Type) (s : Finset ι) (p : ι → ℝ), (∀ i ∈ s, 0 ≤ p i ∧ p i ≤ 1) →
+      ∀ j ∈ s, serial s p ≤ p j) ∧
+  (∀ (ι : Type) (s : Finset ι) (q : ι → ℝ), (∀ i ∈ s, 0 ≤ q i ∧ q i ≤ 1) →
+      ∀ j ∈ s, q j ≤ parallel s q ∧ parallel s q ≤ 1) ∧
+  (∀ p q : ℝ, 0 ≤ p → p ≤ 1 → 0 ≤ q → q ≤ 1 →
+      (1 - (1 - p) * (1 - q) = max p q ↔ (min p q = 0 ∨ max p q = 1)))
+\end{lstlisting}
+Here \texttt{patchCount V} is \texttt{Fintype.card V} and \texttt{corridorCount G} is
+\texttt{G.edgeFinset.card}. Both are defined inside each statement's own namespace.
+
+\subsection{Design decisions}
+The instance arguments are universally quantified inside \texttt{Statement}, so a proof must work for
+any \texttt{Fintype} and decidability instances. The edge-count lemmas in Mathlib are stated with
+\texttt{Nat.card}, while the statements use \texttt{Fintype.card} and \texttt{edgeFinset.card}, as the
+specification asks. Bridging the two is routine. The patch type lives in universe~0.
+\texttt{SingleFailureRobust} restates the counting facts it needs rather than importing
+\texttt{MinimalNetwork}, so each module is self-contained.
+
+\section{Results: sanity checks and controls}
+Each module compiles under Lean \texttt{v4.28.0} with the pinned Mathlib. The graph checks are closed
+by \texttt{decide}. The real-number checks are closed by \texttt{norm\_num}, because \texttt{decide}
+does not apply to $\mathbb{R}$. Table~\ref{tab:checks} lists them.
+
+\begin{table}[h]
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Module & Check & Role\\
+\midrule
+MinimalNetwork & path on \texttt{Fin 3}: connected, $m=2$, $m+1=n$ & witness\\
+ & path minus edge $0$--$1$ is disconnected & witness (part 3)\\
+ & triangle $+$ isolated vertex on \texttt{Fin 4}: $m+1=n$, not connected & negative control\\
+SingleFailureRobust & triangle $K_3$: all hypotheses, $m=n=3$ & attainment\\
+ & 4-cycle: all hypotheses, $m=n=4$ & attainment\\
+ & one vertex: hypotheses except $2\le n$ hold, $m=0<1=n$ & negative control\\
+ & $n=2$: the edge is a bridge and the empty graph is disconnected & vacuity check\\
+SerialParallel & links $\tfrac12,\tfrac12$ in series: $\tfrac14<\tfrac12$ & witness\\
+ & routes $\tfrac12,\tfrac12$ in parallel: $\tfrac34>\tfrac12$ & witness\\
+ & part 3 fails at $p=q=\tfrac12$; equality at $(\tfrac12,0)$, $(1,\tfrac12)$ & equality cases\\
+ & links $2,\tfrac12$: product $1>\tfrac12$ & negative control\\
+\bottomrule
+\end{tabular}
+\caption{Checked examples included in the proposal modules.}\label{tab:checks}
+\end{table}
+
+\paragraph{Hand checks.} For $n=2$ no simple graph satisfies the hypotheses of
+\texttt{SingleFailureRobust}, so the statement holds vacuously there. For part~3 of
+\texttt{SerialParallel}, $1-(1-p)(1-q)=p+q(1-p)$, which equals $p$ iff $q=0$ or $p=1$. The cases
+$p\ge q$ and $q\ge p$ then give the stated equivalence.
+
+\paragraph{Consistency.} To make sure no target is false as written, we wrote throwaway Lean proofs of all three
+statements in a scratch directory. They compiled. They are not submitted, and we claim no proof. Proving the
+statements is the job of tasks P6-T002 to P6-T004.
+
+\section{Limitations}
+These are classical facts and not new theorems. A formal proof of any of them would certify only the
+mathematics of the model. It would not certify that a mapped corridor is used by any species, any link
+probability, the independence of routes, or any ecological outcome. In particular,
+$1-\prod(1-q_i)$ is the probability that at least one route succeeds \emph{only} if the routes fail
+independently. Routes that share corridors or disturbances violate this assumption. The graph model ignores
+geometry, cost and quality, so minimum-cost (rather than minimum-count) networks are not covered,
+and neither are vertex failures or multiple simultaneous corridor failures. The work does not discharge the
+FaceCount assumption of \emph{Trees Cannot Cut} (project P1).
+
+\section{Reproducibility}
+The three modules are \texttt{proposals/P6.MinimalNetwork.lean},
+\texttt{proposals/P6.SingleFailureRobust.lean} and \texttt{proposals/P6.SerialParallel.lean}, each with a
+rationale file. They compile with \texttt{lean} under toolchain \texttt{leanprover/lean4:v4.28.0} and
+Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. They import only \texttt{Mathlib}
+and use none of the forbidden constructs.
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-11-23 (P6-T001): first version. Drafted the three statement proposals with sanity checks,
+negative controls and rationales.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

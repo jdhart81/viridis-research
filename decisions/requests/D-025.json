@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-23_P6`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-23_P6) (task P6-T001) proposes a new formal target `P6.SingleFailureRobust`.\n\n- File: [`runs/2026-11-23_P6/proposals/P6.SingleFailureRobust.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.SingleFailureRobust.lean), sha256 `f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81`\n- Rationale: [`runs/2026-11-23_P6/proposals/P6.SingleFailureRobust.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.SingleFailureRobust.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P6 · Single-failure robustness costs at least one spare corridor\n\nModel: as in `P6.MinimalNetwork` (restated here, nothing is imported from it). Habitat patches are\nthe vertices of a finite type `V`, corridors are the edges of `G : SimpleGraph V`,\n`n = Fintype.card V` and `m = G.edgeFinset.card`. Removing corridor `e` is `G.deleteEdges {e}`.\n\nA network *survives any single corridor failure* if it is connected and stays connected after the\nremoval of any one of its corridors.\n\n`Statement` (for every finite `V` with decidable equality and every `G` with decidable adjacency):\nif `2 ≤ n` and `G` survives any single corridor failure, then `n ≤ m`.\n\nSo a robust network needs at least one corridor more than the `n - 1` of a tree. The triangle and\nthe 4-cycle attain the bound. For `n = 2` no simple graph satisfies the hypotheses, so the\nstatement holds there vacuously. This is classical graph theory, not a new theorem. No claim is\nmade about any real corridor, failure mode or landscape.\n-/\n\nnamespace ViridisStatements.P6.SingleFailureRobust\n\n/-- Number of habitat patches `n`. -/\ndef patchCount (V : Type) [Fintype V] : ℕ := Fintype.card V\n\n/-- Number of corridors `m` of a corridor network `G`. -/\ndef corridorCount {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V)\n    [DecidableRel G.Adj] : ℕ :=\n  G.edgeFinset.card\n\n/-- `G` is connected and stays connected after the loss of any one corridor. -/\ndef SurvivesSingleFailure {V : Type} (G : SimpleGraph V) : Prop :=\n  G.Connected ∧ ∀ e ∈ G.edgeSet, (G.deleteEdges {e}).Connected\n\n/-- **Proposed sealed target `P6.SingleFailureRobust`.** -/\ndef Statement : Prop :=\n  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],\n    2 ≤ patchCount V → SurvivesSingleFailure G → patchCount V ≤ corridorCount G\n\n/-! ## Sanity checks -/\n\n/-- Attainment witness 1: the triangle (complete graph on `Fin 3`) has `2 ≤ n`, survives any\nsingle corridor failure, and has `m = 3 = n`. -/\nexample : 2 ≤ patchCount (Fin 3) ∧\n    (⊤ : SimpleGraph (Fin 3)).Connected ∧\n    (∀ e ∈ (⊤ : SimpleGraph (Fin 3)).edgeSet, ((⊤ : SimpleGraph (Fin 3)).deleteEdges {e}).Connected) ∧\n    corridorCount (⊤ : SimpleGraph (Fin 3)) = 3 ∧\n    corridorCount (⊤ : SimpleGraph (Fin 3)) = patchCount (Fin 3) := by\n  decide\n\n/-- The 4-cycle: corridors `0–1, 1–2, 2–3, 3–0`. -/\ndef cycle4 : SimpleGraph (Fin 4) where\n  Adj i j := (i.val + 1) % 4 = j.val ∨ (j.val + 1) % 4 = i.val\n  symm := fun _ _ h => h.symm\n  loopless := ⟨fun i h => by omega⟩\n\ninstance : DecidableRel cycle4.Adj := fun i j =>\n  inferInstanceAs (Decidable ((i.val + 1) % 4 = j.val ∨ (j.val + 1) % 4 = i.val))\n\n/-- Attainment witness 2: the 4-cycle has `2 ≤ n`, survives any single corridor failure, and has\n`m = 4 = n`. -/\nexample : 2 ≤ patchCount (Fin 4) ∧\n    cycle4.Connected ∧\n    (∀ e ∈ cycle4.edgeSet, (cycle4.deleteEdges {e}).Connected) ∧\n    corridorCount cycle4 = 4 ∧\n    corridorCount cycle4 = patchCount (Fin 4) := by\n  decide\n\n/-- Negative control: on a single patch the hypotheses other than `2 ≤ n` hold (the empty network\nis connected and has no corridor to lose) yet `m = 0 < 1 = n`; so `2 ≤ n` cannot be dropped. -/\nexample : (⊥ : SimpleGraph (Fin 1)).Connected ∧\n    (∀ e ∈ (⊥ : SimpleGraph (Fin 1)).edgeSet, ((⊥ : SimpleGraph (Fin 1)).deleteEdges {e}).Connected) ∧\n    corridorCount (⊥ : SimpleGraph (Fin 1)) < patchCount (Fin 1) := by\n  decide\n\n/-- Check of the `n = 2` case: the single corridor `0–1` is connected but removing it\ndisconnects, so no simple graph on two patches satisfies the hypotheses. -/\nexample : (⊤ : SimpleGraph (Fin 2)).Connected ∧\n    ¬ ((⊤ : SimpleGraph (Fin 2)).deleteEdges {s(0, 1)}).Connected ∧\n    ¬ (⊥ : SimpleGraph (Fin 2)).Connected := by\n  decide\n\nend ViridisStatements.P6.SingleFailureRobust\n\n```\n</details>",
+  "created_at": "2026-11-23T01:23:32Z",
+  "created_by": "verify:45087714160",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P6",
+    "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
+    "source_path": "runs/2026-11-23_P6/proposals/P6.SingleFailureRobust.lean",
+    "statement_id": "P6.SingleFailureRobust",
+    "task": "P6-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-025",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P6.SingleFailureRobust proposed by runs/2026-11-23_P6"
+}

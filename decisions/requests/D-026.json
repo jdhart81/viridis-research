@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-23_P6`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-23_P6) (task P6-T001) proposes a new formal target `P6.SerialParallel`.\n\n- File: [`runs/2026-11-23_P6/proposals/P6.SerialParallel.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.SerialParallel.lean), sha256 `a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3`\n- Rationale: [`runs/2026-11-23_P6/proposals/P6.SerialParallel.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.SerialParallel.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P6 · Serial and parallel route reliability\n\nModel: a route is a chain of corridor links indexed by a finite set `s`; link `i` is crossed with\nprobability `p i ∈ [0, 1]`. The serial success probability of the route is the product\n`serial s p = ∏ i ∈ s, p i`. Given alternative routes indexed by `s` with success probabilities\n`q i ∈ [0, 1]`, the expression `parallel s q = 1 - ∏ i ∈ s, (1 - q i)` is the probability that at\nleast one succeeds *if the routes fail independently*. Independence is a field assumption and is\nnot part of the mathematics below: `parallel` is just a real-valued formula.\n\n`Statement`:\n1. serial: if every `p i ∈ [0, 1]` for `i ∈ s`, then `serial s p ≤ p j` for every `j ∈ s`\n   (a route is no stronger than its weakest link);\n2. parallel: if every `q i ∈ [0, 1]` for `i ∈ s`, then `q j ≤ parallel s q ≤ 1` for every `j ∈ s`\n   (alternatives are never worse than the best single route);\n3. two routes, equality: for `p, q ∈ [0, 1]`,\n   `1 - (1 - p) * (1 - q) = max p q ↔ (min p q = 0 ∨ max p q = 1)`.\n\nPart 1 is the same inequality as part 3 of `P3.CascadedRecovery` with `p i = 1 - r i`; it is\nrestated here self-contained. No claim is made about any real link probability.\n-/\n\nnamespace ViridisStatements.P6.SerialParallel\n\n/-- Success probability of a route whose links have crossing probabilities `p`. -/\ndef serial {ι : Type} (s : Finset ι) (p : ι → ℝ) : ℝ := ∏ i ∈ s, p i\n\n/-- Probability that at least one of the routes `s` succeeds, under independence. -/\ndef parallel {ι : Type} (s : Finset ι) (q : ι → ℝ) : ℝ := 1 - ∏ i ∈ s, (1 - q i)\n\n/-- **Proposed sealed target `P6.SerialParallel`.** -/\ndef Statement : Prop :=\n  (∀ (ι : Type) (s : Finset ι) (p : ι → ℝ), (∀ i ∈ s, 0 ≤ p i ∧ p i ≤ 1) →\n      ∀ j ∈ s, serial s p ≤ p j) ∧\n  (∀ (ι : Type) (s : Finset ι) (q : ι → ℝ), (∀ i ∈ s, 0 ≤ q i ∧ q i ≤ 1) →\n      ∀ j ∈ s, q j ≤ parallel s q ∧ parallel s q ≤ 1) ∧\n  (∀ p q : ℝ, 0 ≤ p → p ≤ 1 → 0 ≤ q → q ≤ 1 →\n      (1 - (1 - p) * (1 - q) = max p q ↔ (min p q = 0 ∨ max p q = 1)))\n\n/-! ## Sanity checks -/\n\n/-- Two links of `1/2` in series: the route succeeds with probability `1/4 < 1/2`. -/\nexample : serial Finset.univ ![(1/2 : ℝ), 1/2] = 1/4 ∧\n    serial Finset.univ ![(1/2 : ℝ), 1/2] < 1/2 := by\n  norm_num [serial, Fin.prod_univ_two]\n\n/-- Two independent routes of `1/2` in parallel: at least one succeeds with probability\n`3/4 > 1/2`, strictly above the best route. -/\nexample : parallel Finset.univ ![(1/2 : ℝ), 1/2] = 3/4 ∧\n    1/2 < parallel Finset.univ ![(1/2 : ℝ), 1/2] := by\n  norm_num [parallel, Fin.prod_univ_two]\n\n/-- Part 3 at `p = q = 1/2`: the left side is `3/4`, not `max p q = 1/2`, and indeed neither\n`min p q = 0` nor `max p q = 1`. -/\nexample : 1 - (1 - (1/2 : ℝ)) * (1 - 1/2) ≠ max (1/2 : ℝ) (1/2) ∧\n    ¬ (min (1/2 : ℝ) (1/2) = 0 ∨ max (1/2 : ℝ) (1/2) = 1) := by\n  norm_num\n\n/-- Part 3 equality cases: a dead alternative (`q = 0`) or a sure route (`p = 1`). -/\nexample : 1 - (1 - (1/2 : ℝ)) * (1 - 0) = max (1/2 : ℝ) 0 ∧\n    1 - (1 - (1 : ℝ)) * (1 - 1/2) = max (1 : ℝ) (1/2) := by\n  norm_num\n\n/-- Negative control for part 1: with an out-of-range \"probability\" `2`, links `2` and `1/2`\nhave product `1 > 1/2`, so the bound `p i ≤ 1` cannot be dropped. -/\nexample : 1/2 < serial Finset.univ ![(2 : ℝ), 1/2] := by\n  norm_num [serial, Fin.prod_univ_two]\n\nend ViridisStatements.P6.SerialParallel\n\n```\n</details>",
+  "created_at": "2026-11-23T01:23:32Z",
+  "created_by": "verify:45087714160",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P6",
+    "sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
+    "source_path": "runs/2026-11-23_P6/proposals/P6.SerialParallel.lean",
+    "statement_id": "P6.SerialParallel",
+    "task": "P6-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-026",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P6.SerialParallel proposed by runs/2026-11-23_P6"
+}

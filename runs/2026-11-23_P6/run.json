@@ -1,0 +1,14 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P6",
+  "task": "P6-T001",
+  "title": "The formal core of a corridor-network kernel: minimal corridors, single-failure redundancy and route reliability (statement proposals)",
+  "abstract": "Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped corridor networks between habitat patches. A dendritic network is the cheapest way to connect patches, and for exactly that reason it has no spare corridor. We propose three Lean 4 statements over Mathlib that make this precise. P6.MinimalNetwork: a connected network on n patches has at least n-1 corridors, exactly n-1 iff it is a tree, and every corridor of a tree is a bridge. P6.SingleFailureRobust: a network on n >= 2 patches that survives the loss of any one corridor has at least n corridors, a bound attained by the triangle and the 4-cycle. P6.SerialParallel: a chained route is no more reliable than its weakest link; alternative routes (under independence) are no less reliable than the best one; for two routes the gain is zero exactly when the worse is 0 or the better is 1. Each module compiles under the pinned toolchain and contains witnesses and negative controls checked by decide or norm_num. The results are classical. The contribution is a precise, self-contained formal target with every hypothesis listed. No proof is claimed.",
+  "claims": [],
+  "proposals": [
+    {"statement_id": "P6.MinimalNetwork", "file": "proposals/P6.MinimalNetwork.lean", "rationale_file": "proposals/P6.MinimalNetwork.md"},
+    {"statement_id": "P6.SingleFailureRobust", "file": "proposals/P6.SingleFailureRobust.lean", "rationale_file": "proposals/P6.SingleFailureRobust.md"},
+    {"statement_id": "P6.SerialParallel", "file": "proposals/P6.SerialParallel.lean", "rationale_file": "proposals/P6.SerialParallel.md"}
+  ],
+  "next_steps": "Once Justin seals the statements (issue #1), prove them in P6-T002..T004. Proof routes: MinimalNetwork via SimpleGraph.Connected.card_vert_le_card_edgeSet_add_one, isTree_iff_connected_and_card (convert Nat.card to Fintype.card / edgeFinset.card with Nat.card_eq_fintype_card and SimpleGraph.edgeFinset_card), and isAcyclic_iff_forall_edge_isBridge + isBridge_iff (simp [deleteEdges] matches G \\ fromEdgeSet). SingleFailureRobust: by contradiction; m+1=n gives a tree; Fintype.exists_pair_of_one_lt_card plus a walk gives an edge, which is a bridge. SerialParallel: Finset.mul_prod_erase, prod_le_one, prod_nonneg, nlinarith; part 3 by le_total and mul_eq_zero. Scratch proofs along these lines compiled in this session. Possible follow-up statement: connected graphs with m = n that survive single failures are exactly the cycles."
+}

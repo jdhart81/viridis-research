@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-23_P6`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-23_P6) (task P6-T001) proposes a new formal target `P6.MinimalNetwork`.\n\n- File: [`runs/2026-11-23_P6/proposals/P6.MinimalNetwork.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.MinimalNetwork.lean), sha256 `972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b`\n- Rationale: [`runs/2026-11-23_P6/proposals/P6.MinimalNetwork.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-23_P6/proposals/P6.MinimalNetwork.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P6 · Minimal corridor networks: trees are the cheapest connected networks\n\nModel: habitat patches are the vertices of a finite type `V`; corridors are the edges of a simple\ngraph `G : SimpleGraph V`. There is no geometry, width, quality or cost: only incidence.\n`patchCount V = Fintype.card V` is the number of patches `n`, and `corridorCount G =\nG.edgeFinset.card` is the number of corridors `m`. Removing corridor `e` is `G.deleteEdges {e}`.\n\n`Statement` (for every finite `V` with decidable equality and every `G` with decidable adjacency):\n1. lower bound: if `G` is connected then `n ≤ m + 1`;\n2. characterisation: `G` is connected with `m + 1 = n` if and only if `G` is a tree;\n3. no spare corridor: if `G` is a tree, removing any one of its corridors disconnects it.\n\nThis is classical graph theory, not a new theorem. No claim is made about any real corridor,\nspecies movement or landscape.\n-/\n\nnamespace ViridisStatements.P6.MinimalNetwork\n\n/-- Number of habitat patches `n`. -/\ndef patchCount (V : Type) [Fintype V] : ℕ := Fintype.card V\n\n/-- Number of corridors `m` of a corridor network `G`. -/\ndef corridorCount {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V)\n    [DecidableRel G.Adj] : ℕ :=\n  G.edgeFinset.card\n\n/-- **Proposed sealed target `P6.MinimalNetwork`.** -/\ndef Statement : Prop :=\n  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],\n    (G.Connected → patchCount V ≤ corridorCount G + 1) ∧\n    (G.Connected ∧ corridorCount G + 1 = patchCount V ↔ G.IsTree) ∧\n    (G.IsTree → ∀ e ∈ G.edgeSet, ¬ (G.deleteEdges {e}).Connected)\n\n/-! ## Sanity checks -/\n\n/-- The path on three patches: corridors `0–1` and `1–2`. -/\ndef path3 : SimpleGraph (Fin 3) where\n  Adj i j := (i.val + 1 = j.val) ∨ (j.val + 1 = i.val)\n  symm := fun _ _ h => h.symm\n  loopless := ⟨fun i h => by omega⟩\n\ninstance : DecidableRel path3.Adj := fun i j =>\n  inferInstanceAs (Decidable ((i.val + 1 = j.val) ∨ (j.val + 1 = i.val)))\n\n/-- The path on `Fin 3` is connected. -/\nexample : path3.Connected := by decide\n\n/-- The path on `Fin 3` has `m = 2 = n - 1`, i.e. `m + 1 = n`. -/\nexample : corridorCount path3 = 2 ∧ corridorCount path3 + 1 = patchCount (Fin 3) := by decide\n\n/-- Removing corridor `0–1` from the path disconnects it. -/\nexample : ¬ (path3.deleteEdges {s(0, 1)}).Connected := by decide\n\n/-- Negative control for part 2: the triangle `0–1, 1–2, 0–2` on `Fin 4` with vertex `3`\nisolated. -/\ndef triangleAndIsolated : SimpleGraph (Fin 4) where\n  Adj i j := i ≠ j ∧ i.val < 3 ∧ j.val < 3\n  symm := fun _ _ h => ⟨h.1.symm, h.2.2, h.2.1⟩\n  loopless := ⟨fun _ h => h.1 rfl⟩\n\ninstance : DecidableRel triangleAndIsolated.Adj := fun i j =>\n  inferInstanceAs (Decidable (i ≠ j ∧ i.val < 3 ∧ j.val < 3))\n\n/-- It has `m + 1 = n` (`3 + 1 = 4`) but is not connected, so the count alone does not make a\ntree: connectivity in part 2 cannot be dropped. -/\nexample : corridorCount triangleAndIsolated + 1 = patchCount (Fin 4) ∧\n    ¬ triangleAndIsolated.Connected := by decide\n\nend ViridisStatements.P6.MinimalNetwork\n\n```\n</details>",
+  "created_at": "2026-11-23T01:23:32Z",
+  "created_by": "verify:45087714160",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P6",
+    "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+    "source_path": "runs/2026-11-23_P6/proposals/P6.MinimalNetwork.lean",
+    "statement_id": "P6.MinimalNetwork",
+    "task": "P6-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-024",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P6.MinimalNetwork proposed by runs/2026-11-23_P6"
+}
