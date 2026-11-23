@@ -28,7 +28,9 @@ Rules
 - E6  Caution on error. Anything missing, malformed or unreadable gives the weaker value with the
       reason. Nothing here raises, and nothing here can fail a night.
 - E7  Not the agent's to write. ``statements/premises.json`` and ``preregistrations/`` are outside the
-      artifact and outside ``gitio.WRITE_ROOTS``; they change only by a pull request the owner merges.
+      artifact. A plan changes only by a pull request the owner merges. The premise review changes by
+      such a pull request or by the verify job under I25 (``engine/premise_review.py``), which can only
+      add caution to an entry and needs two independent runs before it records an empty list.
 - E8  A premise can point at the empirical claims that test it (``tested_by``). The index resolves each
       pointer to that claim's empirical track; a contradicted premise is flagged, the theorem's formal
       track is not changed.
@@ -381,3 +383,29 @@ def resolve_premises(listed: Any, claim_tracks: dict[tuple[str, str], str]) -> t
         contradicted = contradicted or state == "CONTRADICTED"
         out.append({"id": p["id"], "kind": p["kind"], "text": p["text"], "tested_by": refs, "evidence": state})
     return out, contradicted, problems
+
+
+def frontier(statement_epistemic: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """What the record would learn most from next, read off the statuses. Pure and deterministic.
+
+    ``premises``: every premise that is not SUPPORTED, grouped by ID across statements and ordered by how
+    many proved statements rest on it. ``unreviewed``: proved statements whose premises nobody has listed.
+    ``unproved``: sealed statements with no proof.
+    """
+    grouped: dict[str, dict[str, Any]] = {}
+    unreviewed, unproved = [], []
+    for sid, e in sorted(statement_epistemic.items()):
+        if e.get("formal") == "UNPROVED":
+            unproved.append(sid)
+        elif e.get("premises") == UNCLASSIFIED:
+            unreviewed.append(sid)
+        for p in e["premises"] if isinstance(e.get("premises"), list) else []:
+            if p.get("evidence") == "SUPPORTED":
+                continue
+            g = grouped.setdefault(p["id"], {"id": p["id"], "kind": p["kind"], "text": p["text"],
+                                             "evidence": p.get("evidence", "UNTESTED"), "statements": []})
+            g["statements"].append(sid)
+            if p.get("evidence") == "CONTRADICTED":
+                g["evidence"] = "CONTRADICTED"
+    ranked = sorted(grouped.values(), key=lambda g: (-len(g["statements"]), g["id"]))
+    return {"premises": ranked, "unreviewed": unreviewed, "unproved": unproved}

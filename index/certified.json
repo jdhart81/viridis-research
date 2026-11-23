@@ -1,11 +1,269 @@
 {
- "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
+ "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
   "merged_runs": 24,
   "problems": 0,
   "proven_statements": 14,
   "sealed_statements": 16,
   "tested_claims": 1
+ },
+ "epistemic": {
+  "counts": {
+   "claims": {
+    "CONJECTURED": 16,
+    "UNRESOLVED": 6
+   },
+   "statements": {
+    "CONDITIONALLY_PROVED": 5,
+    "FORMALLY_PROVED": 9,
+    "UNRESOLVED": 2
+   }
+  },
+  "frontier": {
+   "premises": [
+    {
+     "evidence": "UNTESTED",
+     "id": "M-Nucleation",
+     "kind": "modelling",
+     "statements": [
+      "P2.Afforestation",
+      "P2.Restoration"
+     ],
+     "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-HasteNeglect",
+     "kind": "modelling",
+     "statements": [
+      "P2.Tempo"
+     ],
+     "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n."
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-QuadraticStewards",
+     "kind": "modelling",
+     "statements": [
+      "P2.Harmonization"
+     ],
+     "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort."
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-SeedYield",
+     "kind": "modelling",
+     "statements": [
+      "P2.Afforestation"
+     ],
+     "text": "Established canopy per seed equals C/n*, with the canopy per established nucleus C constant over the range of drive and edge hostility compared."
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-TwoPoolLinear",
+     "kind": "modelling",
+     "statements": [
+      "P2.CarbonContinuity"
+     ],
+     "text": "Across repeated disturbance-recovery cycles, living and durable carbon follow the linear map L' = a*L + r*D, D' = p*L + d*D with coefficients that are the same in every cycle, a and d in [0,1) and r, p positive."
+    }
+   ],
+   "unproved": [
+    "P2.DecisionInformationCapacity",
+    "P2.MultiRingAlignment"
+   ],
+   "unreviewed": []
+  },
+  "plan_verdicts": {},
+  "registered_plans": [],
+  "schema": "viridis-epistemic-v1",
+  "statements": {
+   "P1.BitQuad": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P1.Bridge": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P1.Insertion": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P2.Afforestation": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-Nucleation",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+     },
+     {
+      "evidence": "UNTESTED",
+      "id": "M-SeedYield",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "Established canopy per seed equals C/n*, with the canopy per established nucleus C constant over the range of drive and edge hostility compared."
+     }
+    ],
+    "reason": "proved from 2 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.CarbonContinuity": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-TwoPoolLinear",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "Across repeated disturbance-recovery cycles, living and durable carbon follow the linear map L' = a*L + r*D, D' = p*L + d*D with coefficients that are the same in every cycle, a and d in [0,1) and r, p positive."
+     }
+    ],
+    "reason": "proved from 1 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.DecisionInformationCapacity": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
+   },
+   "P2.Harmonization": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-QuadraticStewards",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort."
+     }
+    ],
+    "reason": "proved from 1 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.MultiRingAlignment": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
+   },
+   "P2.Restoration": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-Nucleation",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+     }
+    ],
+    "reason": "proved from 1 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.Tempo": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-HasteNeglect",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n."
+     }
+    ],
+    "reason": "proved from 1 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P3.CascadedRecovery": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P3.CyclicSymbiosis": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P3.LoopMassBalance": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P3.RecoveryWorkFloor": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P5.CompensationUnderCeiling": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   },
+   "P5.UnrestrictedBoundFalse": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
+   }
+  },
+  "tested_claims": [
+   {
+    "claim_id": "C1",
+    "date": "2026-11-12",
+    "empirical": "REPRODUCED",
+    "preregistration": null,
+    "run_dir": "runs/2026-11-12_P4",
+    "status": "UNRESOLVED"
+   }
+  ]
  },
  "problems": [],
  "projects": {

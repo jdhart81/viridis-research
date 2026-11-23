@@ -1,0 +1,158 @@
+{
+  "schema": "viridis-premises-v1",
+  "statements": {
+    "P1.BitQuad": {
+      "premises": [],
+      "rationale": "Combinatorics of a finite pixel set: 4*chi equals a count of 2x2 windows. The module models no real system.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "cd3cdeba48f67f9545fb6945c87037893aa98b018922d3d0b7220cc389c98e23",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P1.Bridge": {
+      "premises": [],
+      "rationale": "Enclosed 4-components of the complement equal C8 - chi on every finite raster. Pure combinatorial topology; whether raster compartments predict fire behaviour is a separate empirical claim (project P4).",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "66038622a8193e494604720c398024984bc7346b3101cf7a36e65276cda6171d",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P1.Insertion": {
+      "premises": [],
+      "rationale": "Invariance of enclosed - C8 + chi under adding one pixel to a finite raster. Pure combinatorial topology.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "800bd9b9fec5033192b40a9d02dae8abf5c15195b3e2b6f2a1c438a7ab08c734",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P2.Afforestation": {
+      "premises": [
+        {
+          "id": "M-Nucleation",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+        },
+        {
+          "id": "M-SeedYield",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "Established canopy per seed equals C/n*, with the canopy per established nucleus C constant over the range of drive and edge hostility compared."
+        }
+      ],
+      "rationale": "The module backs a live kernel that ranks seeding plans. The cubic law is algebra on the nucleation model's n*; part 2 is the Cauchy-Schwarz bound and assumes nothing. The efficiency definition C/n* is a modelling choice.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "2fc1cbb05d7780f266f9da9c00941ca1b7d8ebc703a11a25fc9bb23237a59436",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P2.CarbonContinuity": {
+      "premises": [
+        {
+          "id": "M-TwoPoolLinear",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "Across repeated disturbance-recovery cycles, living and durable carbon follow the linear map L' = a*L + r*D, D' = p*L + d*D with coefficients that are the same in every cycle, a and d in [0,1) and r, p positive."
+        }
+      ],
+      "rationale": "The module is the formal backing of a live decision kernel for real carbon portfolios. The threshold is proved for a linear, time-invariant two-pool model; that real pools follow it is assumed.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "a5a6e8c63205b865da0df0c302f1926b48d1874ce1310053da6c1ae3104ffded",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P2.Harmonization": {
+      "premises": [
+        {
+          "id": "M-QuadraticStewards",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort."
+        }
+      ],
+      "rationale": "The module backs a live coordination kernel. Clearing and optimality are proved for quadratic costs and price-taking best responses; that real stewards have such costs and respond that way is assumed.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "48934ecb301f858b8332eea15194ff42a119fd7c1c7a7402089467a4994b3dd7",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P2.Restoration": {
+      "premises": [
+        {
+          "id": "M-Nucleation",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+        }
+      ],
+      "rationale": "The module backs a live go/no-go kernel for planted clusters. The critical nucleus is proved for the classical nucleation free energy; that planted clusters follow it is assumed.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "fd40b113c06beaed7940b2bf84d931a8b9179dcabaf3c2d27f7300dc27ccff18",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P2.Tempo": {
+      "premises": [
+        {
+          "id": "M-HasteNeglect",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n."
+        }
+      ],
+      "rationale": "The module itself calls the cost form an assumption about a stewardship programme, not a result, and it backs a live cadence kernel.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "a966ef3b1e3bb10cb9336686d71ec5c8b85c442fc1a21e6d3c2a13c7b6622179",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P3.CascadedRecovery": {
+      "premises": [],
+      "rationale": "Bounds on a product of fractions in [0,1], where each stage's fraction is defined as the share of what reaches it. The module says it makes no claim about any real recovery rate or material.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "a4e3f3c269b81a1d5dacde1535f0112654d5d4c5203e9a01a444bc4edcfbb115",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P3.CyclicSymbiosis": {
+      "premises": [],
+      "rationale": "An equivalence between a product inequality and the existence of a positive flow, for the net-benefit function the statement defines. The module says it makes no claim about any real cost, value, partner or material.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "a6825700fb4c21d12ba330c739d321dd105da3b21c394338cda11ef5a67667c4",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P3.LoopMassBalance": {
+      "premises": [],
+      "rationale": "Arithmetic of a recurrence the statement itself defines. The module says it fixes the arithmetic of the model only and makes no claim about any real rate, demand or material.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "f00634594133f7edfb49f21bf30203d259cc8dfa7e62a40326bff1da1ea31ac7",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P3.RecoveryWorkFloor": {
+      "premises": [],
+      "rationale": "A bound valid for every supply and every efficiency in [0, emax]; useful work is defined as efficiency times supply. The module says it makes no claim about any real efficiency or recovered supply.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "5f5a53efa57459cfd1bd276db7c9ceb96886c8d3f54a66b87b907311f7a7252c",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P5.CompensationUnderCeiling": {
+      "premises": [],
+      "rationale": "Algebra of cap = P*D/C that corrects a mis-named theorem. The module says it says nothing about the Intelligence Bound as a physical conjecture.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "ff09ca9eb882869dcbff84346866ae7b501114797ce2a5f97865260552ab763b",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P5.UnrestrictedBoundFalse": {
+      "premises": [],
+      "rationale": "A refutation of one exact formal text by a counterexample. It concerns that text, not any physical system.",
+      "reviewed_by": "policy",
+      "runs": [],
+      "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
+      "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    }
+  }
+}
