@@ -17,6 +17,10 @@ Rules
       becomes a status.
 - C4  Building never raises into a commit: a failed refresh leaves the previous index in place.
 - C5  The output is deterministic: sorted keys, sorted lists, no clock.
+- C6  Epistemic status (I24, ``engine/epistemic.py``) is derived here from the record as it stands: the
+      formal track from ``statements/premises.json``, the empirical track from each certification's
+      registered verdict, kept only while its plan is still registered with the same hash. It lives
+      under the one new key ``epistemic``; every other key keeps its meaning and shape.
 """
 from __future__ import annotations
 
@@ -26,6 +30,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from . import epistemic
 from .util import RECORD_ROOT, log
 
 INDEX_REL = "index/certified.json"
@@ -34,7 +39,12 @@ BOUNDARY = ("Derived from the record at the commit that holds this file. PROVEN:
             "in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its "
             "ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by "
             "hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the "
-            "conclusion. Everything else in the record is ASSUMED or CONJECTURE.")
+            "conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given "
+            "beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed "
+            "list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is "
+            "EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered "
+            "before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. "
+            "A proof never raises the empirical track and a test never raises the formal one.")
 
 
 def _read(path: Path) -> Any:
@@ -87,6 +97,14 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
         except (OSError, ValueError, AttributeError, TypeError):
             problems.append(f"releases/{rel.name}: unreadable")
 
+    premises, premise_problems = epistemic.load_premises(root)
+    plans, plan_problems = epistemic.load_plans(root)
+    problems += premise_problems + plan_problems
+    claim_tracks: dict[tuple[str, str], str] = {}      # (run_dir, claim_id) -> empirical track, for E8
+    claim_status: dict[str, int] = {}                  # status -> count, empirical and conjecture claims
+    plan_verdicts: dict[str, str] = {}                 # plan ID -> run_dir of its verdict of record (E9)
+    tested_status: list[dict[str, Any]] = []           # one entry per TESTED claim, beside ``tested_claims``
+
     statements: dict[str, dict[str, Any]] = {}
     for sid, entry in sorted(registry.items()):
         if not isinstance(entry, dict) or not isinstance(entry.get("sha256"), str):
@@ -125,6 +143,19 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
                 problems.append(f"{run_dir}: label {cid} malformed")
                 continue
             counts[lab["label"]] = counts.get(lab["label"], 0) + 1
+            track, registration, why = epistemic.empirical_from_certification(lab, plans, root)
+            if registration is not None:                     # E9: the earliest run holds the plan's verdict of record
+                first = plan_verdicts.setdefault(registration["plan"], run_dir)
+                if first != run_dir:
+                    track, registration = "REPRODUCED", None
+                    why = f"plan {lab['epistemic']['preregistration']['plan']} already has its verdict of record in {first}"
+            if why:
+                problems.append(f"{run_dir}: {cid} keeps no registered verdict ({why})")
+            if lab.get("kind") == "empirical":
+                claim_tracks[(run_dir, cid)] = track
+            if lab.get("kind") != "formal":
+                status = epistemic.status_of(str(lab.get("kind")), "NOT_APPLICABLE", track)
+                claim_status[status] = claim_status.get(status, 0) + 1
             if lab["label"] == "PROVEN":
                 sid = lab.get("statement_id")
                 if sid not in statements:
@@ -141,6 +172,9 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
                 tested.append({"run_dir": run_dir, "date": date, "project": o.get("project"), "task": o.get("task"),
                                "claim_id": cid, "text": _text(lab.get("text")), "entry": lab.get("entry"),
                                "pinned_inputs": lab.get("inputs"), "doi": dois.get(run_key)})
+                tested_status.append({"run_dir": run_dir, "date": date, "claim_id": cid, "empirical": track,
+                                      "status": epistemic.status_of("empirical", "NOT_APPLICABLE", track),
+                                      "preregistration": registration})
         runs.append({"date": date, "project": o.get("project"), "task": o.get("task"), "run_dir": run_dir,
                      "title": _text(o.get("title"), 300), "labels": dict(sorted(counts.items())),
                      "paper_built": o.get("paper_built") is True, "manifest_sha256": o.get("manifest_sha256"),
@@ -156,10 +190,27 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
             problems.append(f"projects/{pj.parent.name}/project.json: unreadable")
 
     proven = sorted(s for s, v in statements.items() if v["status"] == "PROVEN")
+    statement_status: dict[str, int] = {}
+    statement_epistemic: dict[str, dict[str, Any]] = {}
+    for sid, st in statements.items():                                     # C6: the formal track, as reviewed now
+        formal, listed, reason = epistemic.formal_track(st["status"] == "PROVEN", sid, st["sha256"], premises)
+        listed, contradicted, found = epistemic.resolve_premises(listed, claim_tracks)
+        problems += [f"statement {sid}: {f}" for f in found]
+        status = epistemic.status_of("formal", formal, "NOT_APPLICABLE")
+        statement_epistemic[sid] = {"status": status, "formal": formal, "premises": listed,
+                                    "premise_contradicted": contradicted, "reason": reason}
+        statement_status[status] = statement_status.get(status, 0) + 1
+    for sid in sorted(set(premises) - set(statements)):
+        problems.append(f"{epistemic.PREMISES_REL}: {sid} is not a sealed statement")
     return {"schema": SCHEMA, "boundary": BOUNDARY,
             "counts": {"sealed_statements": len(statements), "proven_statements": len(proven),
                        "tested_claims": len(tested), "merged_runs": len(runs), "problems": len(problems)},
             "proven": proven, "statements": statements,
+            "epistemic": {"schema": epistemic.SCHEMA, "statements": statement_epistemic,
+                          "tested_claims": sorted(tested_status, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
+                          "counts": {"statements": dict(sorted(statement_status.items())),
+                                     "claims": dict(sorted(claim_status.items()))},
+                          "registered_plans": sorted(plans), "plan_verdicts": dict(sorted(plan_verdicts.items()))},
             "tested_claims": sorted(tested, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
             "runs": sorted(runs, key=lambda r: (str(r["date"]), r["run_dir"])),
             "projects": projects, "problems": sorted(problems)}

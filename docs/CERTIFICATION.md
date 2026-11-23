@@ -44,6 +44,77 @@ the data are seen, is what makes a TESTED result evidence; the engine does not
 yet enforce pre-registration. Input files are committed to the public record, so
 only data that may be redistributed belongs in `data/`.
 
+## Epistemic status: two tracks beside the label (`engine/epistemic.py`, I24)
+
+Lean can show that a theorem follows from its stated hypotheses. It cannot show that those
+hypotheses describe nature. So every claim also carries two tracks, set independently by the
+verifier, and one status derived from them. The label above is never changed by this.
+
+| Kind | Track value | Status | Requires |
+|---|---|---|---|
+| conjecture | n/a | `CONJECTURED` | nothing |
+| formal | `UNPROVED` | `UNRESOLVED` | the label is not PROVEN |
+| formal | `PROVED_CONDITIONAL` | `CONDITIONALLY_PROVED` | PROVEN, and the statement's premises are listed, or were never reviewed (`UNCLASSIFIED`) |
+| formal | `PROVED` | `FORMALLY_PROVED` | PROVEN, and the reviewed premise list is empty |
+| empirical | `UNTESTED` | `UNRESOLVED` | the label is not TESTED |
+| empirical | `REPRODUCED` | `UNRESOLVED` | TESTED, with no valid registered plan |
+| empirical | `INCONCLUSIVE` | `UNRESOLVED` | TESTED under a registered plan whose verdict is NOT_SUPPORTED or NOT_ESTIMABLE |
+| empirical | `SUPPORTED` | `EMPIRICALLY_SUPPORTED` | TESTED under a registered plan whose verdict is SUPPORTED |
+| empirical | `CONTRADICTED` | `EXPERIMENTALLY_FALSIFIED` | TESTED under a registered plan whose verdict is CONTRADICTED |
+
+| ID | Rule | Checked by (`tests/test_epistemic.py`) |
+|---|---|---|
+| E1 | Additive. A label entry only gains the key `epistemic`; the index only gains the key `epistemic`. | `test_formal_claims_are_annotated_without_touching_the_label`, `test_an_old_record_gains_only_the_new_key` |
+| E2 | Independent tracks. A proof never raises the empirical track and a test never raises the formal one. | `test_status_table_is_total_and_tracks_do_not_cross` |
+| E3 | The status is a pure function of kind and the two tracks (the table above). | `test_status_table_is_total_and_tracks_do_not_cross` |
+| E4 | Unconditional needs a review: `statements/premises.json` must hold an entry bound to the sealed hash with an empty `premises` list. | `test_unconditional_needs_an_empty_reviewed_premise_list` |
+| E5 | A verdict needs a plan fixed in advance (below). Any break in the chain leaves the claim REPRODUCED. | `test_a_registered_plan_gives_its_verdict`, `test_every_break_in_the_chain_falls_back_to_reproduced`, `test_a_fabricated_verdict_is_not_tested_so_it_is_untested` |
+| E6 | Caution on error: the weaker value with the reason; nothing raises and nothing fails a night. | `test_annotate_never_raises` |
+| E7 | The agent cannot write the premise review or a plan: both are outside the artifact and outside `gitio.WRITE_ROOTS`. | `test_the_agent_cannot_write_premises_or_plans` |
+| E8 | A premise can point at the empirical claims that test it; the index attaches each one's track and flags a contradicted premise. | `test_index_reports_both_tracks_and_links_premises_to_tests`, `test_index_reports_bad_premise_pointers_and_unknown_statements` |
+| E9 | One plan, one verdict: the earliest merged run under a plan holds its verdict of record; later runs under it stay REPRODUCED. | `test_one_plan_gives_one_verdict`, `test_index_drops_a_verdict_whose_plan_changed_or_left` |
+
+**The premise review** (`statements/premises.json`, schema `viridis-premises-v1`, changed only by a pull
+request Justin merges). One entry per sealed statement:
+
+```json
+{"schema": "viridis-premises-v1", "statements": {
+  "P1.BitQuad": {"sha256": "<sealed hash>", "premises": []},
+  "P0.Bound":   {"sha256": "<sealed hash>", "premises": [
+    {"id": "PL", "kind": "physical", "text": "Each erased bit dissipates at least kT ln 2 in this system.",
+     "tested_by": [{"run_dir": "runs/2027-01-10_P9", "claim_id": "C1"}]}]}}}
+```
+
+A premise is a hypothesis of the theorem that says something about the world (`physical`, `empirical`)
+or about how well a model fits it (`modelling`). An empty list says the statement is pure mathematics.
+No entry means nobody has looked, and the proof is reported as conditional.
+
+**A registered plan** (`preregistrations/registry.json`, schema `viridis-preregistrations-v1`, and the
+plan text at `preregistrations/<PLAN-ID>.md`, both changed only by a pull request Justin merges):
+
+```json
+{"schema": "viridis-preregistrations-v1", "plans": {
+  "P4-Recovery": {"path": "preregistrations/P4-Recovery.md", "sha256": "<hash of the plan text>",
+    "project": "P4", "registered_at": "2026-11-20", "hypothesis": "Burned plots recover more than controls.",
+    "entry": "code/effect.py", "code": {"code/effect.py": "<hash>"}, "data": {"data/predictors.csv": "<hash>"},
+    "verdict_file": "results/verdict.json", "verdict_key": "verdict"}}}
+```
+
+The claim names it with `"preregistration": "P4-Recovery"`. The verifier gives the plan's verdict only if
+the claim is TESTED, the plan text has the registered hash, the plan is for the run's project and was
+registered on an earlier date, the run's `code/` tree is exactly the frozen file set, every frozen input
+is present with its hash, the entry script is the plan's, and the verdict file was reproduced and holds
+`SUPPORTED`, `CONTRADICTED`, `NOT_SUPPORTED` or `NOT_ESTIMABLE` under the verdict key. The frozen code
+reaches the agent as task context files, to be copied into `out/code/` unchanged.
+
+**What these statuses do not mean.** `FORMALLY_PROVED` says the reviewed premise list is empty; it says
+nothing about novelty or importance. `EMPIRICALLY_SUPPORTED` says a plan registered in advance returned
+SUPPORTED on re-executed, pinned data. The engine cannot see whether the outcome data were unseen when the
+plan was registered (Justin attests that by merging the plan), where the data came from, or whether the
+effect is causal. `EXPERIMENTALLY_FALSIFIED` is the registered plan's CONTRADICTED verdict, which for an
+observational study is evidence against the hypothesis, not a controlled experiment. REPLICATED remains
+not enabled.
+
 ## What PROVEN does not mean
 
 PROVEN does not mean that the paper's prose is correct, that the result is

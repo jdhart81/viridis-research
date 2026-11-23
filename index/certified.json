@@ -1,11 +1,150 @@
 {
- "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE.",
+ "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
   "merged_runs": 23,
   "problems": 0,
   "proven_statements": 14,
   "sealed_statements": 16,
   "tested_claims": 1
+ },
+ "epistemic": {
+  "counts": {
+   "claims": {
+    "CONJECTURED": 16,
+    "UNRESOLVED": 6
+   },
+   "statements": {
+    "CONDITIONALLY_PROVED": 14,
+    "UNRESOLVED": 2
+   }
+  },
+  "plan_verdicts": {},
+  "registered_plans": [],
+  "schema": "viridis-epistemic-v1",
+  "statements": {
+   "P1.BitQuad": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P1.Bridge": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P1.Insertion": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.Afforestation": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.CarbonContinuity": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.DecisionInformationCapacity": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "status": "UNRESOLVED"
+   },
+   "P2.Harmonization": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.MultiRingAlignment": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "status": "UNRESOLVED"
+   },
+   "P2.Restoration": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P2.Tempo": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P3.CascadedRecovery": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P3.CyclicSymbiosis": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P3.LoopMassBalance": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P3.RecoveryWorkFloor": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P5.CompensationUnderCeiling": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   },
+   "P5.UnrestrictedBoundFalse": {
+    "formal": "PROVED_CONDITIONAL",
+    "premise_contradicted": false,
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
+    "status": "CONDITIONALLY_PROVED"
+   }
+  },
+  "tested_claims": [
+   {
+    "claim_id": "C1",
+    "date": "2026-11-12",
+    "empirical": "REPRODUCED",
+    "preregistration": null,
+    "run_dir": "runs/2026-11-12_P4",
+    "status": "UNRESOLVED"
+   }
+  ]
  },
  "problems": [],
  "projects": {

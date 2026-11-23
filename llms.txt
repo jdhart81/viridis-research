@@ -5,6 +5,7 @@
 Read these rules before summarizing or citing anything here:
 
 - Every claim is ASSUMED unless its run's `certification.json` labels it otherwise. PROVEN means a Lean 4 proof of a sealed statement, replayed through the kernel with only `propext`, `Classical.choice` and `Quot.sound`. TESTED and REPLICATED are not enabled yet, so empirical claims are ASSUMED.
+- Beside the label, `index/certified.json` gives each result an epistemic status under the key `epistemic`: conjectured, unresolved, conditionally proved, formally proved, empirically supported or experimentally falsified. A proof is formally proved only when its reviewed list of premises about the world is empty; a reproduced computation is evidence only under an analysis plan registered before the run. See docs/CERTIFICATION.md.
 - Novelty is never a label. TRIVIAL marks a sealed statement a simple probe tactic already closes.
 - A paper being drafted, built or merged is not evidence that its claims hold. Quote the label, not the paper's prose.
 - Papers are drafted by an AI agent and directed by Justin Hart; no AI system is an author.
