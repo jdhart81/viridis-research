@@ -28,9 +28,10 @@ Rules
 - E6  Caution on error. Anything missing, malformed or unreadable gives the weaker value with the
       reason. Nothing here raises, and nothing here can fail a night.
 - E7  Not the agent's to write. ``statements/premises.json`` and ``preregistrations/`` are outside the
-      artifact. A plan changes only by a pull request the owner merges. The premise review changes by
-      such a pull request or by the verify job under I25 (``engine/premise_review.py``), which can only
-      add caution to an entry and needs two independent runs before it records an empty list.
+      artifact. Each changes by a pull request the owner merges or by the verify job: the premise
+      review under I25 (``engine/premise_review.py``), which can only add caution to an entry and needs
+      two independent runs before it records an empty list; a plan under I26
+      (``engine/plan_registry.py``), which registers a new plan only and never rewrites one.
 - E8  A premise can point at the empirical claims that test it (``tested_by``). The index resolves each
       pointer to that claim's empirical track; a contradicted premise is flagged, the theorem's formal
       track is not changed.
@@ -184,6 +185,10 @@ def plan_problem(plan_id: Any, plans: dict[str, Any], root: Path) -> str | None:
               and isinstance(code, dict) and code and plan["entry"] in code
               and all(isinstance(k, str) and k.startswith("code/") and isinstance(v, str) and SHA.match(v)
                       for k, v in code.items())
+              and isinstance(plan.get("outcome_inputs", {}), dict)
+              and all(isinstance(k, str) and k.startswith("data/") and isinstance(v, str) and v.startswith("https://")
+                      for k, v in plan.get("outcome_inputs", {}).items())
+              and isinstance(plan.get("tests", []), list) and all(isinstance(t, str) for t in plan.get("tests", []))
               and isinstance(plan.get("data", {}), dict)
               and all(isinstance(k, str) and k.startswith("data/") and isinstance(v, str) and SHA.match(v)
                       for k, v in plan.get("data", {}).items()))
@@ -242,6 +247,26 @@ def _inputs_match(out: Path, frozen: dict[str, str]) -> bool:
     return True
 
 
+def _outcome_inputs_match(out: Path, plan: dict[str, Any]) -> bool:
+    """AR6: data/ holds exactly the frozen inputs and the declared outcome inputs, each pinned to its declared URL."""
+    top = out / "data"
+    present: set[str] = set()
+    if top.is_dir() and not top.is_symlink():
+        for path in top.rglob("*"):
+            if path.is_symlink() or not (path.is_dir() or path.is_file()):
+                return False
+            if path.is_file():
+                present.add(path.relative_to(out).as_posix())
+    declared = plan["outcome_inputs"]
+    if present != set(plan.get("data", {})) | set(declared):
+        return False
+    try:
+        pins = {i["path"]: i["url"] for i in _read(out / "data_pins.json")["inputs"]}
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+    return all(pins.get(path) == url for path, url in declared.items())
+
+
 def _verdict(out: Path, rel: str, key: str) -> str | None:
     path = out / rel
     if path.is_symlink() or not path.is_file() or path.stat().st_size > MAX_VERDICT_BYTES:
@@ -278,6 +303,9 @@ def empirical_track(claim: dict[str, Any], tested: bool, rerun: Any, plans: dict
             why = f"the run's code/ tree is not the file set frozen by plan {plan_id}"
         elif not _inputs_match(out, plan.get("data", {})):
             why = f"an input frozen by plan {plan_id} is missing or has a different hash"
+        elif "outcome_inputs" in plan and not _outcome_inputs_match(out, plan):
+            why = (f"the run's data/ is not exactly plan {plan_id}'s frozen inputs plus its declared outcome inputs, "
+                   "each pinned to its declared URL")
         elif plan["verdict_file"] not in reproduced:
             why = f"the plan's verdict file {plan['verdict_file']} is not among the reproduced result files"
         else:
@@ -289,6 +317,7 @@ def empirical_track(claim: dict[str, Any], tested: bool, rerun: Any, plans: dict
                           "verdict": verdict, "verdict_file": plan["verdict_file"]}
                 if _text(plan.get("hypothesis")):
                     record["hypothesis"] = _text(plan["hypothesis"])
+                record["registered_by"] = "policy" if plan.get("registered_by") == "policy" else "owner"
                 return (VERDICTS[verdict], record,
                         f"plan {plan_id}, registered {plan['registered_at']}, returned {verdict} on re-executed, pinned data")
     return "REPRODUCED", None, f"the computation reproduces; no registered verdict ({why})"
@@ -360,24 +389,32 @@ def empirical_from_certification(lab: dict[str, Any], plans: dict[str, Any], roo
     if why is not None:
         return "REPRODUCED", None, why
     kept = {k: reg.get(k) for k in ("plan", "registered_at", "sha256", "verdict", "verdict_file")}
+    kept["registered_by"] = "policy" if plans[reg["plan"]].get("registered_by") == "policy" else "owner"
     if _text(reg.get("hypothesis")):
         kept["hypothesis"] = _text(reg["hypothesis"])
     return value, kept, None
 
 
-def resolve_premises(listed: Any, claim_tracks: dict[tuple[str, str], str]) -> tuple[Any, bool, list[str]]:
-    """E8. Attach each ``tested_by`` pointer's empirical track. Returns (premises, any contradicted, problems)."""
+def resolve_premises(listed: Any, claim_tracks: dict[tuple[str, str], str],
+                     plan_refs: dict[str, list[dict[str, Any]]] | None = None) -> tuple[Any, bool, list[str]]:
+    """E8. Attach the empirical track of every test of each premise. Returns (premises, any contradicted, problems).
+
+    A test is either a ``tested_by`` pointer in an owner-merged review, or the verdict of record of a plan
+    that named the premise under ``tests`` when it was registered (``plan_refs``, by premise ID).
+    """
     if not isinstance(listed, list):
         return listed, False, []
     out, contradicted, problems = [], False, []
     for p in listed:
-        refs = []
+        refs = [dict(r) for r in (plan_refs or {}).get(p["id"], [])]
         for r in p.get("tested_by", []):
             track = claim_tracks.get((r["run_dir"], r["claim_id"]))
             if track is None:
                 problems.append(f"premise {p['id']}: {r['run_dir']} {r['claim_id']} is not an empirical claim of a merged run")
                 continue
-            refs.append({**r, "empirical": track})
+            if not any(x["run_dir"] == r["run_dir"] and x["claim_id"] == r["claim_id"] for x in refs):
+                refs.append({**r, "empirical": track})
+        refs.sort(key=lambda r: (r["run_dir"], r["claim_id"]))
         tracks = {r["empirical"] for r in refs}
         state = ("CONTRADICTED" if "CONTRADICTED" in tracks else "SUPPORTED" if "SUPPORTED" in tracks else "UNTESTED")
         contradicted = contradicted or state == "CONTRADICTED"
@@ -385,11 +422,13 @@ def resolve_premises(listed: Any, claim_tracks: dict[tuple[str, str], str]) -> t
     return out, contradicted, problems
 
 
-def frontier(statement_epistemic: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def frontier(statement_epistemic: dict[str, dict[str, Any]],
+             open_plans: dict[str, list[str]] | None = None) -> dict[str, Any]:
     """What the record would learn most from next, read off the statuses. Pure and deterministic.
 
     ``premises``: every premise that is not SUPPORTED, grouped by ID across statements and ordered by how
-    many proved statements rest on it. ``unreviewed``: proved statements whose premises nobody has listed.
+    many proved statements rest on it; ``verdicts`` counts every test of it so far, ``open_plans`` names
+    registered plans that name it and still await their run. ``unreviewed``: proved statements whose premises nobody has listed.
     ``unproved``: sealed statements with no proof.
     """
     grouped: dict[str, dict[str, Any]] = {}
@@ -403,8 +442,12 @@ def frontier(statement_epistemic: dict[str, dict[str, Any]]) -> dict[str, Any]:
             if p.get("evidence") == "SUPPORTED":
                 continue
             g = grouped.setdefault(p["id"], {"id": p["id"], "kind": p["kind"], "text": p["text"],
-                                             "evidence": p.get("evidence", "UNTESTED"), "statements": []})
+                                             "evidence": p.get("evidence", "UNTESTED"), "statements": [],
+                                             "verdicts": {}, "open_plans": sorted((open_plans or {}).get(p["id"], []))})
             g["statements"].append(sid)
+            if not g["verdicts"]:
+                for r in p.get("tested_by", []):
+                    g["verdicts"][r["empirical"]] = g["verdicts"].get(r["empirical"], 0) + 1
             if p.get("evidence") == "CONTRADICTED":
                 g["evidence"] = "CONTRADICTED"
     ranked = sorted(grouped.values(), key=lambda g: (-len(g["statements"]), g["id"]))
