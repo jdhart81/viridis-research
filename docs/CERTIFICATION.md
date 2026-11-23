@@ -70,7 +70,7 @@ verifier, and one status derived from them. The label above is never changed by 
 | E4 | Unconditional needs a review: `statements/premises.json` must hold an entry bound to the sealed hash with an empty `premises` list. | `test_unconditional_needs_an_empty_reviewed_premise_list` |
 | E5 | A verdict needs a plan fixed in advance (below). Any break in the chain leaves the claim REPRODUCED. | `test_a_registered_plan_gives_its_verdict`, `test_every_break_in_the_chain_falls_back_to_reproduced`, `test_a_fabricated_verdict_is_not_tested_so_it_is_untested` |
 | E6 | Caution on error: the weaker value with the reason; nothing raises and nothing fails a night. | `test_annotate_never_raises` |
-| E7 | The agent cannot write the premise review or a plan: both are outside the artifact. A plan has no automated writer. The review is written by a pull request Justin merges, or by the verify job under PV1 to PV9 below. | `test_the_agent_cannot_write_premises_or_plans`, `test_the_agent_cannot_ship_the_file_itself` |
+| E7 | The agent cannot write the premise review or a plan: both are outside the artifact. Each is written by a pull request Justin merges, or by the verify job: the review under PV1 to PV9, a plan under AR1 to AR12, both below. | `test_the_agent_cannot_write_premises_or_plans`, `test_the_agent_cannot_ship_the_file_itself` |
 | E8 | A premise can point at the empirical claims that test it; the index attaches each one's track and flags a contradicted premise. | `test_index_reports_both_tracks_and_links_premises_to_tests`, `test_index_reports_bad_premise_pointers_and_unknown_statements` |
 | E9 | One plan, one verdict: the earliest merged run under a plan holds its verdict of record; later runs under it stay REPRODUCED. | `test_one_plan_gives_one_verdict`, `test_index_drops_a_verdict_whose_plan_changed_or_left` |
 
@@ -114,7 +114,8 @@ rules above. It does not mean a person checked the list. Two agent sessions agre
 assumes nothing about the world is weaker than the owner's review; read the module.
 
 **A registered plan** (`preregistrations/registry.json`, schema `viridis-preregistrations-v1`, and the
-plan text at `preregistrations/<PLAN-ID>.md`, both changed only by a pull request Justin merges):
+plan text at `preregistrations/<PLAN-ID>.md`, written by a pull request Justin merges or by the verify
+job, see "Automated plan registration"):
 
 ```json
 {"schema": "viridis-preregistrations-v1", "plans": {
@@ -130,6 +131,34 @@ registered on an earlier date, the run's `code/` tree is exactly the frozen file
 is present with its hash, the entry script is the plan's, and the verdict file was reproduced and holds
 `SUPPORTED`, `CONTRADICTED`, `NOT_SUPPORTED` or `NOT_ESTIMABLE` under the verdict key. The frozen code
 reaches the agent as task context files, to be copied into `out/code/` unchanged.
+
+### Automated plan registration (`engine/plan_registry.py`, I26)
+
+One night proposes a plan (`plan_proposals` in `run.json`, files under `plans/<ID>/`); the verify job
+checks it and registers it in the outcome commit; a later night of the same project is handed the frozen
+plan in `inputs/plans/<ID>/` and runs it. The index lists every plan under `epistemic.plans`, marks it
+`registered_by` `owner` or `policy`, and attaches each plan's verdict to the premises it named.
+
+| ID | Rule | Checked by (`tests/test_plan_registry.py`) |
+|---|---|---|
+| AR1 | Off unless the record's config sets `preregistration.auto` and `tested.enabled`. | `test_every_failed_check_registers_nothing` |
+| AR2 | One proposal per run; the ID starts with the run's project and is new; a registered plan is never rewritten. | `test_one_open_question_at_a_time_and_no_rewrite` |
+| AR3 | `tests` names premises already in the premise review. Premise-to-test links come from here, fixed before the outcome. | `test_the_whole_loop_closes_without_a_person` |
+| AR4 | The analysis is frozen: the later run's `code/` must be exactly the registered files. | `test_an_honest_plan_is_registered_frozen_and_linked`, `test_apply_registers_nothing_if_the_files_changed_or_the_registry_is_broken` |
+| AR5 | Known inputs are frozen by hash. | `test_an_honest_plan_is_registered_frozen_and_linked` |
+| AR6 | At least one outcome input is declared by path and https URL on a host the agent's proxy allows; the later run's `data/` must be exactly the frozen inputs plus these, each pinned to its declared URL. | `test_the_run_must_use_the_declared_outcome_and_nothing_else`, `test_host_rule_is_the_proxys_rule` |
+| AR7 | No outcome URL is pinned by any merged run or named by another plan. | `test_every_failed_check_registers_nothing`, `test_one_open_question_at_a_time_and_no_rewrite` |
+| AR8 | Two-sided: the verifier runs the frozen analysis in the sandbox on two made-up fixtures and must get SUPPORTED on one and CONTRADICTED on the other. | `test_every_failed_check_registers_nothing` |
+| AR9 | A premise (or, for a plan that names none, a project) with a plan still awaiting its run takes no second plan. | `test_one_open_question_at_a_time_and_no_rewrite` |
+| AR10 | The plan and its run are on different dates (E5). | `test_the_same_night_cannot_register_and_test` |
+| AR11 | Written by the verify job, marked `registered_by: policy`; every decision is listed under `plan_registrations` in `certification.json`; nothing raises or fails a night. | `test_apply_registers_nothing_if_the_files_changed_or_the_registry_is_broken` |
+| AR12 | The engine cannot see what the agent already knew; AR7 shows only that this record never held the outcome. | stated limit |
+
+**What a policy-registered plan does not mean.** Nobody checked that the hypothesis is the right test of
+the premise, that the sample can detect the effect, or that the thresholds are sensible. AR8 shows the
+verdict responds to data; it does not show the test is a good one. An agent may have met the outcome data
+in its training or elsewhere. Read the plan before leaning on its verdict. `epistemic.frontier` counts
+every verdict on a premise, so one SUPPORTED among several attempts is visible as such.
 
 **What these statuses do not mean.** `FORMALLY_PROVED` says the reviewed premise list is empty; it says
 nothing about novelty or importance. `EMPIRICALLY_SUPPORTED` says a plan registered in advance returned

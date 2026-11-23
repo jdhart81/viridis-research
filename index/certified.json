@@ -25,47 +25,57 @@
      "evidence": "UNTESTED",
      "id": "M-Nucleation",
      "kind": "modelling",
+     "open_plans": [],
      "statements": [
       "P2.Afforestation",
       "P2.Restoration"
      ],
-     "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
+     "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow.",
+     "verdicts": {}
     },
     {
      "evidence": "UNTESTED",
      "id": "M-HasteNeglect",
      "kind": "modelling",
+     "open_plans": [],
      "statements": [
       "P2.Tempo"
      ],
-     "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n."
+     "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n.",
+     "verdicts": {}
     },
     {
      "evidence": "UNTESTED",
      "id": "M-QuadraticStewards",
      "kind": "modelling",
+     "open_plans": [],
      "statements": [
       "P2.Harmonization"
      ],
-     "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort."
+     "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort.",
+     "verdicts": {}
     },
     {
      "evidence": "UNTESTED",
      "id": "M-SeedYield",
      "kind": "modelling",
+     "open_plans": [],
      "statements": [
       "P2.Afforestation"
      ],
-     "text": "Established canopy per seed equals C/n*, with the canopy per established nucleus C constant over the range of drive and edge hostility compared."
+     "text": "Established canopy per seed equals C/n*, with the canopy per established nucleus C constant over the range of drive and edge hostility compared.",
+     "verdicts": {}
     },
     {
      "evidence": "UNTESTED",
      "id": "M-TwoPoolLinear",
      "kind": "modelling",
+     "open_plans": [],
      "statements": [
       "P2.CarbonContinuity"
      ],
-     "text": "Across repeated disturbance-recovery cycles, living and durable carbon follow the linear map L' = a*L + r*D, D' = p*L + d*D with coefficients that are the same in every cycle, a and d in [0,1) and r, p positive."
+     "text": "Across repeated disturbance-recovery cycles, living and durable carbon follow the linear map L' = a*L + r*D, D' = p*L + d*D with coefficients that are the same in every cycle, a and d in [0,1) and r, p positive.",
+     "verdicts": {}
     }
    ],
    "unproved": [
@@ -75,6 +85,7 @@
    "unreviewed": []
   },
   "plan_verdicts": {},
+  "plans": {},
   "registered_plans": [],
   "schema": "viridis-epistemic-v1",
   "statements": {

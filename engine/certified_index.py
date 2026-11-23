@@ -103,6 +103,7 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
     claim_tracks: dict[tuple[str, str], str] = {}      # (run_dir, claim_id) -> empirical track, for E8
     claim_status: dict[str, int] = {}                  # status -> count, empirical and conjecture claims
     plan_verdicts: dict[str, str] = {}                 # plan ID -> run_dir of its verdict of record (E9)
+    plan_claims: dict[str, list[dict[str, Any]]] = {}  # plan ID -> the claims that carry that verdict
     tested_status: list[dict[str, Any]] = []           # one entry per TESTED claim, beside ``tested_claims``
 
     statements: dict[str, dict[str, Any]] = {}
@@ -146,6 +147,9 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
             track, registration, why = epistemic.empirical_from_certification(lab, plans, root)
             if registration is not None:                     # E9: the earliest run holds the plan's verdict of record
                 first = plan_verdicts.setdefault(registration["plan"], run_dir)
+                if first == run_dir:
+                    plan_claims.setdefault(registration["plan"], []).append(
+                        {"run_dir": run_dir, "claim_id": cid, "empirical": track, "plan": registration["plan"]})
                 if first != run_dir:
                     track, registration = "REPRODUCED", None
                     why = f"plan {lab['epistemic']['preregistration']['plan']} already has its verdict of record in {first}"
@@ -192,9 +196,24 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
     proven = sorted(s for s, v in statements.items() if v["status"] == "PROVEN")
     statement_status: dict[str, int] = {}
     statement_epistemic: dict[str, dict[str, Any]] = {}
+    plan_refs: dict[str, list[dict[str, Any]]] = {}    # premise ID -> tests fixed in advance by a plan's ``tests`` (AR3)
+    open_by_premise: dict[str, list[str]] = {}
+    plan_summary: dict[str, dict[str, Any]] = {}
+    for pid, plan in sorted(plans.items()):
+        if not isinstance(plan, dict):
+            continue
+        tests = [t for t in plan.get("tests", []) if isinstance(t, str)] if isinstance(plan.get("tests", []), list) else []
+        for t in tests:
+            plan_refs.setdefault(t, []).extend(plan_claims.get(pid, []))
+            if pid not in plan_verdicts:
+                open_by_premise.setdefault(t, []).append(pid)
+        plan_summary[pid] = {"project": plan.get("project"), "registered_at": plan.get("registered_at"),
+                             "registered_by": "policy" if plan.get("registered_by") == "policy" else "owner",
+                             "hypothesis": _text(plan.get("hypothesis")), "tests": sorted(tests),
+                             "verdict_run": plan_verdicts.get(pid)}
     for sid, st in statements.items():                                     # C6: the formal track, as reviewed now
         formal, listed, reason = epistemic.formal_track(st["status"] == "PROVEN", sid, st["sha256"], premises)
-        listed, contradicted, found = epistemic.resolve_premises(listed, claim_tracks)
+        listed, contradicted, found = epistemic.resolve_premises(listed, claim_tracks, plan_refs)
         problems += [f"statement {sid}: {f}" for f in found]
         status = epistemic.status_of("formal", formal, "NOT_APPLICABLE")
         entry = premises.get(sid)
@@ -215,7 +234,8 @@ def build(root: Path = RECORD_ROOT) -> dict[str, Any]:
                           "tested_claims": sorted(tested_status, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
                           "counts": {"statements": dict(sorted(statement_status.items())),
                                      "claims": dict(sorted(claim_status.items()))},
-                          "frontier": epistemic.frontier(statement_epistemic),
+                          "frontier": epistemic.frontier(statement_epistemic, open_by_premise),
+                          "plans": plan_summary,
                           "registered_plans": sorted(plans), "plan_verdicts": dict(sorted(plan_verdicts.items()))},
             "tested_claims": sorted(tested, key=lambda t: (str(t["date"]), t["run_dir"], t["claim_id"])),
             "runs": sorted(runs, key=lambda r: (str(r["date"]), r["run_dir"])),
