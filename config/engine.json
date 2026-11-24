@@ -51,7 +51,8 @@
     "enabled": true
   },
   "preregistration": {
-    "auto": true
+    "auto": true,
+    "frontier_duty": true
   },
   "repository": "jdhart81/viridis-research",
   "sandbox": {
