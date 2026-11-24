@@ -1,0 +1,84 @@
+{
+  "date": "2026-11-24",
+  "engine_sha": "639b7202531c11d84594f5777198e6452bc69287",
+  "epistemic_problems": [],
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "0abae9d216e36ed19f17cff01e65eabaa23aa06ff299b21b171e7b2d5a2ee5e9",
+      "epistemic": {
+        "empirical": "NOT_APPLICABLE",
+        "formal": "PROVED_CONDITIONAL",
+        "premises": "UNCLASSIFIED",
+        "reason": "proved; its premises have not been reviewed",
+        "schema": "viridis-epistemic-v1",
+        "status": "CONDITIONALLY_PROVED"
+      },
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P6.MinimalNetwork",
+      "statement_sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+      "text": "For every finite simple graph G on a finite vertex type V (any Fintype/decidability instances), with n = Fintype.card V and m = G.edgeFinset.card: if G is connected then n <= m + 1; G is connected with m + 1 = n iff G is a tree; and if G is a tree, deleting any one of its edges leaves a disconnected graph.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "0abae9d216e36ed19f17cff01e65eabaa23aa06ff299b21b171e7b2d5a2ee5e9",
+      "durations": {
+        "check": 11.529,
+        "compile": 12.681,
+        "replay": 12.769
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P6.MinimalNetwork",
+      "statement_sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 7,
+  "plan_registrations": [],
+  "premise_reviews": [
+    {
+      "detail": "first of two concurring reviews needed for an empty list (PV5)",
+      "result": "pending",
+      "statement_id": "P6.MinimalNetwork"
+    }
+  ],
+  "project": "P6",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 4,
+    "entries": 4,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1007/978-3-662-53622-3",
+      "10.1145/3372885.3373824",
+      "10.1890/0012-9658(2001)082[1205:LCAGTP]2.0.CO;2"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-24_P6",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P6-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

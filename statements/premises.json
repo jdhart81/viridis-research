@@ -1,4 +1,11 @@
 {
+  "pending_empty": {
+    "P6.MinimalNetwork": {
+      "rationale": "The statement is pure finite graph theory about its own definitions (Fintype.card, edgeFinset.card, Connected, IsTree, deleteEdges). Its module states that no claim is made about any real corridor, species movement or landscape; the reading of patches as vertices and corridors as edges is an interpretation in the paper, not a hypothesis the theorem depends on.",
+      "run_dir": "runs/2026-11-24_P6",
+      "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b"
+    }
+  },
   "schema": "viridis-premises-v1",
   "statements": {
     "P1.BitQuad": {

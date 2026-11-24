@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
-  "merged_runs": 24,
+  "merged_runs": 25,
   "problems": 0,
-  "proven_statements": 14,
+  "proven_statements": 15,
   "sealed_statements": 19,
   "tested_claims": 1
  },
@@ -14,9 +14,9 @@
     "UNRESOLVED": 6
    },
    "statements": {
-    "CONDITIONALLY_PROVED": 5,
+    "CONDITIONALLY_PROVED": 6,
     "FORMALLY_PROVED": 9,
-    "UNRESOLVED": 5
+    "UNRESOLVED": 4
    }
   },
   "frontier": {
@@ -81,11 +81,12 @@
    "unproved": [
     "P2.DecisionInformationCapacity",
     "P2.MultiRingAlignment",
-    "P6.MinimalNetwork",
     "P6.SerialParallel",
     "P6.SingleFailureRobust"
    ],
-   "unreviewed": []
+   "unreviewed": [
+    "P6.MinimalNetwork"
+   ]
   },
   "plan_verdicts": {},
   "plans": {},
@@ -268,12 +269,12 @@
     "status": "FORMALLY_PROVED"
    },
    "P6.MinimalNetwork": {
-    "formal": "UNPROVED",
+    "formal": "PROVED_CONDITIONAL",
     "premise_contradicted": false,
-    "premises": null,
-    "reason": "no kernel-checked proof of the sealed statement",
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
     "reviewed_by": null,
-    "status": "UNRESOLVED"
+    "status": "CONDITIONALLY_PROVED"
    },
    "P6.SerialParallel": {
     "formal": "UNPROVED",
@@ -360,7 +361,8 @@
   "P3.LoopMassBalance",
   "P3.RecoveryWorkFloor",
   "P5.CompensationUnderCeiling",
-  "P5.UnrestrictedBoundFalse"
+  "P5.UnrestrictedBoundFalse",
+  "P6.MinimalNetwork"
  ],
  "runs": [
   {
@@ -679,6 +681,19 @@
    "run_dir": "runs/2026-11-23_P6",
    "task": "P6-T001",
    "title": "The formal core of a corridor-network kernel: minimal corridors, single-failure redundancy and route reliability (statement proposals)"
+  },
+  {
+   "date": "2026-11-24",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "18fb97a649916d4ab4135538e45dc662724b96d6f6dd66c034c7f5eb6b553532",
+   "paper_built": true,
+   "project": "P6",
+   "run_dir": "runs/2026-11-24_P6",
+   "task": "P6-T002",
+   "title": "Trees are the minimal connected corridor networks, and therefore have no spare corridor: a note for corridor planners with a Lean proof"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -1051,11 +1066,22 @@
    "decision": "D-024",
    "path": "lean/ViridisStatements/P6/MinimalNetwork.lean",
    "project": "P6",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "0abae9d216e36ed19f17cff01e65eabaa23aa06ff299b21b171e7b2d5a2ee5e9",
+    "claim_id": "C1",
+    "date": "2026-11-24",
+    "doi": null,
+    "run_dir": "runs/2026-11-24_P6"
+   },
    "sealed_at": "2026-11-23T08:14:24Z",
    "sealed_by": "policy",
    "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P6-T001"
   },
   "P6.SerialParallel": {

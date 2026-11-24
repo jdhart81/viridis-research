@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 3.66,
+  "date": "2026-11-24",
+  "github": {
+    "event": "schedule",
+    "head_sha": "3a2ebaa1875c08f77c023080a61126938b04976e",
+    "run_attempt": 1,
+    "run_id": 45303445330,
+    "run_started_at": "2026-11-24T01:13:48Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45303445330",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P6.MinimalNetwork",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "18fb97a649916d4ab4135538e45dc662724b96d6f6dd66c034c7f5eb6b553532",
+  "paper_built": true,
+  "project": "P6",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P6.MinimalNetwork"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-24_P6",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P6-T002",
+  "title": "Trees are the minimal connected corridor networks, and therefore have no spare corridor: a note for corridor planners with a Lean proof",
+  "written_at": "2026-11-24T01:54:08Z",
+  "written_by": "verify",
+  "zip_sha256": "3771fadc2d5307a5d9b89d59cceb630b31005af6d9f2a0432c53b5e3e23ed4a8"
+}

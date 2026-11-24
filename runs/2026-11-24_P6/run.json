@@ -1,0 +1,18 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P6",
+  "task": "P6-T002",
+  "title": "Trees are the minimal connected corridor networks, and therefore have no spare corridor: a note for corridor planners with a Lean proof",
+  "abstract": "Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped (dendritic) corridor networks between habitat patches. We treat the sealed statement P6.MinimalNetwork, which models patches as the vertices and corridors as the edges of a finite simple graph and has three parts: (1) a connected network on n patches has at least n-1 corridors; (2) it is connected with exactly n-1 corridors if and only if it is a tree; (3) in a tree, removing any one corridor disconnects the network. Together these fix a trade-off for the planner: a dendritic network uses the fewest corridors that can connect the patches, and for exactly that reason none of its corridors is spare. We give a Lean 4 proof of the statement against the pinned Mathlib, built from existing Mathlib lemmas plus a short bridge between Mathlib's Nat.card counts and the statement's Fintype counts. These are classical facts of finite graph theory, not new theorems. The graph carries no geometry, width, quality or cost, so the result says nothing about whether any mapped corridor is used by any species. It does not discharge the FaceCount assumption of Trees Cannot Cut (project P1).",
+  "claims": [
+    {"id": "C1", "kind": "formal", "statement_id": "P6.MinimalNetwork", "proof_file": "proofs/P6.MinimalNetwork.lean",
+     "text": "For every finite simple graph G on a finite vertex type V (any Fintype/decidability instances), with n = Fintype.card V and m = G.edgeFinset.card: if G is connected then n <= m + 1; G is connected with m + 1 = n iff G is a tree; and if G is a tree, deleting any one of its edges leaves a disconnected graph."}
+  ],
+  "proposals": [],
+  "premise_reviews": [
+    {"statement_id": "P6.MinimalNetwork",
+     "rationale": "The statement is pure finite graph theory about its own definitions (Fintype.card, edgeFinset.card, Connected, IsTree, deleteEdges). Its module states that no claim is made about any real corridor, species movement or landscape; the reading of patches as vertices and corridors as edges is an interpretation in the paper, not a hypothesis the theorem depends on.",
+     "premises": []}
+  ],
+  "next_steps": "Prove P6.SingleFailureRobust (P6-T003): by contradiction, if m < n then connectivity gives m + 1 = n, so G is a tree via isTree_iff_connected_and_card (with the same Nat.card/Fintype.card bridge used in proofs/P6.MinimalNetwork.lean); with n >= 2 obtain two distinct vertices and, from a walk between them, an edge; that edge is a bridge (isAcyclic_iff_forall_edge_isBridge + isBridge_iff, simpa [deleteEdges]), contradicting survival of its deletion. Then P6.SerialParallel (P6-T004). No Aristotle jobs are pending."
+}

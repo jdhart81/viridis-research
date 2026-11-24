@@ -1,0 +1,218 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,lemma,example,namespace,end,import,where,instance,fun,by,decide,Prop,Type,open,intro,exact,rw,refine,have,simpa,apply,with,induction,using},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"
+}
+\lstset{language=lean, basicstyle=\ttfamily\small, breaklines=true, columns=fullflexible,
+  keywordstyle=\color{blue!60!black}\bfseries, commentstyle=\color{gray},
+  literate={∀}{{$\forall$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {∧}{{$\land$}}1
+    {∨}{{$\lor$}}1 {¬}{{$\neg$}}1 {∈}{{$\in$}}1 {≤}{{$\le$}}1 {∏}{{$\prod$}}1
+    {ℝ}{{$\mathbb{R}$}}1 {ℕ}{{$\mathbb{N}$}}1 {ι}{{$\iota$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {⊤}{{$\top$}}1 {⊥}{{$\bot$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {←}{{$\leftarrow$}}1
+    {⦃}{{$\{$}}1 {⦄}{{$\}$}}1}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposal}{Proposed statement}
+
+\title{Trees are the minimal connected corridor networks,\\ and therefore have no spare corridor:\\ a note for corridor planners with a Lean proof}
+\author{Justin Hart\\Viridis LLC}
+\date{24 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped (dendritic) corridor networks
+between habitat patches. We treat the sealed statement \texttt{P6.MinimalNetwork}, which models patches as the
+vertices and corridors as the edges of a finite simple graph and has three parts.
+(1) A connected network on $n$ patches has at least $n-1$ corridors.
+(2) It is connected with exactly $n-1$ corridors if and only if it is a tree.
+(3) In a tree, removing any one corridor disconnects the network.
+Together these fix a trade-off for the planner. A dendritic network uses the fewest corridors that can
+connect the patches, and for exactly that reason none of its corridors is spare. We give a Lean~4 proof
+of the statement against the pinned Mathlib, built from existing Mathlib lemmas plus a short bridge between
+Mathlib's \texttt{Nat.card} counts and the statement's \texttt{Fintype} counts. These are classical facts
+of finite graph theory, not new theorems. The graph carries no geometry, width, quality or cost, so the
+result says nothing about whether any mapped corridor is used by any species. It does not discharge the
+FaceCount assumption of \emph{Trees Cannot Cut} (project P1).
+\end{abstract}
+
+\section{Introduction}
+Graph models of landscape connectivity represent habitat patches as vertices and functional
+links between them as edges~\citep{urbankeitt2001}. Urban and Keitt argued that the minimum spanning
+tree is a useful guide to which patches and links matter most to connectivity~\citep{urbankeitt2001}.
+HDFM goes further and \emph{designs} dendritic corridor networks. A planner then needs two facts in
+precise form: how few corridors suffice to connect $n$ patches, and what is given up by using that few.
+
+Project P6 of Viridis Research builds the formal core of a corridor-network kernel. The first session
+(P6-T001, 23 November 2026) proposed three statements. Justin Hart sealed the first,
+\texttt{P6.MinimalNetwork}, by decision D-024. This session (P6-T002) proves it.
+
+\paragraph{Question.} For a finite network of patches and corridors: is $n-1$ a lower bound on the
+number of corridors of a connected network, which networks attain it, and do those networks have
+any corridor whose loss they survive?
+
+\paragraph{Answer.} Yes, $n-1$ is a lower bound. It is attained exactly by trees, and a tree survives
+the loss of none of its corridors. Section~\ref{sec:tradeoff} spells out what this means for planning.
+
+\section{Background and related work}
+All three parts are textbook graph theory~\citep{diestel2017}. A connected graph on $n$ vertices has
+at least $n-1$ edges, with equality exactly for trees. An edge is a bridge, meaning its removal
+separates its endpoints, exactly when it lies on no cycle. Hence a graph is acyclic if and only if
+every edge is a bridge. We use Lean~4~\citep{lean4} and Mathlib~\citep{mathlib2020}. Mathlib already
+contains the needed facts, stated with \texttt{Nat.card}:
+\texttt{SimpleGraph.Connected.card\_vert\_le\_card\_edgeSet\_add\_one},
+\texttt{SimpleGraph.isTree\_iff\_connected\_and\_card},
+\texttt{SimpleGraph.isAcyclic\_iff\_forall\_edge\_isBridge} and \texttt{SimpleGraph.isBridge\_iff}.
+The contribution of this note is not the mathematics. It is a sealed statement whose hypotheses are listed
+in full, a machine-checkable proof of it, and a plain account of what that proof does and does not cover.
+
+\section{The model and the statement}
+Patches form a finite type \texttt{V : Type} with decidable equality. Corridors are the edges of a
+\texttt{G : SimpleGraph V} with decidable adjacency. The module writes $n=\texttt{patchCount V}=\texttt{Fintype.card V}$ and
+$m=\texttt{corridorCount G}=\texttt{G.edgeFinset.card}$. Removing corridor $e$ is \texttt{G.deleteEdges \{e\}}. A simple
+graph has no loops and at most one corridor between two patches. The model has no geometry, width,
+quality or cost; a corridor either exists or does not.
+
+\begin{theorem}[\texttt{P6.MinimalNetwork}]\label{thm:main}
+For every finite $V$ and every simple graph $G$ on $V$:
+\begin{enumerate}
+\item if $G$ is connected then $n\le m+1$;
+\item $G$ is connected and $m+1=n$ if and only if $G$ is a tree;
+\item if $G$ is a tree then, for every edge $e$ of $G$, the graph $G-e$ is not connected.
+\end{enumerate}
+\end{theorem}
+
+The sealed Lean definition is:
+\begin{lstlisting}
+def Statement : Prop :=
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+    (G.Connected → patchCount V ≤ corridorCount G + 1) ∧
+    (G.Connected ∧ corridorCount G + 1 = patchCount V ↔ G.IsTree) ∧
+    (G.IsTree → ∀ e ∈ G.edgeSet, ¬ (G.deleteEdges {e}).Connected)
+\end{lstlisting}
+The instances are quantified inside \texttt{Statement}, so the proof must work for any
+\texttt{Fintype} and decidability instances, not just the canonical ones.
+
+\section{Proof}
+\paragraph{Mathematical proof.} (1) Choose a spanning tree of the connected graph $G$. A tree on $n$
+vertices has $n-1$ edges (induction, removing a leaf), so $G$ has at least $n-1$ edges.
+(2) A tree is connected with $n-1$ edges by the same count. Conversely, suppose $G$ is connected with
+$m=n-1$ and has a cycle. Deleting an edge $e$ of the cycle keeps $G$ connected, since the rest of the
+cycle reconnects the endpoints of $e$. But $G-e$ has $n-2$ edges, which contradicts~(1). So $G$ is
+acyclic, hence a tree.
+(3) Let $G$ be a tree and $e=uv$ an edge. If $G-e$ were connected, a path from $u$ to $v$ in $G-e$
+together with $e$ would form a cycle in $G$. So $u$ and $v$ are not joined in $G-e$, and $G-e$ is
+disconnected.
+
+\paragraph{Lean proof.} Parts (1) and (2) are Mathlib's lemmas once the counts are translated:
+\texttt{Fintype.card V = Nat.card V} and \texttt{G.edgeFinset.card = Nat.card G.edgeSet}. Because
+Mathlib's lemmas are stated with \texttt{Nat.card}, which does not depend on instances, this translation
+also handles arbitrary \texttt{Fintype} instances. Part (3) uses acyclicity to make $e$ a bridge, splits
+$e$ as \texttt{s(u, v)}, and notes that \texttt{deleteEdges} unfolds to the graph difference
+\texttt{G \textbackslash{} fromEdgeSet \{s(u, v)\}} that appears in \texttt{isBridge\_iff}. The complete
+candidate file follows.
+
+\begin{lstlisting}
+import Mathlib
+import ViridisStatements.P6.MinimalNetwork
+
+namespace Candidate
+
+open SimpleGraph ViridisStatements.P6.MinimalNetwork
+
+lemma corridorCount_eq {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] : corridorCount G = Nat.card G.edgeSet := by
+  rw [corridorCount, Nat.card_eq_fintype_card, ← edgeFinset_card]
+
+lemma patchCount_eq (V : Type) [Fintype V] : patchCount V = Nat.card V := by
+  rw [patchCount, Nat.card_eq_fintype_card]
+
+lemma tree_delete_not_connected {V : Type} (G : SimpleGraph V) (hT : G.IsTree)
+    (e : Sym2 V) (he : e ∈ G.edgeSet) : ¬ (G.deleteEdges {e}).Connected := by
+  have hb : G.IsBridge e := isAcyclic_iff_forall_edge_isBridge.mp hT.IsAcyclic he
+  induction e using Sym2.ind with
+  | _ u v =>
+    rw [isBridge_iff] at hb
+    intro hc
+    apply hb.2
+    have := hc.preconnected u v
+    simpa [deleteEdges] using this
+
+theorem main : ViridisStatements.P6.MinimalNetwork.Statement := by
+  intro V _ _ G _
+  refine ⟨?_, ?_, ?_⟩
+  · intro hc
+    rw [patchCount_eq, corridorCount_eq]
+    exact hc.card_vert_le_card_edgeSet_add_one
+  · rw [patchCount_eq, corridorCount_eq, isTree_iff_connected_and_card]
+  · intro hT e he
+    exact tree_delete_not_connected G hT e he
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+The candidate \texttt{proofs/P6.MinimalNetwork.lean} compiles under Lean \texttt{v4.28.0} with Mathlib
+commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. It passed the local check script, which
+runs the denylist, compile, statement-match, axiom and kernel-replay stages. Its only axioms are
+\texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. Whether the claim is labelled
+proven is decided by the independent verifier, whose certification page precedes this paper. The sealed
+module's own sanity checks still apply: the path on three patches attains $m+1=n$ and loses
+connectivity when an edge is removed, and the triangle with an isolated fourth patch shows that the count
+$m+1=n$ without connectivity does not make a tree.
+
+\section{The trade-off for a corridor planner}\label{sec:tradeoff}
+Read together, the three parts make one point. Part~1 is a budget floor: no plan connects $n$ patches
+with fewer than $n-1$ corridors. Part~2 says the floor is reached exactly by dendritic (tree) plans, so
+a planner who wants the fewest corridors must build a tree, and any connected plan with $n-1$
+corridors is already one. Part~3 is the price: every corridor of such a plan is a bridge. Losing any single
+corridor, through a road, a fire or a clearing, splits the network into two parts that can no longer reach each other
+through the network. Redundancy costs corridors. On $n\ge 2$ patches, surviving any one loss needs at least $n$ corridors
+(the proposed \texttt{P6.SingleFailureRobust}, task P6-T003, not proved here). The planner's choice between
+the cheapest network and a robust one is therefore a choice about corridor count, not only about layout.
+
+\section{Limitations}
+\begin{itemize}
+\item These are classical facts about finite graphs, not new theorems.
+\item The graph carries no geometry, width, quality or cost. The result is about the \emph{number} of
+corridors, not their length or price. Minimum-cost networks, vertex (patch) failures and simultaneous
+multiple failures are not covered.
+\item ``Connected'' means connected in the abstract graph. A proof certifies the mathematics of the model
+only. It does not certify that any mapped corridor is used by any species, that a corridor that exists on a map
+carries movement, or any ecological outcome.
+\item Multigraphs (parallel corridors between the same two patches) are outside the model. With a doubled
+corridor, part~3 would no longer describe what removing one physical corridor does.
+\item It does not discharge the FaceCount assumption of \emph{Trees Cannot Cut} (project P1).
+\end{itemize}
+
+\section{Reproducibility}
+The candidate proof is \texttt{proofs/P6.MinimalNetwork.lean}. It imports only \texttt{Mathlib} and the sealed
+module \texttt{ViridisStatements.P6.MinimalNetwork} (sha256 \texttt{972f34a0\ldots 564b}) and uses none
+of the forbidden constructs. To check it, run
+\texttt{viridis-lean-check proofs/P6.MinimalNetwork.lean P6.MinimalNetwork} under toolchain
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}.
+No data or numerical code are involved.
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-11-23 (P6-T001): first version. Drafted three statement proposals
+(\texttt{P6.MinimalNetwork}, \texttt{P6.SingleFailureRobust}, \texttt{P6.SerialParallel}) with sanity
+checks, negative controls and rationales.
+\item 2026-11-24 (P6-T002): \texttt{P6.MinimalNetwork} sealed (D-024). Rewrote the paper as a note
+on that statement. Added the mathematical proof, a Lean proof, and a section on the planning trade-off.
+Removed the unused relay-reliability reference. The two remaining proposals are summarised in the text and await their own tasks.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}
