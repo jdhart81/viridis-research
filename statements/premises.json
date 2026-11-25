@@ -1,9 +1,9 @@
 {
   "pending_empty": {
-    "P6.MinimalNetwork": {
-      "rationale": "The statement is pure finite graph theory about its own definitions (Fintype.card, edgeFinset.card, Connected, IsTree, deleteEdges). Its module states that no claim is made about any real corridor, species movement or landscape; the reading of patches as vertices and corridors as edges is an interpretation in the paper, not a hypothesis the theorem depends on.",
-      "run_dir": "runs/2026-11-24_P6",
-      "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b"
+    "P6.SingleFailureRobust": {
+      "rationale": "The statement is pure finite graph theory: connectivity, edge deletion and cardinalities of its own definitions. The module explicitly makes no claim about any real corridor, failure mode or landscape; that real failures are single corridor losses is an interpretation, not a hypothesis the theorem uses.",
+      "run_dir": "runs/2026-11-25_P6",
+      "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81"
     }
   },
   "schema": "viridis-premises-v1",
@@ -160,6 +160,16 @@
       "runs": [],
       "sha256": "3b83eb37905660e3db1cc68c54e476f4ac5c450b245cec4675195f9cc2e0a95d",
       "source": "Bootstrap review by a Claude session on 2026-11-22, read from the sealed module; merged by the owner. Recorded as policy so that later nightly reviews can still add a premise (PV6)."
+    },
+    "P6.MinimalNetwork": {
+      "premises": [],
+      "rationale": "The statement is pure finite graph theory about its own definitions (Fintype.card, edgeFinset.card, Connected, IsTree, deleteEdges). Its module states that no claim is made about any real corridor, species movement or landscape; the reading of patches as vertices and corridors as edges is an interpretation in the paper, not a hypothesis the theorem depends on. | Independent reading: the module defines patchCount, corridorCount and uses Mathlib's Connected, IsTree and deleteEdges; every hypothesis is a graph-theoretic condition on its own definitions, and the module states that no claim is made about any real corridor, species movement or landscape. The patches-as-vertices reading is interpretation in the paper, not a hypothesis of the theorem.",
+      "reviewed_by": "policy",
+      "runs": [
+        "runs/2026-11-24_P6",
+        "runs/2026-11-25_P6"
+      ],
+      "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b"
     }
   }
 }

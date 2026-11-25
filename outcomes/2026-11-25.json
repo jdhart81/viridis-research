@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 7.3,
+  "date": "2026-11-25",
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 45537059565,
+    "run_started_at": "2026-11-25T03:01:38Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45537059565",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P6.SingleFailureRobust",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "38e24f0c0834f34a92181c95e7e544bb58b169e292e8cbc0ac7b6d9a35d91f9b",
+  "paper_built": true,
+  "project": "P6",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P6.SingleFailureRobust"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-25_P6",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P6-T003",
+  "title": "One spare corridor is the least price of surviving any single corridor loss: a note for corridor planners with a Lean proof",
+  "written_at": "2026-11-25T03:43:55Z",
+  "written_by": "verify",
+  "zip_sha256": "c1da09d681d876a266df669c6a480fc288d291da0ec65fca3cba08181913232d"
+}

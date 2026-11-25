@@ -1,0 +1,20 @@
+{
+  "note": "Fixed before opening outcome data. Areas (m^2) per class per plot assume an equal number (two) of islands of each size (4x4, 8x8, 12x12 m) per island plot, as recalled (not confirmed) from Zahawi et al. 2013, J. Appl. Ecol. 50:88-96, doi:10.1111/1365-2664.12014; control interior 40x40 m. Ratios between island sizes are unaffected by the island count if it is equal across sizes.",
+  "final_survival_column": "Surv13",
+  "area_m2": {
+    "S": 32.0,
+    "M": 128.0,
+    "L": 288.0,
+    "C": 1600.0
+  },
+  "alive_codes": [
+    "1",
+    "c",
+    "tpm",
+    "n"
+  ],
+  "pseudocount": 0.5,
+  "min_sites": 5,
+  "n_boot": 10000,
+  "seed": 20261125
+}

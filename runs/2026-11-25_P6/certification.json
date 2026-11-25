@@ -1,0 +1,102 @@
+{
+  "date": "2026-11-25",
+  "engine_sha": "01d0c45a73fb9035588bf96637293cc4c0f8d811",
+  "epistemic_problems": [],
+  "frontier_duty": {
+    "plan_ids": [
+      "P6-NucleationIslandSize"
+    ],
+    "premise": "M-Nucleation",
+    "result": "registered"
+  },
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "4ffe72496f95787324cae2be8112af875fccd9a610f20e56ff88f6fd40c185f3",
+      "epistemic": {
+        "empirical": "NOT_APPLICABLE",
+        "formal": "PROVED_CONDITIONAL",
+        "premises": "UNCLASSIFIED",
+        "reason": "proved; its premises have not been reviewed",
+        "schema": "viridis-epistemic-v1",
+        "status": "CONDITIONALLY_PROVED"
+      },
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P6.SingleFailureRobust",
+      "statement_sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
+      "text": "For every finite simple graph G on a finite vertex type V with n = Fintype.card V >= 2 and m = G.edgeFinset.card: if G is connected and remains connected after deleting any one of its edges, then n <= m. The proof file also shows that the triangle on Fin 3 and the 4-cycle on Fin 4 satisfy the hypotheses with m = n.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "4ffe72496f95787324cae2be8112af875fccd9a610f20e56ff88f6fd40c185f3",
+      "durations": {
+        "check": 11.828,
+        "compile": 15.748,
+        "replay": 14.941
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P6.SingleFailureRobust",
+      "statement_sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "plan_registrations": [
+    {
+      "detail": "registered 2026-11-25; a later night may run it; tests: M-Nucleation",
+      "plan_id": "P6-NucleationIslandSize",
+      "result": "registered"
+    }
+  ],
+  "premise_reviews": [
+    {
+      "detail": "second concurring review; no premise about the world (PV5)",
+      "result": "accepted",
+      "statement_id": "P6.MinimalNetwork"
+    },
+    {
+      "detail": "first of two concurring reviews needed for an empty list (PV5)",
+      "result": "pending",
+      "statement_id": "P6.SingleFailureRobust"
+    }
+  ],
+  "project": "P6",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 4,
+    "entries": 4,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1007/978-3-662-53622-3",
+      "10.1145/3372885.3373824",
+      "10.1890/0012-9658(2001)082[1205:LCAGTP]2.0.CO;2"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-25_P6",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P6-T003",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

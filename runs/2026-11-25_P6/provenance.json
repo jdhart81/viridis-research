@@ -1,0 +1,79 @@
+{
+  "agent": {
+    "duration_api_ms": 311091,
+    "duration_ms": 437787,
+    "final_message": "I proved P6.SingleFailureRobust in Lean. `viridis-lean-check` returns PASSED, using only the axioms `propext`, `Classical.choice` and `Quot.sound`; the verifier still decides whether it is labelled PROVEN. The paper compiles cleanly and `out/` holds only files the contract allows.\n\n**Main task**\n- **The proof** (`out/proofs/P6.SingleFailureRobust.lean`) works by contradiction. If a network had fewer corridors than patches, being connected would force it to have exactly one fewer, which makes it a tree. With at least two patches it has a corridor, and every corridor in a tree disconnects it when lost, which the hypothesis rules out.\n- **The two witnesses:** the same file proves that the triangle and the 4-cycle survive any single loss with exactly as many corridors as patches. They are separate theorems, since the sealed statement is only the bound.\n- **The first compile failed** on two small type and rewrite issues, now fixed and recorded in `notes.md`.\n\n**Paper** (`out/paper/main.tex`, 6 pages): I extended the 2026-11-24 version and added an example table and a changelog entry. It also includes an observation I argued informally and did not formalise: a network with exactly as many corridors as patches survives every single loss only if it is one loop through all patches. So where the extra corridor goes matters, and the paper labels this as informal.\n\n**Frontier duty (M-Nucleation):** I proposed the plan `out/plans/P6-NucleationIslandSize`.\n- **Data:** Zahawi et al.'s public tree-island records, Zenodo 4731126 (CC0). I read only the record listing and the column descriptions, not the data.\n- **Test:** whether the density of surviving natural seedlings per m² rises with island size (4×4 < 8×8 < 12×12 m). Significantly lower density in large islands than small ones counts as CONTRADICTED. Run locally, the made-up \"supported\" and \"contradicted\" fixtures give those two verdicts.\n- **Caveats** (also in `PLAN.md` and `notes.md`):\n  - A search summary showed me that the 2013 paper reported higher recruit density in large islands, so a SUPPORTED verdict is likely and the test is weaker than a blind one.\n  - The design file assumes two islands of each size per plot, which I recalled but could not confirm. The size comparison is unaffected as long as each size has the same number.\n  - It tests only how recruitment scales with size, not the nucleation mechanism; seed-dispersing animals favouring larger islands would produce the same pattern.\n\n**Premise reviews:** I listed no premises for either P6.MinimalNetwork or P6.SingleFailureRobust. Both are pure graph theory, and their modules say they make no claim about real systems.\n\nNo Aristotle jobs were pending or submitted.\n\nSources:\n- [Zenodo 4731126 (data)](https://zenodo.org/records/4731126)\n- [Zahawi et al. 2013, J. Appl. Ecol.](https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/1365-2664.12014)\n- [Holl et al. 2020](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13684)\n- [Schubert et al. 2025](https://esajournals.onlinelibrary.wiley.com/doi/abs/10.1002/eap.3053)",
+    "is_error": false,
+    "num_turns": 28,
+    "permission_denials": [
+      "{'tool_name': 'Bash', 'tool_use_id': 'toolu_012JFiyavFkgy8tYKoiZfvxy', 'tool_input': {'command': 'cd /home/agent/work/out/paper; rm -f main.aux main.fdb_latexmk main.fls main.log main.out main.pdf main.bbl main.blg; ls'}}"
+    ],
+    "present": true,
+    "session_id": "a9656811-aa8f-4a81-99cf-21ada418e0af",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 1.4863386999999997,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 63336,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 63336,
+      "cache_read_input_tokens": 1029623,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 50,
+      "iterations": [],
+      "output_tokens": 25254,
+      "output_tokens_details": {
+        "thinking_tokens": 5622
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 6,
+      "zenodo.org": 2
+    },
+    "bytes_down": 361282,
+    "bytes_up": 3069834,
+    "denied": {
+      "datadryad.org (not on the allowlist)": 1,
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 45537059565,
+    "run_started_at": "2026-11-25T03:01:38Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45537059565",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-25",
+    "prior_runs": [
+      "runs/2026-11-24_P6",
+      "runs/2026-11-23_P6"
+    ],
+    "project": "P6",
+    "run_started_at": "2026-11-25T03:01:38Z",
+    "task": "P6-T003",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}

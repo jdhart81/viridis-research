@@ -1,0 +1,285 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,lemma,example,namespace,end,import,where,instance,fun,by,decide,Prop,Type,open,intro,exact,rw,refine,have,simpa,apply,with,induction,using,by_contra,push_neg,obtain,cases,unfold,omega},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"
+}
+\lstset{language=lean, basicstyle=\ttfamily\small, breaklines=true, columns=fullflexible,
+  keywordstyle=\color{blue!60!black}\bfseries, commentstyle=\color{gray},
+  literate={∀}{{$\forall$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {∧}{{$\land$}}1
+    {∨}{{$\lor$}}1 {¬}{{$\neg$}}1 {∈}{{$\in$}}1 {≤}{{$\le$}}1 {∏}{{$\prod$}}1
+    {ℝ}{{$\mathbb{R}$}}1 {ℕ}{{$\mathbb{N}$}}1 {ι}{{$\iota$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {⊤}{{$\top$}}1 {⊥}{{$\bot$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {←}{{$\leftarrow$}}1
+    {⦃}{{$\{$}}1 {⦄}{{$\}$}}1 {⊢}{{$\vdash$}}1 {∃}{{$\exists$}}1}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposal}{Proposed statement}
+
+\title{One spare corridor is the least price of surviving\\ any single corridor loss:\\ a note for corridor planners with a Lean proof}
+\author{Justin Hart\\Viridis LLC}
+\date{25 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped (dendritic) corridor networks
+between habitat patches. A previous note in this series treated \texttt{P6.MinimalNetwork}: a connected
+network on $n$ patches needs at least $n-1$ corridors, it has exactly $n-1$ only when it is a tree, and
+then every corridor is a bridge whose loss disconnects the network. This note treats the companion sealed
+statement \texttt{P6.SingleFailureRobust}. If a network on $n\ge 2$ patches is connected and stays
+connected after the loss of any one corridor, it has at least $n$ corridors. The triangle and the
+4-cycle attain the bound. So one corridor beyond a tree is the least price of surviving any single loss.
+That one corridor must also be placed well: we observe, with a short informal argument that we did not
+formalise, that a network with exactly $n$ corridors survives every single loss only when it is a single
+cycle through all patches. A corridor added to a star, for example, leaves most corridors as bridges. We give a Lean~4
+proof of the statement against the pinned Mathlib, by contradiction from Mathlib's tree
+characterisation, and we prove the two attainment witnesses in the same file. These are classical facts
+of finite graph theory, not new theorems. The graph carries no geometry, width, quality or cost, and the
+result says nothing about which corridors a real landscape should add.
+\end{abstract}
+
+\section{Introduction}
+Graph models of landscape connectivity represent habitat patches as vertices and functional
+links between them as edges~\citep{urbankeitt2001}. Urban and Keitt argued that the minimum spanning
+tree is a useful guide to which patches and links matter most to connectivity~\citep{urbankeitt2001}.
+HDFM goes further and \emph{designs} dendritic corridor networks. Such a design is as cheap as a
+connected network can be. The previous session (P6-T002) proved \texttt{P6.MinimalNetwork}, which shows
+the cost of that economy: in a tree every corridor is a bridge.
+
+\paragraph{Question.} What is the least number of corridors that lets a network on $n$ patches survive
+the loss of any one corridor, and is that number attained?
+
+\paragraph{Answer.} At least $n$ corridors are needed when $n\ge 2$, one more than a tree has. The triangle
+($n=m=3$) and the 4-cycle ($n=m=4$) show the bound is attained. Section~\ref{sec:placement} explains why the
+placement of the extra corridor matters as much as its existence.
+
+Justin Hart sealed \texttt{P6.SingleFailureRobust} by decision D-025. This session (P6-T003) proves it.
+
+\section{Background and related work}
+A graph is \emph{2-edge-connected} if it is connected and has no bridge; that is exactly the hypothesis
+\texttt{SurvivesSingleFailure} on graphs with at least two vertices. Every edge of a 2-edge-connected graph
+lies on a cycle, and a graph is acyclic exactly when every edge is a bridge. A connected graph on $n$
+vertices has at least $n-1$ edges, with equality exactly for trees~\citep{diestel2017}. The bound $m\ge n$
+follows at once. We use Lean~4~\citep{lean4} and Mathlib~\citep{mathlib2020}, which states the needed facts
+with \texttt{Nat.card}: \texttt{SimpleGraph.Connected.card\_vert\_le\_card\_edgeSet\_add\_one},
+\texttt{SimpleGraph.isTree\_iff\_connected\_and\_card},
+\texttt{SimpleGraph.isAcyclic\_iff\_forall\_edge\_isBridge} and \texttt{SimpleGraph.isBridge\_iff}.
+This note contributes no new mathematics. It contributes a sealed statement whose hypotheses are listed
+in full, a proof that a machine can check, and a plain account of what that proof does and does not cover.
+
+\section{The model and the statements}
+Patches form a finite type \texttt{V : Type} with decidable equality. Corridors are the edges of a
+\texttt{G : SimpleGraph V} with decidable adjacency. We write $n=\texttt{patchCount V}=\texttt{Fintype.card V}$ and
+$m=\texttt{corridorCount G}=\texttt{G.edgeFinset.card}$. Removing corridor $e$ is \texttt{G.deleteEdges \{e\}}.
+A simple graph has no loops and at most one corridor between two patches. The model has no geometry, width,
+quality or cost; a corridor either exists or does not.
+
+\begin{theorem}[\texttt{P6.MinimalNetwork}, proved in P6-T002]\label{thm:min}
+For every finite $V$ and simple graph $G$ on $V$: (1) if $G$ is connected then $n\le m+1$; (2) $G$ is
+connected with $m+1=n$ if and only if $G$ is a tree; (3) if $G$ is a tree then $G-e$ is disconnected for
+every edge $e$.
+\end{theorem}
+
+\begin{theorem}[\texttt{P6.SingleFailureRobust}]\label{thm:robust}
+For every finite $V$ with $n\ge 2$ and every simple graph $G$ on $V$: if $G$ is connected and $G-e$ is
+connected for every edge $e$ of $G$, then $n\le m$.
+\end{theorem}
+
+The sealed Lean definitions are:
+\begin{lstlisting}
+def SurvivesSingleFailure {V : Type} (G : SimpleGraph V) : Prop :=
+  G.Connected ∧ ∀ e ∈ G.edgeSet, (G.deleteEdges {e}).Connected
+
+def Statement : Prop :=
+  ∀ (V : Type) [Fintype V] [DecidableEq V] (G : SimpleGraph V) [DecidableRel G.Adj],
+    2 ≤ patchCount V → SurvivesSingleFailure G → patchCount V ≤ corridorCount G
+\end{lstlisting}
+The module restates the counting definitions rather than importing \texttt{P6.MinimalNetwork}, so the
+proof below reproves the two Mathlib bridges it needs.
+
+\paragraph{The hypothesis $n\ge 2$.} On one patch the empty network is connected and has no corridor to
+lose, yet $m=0<1=n$; the module checks this negative control by \texttt{decide}. For $n=2$ no simple graph
+satisfies the hypotheses (the only connected one is a single corridor, which is a bridge), so the
+statement holds there vacuously. The bound is informative from $n=3$ on.
+
+\section{Proof}
+\paragraph{Mathematical proof.} Suppose $G$ satisfies the hypotheses but $m<n$. Since $G$ is connected,
+$n\le m+1$ by Theorem~\ref{thm:min}(1), so $m+1=n$ and $G$ is a tree by Theorem~\ref{thm:min}(2). Since
+$n\ge 2$ there are distinct patches $u\neq w$, and the first step of a walk from $u$ to $w$ in $G$ is a
+corridor $e$. By Theorem~\ref{thm:min}(3), $G-e$ is disconnected, contradicting the hypothesis.
+
+\paragraph{Lean proof.} The Lean proof follows the same route. It translates \texttt{Fintype.card} and
+\texttt{edgeFinset.card} into \texttt{Nat.card}, so it works for arbitrary instances. It obtains $m+1=n$ by
+\texttt{omega}, gets the tree from \texttt{isTree\_iff\_connected\_and\_card}, finds an edge by case analysis
+on a walk between two distinct vertices, and reuses the bridge lemma from the P6-T002 proof. The same file
+proves both attainment witnesses by \texttt{decide}, after unfolding \texttt{SurvivesSingleFailure}. The
+witnesses are separate theorems: the sealed \texttt{Statement} is only the bound. The complete candidate
+file follows.
+
+\begin{lstlisting}
+import Mathlib
+import ViridisStatements.P6.SingleFailureRobust
+
+namespace Candidate
+
+open SimpleGraph ViridisStatements.P6.SingleFailureRobust
+
+/-- The number of corridors as a `Nat.card` of the edge set. -/
+lemma corridorCount_eq {V : Type} [Fintype V] [DecidableEq V] (G : SimpleGraph V)
+    [DecidableRel G.Adj] : corridorCount G = Nat.card G.edgeSet := by
+  rw [corridorCount, Nat.card_eq_fintype_card, ← edgeFinset_card]
+
+lemma patchCount_eq (V : Type) [Fintype V] : patchCount V = Nat.card V := by
+  rw [patchCount, Nat.card_eq_fintype_card]
+
+/-- In a tree, every corridor is a bridge, so deleting it disconnects the network. -/
+lemma tree_delete_not_connected {V : Type} (G : SimpleGraph V) (hT : G.IsTree)
+    (e : Sym2 V) (he : e ∈ G.edgeSet) : ¬ (G.deleteEdges {e}).Connected := by
+  have hb : G.IsBridge e := isAcyclic_iff_forall_edge_isBridge.mp hT.IsAcyclic he
+  induction e using Sym2.ind with
+  | _ u v =>
+    rw [isBridge_iff] at hb
+    intro hc
+    apply hb.2
+    have := hc.preconnected u v
+    simpa [deleteEdges] using this
+
+/-- A connected graph on at least two vertices has an edge. -/
+lemma exists_edge {V : Type} [Fintype V] (G : SimpleGraph V) (hc : G.Connected)
+    (h2 : 2 ≤ Fintype.card V) : ∃ e, e ∈ G.edgeSet := by
+  obtain ⟨u, v, huv⟩ := Fintype.exists_pair_of_one_lt_card (by omega : 1 < Fintype.card V)
+  obtain ⟨p⟩ := hc.preconnected u v
+  cases p with
+  | nil => exact absurd rfl huv
+  | cons h _ => exact ⟨_, (G.mem_edgeSet).mpr h⟩
+
+theorem main : ViridisStatements.P6.SingleFailureRobust.Statement := by
+  intro V _ _ G _ h2 hS
+  obtain ⟨hc, hdel⟩ := hS
+  by_contra hlt
+  push_neg at hlt
+  have hle : patchCount V ≤ corridorCount G + 1 := by
+    rw [patchCount_eq, corridorCount_eq]
+    exact hc.card_vert_le_card_edgeSet_add_one
+  have heq : Nat.card G.edgeSet + 1 = Nat.card V := by
+    have h1 := corridorCount_eq G
+    have h3 := patchCount_eq V
+    omega
+  have hT : G.IsTree := isTree_iff_connected_and_card.mpr ⟨hc, heq⟩
+  obtain ⟨e, he⟩ := exists_edge G hc h2
+  exact tree_delete_not_connected G hT e he (hdel e he)
+
+/-- Attainment witness 1 (restated from the sealed module): the triangle. -/
+theorem triangle_attains : 2 ≤ patchCount (Fin 3) ∧
+    SurvivesSingleFailure (⊤ : SimpleGraph (Fin 3)) ∧
+    corridorCount (⊤ : SimpleGraph (Fin 3)) = patchCount (Fin 3) := by
+  unfold SurvivesSingleFailure
+  decide
+
+/-- Attainment witness 2 (restated from the sealed module): the 4-cycle. -/
+theorem cycle4_attains : 2 ≤ patchCount (Fin 4) ∧
+    SurvivesSingleFailure cycle4 ∧
+    corridorCount cycle4 = patchCount (Fin 4) := by
+  unfold SurvivesSingleFailure
+  decide
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+The candidate \texttt{proofs/P6.SingleFailureRobust.lean} compiles under Lean \texttt{v4.28.0} with Mathlib
+commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. It passed the local check script, which runs the
+denylist, compile, statement-match, axiom and kernel-replay stages. Its only axioms are \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. The independent verifier decides whether the claim is
+labelled proven; its certification page precedes this paper. The first compile attempt failed on two small
+points, recorded in the lab notebook: a walk step yields an adjacency rather than edge-set membership, and
+a rewrite with the patch-count bridge also matched the edge count (both are \texttt{Fintype.card}).
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lccl}
+\toprule
+Network & $n$ & $m$ & Survives any single loss?\\
+\midrule
+Any tree (Theorem~\ref{thm:min}) & $n$ & $n-1$ & no (every corridor a bridge)\\
+Triangle $K_3$ & 3 & 3 & yes; attains $m=n$ (Lean)\\
+4-cycle $C_4$ & 4 & 4 & yes; attains $m=n$ (Lean)\\
+Star on 4 patches plus one leaf--leaf corridor & 4 & 4 & no (one corridor is a bridge)\\
+Path on 4 patches plus end--end corridor ($=C_4$) & 4 & 4 & yes\\
+\bottomrule
+\end{tabular}
+\caption{Corridor counts and single-failure survival. The first three rows follow from the Lean
+development. The fourth and fifth rows are by inspection and illustrate Section~\ref{sec:placement}.}
+\label{tab:examples}
+\end{table}
+
+\section{One spare corridor, and where it goes}\label{sec:placement}
+Read together, the two statements bracket the price of robustness. \texttt{P6.MinimalNetwork} says the
+cheapest connected plan is a tree and that none of its corridors is spare. \texttt{P6.SingleFailureRobust}
+says that surviving any single corridor loss costs at least one corridor more. The witnesses show that one
+more can be enough.
+
+One more is not always enough, though. The following observation is classical. We give it with an informal
+argument and have \emph{not} formalised it. Suppose $G$ is connected with $m=n\ge 3$. Then $G$ contains
+exactly one cycle, since a spanning tree has $n-1$ edges and the single extra edge closes exactly one
+cycle. An edge lies on no cycle exactly when it is a bridge. So $G$ survives every single loss exactly when
+every edge lies on that one cycle, that is, when $G$ \emph{is} a cycle through all $n$ patches. A
+planner who starts from a dendritic network and buys one extra corridor therefore gains full single-failure
+robustness only if the tree is a path and the new corridor joins its two ends. Any other placement protects
+only the corridors on the new cycle and leaves the rest as bridges. In a star with a corridor added between two
+leaves (Table~\ref{tab:examples}), the corridor to the third leaf is still a bridge. The bound is about how
+many corridors; whether a plan is robust also depends on where they go.
+
+We make no claim about which corridors a real landscape should add. Real corridor networks are not chosen
+from abstract graphs: cost, distance, species and the failure mode all matter, and a single cycle through all
+patches may be impractical or useless for a given species.
+
+\section{Limitations}
+\begin{itemize}
+\item These are classical facts about finite graphs, not new theorems.
+\item The graph carries no geometry, width, quality or cost. The result is about the \emph{number} of
+corridors, not their length or price. Patch (vertex) losses, simultaneous losses of two or more corridors, and
+minimum-cost robust networks are not covered.
+\item The placement observation of Section~\ref{sec:placement} is argued informally and is not part of any sealed
+statement.
+\item ``Connected'' means connected in the abstract graph. A proof certifies the mathematics of the model
+only. It does not certify that a mapped corridor carries movement, that corridor losses happen one at a time, or
+any ecological outcome.
+\item Multigraphs are outside the model. Two parallel corridors between the same pair of patches would survive
+a single loss with $m=2=n$, which a simple graph cannot do; the theorem says nothing about such cases.
+\item It does not discharge the FaceCount assumption of \emph{Trees Cannot Cut} (project P1).
+\end{itemize}
+
+\section{Reproducibility}
+The candidate proof is \texttt{proofs/P6.SingleFailureRobust.lean}. It imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P6.SingleFailureRobust} (sha256 \texttt{f7c92557\ldots 2c81}) and uses
+none of the forbidden constructs. To check it, run
+\texttt{viridis-lean-check proofs/P6.SingleFailureRobust.lean P6.SingleFailureRobust} under toolchain
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}.
+The P6-T002 proof of \texttt{P6.MinimalNetwork} is in that run's package. No data or numerical code are
+involved in this note.
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-11-23 (P6-T001): first version. Drafted three statement proposals
+(\texttt{P6.MinimalNetwork}, \texttt{P6.SingleFailureRobust}, \texttt{P6.SerialParallel}).
+\item 2026-11-24 (P6-T002): \texttt{P6.MinimalNetwork} sealed (D-024); paper rewritten as a note on it,
+with mathematical and Lean proofs and the planning trade-off.
+\item 2026-11-25 (P6-T003): \texttt{P6.SingleFailureRobust} sealed (D-025). Paper refocused on it: statement,
+the role of $n\ge 2$, mathematical and Lean proofs, attainment witnesses, an example table, and an informal
+section on placement of the extra corridor. The \texttt{P6.MinimalNetwork} proof listing was replaced by its
+statement; it remains in the P6-T002 package.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

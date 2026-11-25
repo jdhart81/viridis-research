@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
-  "merged_runs": 25,
+  "merged_runs": 26,
   "problems": 0,
-  "proven_statements": 15,
+  "proven_statements": 16,
   "sealed_statements": 19,
   "tested_claims": 1
  },
@@ -15,8 +15,8 @@
    },
    "statements": {
     "CONDITIONALLY_PROVED": 6,
-    "FORMALLY_PROVED": 9,
-    "UNRESOLVED": 4
+    "FORMALLY_PROVED": 10,
+    "UNRESOLVED": 3
    }
   },
   "frontier": {
@@ -25,7 +25,9 @@
      "evidence": "UNTESTED",
      "id": "M-Nucleation",
      "kind": "modelling",
-     "open_plans": [],
+     "open_plans": [
+      "P6-NucleationIslandSize"
+     ],
      "statements": [
       "P2.Afforestation",
       "P2.Restoration"
@@ -81,16 +83,28 @@
    "unproved": [
     "P2.DecisionInformationCapacity",
     "P2.MultiRingAlignment",
-    "P6.SerialParallel",
-    "P6.SingleFailureRobust"
+    "P6.SerialParallel"
    ],
    "unreviewed": [
-    "P6.MinimalNetwork"
+    "P6.SingleFailureRobust"
    ]
   },
   "plan_verdicts": {},
-  "plans": {},
-  "registered_plans": [],
+  "plans": {
+   "P6-NucleationIslandSize": {
+    "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
+    "project": "P6",
+    "registered_at": "2026-11-25",
+    "registered_by": "policy",
+    "tests": [
+     "M-Nucleation"
+    ],
+    "verdict_run": null
+   }
+  },
+  "registered_plans": [
+   "P6-NucleationIslandSize"
+  ],
   "schema": "viridis-epistemic-v1",
   "statements": {
    "P1.BitQuad": {
@@ -269,12 +283,12 @@
     "status": "FORMALLY_PROVED"
    },
    "P6.MinimalNetwork": {
-    "formal": "PROVED_CONDITIONAL",
+    "formal": "PROVED",
     "premise_contradicted": false,
-    "premises": "UNCLASSIFIED",
-    "reason": "proved; its premises have not been reviewed",
-    "reviewed_by": null,
-    "status": "CONDITIONALLY_PROVED"
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
    },
    "P6.SerialParallel": {
     "formal": "UNPROVED",
@@ -285,12 +299,12 @@
     "status": "UNRESOLVED"
    },
    "P6.SingleFailureRobust": {
-    "formal": "UNPROVED",
+    "formal": "PROVED_CONDITIONAL",
     "premise_contradicted": false,
-    "premises": null,
-    "reason": "no kernel-checked proof of the sealed statement",
+    "premises": "UNCLASSIFIED",
+    "reason": "proved; its premises have not been reviewed",
     "reviewed_by": null,
-    "status": "UNRESOLVED"
+    "status": "CONDITIONALLY_PROVED"
    }
   },
   "tested_claims": [
@@ -362,7 +376,8 @@
   "P3.RecoveryWorkFloor",
   "P5.CompensationUnderCeiling",
   "P5.UnrestrictedBoundFalse",
-  "P6.MinimalNetwork"
+  "P6.MinimalNetwork",
+  "P6.SingleFailureRobust"
  ],
  "runs": [
   {
@@ -694,6 +709,19 @@
    "run_dir": "runs/2026-11-24_P6",
    "task": "P6-T002",
    "title": "Trees are the minimal connected corridor networks, and therefore have no spare corridor: a note for corridor planners with a Lean proof"
+  },
+  {
+   "date": "2026-11-25",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "38e24f0c0834f34a92181c95e7e544bb58b169e292e8cbc0ac7b6d9a35d91f9b",
+   "paper_built": true,
+   "project": "P6",
+   "run_dir": "runs/2026-11-25_P6",
+   "task": "P6-T003",
+   "title": "One spare corridor is the least price of surviving any single corridor loss: a note for corridor planners with a Lean proof"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -1103,11 +1131,22 @@
    "decision": "D-025",
    "path": "lean/ViridisStatements/P6/SingleFailureRobust.lean",
    "project": "P6",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "4ffe72496f95787324cae2be8112af875fccd9a610f20e56ff88f6fd40c185f3",
+    "claim_id": "C1",
+    "date": "2026-11-25",
+    "doi": null,
+    "run_dir": "runs/2026-11-25_P6"
+   },
    "sealed_at": "2026-11-23T08:14:24Z",
    "sealed_by": "policy",
    "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P6-T001"
   }
  },

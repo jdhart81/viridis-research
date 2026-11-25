@@ -1,0 +1,48 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P6",
+  "task": "P6-T003",
+  "title": "One spare corridor is the least price of surviving any single corridor loss: a note for corridor planners with a Lean proof",
+  "abstract": "Hierarchical Dendritic Forest Management (HDFM) designs tree-shaped (dendritic) corridor networks between habitat patches. A previous note proved P6.MinimalNetwork: a connected network on n patches needs at least n-1 corridors, has exactly n-1 only when it is a tree, and then every corridor is a bridge. This note treats the companion sealed statement P6.SingleFailureRobust. If a network on n >= 2 patches, modelled as a finite simple graph, is connected and stays connected after the loss of any one corridor, it has at least n corridors. The triangle and the 4-cycle attain the bound, so one corridor beyond a tree is the least price of surviving any single loss. We observe, with an informal argument that we did not formalise, that a network with exactly n corridors survives every single loss only when it is one cycle through all patches, so the placement of the extra corridor matters. We give a Lean 4 proof of the statement against the pinned Mathlib, by contradiction from Mathlib's tree characterisation, and prove both attainment witnesses in the same file. These are classical facts of finite graph theory, not new theorems. The graph carries no geometry, width, quality or cost, and the result says nothing about which corridors a real landscape should add.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P6.SingleFailureRobust",
+      "proof_file": "proofs/P6.SingleFailureRobust.lean",
+      "text": "For every finite simple graph G on a finite vertex type V with n = Fintype.card V >= 2 and m = G.edgeFinset.card: if G is connected and remains connected after deleting any one of its edges, then n <= m. The proof file also shows that the triangle on Fin 3 and the 4-cycle on Fin 4 satisfy the hypotheses with m = n."
+    }
+  ],
+  "proposals": [],
+  "next_steps": "Prove P6.SerialParallel (P6-T004) once sealed. No Aristotle jobs are pending. Optional formalisation for a future proposal: with m = n >= 3, SurvivesSingleFailure holds iff G is a Hamiltonian cycle graph (placement observation of the T003 paper, currently informal). If P6-NucleationIslandSize is registered, a later night runs it; note the severity caveat in its PLAN.md.",
+  "premise_reviews": [
+    {
+      "statement_id": "P6.MinimalNetwork",
+      "rationale": "Independent reading: the module defines patchCount, corridorCount and uses Mathlib's Connected, IsTree and deleteEdges; every hypothesis is a graph-theoretic condition on its own definitions, and the module states that no claim is made about any real corridor, species movement or landscape. The patches-as-vertices reading is interpretation in the paper, not a hypothesis of the theorem.",
+      "premises": []
+    },
+    {
+      "statement_id": "P6.SingleFailureRobust",
+      "rationale": "The statement is pure finite graph theory: connectivity, edge deletion and cardinalities of its own definitions. The module explicitly makes no claim about any real corridor, failure mode or landscape; that real failures are single corridor losses is an interpretation, not a hypothesis the theorem uses.",
+      "premises": []
+    }
+  ],
+  "plan_proposals": [
+    {
+      "plan_id": "P6-NucleationIslandSize",
+      "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
+      "tests": [
+        "M-Nucleation"
+      ],
+      "entry": "code/analyze.py",
+      "verdict_file": "results/verdict.json",
+      "verdict_key": "verdict",
+      "outcome_inputs": [
+        {
+          "path": "data/tree_recruits.csv",
+          "url": "https://zenodo.org/records/4731126/files/tree_recruits-2007-2013.csv?download=1"
+        }
+      ]
+    }
+  ]
+}

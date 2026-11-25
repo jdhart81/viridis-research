@@ -1,0 +1,29 @@
+{
+  "plans": {
+    "P6-NucleationIslandSize": {
+      "code": {
+        "code/analyze.py": "399d6e6b33dcef2f11f05b9697f45d98aa59cefc82572d774d4717a50e3d38a8"
+      },
+      "data": {
+        "data/design.json": "a86916963b807024e297ee14073344575e85feaa93cdd445f7f3e26bac644702"
+      },
+      "entry": "code/analyze.py",
+      "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
+      "outcome_inputs": {
+        "data/tree_recruits.csv": "https://zenodo.org/records/4731126/files/tree_recruits-2007-2013.csv?download=1"
+      },
+      "path": "preregistrations/P6-NucleationIslandSize.md",
+      "project": "P6",
+      "registered_at": "2026-11-25",
+      "registered_by": "policy",
+      "run_dir": "runs/2026-11-25_P6",
+      "sha256": "3b7fe32b9340e5876a8163f80b9ecd0da05fca2feba77949e50e79808cbdd1d0",
+      "tests": [
+        "M-Nucleation"
+      ],
+      "verdict_file": "results/verdict.json",
+      "verdict_key": "verdict"
+    }
+  },
+  "schema": "viridis-preregistrations-v1"
+}
