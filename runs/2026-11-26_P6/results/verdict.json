@@ -1,0 +1,10 @@
+{
+  "counts": {},
+  "n_sites": 0,
+  "plan_id": "P6-NucleationIslandSize",
+  "reason": "fewer than min_sites island sites",
+  "tests": [
+    "M-Nucleation"
+  ],
+  "verdict": "NOT_ESTIMABLE"
+}

@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-26",
+  "engine_sha": "90222ed1bdaa9573378ea8cb71720f97332d6f79",
+  "epistemic_problems": [],
+  "frontier_duty": null,
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "c128f57f223e46b90007f8511f12a767b18d2e180006f77c691c884b7bf07504",
+      "epistemic": {
+        "empirical": "NOT_APPLICABLE",
+        "formal": "PROVED_CONDITIONAL",
+        "premises": "UNCLASSIFIED",
+        "reason": "proved; its premises have not been reviewed",
+        "schema": "viridis-epistemic-v1",
+        "status": "CONDITIONALLY_PROVED"
+      },
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P6.SerialParallel",
+      "statement_sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
+      "text": "For any finite index set s and real p with every p i in [0,1] on s, the product of p over s is at most p j for every j in s. For any q with every q i in [0,1] on s and every j in s, q j <= 1 - prod_{i in s}(1 - q i) <= 1. For real p, q in [0,1], 1 - (1-p)(1-q) = max p q if and only if min p q = 0 or max p q = 1.",
+      "trivial": false
+    },
+    "C2": {
+      "entry": "code/analyze.py",
+      "epistemic": {
+        "empirical": "INCONCLUSIVE",
+        "formal": "NOT_APPLICABLE",
+        "preregistration": {
+          "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
+          "plan": "P6-NucleationIslandSize",
+          "registered_at": "2026-11-25",
+          "registered_by": "policy",
+          "sha256": "3b7fe32b9340e5876a8163f80b9ecd0da05fca2feba77949e50e79808cbdd1d0",
+          "verdict": "NOT_ESTIMABLE",
+          "verdict_file": "results/verdict.json"
+        },
+        "reason": "plan P6-NucleationIslandSize, registered 2026-11-25, returned NOT_ESTIMABLE on re-executed, pinned data",
+        "schema": "viridis-epistemic-v1",
+        "status": "UNRESOLVED"
+      },
+      "inputs": 2,
+      "kind": "empirical",
+      "label": "TESTED",
+      "reason": "re-executed code/analyze.py in the verifier's sandbox with no network; 1 result file(s) reproduced (1 byte for byte, 0 within tolerance); 2 pinned input file(s)",
+      "text": "Run of the registered plan P6-NucleationIslandSize on the Zenodo 4731126 file tree_recruits-2007-2013.csv: the frozen analysis returns NOT_ESTIMABLE (0 island sites found). The frozen code reads a column named 'Treat' while the file's column is 'Trt', so no rows are classified; the verdict is uninformative about M-Nucleation."
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "c128f57f223e46b90007f8511f12a767b18d2e180006f77c691c884b7bf07504",
+      "durations": {
+        "check": 10.654,
+        "compile": 11.872,
+        "replay": 11.664
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P6.SerialParallel",
+      "statement_sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 8,
+  "plan_registrations": [],
+  "premise_reviews": [
+    {
+      "detail": "second concurring review; no premise about the world (PV5)",
+      "result": "accepted",
+      "statement_id": "P6.SingleFailureRobust"
+    },
+    {
+      "detail": "2 premise(s) recorded; the proof is reported as conditional (PV4)",
+      "result": "accepted",
+      "statement_id": "P6.SerialParallel"
+    }
+  ],
+  "project": "P6",
+  "proposals": [],
+  "reexecution": {
+    "C2": {
+      "claim_id": "C2",
+      "duration_s": 0.77,
+      "entry": "code/analyze.py",
+      "files": [
+        {
+          "claimed_sha256": "c9dabf12f52a590b7a830243d0d74c27f64c654fb45d92b19057ec4cccd14699",
+          "path": "results/verdict.json",
+          "produced_sha256": "c9dabf12f52a590b7a830243d0d74c27f64c654fb45d92b19057ec4cccd14699",
+          "verdict": "exact"
+        }
+      ],
+      "image": "viridis-py:b5b2520e9749302d",
+      "inputs": [
+        {
+          "path": "data/design.json",
+          "sha256": "a86916963b807024e297ee14073344575e85feaa93cdd445f7f3e26bac644702",
+          "url": "https://raw.githubusercontent.com/jdhart81/viridis-research/main/preregistrations/P6-NucleationIslandSize/data/design.json"
+        },
+        {
+          "path": "data/tree_recruits.csv",
+          "sha256": "b35a35bbb5c89f3a717dbee677e96f45655177054b4aff8603783cd517fd861f",
+          "url": "https://zenodo.org/records/4731126/files/tree_recruits-2007-2013.csv?download=1"
+        }
+      ],
+      "log_tail": "NOT_ESTIMABLE\n",
+      "not_compared": [],
+      "ok": true,
+      "reason": "re-executed code/analyze.py in the verifier's sandbox with no network; 1 result file(s) reproduced (1 byte for byte, 0 within tolerance); 2 pinned input file(s)"
+    }
+  },
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 8,
+    "resolved": [
+      "10.1007/978-3-030-79876-5_37",
+      "10.1007/978-3-662-53622-3",
+      "10.1137/0208032",
+      "10.1145/3372885.3373824",
+      "10.1890/0012-9658(2001)082[1205:LCAGTP]2.0.CO;2",
+      "10.7291/D11681"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-26_P6",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P6-T004",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

@@ -1,22 +1,22 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
-  "merged_runs": 26,
+  "merged_runs": 27,
   "problems": 0,
-  "proven_statements": 16,
+  "proven_statements": 17,
   "sealed_statements": 19,
-  "tested_claims": 1
+  "tested_claims": 2
  },
  "epistemic": {
   "counts": {
    "claims": {
     "CONJECTURED": 16,
-    "UNRESOLVED": 6
+    "UNRESOLVED": 7
    },
    "statements": {
     "CONDITIONALLY_PROVED": 6,
-    "FORMALLY_PROVED": 10,
-    "UNRESOLVED": 3
+    "FORMALLY_PROVED": 11,
+    "UNRESOLVED": 2
    }
   },
   "frontier": {
@@ -25,15 +25,15 @@
      "evidence": "UNTESTED",
      "id": "M-Nucleation",
      "kind": "modelling",
-     "open_plans": [
-      "P6-NucleationIslandSize"
-     ],
+     "open_plans": [],
      "statements": [
       "P2.Afforestation",
       "P2.Restoration"
      ],
      "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow.",
-     "verdicts": {}
+     "verdicts": {
+      "INCONCLUSIVE": 1
+     }
     },
     {
      "evidence": "UNTESTED",
@@ -44,6 +44,28 @@
       "P2.Tempo"
      ],
      "text": "The cost per unit time of monitoring a site at interval t is h/t + n*t with constant positive haste cost h and neglect cost n.",
+     "verdicts": {}
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-IndependentLinks",
+     "kind": "modelling",
+     "open_plans": [],
+     "statements": [
+      "P6.SerialParallel"
+     ],
+     "text": "An animal's success in crossing each link of a corridor route is independent of its success on the other links, so route success probability equals the product of per-link crossing probabilities.",
+     "verdicts": {}
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-IndependentRoutes",
+     "kind": "modelling",
+     "open_plans": [],
+     "statements": [
+      "P6.SerialParallel"
+     ],
+     "text": "Alternative corridor routes between two patches fail independently (no shared links or common disturbance), so the probability that at least one succeeds equals 1 minus the product of their failure probabilities.",
      "verdicts": {}
     },
     {
@@ -82,14 +104,13 @@
    ],
    "unproved": [
     "P2.DecisionInformationCapacity",
-    "P2.MultiRingAlignment",
-    "P6.SerialParallel"
+    "P2.MultiRingAlignment"
    ],
-   "unreviewed": [
-    "P6.SingleFailureRobust"
-   ]
+   "unreviewed": []
   },
-  "plan_verdicts": {},
+  "plan_verdicts": {
+   "P6-NucleationIslandSize": "runs/2026-11-26_P6"
+  },
   "plans": {
    "P6-NucleationIslandSize": {
     "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
@@ -99,7 +120,7 @@
     "tests": [
      "M-Nucleation"
     ],
-    "verdict_run": null
+    "verdict_run": "runs/2026-11-26_P6"
    }
   },
   "registered_plans": [
@@ -139,7 +160,14 @@
       "evidence": "UNTESTED",
       "id": "M-Nucleation",
       "kind": "modelling",
-      "tested_by": [],
+      "tested_by": [
+       {
+        "claim_id": "C2",
+        "empirical": "INCONCLUSIVE",
+        "plan": "P6-NucleationIslandSize",
+        "run_dir": "runs/2026-11-26_P6"
+       }
+      ],
       "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
      },
      {
@@ -210,7 +238,14 @@
       "evidence": "UNTESTED",
       "id": "M-Nucleation",
       "kind": "modelling",
-      "tested_by": [],
+      "tested_by": [
+       {
+        "claim_id": "C2",
+        "empirical": "INCONCLUSIVE",
+        "plan": "P6-NucleationIslandSize",
+        "run_dir": "runs/2026-11-26_P6"
+       }
+      ],
       "text": "A planted cluster of n trees on degraded land has establishment free energy G = -dmu*n + a*sigma*n^(2/3) with constant positive dmu, a and sigma (classical nucleation), so clusters below the critical size n* = (2*a*sigma/(3*dmu))^3 shrink and clusters above it grow."
      }
     ],
@@ -291,20 +326,35 @@
     "status": "FORMALLY_PROVED"
    },
    "P6.SerialParallel": {
-    "formal": "UNPROVED",
-    "premise_contradicted": false,
-    "premises": null,
-    "reason": "no kernel-checked proof of the sealed statement",
-    "reviewed_by": null,
-    "status": "UNRESOLVED"
-   },
-   "P6.SingleFailureRobust": {
     "formal": "PROVED_CONDITIONAL",
     "premise_contradicted": false,
-    "premises": "UNCLASSIFIED",
-    "reason": "proved; its premises have not been reviewed",
-    "reviewed_by": null,
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-IndependentLinks",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "An animal's success in crossing each link of a corridor route is independent of its success on the other links, so route success probability equals the product of per-link crossing probabilities."
+     },
+     {
+      "evidence": "UNTESTED",
+      "id": "M-IndependentRoutes",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "Alternative corridor routes between two patches fail independently (no shared links or common disturbance), so the probability that at least one succeeds equals 1 minus the product of their failure probabilities."
+     }
+    ],
+    "reason": "proved from 2 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
     "status": "CONDITIONALLY_PROVED"
+   },
+   "P6.SingleFailureRobust": {
+    "formal": "PROVED",
+    "premise_contradicted": false,
+    "premises": [],
+    "reason": "proved; the reviewed premise list is empty",
+    "reviewed_by": "policy",
+    "status": "FORMALLY_PROVED"
    }
   },
   "tested_claims": [
@@ -314,6 +364,22 @@
     "empirical": "REPRODUCED",
     "preregistration": null,
     "run_dir": "runs/2026-11-12_P4",
+    "status": "UNRESOLVED"
+   },
+   {
+    "claim_id": "C2",
+    "date": "2026-11-26",
+    "empirical": "INCONCLUSIVE",
+    "preregistration": {
+     "hypothesis": "In planted tree islands on former pasture in southern Costa Rica, the per-m^2 density of naturally established tree seedlings alive at the 2013 census increases with island size (4x4 < 8x8 < 12x12 m), as the n^(2/3) surface penalty of M-Nucleation implies; significantly lower density in large than small islands contradicts it.",
+     "plan": "P6-NucleationIslandSize",
+     "registered_at": "2026-11-25",
+     "registered_by": "policy",
+     "sha256": "3b7fe32b9340e5876a8163f80b9ecd0da05fca2feba77949e50e79808cbdd1d0",
+     "verdict": "NOT_ESTIMABLE",
+     "verdict_file": "results/verdict.json"
+    },
+    "run_dir": "runs/2026-11-26_P6",
     "status": "UNRESOLVED"
    }
   ]
@@ -377,6 +443,7 @@
   "P5.CompensationUnderCeiling",
   "P5.UnrestrictedBoundFalse",
   "P6.MinimalNetwork",
+  "P6.SerialParallel",
   "P6.SingleFailureRobust"
  ],
  "runs": [
@@ -722,6 +789,20 @@
    "run_dir": "runs/2026-11-25_P6",
    "task": "P6-T003",
    "title": "One spare corridor is the least price of surviving any single corridor loss: a note for corridor planners with a Lean proof"
+  },
+  {
+   "date": "2026-11-26",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1,
+    "TESTED": 1
+   },
+   "manifest_sha256": "317c4d22b98a17f849150e860019adeedfd4b434b218ed26027fbb946fbff258",
+   "paper_built": true,
+   "project": "P6",
+   "run_dir": "runs/2026-11-26_P6",
+   "task": "P6-T004",
+   "title": "A route is no stronger than its weakest link, and alternatives never hurt: serial and parallel route reliability with a Lean proof"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -1118,11 +1199,22 @@
    "decision": "D-026",
    "path": "lean/ViridisStatements/P6/SerialParallel.lean",
    "project": "P6",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "c128f57f223e46b90007f8511f12a767b18d2e180006f77c691c884b7bf07504",
+    "claim_id": "C1",
+    "date": "2026-11-26",
+    "doi": null,
+    "run_dir": "runs/2026-11-26_P6"
+   },
    "sealed_at": "2026-11-23T08:14:24Z",
    "sealed_by": "policy",
    "sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P6-T001"
   },
   "P6.SingleFailureRobust": {
@@ -1161,6 +1253,17 @@
    "run_dir": "runs/2026-11-12_P4",
    "task": "P4-T001",
    "text": "Running the frozen registered P1C v1.4 script (code/run_test.py, unchanged, via code/rerun_p1c.py) on the registered input files gives, for the registered primary test (H2, definition B, model M2R): n = 11,314 ignitions, beta = 0.0531 (0.05313557) log10 final fire size per log10 compartment area, max(two-way, year-clustered) SE = 0.0120, registered interval beta +/- 2.53 x max SE = [0.0228, 0.0835], decision SUPPORTED under the frozen rule (SUPPORTED iff beta - C2 x max SE > 0), and pre-specified reading REPLICATED. The script's input check against the registered FREEZE.json passed (inputs_ver"
+  },
+  {
+   "claim_id": "C2",
+   "date": "2026-11-26",
+   "doi": null,
+   "entry": "code/analyze.py",
+   "pinned_inputs": 2,
+   "project": "P6",
+   "run_dir": "runs/2026-11-26_P6",
+   "task": "P6-T004",
+   "text": "Run of the registered plan P6-NucleationIslandSize on the Zenodo 4731126 file tree_recruits-2007-2013.csv: the frozen analysis returns NOT_ESTIMABLE (0 island sites found). The frozen code reads a column named 'Treat' while the file's column is 'Trt', so no rows are classified; the verdict is uninformative about M-Nucleation."
   }
  ]
 }

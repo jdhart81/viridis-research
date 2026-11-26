@@ -1,0 +1,15 @@
+{
+  "inputs": [
+    {
+      "path": "data/design.json",
+      "sha256": "a86916963b807024e297ee14073344575e85feaa93cdd445f7f3e26bac644702",
+      "url": "https://raw.githubusercontent.com/jdhart81/viridis-research/main/preregistrations/P6-NucleationIslandSize/data/design.json"
+    },
+    {
+      "path": "data/tree_recruits.csv",
+      "sha256": "b35a35bbb5c89f3a717dbee677e96f45655177054b4aff8603783cd517fd861f",
+      "url": "https://zenodo.org/records/4731126/files/tree_recruits-2007-2013.csv?download=1"
+    }
+  ],
+  "schema": "viridis-data-pins-v1"
+}

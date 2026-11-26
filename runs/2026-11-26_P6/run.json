@@ -1,0 +1,41 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P6",
+  "task": "P6-T004",
+  "title": "A route is no stronger than its weakest link, and alternatives never hurt: serial and parallel route reliability with a Lean proof",
+  "abstract": "Earlier notes in this series gave Lean proofs that a connected corridor network on n habitat patches needs at least n-1 corridors (P6.MinimalNetwork) and that surviving any single corridor loss needs at least n (P6.SingleFailureRobust). This note treats route reliability. A route is a chain of links crossed with probabilities p_i in [0,1], and its serial success probability is the product of the p_i. Alternative routes with success probabilities q_i in [0,1] combine by the parallel formula 1 - prod(1 - q_i). We give a Lean 4 proof of the sealed statement P6.SerialParallel: (1) the serial product is at most every p_j (weakest-link bound); (2) the parallel formula lies between every q_j and 1, so adding alternatives never lowers it; (3) for two routes, 1-(1-p)(1-q) equals max(p,q) exactly when min(p,q)=0 or max(p,q)=1, so a second route gives a strict gain unless it is dead or the other route is certain. Part 1 is the same inequality as part 3 of P3.CascadedRecovery, which a 16 November 2026 run proved. The inequalities are pure algebra. Reading the parallel formula as the probability that at least one route succeeds needs the routes to fail independently. That is a field assumption, not part of the mathematics, and it fails when routes share links or a common disturbance. These are elementary facts, not new theorems. We also ran the registered test plan P6-NucleationIslandSize. It returned NOT_ESTIMABLE because its frozen code reads a column named Treat while the data file names it Trt, so that run bears neither way on the premise.",
+  "claims": [
+    {
+      "id": "C1",
+      "kind": "formal",
+      "statement_id": "P6.SerialParallel",
+      "proof_file": "proofs/P6.SerialParallel.lean",
+      "text": "For any finite index set s and real p with every p i in [0,1] on s, the product of p over s is at most p j for every j in s. For any q with every q i in [0,1] on s and every j in s, q j <= 1 - prod_{i in s}(1 - q i) <= 1. For real p, q in [0,1], 1 - (1-p)(1-q) = max p q if and only if min p q = 0 or max p q = 1."
+    },
+    {
+      "id": "C2",
+      "kind": "empirical",
+      "text": "Run of the registered plan P6-NucleationIslandSize on the Zenodo 4731126 file tree_recruits-2007-2013.csv: the frozen analysis returns NOT_ESTIMABLE (0 island sites found). The frozen code reads a column named 'Treat' while the file's column is 'Trt', so no rows are classified; the verdict is uninformative about M-Nucleation.",
+      "evidence": ["results/verdict.json", "code/analyze.py"],
+      "reproduce": {"entry": "code/analyze.py"},
+      "preregistration": "P6-NucleationIslandSize"
+    }
+  ],
+  "proposals": [],
+  "premise_reviews": [
+    {
+      "statement_id": "P6.SingleFailureRobust",
+      "rationale": "Independent reading: every hypothesis is a condition on a finite SimpleGraph (connectivity, single-edge deletion, cardinalities) defined in the module itself. The module explicitly makes no claim about any real corridor, failure mode or landscape; reading vertices as patches and edge deletions as corridor failures is interpretation in the paper, not a model form the theorem depends on.",
+      "premises": []
+    },
+    {
+      "statement_id": "P6.SerialParallel",
+      "rationale": "The three parts are algebraic inequalities about products of numbers in [0,1] and hold regardless of any world. But the module names serial and parallel as the success probability of a route and of at least one of several routes. Those readings are true only if link crossings, and separately route failures, are independent. The module itself calls this a field assumption, so I list it.",
+      "premises": [
+        {"id": "M-IndependentLinks", "kind": "modelling", "text": "An animal's success in crossing each link of a corridor route is independent of its success on the other links, so route success probability equals the product of per-link crossing probabilities."},
+        {"id": "M-IndependentRoutes", "kind": "modelling", "text": "Alternative corridor routes between two patches fail independently (no shared links or common disturbance), so the probability that at least one succeeds equals 1 minus the product of their failure probabilities."}
+      ]
+    }
+  ],
+  "next_steps": "P6-T004 deliverable done (pending verifier). No Aristotle jobs pending. The registered plan P6-NucleationIslandSize returned NOT_ESTIMABLE because its frozen code reads column 'Treat' while the Zenodo file uses 'Trt'. A corrected plan needs a new registration under a new ID. Before freezing it, check the FQ codes (LT, LTB), the Sd/Rs values and the Surv13 alive codes against the file's ReadMe; the severity caveat still applies. Candidate next P6 statements: strict parallel gain when two routes have q in (0,1); a series-parallel composition statement; a test plan for M-IndependentRoutes (e.g. correlated failure of alternative wildlife crossings)."
+}

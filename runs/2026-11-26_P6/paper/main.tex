@@ -1,0 +1,296 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstdefinelanguage{lean}{
+  morekeywords={def,theorem,lemma,example,namespace,end,import,where,instance,fun,by,decide,Prop,Type,open,intro,exact,rw,refine,have,simpa,apply,with,induction,using,by_contra,push_neg,obtain,cases,unfold,omega,calc,classical,constructor,linarith,rcases,rintro,subst,ring,simp,only,at},
+  sensitive=true, morecomment=[l]{--}, morecomment=[s]{/-}{-/}, morestring=[b]"
+}
+\lstset{language=lean, basicstyle=\ttfamily\small, breaklines=true, columns=fullflexible,
+  keywordstyle=\color{blue!60!black}\bfseries, commentstyle=\color{gray},
+  literate={∀}{{$\forall$}}1 {→}{{$\to$}}1 {↔}{{$\leftrightarrow$}}1 {∧}{{$\land$}}1
+    {∨}{{$\lor$}}1 {¬}{{$\neg$}}1 {∈}{{$\in$}}1 {≤}{{$\le$}}1 {∏}{{$\prod$}}1
+    {ℝ}{{$\mathbb{R}$}}1 {ℕ}{{$\mathbb{N}$}}1 {ι}{{$\iota$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {⊤}{{$\top$}}1 {⊥}{{$\bot$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1 {←}{{$\leftarrow$}}1
+    {⦃}{{$\{$}}1 {⦄}{{$\}$}}1 {⊢}{{$\vdash$}}1 {∃}{{$\exists$}}1}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\title{A route is no stronger than its weakest link,\\ and alternatives never hurt:\\ serial and parallel route reliability with a Lean proof}
+\author{Justin Hart\\Viridis LLC}
+\date{26 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Earlier notes in this series gave Lean proofs about corridor counts in Hierarchical Dendritic Forest
+Management (HDFM). A connected network on $n$ habitat patches needs at least $n-1$ corridors
+(\texttt{P6.MinimalNetwork}), and surviving the loss of any single corridor needs at least $n$
+(\texttt{P6.SingleFailureRobust}). This note moves from counting corridors to their reliability. A route
+is a chain of links crossed with probabilities $p_i\in[0,1]$, and its serial success probability is
+$\prod_i p_i$. Alternative routes with success probabilities $q_i\in[0,1]$ combine by the parallel
+formula $1-\prod_i(1-q_i)$. We give a Lean~4 proof of the sealed statement \texttt{P6.SerialParallel}.
+(1)~The serial product is at most every $p_j$: a route is no stronger than its weakest link.
+(2)~The parallel formula lies between every $q_j$ and $1$: adding alternatives never lowers it.
+(3)~For two routes, $1-(1-p)(1-q)=\max(p,q)$ exactly when $\min(p,q)=0$ or $\max(p,q)=1$, so a second
+route gives a strict gain unless it is dead or the first route is certain. Part~1 is the same inequality
+as part~3 of \texttt{P3.CascadedRecovery}, which a run on 16 November 2026 proved. The inequalities are
+pure algebra. Reading the parallel formula as the probability that at least one route succeeds requires
+the routes to fail independently. That is a field assumption, not part of the mathematics, and it fails
+when routes share links or a common disturbance. These are elementary facts, not new theorems. We also
+ran the registered test plan \texttt{P6-NucleationIslandSize}. It returned \textsc{not\_estimable}
+because its frozen code looks for a column the data file does not contain.
+\end{abstract}
+
+\section{Introduction}
+Graph models of landscape connectivity represent habitat patches as vertices and functional links
+between them as edges~\citep{urbankeitt2001}. The two previous notes in this project (P6-T002, P6-T003)
+studied how many corridors a network needs. Counting treats a corridor as either present or absent. In
+practice a corridor is crossed with some probability less than one, and a planner wants to know how
+those probabilities combine along a route and across alternative routes.
+
+\paragraph{Questions.} (a) How does the reliability of a route of several links compare with its
+individual links? (b) How much can alternative routes add, and when does a second route add nothing?
+
+\paragraph{Answers.} (a) The route's serial success probability is at most that of its weakest link.
+(b) The combined probability that at least one route succeeds, computed with the independence formula,
+is at least that of the best single route and at most $1$. For two routes it equals the better route
+exactly when the other route is dead ($\min=0$) or the better one is certain ($\max=1$). Otherwise the
+gain is strict. The gain over the better route $q\ge p$ is $p(1-q)$.
+
+Justin Hart sealed \texttt{P6.SerialParallel} by decision D-026. This session (P6-T004) proves it.
+
+\section{Background and related work}
+Series and parallel systems are the two basic structures of reliability theory. A series system works
+only if all of its components work. A parallel system works if at least one does. With independent
+components their reliabilities are the product formula and the complementary product
+formula~\citep{barlowproschan1975}. Both formulas are elementary.
+
+The serial bound has appeared before in this programme. Part~3 of the sealed statement
+\texttt{P3.CascadedRecovery} says that for recovery fractions $r_i\in[0,1]$ the virgin share satisfies
+$\prod_i(1-r_i)\le 1-r_j$ for every stage $j$. Setting $p_i=1-r_i$ gives exactly part~1 below, over
+\texttt{Fin n} rather than an arbitrary \texttt{Finset}. A Lean proof of \texttt{P3.CascadedRecovery}
+was given in run \texttt{runs/2026-11-16\_P3} (task P3-T003) of the Viridis Research
+repository~\citep{viridisP3T003}. P6 restates the inequality self-contained and does not import it. A
+cascade of recovery stages and a chain of corridor links are both products of fractions in $[0,1]$.
+
+We use Lean~4~\citep{lean4} and Mathlib~\citep{mathlib2020}. The graph-theoretic background for the
+previous two statements is classical~\citep{diestel2017}.
+
+\section{The model and the statement}
+A route is indexed by a finite set \texttt{s : Finset} $\iota$ of links, with link $i$ crossed with probability
+$p_i$. Alternative routes are indexed by a finite set \texttt{s} with success probabilities $q_i$. The
+sealed definitions are:
+\begin{lstlisting}
+def serial {ι : Type} (s : Finset ι) (p : ι → ℝ) : ℝ := ∏ i ∈ s, p i
+
+def parallel {ι : Type} (s : Finset ι) (q : ι → ℝ) : ℝ := 1 - ∏ i ∈ s, (1 - q i)
+
+def Statement : Prop :=
+  (∀ (ι : Type) (s : Finset ι) (p : ι → ℝ), (∀ i ∈ s, 0 ≤ p i ∧ p i ≤ 1) →
+      ∀ j ∈ s, serial s p ≤ p j) ∧
+  (∀ (ι : Type) (s : Finset ι) (q : ι → ℝ), (∀ i ∈ s, 0 ≤ q i ∧ q i ≤ 1) →
+      ∀ j ∈ s, q j ≤ parallel s q ∧ parallel s q ≤ 1) ∧
+  (∀ p q : ℝ, 0 ≤ p → p ≤ 1 → 0 ≤ q → q ≤ 1 →
+      (1 - (1 - p) * (1 - q) = max p q ↔ (min p q = 0 ∨ max p q = 1)))
+\end{lstlisting}
+
+\begin{theorem}[\texttt{P6.SerialParallel}]\label{thm:sp}
+Let $s$ be a finite index set.
+\begin{enumerate}
+\item If $0\le p_i\le 1$ for all $i\in s$, then $\prod_{i\in s}p_i\le p_j$ for every $j\in s$.
+\item If $0\le q_i\le 1$ for all $i\in s$, then $q_j\le 1-\prod_{i\in s}(1-q_i)\le 1$ for every $j\in s$.
+\item For $p,q\in[0,1]$: $1-(1-p)(1-q)=\max(p,q)$ if and only if $\min(p,q)=0$ or $\max(p,q)=1$.
+\end{enumerate}
+\end{theorem}
+
+\paragraph{What the formulas mean, and what they assume.} \texttt{serial} and \texttt{parallel} are just
+real-valued formulas, and Theorem~\ref{thm:sp} is a statement about them. The serial product is the
+probability that an animal crosses every link \emph{if} the crossings are independent events. The
+parallel formula is the probability that at least one route succeeds \emph{if} the routes fail
+independently. Independence is a field assumption, not part of the mathematics. It fails, for example,
+when two ``alternative'' routes share a link, or when a fire, flood or road closure hits several routes
+at once. With positively correlated failures, the true probability that at least one route succeeds is
+in general below the independence formula, so the formula is then optimistic. The serial bound in
+part~1 needs less. For any events, $\Pr(\bigcap_i A_i)\le\Pr(A_j)$ holds without independence. But the
+quantity proved here is the product, and the product equals $\Pr(\bigcap_i A_i)$ only under independence.
+
+\paragraph{Sanity checks in the sealed module.} Two links of $1/2$ in series give $1/4<1/2$. Two
+independent routes of $1/2$ in parallel give $3/4>1/2$. At $p=q=1/2$ part~3's equality fails, as neither
+side condition holds. A negative control shows that part~1 needs $p_i\le 1$: links $2$ and $1/2$ have
+product $1>1/2$.
+
+\section{Proof}
+\paragraph{Mathematical proof.} (1) Write $\prod_{i\in s}p_i=p_j\cdot\prod_{i\in s\setminus\{j\}}p_i$.
+The second factor lies in $[0,1]$ because each of its factors does, and $p_j\ge0$, so the product is at
+most $p_j$. (2) Apply (1) to $1-q_i\in[0,1]$ to get $\prod(1-q_i)\le 1-q_j$, that is,
+$q_j\le 1-\prod(1-q_i)$. The product is non-negative, so $1-\prod(1-q_i)\le1$. (3) Without loss of
+generality $p\le q$. Then $\max=q$, $\min=p$, and $1-(1-p)(1-q)-q=p(1-q)$. This is zero exactly when
+$p=0$ or $q=1$.
+
+\paragraph{Lean proof.} The Lean file follows the same route. The helper \texttt{prod\_le\_factor}
+splits off factor $j$ with \texttt{Finset.mul\_prod\_erase}, bounds the rest with
+\texttt{Finset.prod\_le\_one} and finishes with \texttt{mul\_le\_mul\_of\_nonneg\_left}. The statement
+quantifies over an arbitrary $\iota$\texttt{ : Type} without decidable equality, so the helper opens with
+\texttt{classical}. The first compile attempt failed without it. Part~2 applies the helper to
+$1-q_i$ and closes with \texttt{linarith}. Part~3 splits on \texttt{le\_total p q}. The forward
+direction uses \texttt{mul\_eq\_zero} on $p(1-q)=0$, and the converse substitutes and calls
+\texttt{ring}. The complete candidate file follows.
+
+\begin{lstlisting}
+import Mathlib
+import ViridisStatements.P6.SerialParallel
+
+namespace Candidate
+
+open ViridisStatements.P6.SerialParallel
+
+/-- A product of factors in `[0, 1]` is at most any one of its factors. -/
+theorem prod_le_factor {ι : Type} (s : Finset ι) (p : ι → ℝ)
+    (hp : ∀ i ∈ s, 0 ≤ p i ∧ p i ≤ 1) (j : ι) (hj : j ∈ s) :
+    ∏ i ∈ s, p i ≤ p j := by
+  classical
+  rw [← Finset.mul_prod_erase s p hj]
+  have h0 : 0 ≤ p j := (hp j hj).1
+  have h1 : ∏ i ∈ s.erase j, p i ≤ 1 :=
+    Finset.prod_le_one (fun i hi => (hp i (Finset.mem_of_mem_erase hi)).1)
+      (fun i hi => (hp i (Finset.mem_of_mem_erase hi)).2)
+  calc p j * ∏ i ∈ s.erase j, p i ≤ p j * 1 := mul_le_mul_of_nonneg_left h1 h0
+    _ = p j := mul_one _
+
+theorem serial_le {ι : Type} (s : Finset ι) (p : ι → ℝ)
+    (hp : ∀ i ∈ s, 0 ≤ p i ∧ p i ≤ 1) (j : ι) (hj : j ∈ s) : serial s p ≤ p j :=
+  prod_le_factor s p hp j hj
+
+theorem parallel_bounds {ι : Type} (s : Finset ι) (q : ι → ℝ)
+    (hq : ∀ i ∈ s, 0 ≤ q i ∧ q i ≤ 1) (j : ι) (hj : j ∈ s) :
+    q j ≤ parallel s q ∧ parallel s q ≤ 1 := by
+  have hq' : ∀ i ∈ s, 0 ≤ 1 - q i ∧ 1 - q i ≤ 1 := fun i hi => by
+    obtain ⟨a, b⟩ := hq i hi; constructor <;> linarith
+  have hle := prod_le_factor s (fun i => 1 - q i) hq' j hj
+  have hnn : 0 ≤ ∏ i ∈ s, (1 - q i) := Finset.prod_nonneg (fun i hi => (hq' i hi).1)
+  unfold parallel
+  constructor <;> simp only at hle <;> linarith
+
+theorem two_routes (p q : ℝ) (hp0 : 0 ≤ p) (hp1 : p ≤ 1) (hq0 : 0 ≤ q) (hq1 : q ≤ 1) :
+    1 - (1 - p) * (1 - q) = max p q ↔ (min p q = 0 ∨ max p q = 1) := by
+  rcases le_total p q with h | h
+  · rw [max_eq_right h, min_eq_left h]
+    constructor
+    · intro e
+      have : p * (1 - q) = 0 := by linarith
+      rcases mul_eq_zero.mp this with h1 | h1
+      · exact Or.inl h1
+      · exact Or.inr (by linarith)
+    · rintro (e | e) <;> subst e <;> ring
+  · rw [max_eq_left h, min_eq_right h]
+    constructor
+    · intro e
+      have : q * (1 - p) = 0 := by linarith
+      rcases mul_eq_zero.mp this with h1 | h1
+      · exact Or.inl h1
+      · exact Or.inr (by linarith)
+    · rintro (e | e) <;> subst e <;> ring
+
+theorem main : ViridisStatements.P6.SerialParallel.Statement :=
+  ⟨fun ι s p hp j hj => serial_le s p hp j hj,
+   fun ι s q hq j hj => parallel_bounds s q hq j hj,
+   fun p q hp0 hp1 hq0 hq1 => two_routes p q hp0 hp1 hq0 hq1⟩
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+The candidate \texttt{proofs/P6.SerialParallel.lean} compiles under Lean \texttt{v4.28.0} with Mathlib
+commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. It passed the local check script, which runs the
+denylist, compile, statement-match, axiom and kernel-replay stages. Its only axioms are \texttt{propext},
+\texttt{Classical.choice} and \texttt{Quot.sound}. The independent verifier decides whether the claim is
+labelled proven, and its certification page precedes this paper.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Configuration & Formula value & Comparison\\
+\midrule
+Two links $1/2$, $1/2$ in series & $1/4$ & below weakest link $1/2$\\
+Links $0.9,0.9,0.9$ in series & $0.729$ & below weakest link $0.9$\\
+Two routes $1/2$, $1/2$ in parallel & $3/4$ & gain $1/4$ over best\\
+Routes $0.9$ and $0.5$ in parallel & $0.95$ & gain $0.5\cdot0.1=0.05$\\
+Routes $0.9$ and $0$ in parallel & $0.9$ & equality (dead alternative)\\
+Routes $1$ and $0.5$ in parallel & $1$ & equality (certain route)\\
+\bottomrule
+\end{tabular}
+\caption{Worked examples of Theorem~\ref{thm:sp}, computed by hand from the formulas. The parallel
+values are the probability that at least one route succeeds only under independent route failures.}
+\label{tab:examples}
+\end{table}
+
+\section{Planning reading}
+Together with the previous notes, the statement gives a planner three facts about the model. A tree of
+corridors is the cheapest connected plan, but every corridor is a bridge. Surviving any single corridor
+loss costs at least one more corridor. Along a route, reliability can only fall as links are added, and
+by part~1 it is capped by the weakest link. Across routes, under independence, it can only rise, and
+part~3 says when a second route adds nothing. The gain $\min(p,q)\,(1-\max(p,q))$ is largest when the
+better route is weak and the alternative is strong. A redundant corridor is therefore most valuable
+where the existing route is least reliable. This is a property of the formula. Whether an extra corridor
+in a real landscape delivers it depends on the independence premise and on actual crossing rates, and
+this note claims neither.
+
+\section{Registered test plan: P6-NucleationIslandSize}
+The engine asked this session to run the registered plan \texttt{P6-NucleationIslandSize}, which tests
+premise \texttt{M-Nucleation} of project P2 on the tree-island recruitment data of Zahawi, Holl, Cole and
+Reid~\citep{zahawi2014data}. We copied the frozen code and design file unchanged, and their hashes match
+the registration. We downloaded the outcome file from the registered URL (sha256
+\texttt{b35a35bb\ldots 861f}) and ran the entry script. It returned \textsc{not\_estimable}, with zero island
+sites found. The cause is a column-name mismatch: the frozen code reads the treatment from a column named
+\texttt{Treat}, but the file's header calls it \texttt{Trt}. So every row was skipped. We did not change the
+analysis. The verdict therefore bears neither for nor against \texttt{M-Nucleation}. A corrected plan would
+need a new registration.
+
+\section{Limitations}
+\begin{itemize}
+\item These are elementary facts of probability and algebra, not new theorems.
+\item The proof covers the formulas only. It does not establish that link crossings or route failures are
+independent, or any value of a real crossing probability. The premise review filed with this run lists
+both independence assumptions.
+\item Routes in a real network share links. Then the network's reliability is not a single
+series-parallel formula, and computing it exactly is hard in general~\citep{valiant1979}. Nothing here
+addresses that case.
+\item Part~3 covers two routes. For more routes the analogous equality condition is not sealed.
+\item The test-plan run gave no information about its premise, for the reason stated above.
+\end{itemize}
+
+\section{Reproducibility}
+The candidate proof is \texttt{proofs/P6.SerialParallel.lean}. It imports only \texttt{Mathlib} and the
+sealed module \texttt{ViridisStatements.P6.SerialParallel} (sha256 \texttt{a882c978\ldots 89e3}), and it
+uses none of the forbidden constructs. To check it, run
+\texttt{viridis-lean-check proofs/P6.SerialParallel.lean P6.SerialParallel} under toolchain
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit \texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}.
+For the plan run, \texttt{code/analyze.py} (frozen) runs from the package root with
+\texttt{data/design.json} and \texttt{data/tree\_recruits.csv}, both pinned in \texttt{data\_pins.json}. It
+writes \texttt{results/verdict.json}.
+
+\section*{Changelog}
+\begin{itemize}
+\item 2026-11-23 (P6-T001): first version. Drafted three statement proposals
+(\texttt{P6.MinimalNetwork}, \texttt{P6.SingleFailureRobust}, \texttt{P6.SerialParallel}).
+\item 2026-11-24 (P6-T002): \texttt{P6.MinimalNetwork} sealed (D-024); mathematical and Lean proofs.
+\item 2026-11-25 (P6-T003): \texttt{P6.SingleFailureRobust} sealed (D-025); proof, attainment witnesses,
+informal placement observation.
+\item 2026-11-26 (P6-T004): \texttt{P6.SerialParallel} sealed (D-026). Paper refocused on route reliability:
+statement, independence caveat, link to \texttt{P3.CascadedRecovery}, mathematical and Lean proofs,
+worked examples, planning reading. Proof listings of earlier statements removed (they remain in earlier
+packages). Report of the \texttt{P6-NucleationIslandSize} plan run added.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

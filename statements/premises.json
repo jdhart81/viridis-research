@@ -1,11 +1,4 @@
 {
-  "pending_empty": {
-    "P6.SingleFailureRobust": {
-      "rationale": "The statement is pure finite graph theory: connectivity, edge deletion and cardinalities of its own definitions. The module explicitly makes no claim about any real corridor, failure mode or landscape; that real failures are single corridor losses is an interpretation, not a hypothesis the theorem uses.",
-      "run_dir": "runs/2026-11-25_P6",
-      "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81"
-    }
-  },
   "schema": "viridis-premises-v1",
   "statements": {
     "P1.BitQuad": {
@@ -170,6 +163,38 @@
         "runs/2026-11-25_P6"
       ],
       "sha256": "972f34a0c90aca5f0fe9574e5710692567582c77383ef8cc9ebf3c5fa5d7564b"
+    },
+    "P6.SerialParallel": {
+      "premises": [
+        {
+          "id": "M-IndependentLinks",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "An animal's success in crossing each link of a corridor route is independent of its success on the other links, so route success probability equals the product of per-link crossing probabilities."
+        },
+        {
+          "id": "M-IndependentRoutes",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "Alternative corridor routes between two patches fail independently (no shared links or common disturbance), so the probability that at least one succeeds equals 1 minus the product of their failure probabilities."
+        }
+      ],
+      "rationale": "The three parts are algebraic inequalities about products of numbers in [0,1] and hold regardless of any world. But the module names serial and parallel as the success probability of a route and of at least one of several routes. Those readings are true only if link crossings, and separately route failures, are independent. The module itself calls this a field assumption, so I list it.",
+      "reviewed_by": "policy",
+      "runs": [
+        "runs/2026-11-26_P6"
+      ],
+      "sha256": "a882c97873aba9a8589b820eb1d894b9ba79489c067a1a05bce8c070b76889e3"
+    },
+    "P6.SingleFailureRobust": {
+      "premises": [],
+      "rationale": "The statement is pure finite graph theory: connectivity, edge deletion and cardinalities of its own definitions. The module explicitly makes no claim about any real corridor, failure mode or landscape; that real failures are single corridor losses is an interpretation, not a hypothesis the theorem uses. | Independent reading: every hypothesis is a condition on a finite SimpleGraph (connectivity, single-edge deletion, cardinalities) defined in the module itself. The module explicitly makes no claim about any real corridor, failure mode or landscape; reading vertices as patches and edge deletions as corridor failures is interpretation in the paper, not a model form the theorem depends on.",
+      "reviewed_by": "policy",
+      "runs": [
+        "runs/2026-11-25_P6",
+        "runs/2026-11-26_P6"
+      ],
+      "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81"
     }
   }
 }

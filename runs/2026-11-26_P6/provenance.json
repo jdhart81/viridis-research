@@ -1,0 +1,79 @@
+{
+  "agent": {
+    "duration_api_ms": 221222,
+    "duration_ms": 325896,
+    "final_message": "I've written a proof of P6.SerialParallel that passes `viridis-lean-check`, with only the three allowed axioms. Whether it counts as PROVEN is up to the verifier. The registered test plan ran but couldn't reach a verdict, because of a column-name mismatch in its frozen code.\n\n**Proof** (`out/proofs/P6.SerialParallel.lean`)\n- **Part 1, weakest link:** I split off link j's factor and bound the product of the remaining factors by 1. The first attempt failed to compile because the statement allows index types with no decidable equality; adding `classical` fixed it.\n- **Part 2, alternative routes:** I applied the same lemma to the failure probabilities 1 − qᵢ. This shows the combined value is at least the best single route and at most 1.\n- **Part 3, two-route equality:** If p ≤ q, the gain over q is p(1 − q). That is zero exactly when the weaker route is dead (p = 0) or the better route is certain (q = 1).\n- No Aristotle jobs were needed, and none were pending from earlier runs.\n\n**Paper** (`out/paper/main.tex`, compiles with `latexmk -pdf`)\n- I built it from the 2026-11-25 paper. It covers the weakest-link bound, the gain from alternative routes and the two-route equality case. It says plainly that the parallel formula assumes routes fail independently, which is a field assumption. Positively correlated failures, such as shared links or one fire hitting several routes, make that formula optimistic.\n- It cites the P3.CascadedRecovery proof in `runs/2026-11-16_P3` (task P3-T003), which the verifier labelled PROVEN.\n- I checked the three new references before adding them: Barlow & Proschan 1975, Valiant 1979 and the Zahawi et al. dataset. It also has a changelog entry.\n\n**Registered plan P6-NucleationIslandSize: NOT_ESTIMABLE, with zero sites found**\n- The frozen code and design file match their registered hashes. The data file downloaded from the registered Zenodo URL, and I recorded its SHA-256 in `data_pins.json`.\n- The cause of the failure: the code reads a column called `Treat`, but the file's header calls it `Trt`. So every row was skipped.\n- I did not change the analysis. The result says nothing for or against the premise M-Nucleation, and a corrected plan would need a new registration. `run.json` and the paper both report this.\n\n**Premise reviews** (in `run.json`)\n- **P6.SingleFailureRobust:** no premises. It is pure graph theory, and the module says it makes no claim about real corridors.\n- **P6.SerialParallel:** two modelling premises, `M-IndependentLinks` and `M-IndependentRoutes`. The math holds regardless, but reading the formulas as success probabilities requires independence.\n\nEverything is in `out/`. The lab notebook is `notes.md`, which covers the column-mismatch diagnosis and next steps.\n\nSources:\n- [Valiant 1979, SIAM J. Comput.](https://dl.acm.org/doi/10.1137/0208032)\n- [Barlow & Proschan 1975 (WUR library record)](https://library.wur.nl/WebQuery/titel/910569)\n- [Zahawi et al. dataset, Zenodo 4731126](https://zenodo.org/records/4731126)\n- [P3-T003 run](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-16_P3)",
+    "is_error": false,
+    "num_turns": 24,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "7403d131-eb85-4af7-adba-79b8cdf5f165",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 1.1906541000000002,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 60153,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 60153,
+      "cache_read_input_tokens": 738243,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 44,
+      "iterations": [],
+      "output_tokens": 19278,
+      "output_tokens_details": {
+        "thinking_tokens": 1635
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 7,
+      "github.com": 1,
+      "raw.githubusercontent.com": 8,
+      "zenodo.org": 2
+    },
+    "bytes_down": 757647,
+    "bytes_up": 2194474,
+    "denied": {
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 45740625337,
+    "run_started_at": "2026-11-26T02:10:21Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45740625337",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-26",
+    "prior_runs": [
+      "runs/2026-11-25_P6",
+      "runs/2026-11-24_P6",
+      "runs/2026-11-23_P6"
+    ],
+    "project": "P6",
+    "run_started_at": "2026-11-26T02:10:21Z",
+    "task": "P6-T004",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}
