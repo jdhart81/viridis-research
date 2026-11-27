@@ -23,8 +23,9 @@
     "type": "seal_statement"
   },
   "id": "D-027",
-  "posted_at": null,
-  "posted_comment_id": null,
+  "posted_at": "2026-11-27T02:51:53Z",
+  "posted_comment_id": 7208501156,
+  "posted_url": "https://github.com/jdhart81/viridis-engine/issues/1#issuecomment-7208501156",
   "schema": "viridis-decision-request-v1",
   "title": "Seal statement P7.HabitatThreshold proposed by runs/2026-11-27_P7"
 }
