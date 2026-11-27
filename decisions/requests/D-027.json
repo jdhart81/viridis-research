@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-27_P7`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-27_P7) (task P7-T001) proposes a new formal target `P7.HabitatThreshold`.\n\n- File: [`runs/2026-11-27_P7/proposals/P7.HabitatThreshold.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-27_P7/proposals/P7.HabitatThreshold.lean), sha256 `378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8`\n- Rationale: [`runs/2026-11-27_P7/proposals/P7.HabitatThreshold.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-27_P7/proposals/P7.HabitatThreshold.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P7 · The Levins extinction threshold under habitat loss\n\nModel (Levins 1969, with habitat loss as in Lande 1987 and Nee and May 1992): the fraction `p`\nof patches occupied changes at rate `dp/dt = growth c e h p = c·p·(h − p) − e·p`, where `c` is the\ncolonisation rate, `e` the extinction rate and `h` the fraction of patches still suitable. The\nnontrivial equilibrium is `pstar c e h = h − e/c`.\n\n`Statement` is about the **sign of the growth term** only. It says nothing about solutions of the\ndifferential equation, and nothing about whether a real species follows this model or about any\nvalue of `c`, `e` or `h`; those are field inputs. Each part holds for all real `c, e, h` with\n`0 < c` and `0 < e`:\n\n1. factorisation: `growth c e h p = c·p·(pstar c e h − p)` for every `p`;\n2. below the threshold (`h ≤ e/c`): `growth c e h p < 0` for every `p > 0`;\n3. above the threshold (`e/c < h`): `0 < pstar < h`, `growth` vanishes at `pstar`, is positive on\n   `(0, pstar)` and negative above `pstar`;\n4. Levins rule: `e/c < h ↔ 1 − h < 1 − e/c` (the destroyed fraction `1 − h` must stay below the\n   intact-habitat occupancy `1 − e/c`);\n5. the threshold `e/c` falls strictly when `c` rises and rises strictly when `e` rises.\n-/\n\nnamespace ViridisStatements.P7.HabitatThreshold\n\n/-- Levins growth term with habitat loss: `c·p·(h − p) − e·p`. -/\ndef growth (c e h p : ℝ) : ℝ := c * p * (h - p) - e * p\n\n/-- Nontrivial equilibrium occupancy `p* = h − e/c`. -/\nnoncomputable def pstar (c e h : ℝ) : ℝ := h - e / c\n\n/-- **Proposed sealed target `P7.HabitatThreshold`.** -/\ndef Statement : Prop :=\n  (∀ c e h : ℝ, 0 < c → 0 < e →\n      ∀ p : ℝ, growth c e h p = c * p * (pstar c e h - p)) ∧\n  (∀ c e h : ℝ, 0 < c → 0 < e → h ≤ e / c →\n      ∀ p : ℝ, 0 < p → growth c e h p < 0) ∧\n  (∀ c e h : ℝ, 0 < c → 0 < e → e / c < h →\n      0 < pstar c e h ∧ pstar c e h < h ∧ growth c e h (pstar c e h) = 0 ∧\n      (∀ p : ℝ, 0 < p → p < pstar c e h → 0 < growth c e h p) ∧\n      (∀ p : ℝ, pstar c e h < p → growth c e h p < 0)) ∧\n  (∀ c e h : ℝ, 0 < c → 0 < e → (e / c < h ↔ 1 - h < 1 - e / c)) ∧\n  (∀ c e : ℝ, 0 < c → 0 < e →\n      (∀ c' : ℝ, c < c' → e / c' < e / c) ∧ (∀ e' : ℝ, e < e' → e / c < e' / c))\n\n/-! ## Sanity checks -/\n\n/-- Witness: `c = 2, e = 1, h = 1` gives `p* = 1/2`, and the growth at `p = 1/4` is `1/8 > 0`. -/\nexample : pstar 2 1 1 = 1/2 ∧ growth 2 1 1 (1/4) = 1/8 ∧ 0 < growth 2 1 1 (1/4) := by\n  norm_num [pstar, growth]\n\n/-- Witness: with habitat cut to `h = 1/2 = e/c` the growth at `p = 1/4` is `−1/8 < 0`. -/\nexample : growth 2 1 (1/2) (1/4) = -1/8 ∧ growth 2 1 (1/2) (1/4) < 0 := by\n  norm_num [growth]\n\n/-- Factorisation at the witness point: `c·p·(p* − p) = 2·(1/4)·(1/2 − 1/4) = 1/8`. -/\nexample : (2 : ℝ) * (1/4) * (pstar 2 1 1 - 1/4) = growth 2 1 1 (1/4) := by\n  norm_num [pstar, growth]\n\n/-- Negative control for part 2: without `0 < p` the strict sign fails, since the growth term\nis `0` at `p = 0` even below the threshold (`h = 1/2 ≤ e/c = 1/2`). -/\nexample : ¬ (growth 2 1 (1/2) 0 < 0) := by\n  norm_num [growth]\n\n/-- Negative control for part 5: with `e = 0` (excluded by `0 < e`) the threshold does not fall\nwhen `c` rises: `0/3 = 0/2`. -/\nexample : ¬ ((0 : ℝ) / 3 < 0 / 2) := by\n  norm_num\n\nend ViridisStatements.P7.HabitatThreshold\n\n```\n</details>",
+  "created_at": "2026-11-27T02:51:50Z",
+  "created_by": "verify:45926624813",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P7",
+    "sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
+    "source_path": "runs/2026-11-27_P7/proposals/P7.HabitatThreshold.lean",
+    "statement_id": "P7.HabitatThreshold",
+    "task": "P7-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-027",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P7.HabitatThreshold proposed by runs/2026-11-27_P7"
+}

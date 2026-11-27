@@ -1,0 +1,37 @@
+{
+  "agent_minutes": 9.48,
+  "date": "2026-11-27",
+  "decision_requests": [
+    "D-027",
+    "D-028"
+  ],
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 45926624813,
+    "run_started_at": "2026-11-27T02:09:04Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/45926624813",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {},
+  "manifest_sha256": "11695ccddc6227929e72e953ddb020ea340c06495626cad9df0b90fc013444ed",
+  "paper_built": true,
+  "project": "P7",
+  "proposed_statements": [
+    "P7.HabitatThreshold",
+    "P7.SpeciesArea"
+  ],
+  "proven_statements": [],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-27_P7",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P7-T001",
+  "title": "Persistence thresholds for a habitat-loss kernel: proposed formal statements for the Levins threshold and power-law species-area bounds",
+  "written_at": "2026-11-27T02:51:49Z",
+  "written_by": "verify",
+  "zip_sha256": "76220213f27ff89ae7f98b8d62465c3c8820968bcf1f29c5d5e86da077a86a6b"
+}

@@ -1,0 +1,30 @@
+{
+  "body_md": "The run [`runs/2026-11-27_P7`](https://github.com/jdhart81/viridis-research/tree/main/runs/2026-11-27_P7) (task P7-T001) proposes a new formal target `P7.SpeciesArea`.\n\n- File: [`runs/2026-11-27_P7/proposals/P7.SpeciesArea.lean`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-27_P7/proposals/P7.SpeciesArea.lean), sha256 `44799264a48c075dddf84a4bbbffef00af85cfda5afdcdb5dce7c3225b3090f8`\n- Rationale: [`runs/2026-11-27_P7/proposals/P7.SpeciesArea.md`](https://github.com/jdhart81/viridis-research/blob/main/runs/2026-11-27_P7/proposals/P7.SpeciesArea.md)\n- Verifier: compiles with the pinned toolchain; not closed by `aesop`, `decide`, `linarith`, `norm_num`, `omega`, `rfl`, `simp`, `simp_all`, `tauto`, `trivial`.\n\nSealing fixes these exact bytes as a target. Any later proof of it can be labelled PROVEN, so read the definitions, not just the theorem.\n\n<details><summary>Statement source</summary>\n\n```lean\nimport Mathlib\n\n/-!\n# P7 · Bounds from a power-law species–area relationship\n\nModel (Arrhenius 1921): species number follows `S = k·A^z` with `0 < z ≤ 1`. If a fraction `a` of\nthe area `A` is kept, the fraction of species kept is `S(a·A)/S(A) = a^z`; the constant `k` (and\n`A`) cancels. To keep a fraction `s` of the species the area fraction needed is `s^(1/z)`.\nPowers are real powers (`Real.rpow`).\n\nThe power law is an empirical regularity that this module **assumes** only through the\ninterpretation above; the mathematics below is about `a ^ z` for real `a, z`. Nothing is claimed\nabout extinction debt, about which species are lost, about where the remaining habitat lies, or\nabout any value of `z`.\n\n`Statement`, each part for all real `z` with `0 < z ≤ 1`:\n1. retained fraction bound: `a ≤ a^z ≤ 1` for `0 ≤ a ≤ 1`;\n2. strict gain: if `z < 1`, then `a < a^z` for `0 < a < 1`;\n3. monotone: `a^z ≤ b^z` for `0 ≤ a ≤ b`;\n4. area needed: for `0 ≤ s ≤ 1`, `(s^(1/z))^z = s` and `s^(1/z) ≤ s`.\n-/\n\nnamespace ViridisStatements.P7.SpeciesArea\n\n/-- **Proposed sealed target `P7.SpeciesArea`.** Here `a ^ z` is the fraction of species kept\nwhen a fraction `a` of the area is kept, and `s ^ (1 / z)` the area fraction needed to keep a\nfraction `s` of the species. -/\ndef Statement : Prop :=\n  (∀ z : ℝ, 0 < z → z ≤ 1 →\n      ∀ a : ℝ, 0 ≤ a → a ≤ 1 → a ≤ a ^ z ∧ a ^ z ≤ 1) ∧\n  (∀ z : ℝ, 0 < z → z ≤ 1 → z < 1 →\n      ∀ a : ℝ, 0 < a → a < 1 → a < a ^ z) ∧\n  (∀ z : ℝ, 0 < z → z ≤ 1 →\n      ∀ a b : ℝ, 0 ≤ a → a ≤ b → a ^ z ≤ b ^ z) ∧\n  (∀ z : ℝ, 0 < z → z ≤ 1 →\n      ∀ s : ℝ, 0 ≤ s → s ≤ 1 → (s ^ (1 / z)) ^ z = s ∧ s ^ (1 / z) ≤ s)\n\n/-! ## Sanity checks -/\n\n/-- Witness: `z = 1/2`, `a = 1/4` gives `a^z = 1/2`: keeping a quarter of the area keeps half\nthe species. -/\nexample : (1/4 : ℝ) ^ (1/2 : ℝ) = 1/2 := by\n  have h : (1/4 : ℝ) = (1/2) ^ (2 : ℝ) := by norm_num\n  rw [h, ← Real.rpow_mul (by norm_num)]\n  norm_num\n\n/-- Witness: `z = 1/2`, `s = 1/2` gives area fraction `s^(1/z) = s^2 = 1/4`. -/\nexample : (1/2 : ℝ) ^ ((1 : ℝ) / (1/2)) = 1/4 := by\n  rw [show (1 : ℝ) / (1/2) = (2 : ℕ) by norm_num, Real.rpow_natCast]\n  norm_num\n\n/-- Negative control for part 1: the bound fails for `z = 2 > 1`, since `(1/2)^2 = 1/4 < 1/2`. -/\nexample : (1/2 : ℝ) ^ (2 : ℝ) < 1/2 := by\n  rw [show (2 : ℝ) = (2 : ℕ) by norm_num, Real.rpow_natCast]\n  norm_num\n\nend ViridisStatements.P7.SpeciesArea\n\n```\n</details>",
+  "created_at": "2026-11-27T02:51:50Z",
+  "created_by": "verify:45926624813",
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P7",
+    "sha256": "44799264a48c075dddf84a4bbbffef00af85cfda5afdcdb5dce7c3225b3090f8",
+    "source_path": "runs/2026-11-27_P7/proposals/P7.SpeciesArea.lean",
+    "statement_id": "P7.SpeciesArea",
+    "task": "P7-T001",
+    "type": "seal_statement"
+  },
+  "id": "D-028",
+  "posted_at": null,
+  "posted_comment_id": null,
+  "schema": "viridis-decision-request-v1",
+  "title": "Seal statement P7.SpeciesArea proposed by runs/2026-11-27_P7"
+}

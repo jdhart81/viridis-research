@@ -1,0 +1,13 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P7",
+  "task": "P7-T001",
+  "title": "Persistence thresholds for a habitat-loss kernel: proposed formal statements for the Levins threshold and power-law species-area bounds",
+  "abstract": "Planners who weigh habitat loss usually want a threshold or a bound, not a forecast. Two textbook models supply them. In the Levins metapopulation model with habitat loss, a population persists only while the suitable fraction of habitat exceeds the ratio of extinction to colonisation rate. Under a power-law species-area relationship S = k A^z with 0 < z <= 1, the fraction of species kept is never below the fraction of area kept. This paper begins project P7 of Viridis Research by writing both results as precise statements in Lean 4 over Mathlib, as candidates to be sealed as machine-checkable targets. For each one we give the statement, every hypothesis, worked witnesses and negative controls checked by Lean, and a list of what it does not settle. Both statements are about real algebra only. The first concerns the sign of the Levins growth term, not solutions of the differential equation. The second assumes the power law and says nothing about extinction debt, which species are lost, or any value of z. We give no proof here; the proofs are later tasks.",
+  "claims": [],
+  "proposals": [
+    {"statement_id": "P7.HabitatThreshold", "file": "proposals/P7.HabitatThreshold.lean", "rationale_file": "proposals/P7.HabitatThreshold.md"},
+    {"statement_id": "P7.SpeciesArea", "file": "proposals/P7.SpeciesArea.lean", "rationale_file": "proposals/P7.SpeciesArea.md"}
+  ],
+  "next_steps": "Once Justin seals the statements: P7-T002 proves P7.HabitatThreshold. Unfold growth/pstar; part 1 by field_simp; ring; parts 2-3 by the factorisation plus mul_pos and nlinarith/positivity; part 4 by linarith both ways; part 5 by div_lt_div_of_pos_left and div_lt_div_of_pos_right. P7-T003 proves P7.SpeciesArea with Real.rpow_le_rpow_of_exponent_ge' (primed, base >= 0; the unprimed lemma needs base > 0), Real.rpow_lt_rpow_of_exponent_gt, Real.rpow_le_rpow, Real.rpow_mul plus one_div_mul_cancel, and le_div_iff0 for 1 <= 1/z. Frontier duty for M-Nucleation is still open: we need public data that tracks planted-cluster size over time across a range of initial sizes (see notes.md)."
+}

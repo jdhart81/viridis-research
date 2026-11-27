@@ -1,0 +1,202 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  frame=single,extendedchars=true,
+  literate={ℝ}{{$\mathbb{R}$}}1 {∀}{{$\forall$}}1 {→}{{$\to$}}1 {≤}{{$\le$}}1
+    {↔}{{$\leftrightarrow$}}1 {∧}{{$\wedge$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {–}{{--}}1 {≥}{{$\ge$}}1 {¬}{{$\neg$}}1 {≠}{{$\ne$}}1 {↦}{{$\mapsto$}}1
+    {∈}{{$\in$}}1 {×}{{$\times$}}1 {`}{{\textasciigrave}}1}
+
+\newtheorem{proposition}{Proposition}
+
+\title{Persistence thresholds for a habitat-loss kernel: proposed formal statements for the Levins
+threshold and power-law species--area bounds}
+\author{Justin Hart\\Viridis LLC}
+\date{27 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Planners who weigh habitat loss usually want a threshold or a bound, not a forecast. Two textbook
+models supply them. In the Levins metapopulation model with habitat loss, a population persists
+only while the suitable fraction of habitat exceeds the ratio of extinction to colonisation rate.
+Under a power-law species--area relationship $S=kA^z$ with $0<z\le1$, the fraction of species kept
+is never below the fraction of area kept. This paper begins project P7 of Viridis Research by
+writing both results as precise statements in Lean~4 over Mathlib, as candidates to be sealed as
+machine-checkable targets. For each one we give the statement, every hypothesis, worked witnesses
+and negative controls checked by Lean, and a list of what it does not settle. Both statements are
+about real algebra only. The first concerns the sign of the Levins growth term, not solutions of
+the differential equation. The second assumes the power law and says nothing about extinction
+debt, which species are lost, or any value of $z$. We give no proof here; the proofs are later
+tasks.
+\end{abstract}
+
+\section{Introduction}
+How much habitat does a population need, and how much of a biota survives a given loss of area?
+Two classical models give answers in the form of a threshold and a bound. The Levins
+metapopulation model \citep{Levins1969}, extended to habitat destruction
+\citep{Lande1987,NeeMay1992}, predicts that a species occupying a fraction $p$ of patches declines
+whenever the suitable fraction $h$ falls to $e/c$ or below, where $e$ is the extinction rate and
+$c$ the colonisation rate. The power-law species--area relationship \citep{Arrhenius1921} implies
+that keeping a fraction $a$ of the area keeps the fraction $a^z$ of the species.
+
+These are not new theorems. A habitat-loss kernel that cites them should still state exactly
+which algebraic facts it relies on, under which hypotheses, and should have those facts checked
+by machine. Project P7 seals these facts as formal statements. Tonight's task (P7-T001) is to
+propose the two statements. Proving them is the job of P7-T002 and P7-T003.
+
+\section{Background and related work}
+\paragraph{Levins model with habitat loss.} With occupancy $p$, colonisation rate $c$, extinction
+rate $e$ and suitable fraction $h$,
+\[ \frac{dp}{dt} = c\,p\,(h-p) - e\,p = c\,p\,(p^*-p),\qquad p^* = h - e/c. \]
+When habitat is intact ($h=1$) the equilibrium occupancy is $1-e/c$. Persistence requires
+$h>e/c$, which is the same as saying the destroyed fraction $1-h$ is less than $1-e/c$. This is the
+rule of thumb attributed to Lande and to Nee and May: a species is lost once the destroyed
+fraction reaches the occupancy it had in intact habitat \citep{Lande1987,NeeMay1992}.
+
+\paragraph{Species--area power law.} If $S=kA^z$, then $S(aA)/S(A)=a^z$. Both $k$ and $A$ cancel
+\citep{Arrhenius1921}. For $0<z\le1$ and $0\le a\le1$ we have $a\le a^z\le1$, and the area fraction
+needed to keep a fraction $s$ of species is $s^{1/z}\le s$.
+
+\paragraph{Connectivity.} In the Levins model a corridor network can matter only through the
+colonisation rate $c$. Project P6 of this programme treats route reliability. P7 makes no claim
+about how any network changes $c$.
+
+\section{Formal development}
+Both modules live in their own namespaces, import only Mathlib, and work over $\mathbb{R}$. The
+complete \texttt{Statement} definitions are given below exactly as proposed.
+
+\subsection{P7.HabitatThreshold}
+\begin{proposition}[proposed]
+For all real $c,e,h$ with $c>0$, $e>0$: (1) $\mathrm{growth}(p)=c\,p\,(p^*-p)$ for every $p$;
+(2) if $h\le e/c$ then $\mathrm{growth}(p)<0$ for every $p>0$; (3) if $e/c<h$ then $0<p^*<h$,
+$\mathrm{growth}(p^*)=0$, $\mathrm{growth}>0$ on $(0,p^*)$ and $\mathrm{growth}<0$ on $(p^*,\infty)$;
+(4) $e/c<h\iff 1-h<1-e/c$; (5) $e/c$ is strictly decreasing in $c$ and strictly increasing in $e$.
+\end{proposition}
+\begin{lstlisting}
+namespace ViridisStatements.P7.HabitatThreshold
+
+/-- Levins growth term with habitat loss: `c·p·(h − p) − e·p`. -/
+def growth (c e h p : ℝ) : ℝ := c * p * (h - p) - e * p
+
+/-- Nontrivial equilibrium occupancy `p* = h − e/c`. -/
+noncomputable def pstar (c e h : ℝ) : ℝ := h - e / c
+
+/-- **Proposed sealed target `P7.HabitatThreshold`.** -/
+def Statement : Prop :=
+  (∀ c e h : ℝ, 0 < c → 0 < e →
+      ∀ p : ℝ, growth c e h p = c * p * (pstar c e h - p)) ∧
+  (∀ c e h : ℝ, 0 < c → 0 < e → h ≤ e / c →
+      ∀ p : ℝ, 0 < p → growth c e h p < 0) ∧
+  (∀ c e h : ℝ, 0 < c → 0 < e → e / c < h →
+      0 < pstar c e h ∧ pstar c e h < h ∧ growth c e h (pstar c e h) = 0 ∧
+      (∀ p : ℝ, 0 < p → p < pstar c e h → 0 < growth c e h p) ∧
+      (∀ p : ℝ, pstar c e h < p → growth c e h p < 0)) ∧
+  (∀ c e h : ℝ, 0 < c → 0 < e → (e / c < h ↔ 1 - h < 1 - e / c)) ∧
+  (∀ c e : ℝ, 0 < c → 0 < e →
+      (∀ c' : ℝ, c < c' → e / c' < e / c) ∧ (∀ e' : ℝ, e < e' → e / c < e' / c))
+\end{lstlisting}
+
+\subsection{P7.SpeciesArea}
+\begin{proposition}[proposed]
+For all real $z$ with $0<z\le1$: (1) $a\le a^z\le1$ for $0\le a\le1$; (2) if $z<1$, $a<a^z$ for
+$0<a<1$; (3) $a^z\le b^z$ for $0\le a\le b$; (4) for $0\le s\le1$, $(s^{1/z})^z=s$ and
+$s^{1/z}\le s$. Powers are real powers (\texttt{Real.rpow}).
+\end{proposition}
+\begin{lstlisting}
+namespace ViridisStatements.P7.SpeciesArea
+
+/-- **Proposed sealed target `P7.SpeciesArea`.** Here `a ^ z` is the fraction of species kept
+when a fraction `a` of the area is kept, and `s ^ (1 / z)` the area fraction needed to keep a
+fraction `s` of the species. -/
+def Statement : Prop :=
+  (∀ z : ℝ, 0 < z → z ≤ 1 →
+      ∀ a : ℝ, 0 ≤ a → a ≤ 1 → a ≤ a ^ z ∧ a ^ z ≤ 1) ∧
+  (∀ z : ℝ, 0 < z → z ≤ 1 → z < 1 →
+      ∀ a : ℝ, 0 < a → a < 1 → a < a ^ z) ∧
+  (∀ z : ℝ, 0 < z → z ≤ 1 →
+      ∀ a b : ℝ, 0 ≤ a → a ≤ b → a ^ z ≤ b ^ z) ∧
+  (∀ z : ℝ, 0 < z → z ≤ 1 →
+      ∀ s : ℝ, 0 ≤ s → s ≤ 1 → (s ^ (1 / z)) ^ z = s ∧ s ^ (1 / z) ≤ s)
+\end{lstlisting}
+
+\section{Methods: checks before proposing}
+We checked each step from the task brief by hand. Since $c\neq0$, $c\,p\,(h-e/c-p)=c\,p\,(h-p)-e\,p$.
+Below the threshold, $p^*\le0<p$ gives $p^*-p<0$ while $c\,p>0$. Above it, $p>p^*>0$ gives $c\,p>0$.
+For the power law, $x\mapsto a^x$ is antitone when $0<a\le1$, and $1/z\ge1$ when $0<z\le1$.
+
+To avoid proposing a false target, we also wrote a private Lean proof of each \texttt{Statement}
+text in a scratch file. That file is not part of this package and supports no claim here. It
+turned up one detail worth recording. In the pinned Mathlib,
+\texttt{Real.rpow\_le\_rpow\_of\_exponent\_ge} needs a strictly positive base, so the case $a=0$
+of part~1 of \texttt{P7.SpeciesArea} needs the primed variant
+\texttt{Real.rpow\_le\_rpow\_of\_exponent\_ge'}. We also confirmed that none of
+\texttt{norm\_num}, \texttt{simp}, \texttt{aesop}, \texttt{decide}, \texttt{grind},
+\texttt{positivity} or \texttt{linarith} closes either statement after unfolding, so each one is
+a non-trivial target.
+
+\section{Results: sanity checks and controls}
+Each module contains \texttt{example}s that Lean checks when the module compiles
+(Table~\ref{tab:checks}). \texttt{decide} cannot evaluate real arithmetic or real powers, so the
+checks use \texttt{norm\_num}, with \texttt{Real.rpow\_mul} and \texttt{Real.rpow\_natCast} for the
+powers.
+
+\begin{table}[h]\centering
+\begin{tabular}{@{}lll@{}}\toprule
+Module & Check & Value \\\midrule
+HabitatThreshold & $c=2,e=1,h=1$: $p^*$ & $1/2$ \\
+ & growth at $p=1/4$, $h=1$ & $1/8>0$ \\
+ & growth at $p=1/4$, $h=1/2$ & $-1/8<0$ \\
+ & control: growth at $p=0$, $h=1/2$ & $0$, not $<0$ \\
+ & control: $e=0$, $c=2\to3$ & $0/3=0/2$ \\
+SpeciesArea & $z=1/2$, $a=1/4$: $a^z$ & $1/2$ \\
+ & $z=1/2$, $s=1/2$: $s^{1/z}$ & $1/4$ \\
+ & control: $z=2$, $a=1/2$: $a^z$ & $1/4<1/2$ \\\bottomrule
+\end{tabular}
+\caption{Witnesses and negative controls included as checked examples.}\label{tab:checks}
+\end{table}
+
+The negative controls show that the hypotheses are needed. Without $0<p$, part~2 of
+\texttt{P7.HabitatThreshold} fails at $p=0$. Without $z\le1$, part~1 of \texttt{P7.SpeciesArea}
+fails at $z=2$, $a=1/2$.
+
+\section{Limitations}
+A future proof of these statements would establish the algebra of two models and nothing about
+nature. \texttt{P7.HabitatThreshold} concerns the sign of the growth term, not solutions of
+$dp/dt=\mathrm{growth}$, and $c$, $e$ and $h$ are field inputs whose values it does not
+constrain. The Levins model assumes identical patches, mean-field colonisation, constant rates and
+no stochastic extinction. \texttt{P7.SpeciesArea} assumes $S=kA^z$, an empirical regularity. It says
+nothing about extinction debt, which species are lost, where the remaining habitat lies, or any
+value of $z$.
+
+On the programme's frontier duty for premise \texttt{M-Nucleation}, we did not register a test
+plan (see the notebook). The public data we found from an applied-nucleation experiment in Costa
+Rica \citep{Zahawi2013} records recruits per tree island. It does not record whether planted
+clusters below a critical size shrink, so it cannot decide the nucleation premise.
+
+\section{Reproducibility}
+The proposals are \texttt{proposals/P7.HabitatThreshold.lean} and
+\texttt{proposals/P7.SpeciesArea.lean}. They compile with \texttt{lean} under
+\texttt{leanprover/lean4:v4.28.0} and Mathlib commit
+\texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}, and the examples in them are the checks in
+Table~\ref{tab:checks}. Rationales are in the matching \texttt{.md} files. No data or code beyond
+these files was used.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-27 (P7-T001): first version. Proposed \texttt{P7.HabitatThreshold} and
+\texttt{P7.SpeciesArea}, with sanity checks, negative controls and rationales. No proofs.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

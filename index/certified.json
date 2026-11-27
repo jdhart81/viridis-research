@@ -1,7 +1,7 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
-  "merged_runs": 27,
+  "merged_runs": 28,
   "problems": 0,
   "proven_statements": 17,
   "sealed_statements": 19,
@@ -803,6 +803,17 @@
    "run_dir": "runs/2026-11-26_P6",
    "task": "P6-T004",
    "title": "A route is no stronger than its weakest link, and alternatives never hurt: serial and parallel route reliability with a Lean proof"
+  },
+  {
+   "date": "2026-11-27",
+   "doi": null,
+   "labels": {},
+   "manifest_sha256": "11695ccddc6227929e72e953ddb020ea340c06495626cad9df0b90fc013444ed",
+   "paper_built": true,
+   "project": "P7",
+   "run_dir": "runs/2026-11-27_P7",
+   "task": "P7-T001",
+   "title": "Persistence thresholds for a habitat-loss kernel: proposed formal statements for the Levins threshold and power-law species-area bounds"
   }
  ],
  "schema": "viridis-certified-index-v1",
