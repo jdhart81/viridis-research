@@ -4,7 +4,7 @@
   "merged_runs": 28,
   "problems": 0,
   "proven_statements": 17,
-  "sealed_statements": 19,
+  "sealed_statements": 21,
   "tested_claims": 2
  },
  "epistemic": {
@@ -16,7 +16,7 @@
    "statements": {
     "CONDITIONALLY_PROVED": 6,
     "FORMALLY_PROVED": 11,
-    "UNRESOLVED": 2
+    "UNRESOLVED": 4
    }
   },
   "frontier": {
@@ -104,7 +104,9 @@
    ],
    "unproved": [
     "P2.DecisionInformationCapacity",
-    "P2.MultiRingAlignment"
+    "P2.MultiRingAlignment",
+    "P7.HabitatThreshold",
+    "P7.SpeciesArea"
    ],
    "unreviewed": []
   },
@@ -355,6 +357,22 @@
     "reason": "proved; the reviewed premise list is empty",
     "reviewed_by": "policy",
     "status": "FORMALLY_PROVED"
+   },
+   "P7.HabitatThreshold": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
+   },
+   "P7.SpeciesArea": {
+    "formal": "UNPROVED",
+    "premise_contradicted": false,
+    "premises": null,
+    "reason": "no kernel-checked proof of the sealed statement",
+    "reviewed_by": null,
+    "status": "UNRESOLVED"
    }
   },
   "tested_claims": [
@@ -1251,6 +1269,32 @@
    "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
    "status": "PROVEN",
    "task": "P6-T001"
+  },
+  "P7.HabitatThreshold": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P7.HabitatThreshold.Statement",
+   "decision": "D-027",
+   "path": "lean/ViridisStatements/P7/HabitatThreshold.lean",
+   "project": "P7",
+   "proof": null,
+   "sealed_at": "2026-11-27T09:05:08Z",
+   "sealed_by": "policy",
+   "sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
+   "status": "SEALED_UNPROVEN",
+   "task": "P7-T001"
+  },
+  "P7.SpeciesArea": {
+   "closed_by_single_tactic": false,
+   "constant": "ViridisStatements.P7.SpeciesArea.Statement",
+   "decision": "D-028",
+   "path": "lean/ViridisStatements/P7/SpeciesArea.lean",
+   "project": "P7",
+   "proof": null,
+   "sealed_at": "2026-11-27T09:05:08Z",
+   "sealed_by": "policy",
+   "sha256": "44799264a48c075dddf84a4bbbffef00af85cfda5afdcdb5dce7c3225b3090f8",
+   "status": "SEALED_UNPROVEN",
+   "task": "P7-T001"
   }
  },
  "tested_claims": [

@@ -1,0 +1,58 @@
+{
+  "answer": "yes",
+  "answered_at": "2026-11-27T09:05:08Z",
+  "author": "sealing-policy",
+  "authority": "policy",
+  "body": null,
+  "comment_id": null,
+  "comment_url": null,
+  "effect": {
+    "probe": {
+      "aesop": "not_closed",
+      "decide": "not_closed",
+      "linarith": "not_closed",
+      "norm_num": "not_closed",
+      "omega": "not_closed",
+      "rfl": "not_closed",
+      "simp": "not_closed",
+      "simp_all": "not_closed",
+      "tauto": "not_closed",
+      "trivial": "not_closed"
+    },
+    "project": "P7",
+    "sha256": "44799264a48c075dddf84a4bbbffef00af85cfda5afdcdb5dce7c3225b3090f8",
+    "source_path": "runs/2026-11-27_P7/proposals/P7.SpeciesArea.lean",
+    "statement_id": "P7.SpeciesArea",
+    "task": "P7-T001",
+    "type": "seal_statement"
+  },
+  "effect_result": {
+    "applied": true,
+    "sealed": "P7.SpeciesArea"
+  },
+  "gate": {
+    "checks": {
+      "G1_written_by_verifier": true,
+      "G2_not_trivial": true,
+      "G3_statement_set_by_task": true,
+      "G4_file_unchanged": true,
+      "G5_not_sealed": true
+    },
+    "probe_tactics": [
+      "aesop",
+      "decide",
+      "linarith",
+      "norm_num",
+      "omega",
+      "rfl",
+      "simp",
+      "simp_all",
+      "tauto",
+      "trivial"
+    ]
+  },
+  "id": "D-028",
+  "policy_decision": "D-018",
+  "recorded_at": "2026-11-27T09:05:09Z",
+  "schema": "viridis-decision-record-v1"
+}

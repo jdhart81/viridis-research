@@ -418,6 +418,50 @@
       "sealed_at": "2026-11-23T08:14:24Z",
       "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81",
       "task": "P6-T001"
+    },
+    "P7.HabitatThreshold": {
+      "constant": "ViridisStatements.P7.HabitatThreshold.Statement",
+      "decision": "D-027",
+      "module": "ViridisStatements.P7.HabitatThreshold",
+      "path": "lean/ViridisStatements/P7/HabitatThreshold.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P7",
+      "sealed_at": "2026-11-27T09:05:08Z",
+      "sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
+      "task": "P7-T001"
+    },
+    "P7.SpeciesArea": {
+      "constant": "ViridisStatements.P7.SpeciesArea.Statement",
+      "decision": "D-028",
+      "module": "ViridisStatements.P7.SpeciesArea",
+      "path": "lean/ViridisStatements/P7/SpeciesArea.lean",
+      "probe": {
+        "aesop": "not_closed",
+        "decide": "not_closed",
+        "linarith": "not_closed",
+        "norm_num": "not_closed",
+        "omega": "not_closed",
+        "rfl": "not_closed",
+        "simp": "not_closed",
+        "simp_all": "not_closed",
+        "tauto": "not_closed",
+        "trivial": "not_closed"
+      },
+      "project": "P7",
+      "sealed_at": "2026-11-27T09:05:08Z",
+      "sha256": "44799264a48c075dddf84a4bbbffef00af85cfda5afdcdb5dce7c3225b3090f8",
+      "task": "P7-T001"
     }
   }
 }
