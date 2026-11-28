@@ -1,9 +1,9 @@
 {
  "boundary": "Derived from the record at the commit that holds this file. PROVEN: a Lean proof of a statement sealed in advance, checked by the kernel on standard axioms; it certifies the formal statement, not its ecological or physical interpretation. TESTED: the verifier re-ran the analysis on inputs pinned by hash and reproduced the reported numbers; it certifies the computation, not the data's origin or the conclusion. Everything else in the record is ASSUMED or CONJECTURE. Epistemic status (I24) is given beside these labels on two independent tracks. Formal: a proof is FORMALLY_PROVED only when its reviewed list of premises about the world is empty, and CONDITIONALLY_PROVED otherwise. Empirical: a claim is EMPIRICALLY_SUPPORTED or EXPERIMENTALLY_FALSIFIED only by the verdict of an analysis plan registered before the run and re-executed on pinned data; a reproduced computation with no such plan is UNRESOLVED. A proof never raises the empirical track and a test never raises the formal one.",
  "counts": {
-  "merged_runs": 28,
+  "merged_runs": 29,
   "problems": 0,
-  "proven_statements": 17,
+  "proven_statements": 18,
   "sealed_statements": 21,
   "tested_claims": 2
  },
@@ -14,9 +14,9 @@
     "UNRESOLVED": 7
    },
    "statements": {
-    "CONDITIONALLY_PROVED": 6,
+    "CONDITIONALLY_PROVED": 7,
     "FORMALLY_PROVED": 11,
-    "UNRESOLVED": 4
+    "UNRESOLVED": 3
    }
   },
   "frontier": {
@@ -70,6 +70,17 @@
     },
     {
      "evidence": "UNTESTED",
+     "id": "M-LevinsMeanField",
+     "kind": "modelling",
+     "open_plans": [],
+     "statements": [
+      "P7.HabitatThreshold"
+     ],
+     "text": "The fraction of occupied patches changes at rate c*p*(h-p) - e*p, with constant positive colonisation rate c and extinction rate e that do not depend on occupancy, patch identity or position (identical patches and mean-field, global dispersal).",
+     "verdicts": {}
+    },
+    {
+     "evidence": "UNTESTED",
      "id": "M-QuadraticStewards",
      "kind": "modelling",
      "open_plans": [],
@@ -77,6 +88,17 @@
       "P2.Harmonization"
      ],
      "text": "Each steward's local cost is (a_i/2)*(x_i - b_i)^2 with a_i positive, and each steward answers a broadcast price by minimising that cost plus price times effort.",
+     "verdicts": {}
+    },
+    {
+     "evidence": "UNTESTED",
+     "id": "M-RandomHabitatLoss",
+     "kind": "modelling",
+     "open_plans": [],
+     "statements": [
+      "P7.HabitatThreshold"
+     ],
+     "text": "Habitat destruction acts only by making a fraction 1-h of patches permanently unsuitable, placed at random, and leaves c and e on the remaining patches unchanged.",
      "verdicts": {}
     },
     {
@@ -105,7 +127,6 @@
    "unproved": [
     "P2.DecisionInformationCapacity",
     "P2.MultiRingAlignment",
-    "P7.HabitatThreshold",
     "P7.SpeciesArea"
    ],
    "unreviewed": []
@@ -359,12 +380,27 @@
     "status": "FORMALLY_PROVED"
    },
    "P7.HabitatThreshold": {
-    "formal": "UNPROVED",
+    "formal": "PROVED_CONDITIONAL",
     "premise_contradicted": false,
-    "premises": null,
-    "reason": "no kernel-checked proof of the sealed statement",
-    "reviewed_by": null,
-    "status": "UNRESOLVED"
+    "premises": [
+     {
+      "evidence": "UNTESTED",
+      "id": "M-LevinsMeanField",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "The fraction of occupied patches changes at rate c*p*(h-p) - e*p, with constant positive colonisation rate c and extinction rate e that do not depend on occupancy, patch identity or position (identical patches and mean-field, global dispersal)."
+     },
+     {
+      "evidence": "UNTESTED",
+      "id": "M-RandomHabitatLoss",
+      "kind": "modelling",
+      "tested_by": [],
+      "text": "Habitat destruction acts only by making a fraction 1-h of patches permanently unsuitable, placed at random, and leaves c and e on the remaining patches unchanged."
+     }
+    ],
+    "reason": "proved from 2 premise(s) about the world that the proof does not establish",
+    "reviewed_by": "policy",
+    "status": "CONDITIONALLY_PROVED"
    },
    "P7.SpeciesArea": {
     "formal": "UNPROVED",
@@ -462,7 +498,8 @@
   "P5.UnrestrictedBoundFalse",
   "P6.MinimalNetwork",
   "P6.SerialParallel",
-  "P6.SingleFailureRobust"
+  "P6.SingleFailureRobust",
+  "P7.HabitatThreshold"
  ],
  "runs": [
   {
@@ -832,6 +869,19 @@
    "run_dir": "runs/2026-11-27_P7",
    "task": "P7-T001",
    "title": "Persistence thresholds for a habitat-loss kernel: proposed formal statements for the Levins threshold and power-law species-area bounds"
+  },
+  {
+   "date": "2026-11-28",
+   "doi": null,
+   "labels": {
+    "PROVEN": 1
+   },
+   "manifest_sha256": "59b736147107aa67e710379eda5f47c30487a59c9688b8b8935a51d6b763a213",
+   "paper_built": true,
+   "project": "P7",
+   "run_dir": "runs/2026-11-28_P7",
+   "task": "P7-T002",
+   "title": "The Levins extinction threshold under habitat loss: a Lean proof of the sign of the growth term"
   }
  ],
  "schema": "viridis-certified-index-v1",
@@ -1276,11 +1326,22 @@
    "decision": "D-027",
    "path": "lean/ViridisStatements/P7/HabitatThreshold.lean",
    "project": "P7",
-   "proof": null,
+   "proof": {
+    "axioms": [
+     "Classical.choice",
+     "Quot.sound",
+     "propext"
+    ],
+    "candidate_sha256": "f58d3802d99da8c744c2199495c6fa513b6f9e50d800bed27ad44e2d8fb5d55f",
+    "claim_id": "C1",
+    "date": "2026-11-28",
+    "doi": null,
+    "run_dir": "runs/2026-11-28_P7"
+   },
    "sealed_at": "2026-11-27T09:05:08Z",
    "sealed_by": "policy",
    "sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
-   "status": "SEALED_UNPROVEN",
+   "status": "PROVEN",
    "task": "P7-T001"
   },
   "P7.SpeciesArea": {

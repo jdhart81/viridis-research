@@ -1,0 +1,39 @@
+{
+  "agent_minutes": 4.09,
+  "date": "2026-11-28",
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 46095602105,
+    "run_started_at": "2026-11-28T01:56:39Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/46095602105",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "labels": {
+    "C1": {
+      "kind": "formal",
+      "label": "PROVEN",
+      "statement_id": "P7.HabitatThreshold",
+      "trivial": false
+    }
+  },
+  "manifest_sha256": "59b736147107aa67e710379eda5f47c30487a59c9688b8b8935a51d6b763a213",
+  "paper_built": true,
+  "project": "P7",
+  "proposed_statements": [],
+  "proven_statements": [
+    "P7.HabitatThreshold"
+  ],
+  "reason": "",
+  "references_ok": true,
+  "run_dir": "runs/2026-11-28_P7",
+  "schema": "viridis-outcome-v1",
+  "status": "MERGED",
+  "task": "P7-T002",
+  "title": "The Levins extinction threshold under habitat loss: a Lean proof of the sign of the growth term",
+  "written_at": "2026-11-28T02:34:56Z",
+  "written_by": "verify",
+  "zip_sha256": "c29eddda542bdae068ea7eb2a62c3fc4e21459b21eff32fcc2cb95cf2fa91e6b"
+}

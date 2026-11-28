@@ -1,0 +1,21 @@
+{
+  "schema": "viridis-run-v1",
+  "project": "P7",
+  "task": "P7-T002",
+  "title": "The Levins extinction threshold under habitat loss: a Lean proof of the sign of the growth term",
+  "abstract": "In the Levins metapopulation model with habitat loss, the fraction p of patches occupied changes at rate c p (h - p) - e p, where c is the colonisation rate, e the extinction rate and h the fraction of patches still suitable. The classical conclusion (Levins 1969; Lande 1987; Nee and May 1992) is that a population persists only while h exceeds the threshold e/c. Equivalently, the destroyed fraction 1 - h must stay below 1 - e/c, the occupancy the species had in intact habitat. This paper continues project P7 of Viridis Research. We give a Lean 4 proof, over Mathlib, of the sealed statement P7.HabitatThreshold. The statement has five parts. The growth term factorises as c p (p* - p) with p* = h - e/c. At or below the threshold the growth term is negative for every positive occupancy. Above it, p* lies strictly between 0 and h, is an equilibrium, and the growth term is positive below p* and negative above it. The Levins rule e/c < h is equivalent to 1 - h < 1 - e/c. The threshold e/c falls strictly as c rises and rises strictly with e. The proof is short and uses only field arithmetic and sign lemmas. What it settles is the sign of the growth term in this model. It says nothing about solutions of the differential equation, nothing about whether any species follows the model, and nothing about any value of c, e or h. Corridor networks (project P6) enter the model only through c, and we make no claim about how a network changes c. We also report that no test plan could be proposed for the nucleation premise M-Nucleation from public data we could identify.",
+  "claims": [
+    {"id": "C1", "kind": "formal", "statement_id": "P7.HabitatThreshold", "proof_file": "proofs/P7.HabitatThreshold.lean",
+     "text": "For all real c > 0 and e > 0 and any real h, with growth(p) = c p (h - p) - e p and p* = h - e/c, the following hold. (1) growth(p) = c p (p* - p) for every p. (2) If h <= e/c, then growth(p) < 0 for every p > 0. (3) If e/c < h, then 0 < p* < h, growth(p*) = 0, growth > 0 on (0, p*) and growth < 0 for every p > p*. (4) e/c < h iff 1 - h < 1 - e/c. (5) e/c is strictly decreasing in c and strictly increasing in e."}
+  ],
+  "proposals": [],
+  "premise_reviews": [
+    {"statement_id": "P7.HabitatThreshold",
+     "rationale": "The module is real algebra about its own definitions and says it makes no claim about any real species or any value of c, e or h. Its docstring and the project frame tie it to persistence of real metapopulations under habitat loss through the Levins model, a functional form that nature need not follow. So we list the model's form and the way habitat loss enters it as premises.",
+     "premises": [
+       {"id": "M-LevinsMeanField", "kind": "modelling", "text": "The fraction of occupied patches changes at rate c*p*(h-p) - e*p, with constant positive colonisation rate c and extinction rate e that do not depend on occupancy, patch identity or position (identical patches and mean-field, global dispersal)."},
+       {"id": "M-RandomHabitatLoss", "kind": "modelling", "text": "Habitat destruction acts only by making a fraction 1-h of patches permanently unsuitable, placed at random, and leaves c and e on the remaining patches unchanged."}
+     ]}
+  ],
+  "next_steps": "P7-T003: prove P7.SpeciesArea. Use Real.rpow_le_rpow_of_exponent_ge' (primed, base >= 0), Real.rpow_lt_rpow_of_exponent_gt, Real.rpow_le_rpow, and Real.rpow_mul with one_div_mul_cancel; get 1 <= 1/z from le_div_iff0. M-Nucleation frontier duty is still open. We need the size of each planted cluster at two or more times, across initial sizes that bracket the critical size. Look for LiDAR or drone canopy work on the Costa Rica tree islands (Zahawi et al.) that is mirrored on a host the verifier can fetch (see notes.md)."
+}

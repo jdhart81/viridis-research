@@ -1,0 +1,77 @@
+{
+  "agent": {
+    "duration_api_ms": 154395,
+    "duration_ms": 245375,
+    "final_message": "I wrote a Lean proof of the sealed statement `P7.HabitatThreshold`, and it passes the local checker `viridis-lean-check` on all five stages. It depends only on `propext`, `Classical.choice` and `Quot.sound`. Only the verifier can award the PROVEN label. I didn't propose a test plan for `M-Nucleation`.\n\n**The proof** (`out/proofs/P7.HabitatThreshold.lean`) follows the sketch left by the previous run and worked on the first attempt, so I didn't submit anything to Aristotle.\n- One helper lemma proves the factorisation `growth = c·p·(p* − p)`.\n- The two sign parts (below and above the threshold) rewrite with that factorisation and finish with basic sign rules.\n- The Levins rule is plain linear arithmetic, and the part about the threshold moving with `c` and `e` uses two standard Mathlib division lemmas.\n- A side finding: the assumption `e > 0` is used only to show `p* < h` and to make the threshold strictly rise with `e`.\n\n**The paper** (`out/paper/main.tex`) builds on the previous run's paper and compiles with `latexmk -pdf` without warnings. It includes:\n- the model, the threshold `e/c`, the Levins rule and the full proof in a listing;\n- what the proof settles (the sign of the growth term) and what it doesn't (solutions of the differential equation, whether any species follows the model, any value of `c`, `e` or `h`);\n- the paragraph saying corridor networks (P6) enter only through `c`, with no claim about how a network changes it;\n- the credits to Levins 1969, Lande 1987 and Nee and May 1992, and a changelog.\n\nI added one new reference, Corbin et al. 2016, and confirmed it on Crossref.\n\n**Premise review** (in `run.json`): I listed two modelling premises.\n- `M-LevinsMeanField`: identical patches, dispersal across the whole landscape, and constant rates `c` and `e`.\n- `M-RandomHabitatLoss`: habitat loss only makes patches unsuitable at random and leaves `c` and `e` unchanged.\n\n**Why no plan for `M-Nucleation`:** a real test needs the size of each planted cluster measured at least twice, for starting sizes on both sides of the predicted critical size. None of the three candidate datasets has that.\n- **Costa Rica 16–18-year data:** sampled once.\n- **Costa Rica canopy-cover data:** gives canopy cover at sampling points, not each island's size over time. All three island sizes appear to have expanded, which fits the premise for any critical size smaller than the smallest island, so the test could never come out contradicted.\n- **New Jersey landfill data:** every planted plot is 10×10 m, so there's no spread of starting sizes to find a threshold in.\n\nTwo of these are on Dryad, which the network proxy refuses, so the verifier probably couldn't download them either. The reasons and the next lead (LiDAR or drone canopy studies of the Costa Rica islands) are in `out/notes.md`. I opened no data files, only metadata and search results.\n\n`out/` contains only `run.json`, `notes.md`, `paper/main.tex`, `paper/refs.bib` and the proof file; I removed the LaTeX build files. The next task, P7-T003, is to prove `P7.SpeciesArea`.\n\nSources:\n- [Dryad doi:10.5061/dryad.s7h44j1gc](https://datadryad.org/dataset/doi:10.5061/dryad.s7h44j1gc)\n- [Dryad doi:10.5061/dryad.cfxpnvxjp](https://datadryad.org/dataset/doi:10.5061/dryad.cfxpnvxjp)\n- [Zenodo 4974518](https://zenodo.org/records/4974518)\n- [Crossref 10.1890/15-0075](https://api.crossref.org/works/10.1890/15-0075)",
+    "is_error": false,
+    "num_turns": 15,
+    "permission_denials": [],
+    "present": true,
+    "session_id": "aacbedb0-b2db-4214-aab4-7c84c26e299e",
+    "stop_reason": "end_turn",
+    "subtype": "success",
+    "total_cost_usd": 0.8090954999999999,
+    "type": "result",
+    "usage": {
+      "cache_creation": {
+        "ephemeral_1h_input_tokens": 45361,
+        "ephemeral_5m_input_tokens": 0
+      },
+      "cache_creation_input_tokens": 45361,
+      "cache_read_input_tokens": 384299,
+      "fallback_credit": null,
+      "inference_geo": "global",
+      "input_tokens": 26,
+      "iterations": [],
+      "output_tokens": 13767,
+      "output_tokens_details": {
+        "thinking_tokens": 1336
+      },
+      "server_tool_use": {
+        "web_fetch_requests": 0,
+        "web_search_requests": 0
+      },
+      "service_tier": "standard",
+      "speed": "standard"
+    }
+  },
+  "agent_exit_code": 0,
+  "agent_timed_out": false,
+  "claude_code_version": "2.1.308",
+  "effort": "medium",
+  "egress": {
+    "allowed": {
+      "api.anthropic.com": 7,
+      "api.crossref.org": 1,
+      "zenodo.org": 1
+    },
+    "bytes_down": 219065,
+    "bytes_up": 1201868,
+    "denied": {
+      "datadryad.org (not on the allowlist)": 1,
+      "example.com (not on the allowlist)": 1
+    }
+  },
+  "github": {
+    "event": "schedule",
+    "head_sha": "9bc3324cb77aa6545bd536ebd09a17858acbbf4c",
+    "run_attempt": 1,
+    "run_id": 46095602105,
+    "run_started_at": "2026-11-28T01:56:39Z",
+    "run_url": "https://github.com/jdhart81/viridis-engine/actions/runs/46095602105",
+    "verified_via_api": true,
+    "workflow": "nightly.yml"
+  },
+  "model": "opus",
+  "plan": {
+    "date": "2026-11-28",
+    "prior_runs": [
+      "runs/2026-11-27_P7"
+    ],
+    "project": "P7",
+    "run_started_at": "2026-11-28T01:56:39Z",
+    "task": "P7-T002",
+    "task_kind": "formal"
+  },
+  "schema": "viridis-provenance-v1"
+}
