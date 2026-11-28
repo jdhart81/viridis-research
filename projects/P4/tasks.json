@@ -4,6 +4,7 @@
     {
       "id": "P4-T001",
       "kind": "empirical",
+      "rung": "field",
       "complete_when": "tested",
       "depends_on": [],
       "max_runs": 4,

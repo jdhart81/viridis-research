@@ -36,3 +36,10 @@ cost. It does not discharge the FaceCount assumption of *Trees Cannot Cut*, whic
 - **P6-T002** proves `P6.MinimalNetwork`.
 - **P6-T003** proves `P6.SingleFailureRobust`.
 - **P6-T004** proves `P6.SerialParallel`.
+- **P6-T005** (extension) proposes `P6.CorridorPersistence`, as specified in
+  `context/EXTENSION_T005.md`: it joins the corridor statements above to the persistence threshold
+  of `P7.HabitatThreshold` through a declared colonisation map. It is the project's next rung, so it
+  is not a restatement of a known fact.
+- **P6-T006** (extension) proves it.
+
+The three statements above are this project's known rung; every task's rung is in `tasks.json`.

@@ -1,0 +1,82 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P10-T001",
+      "kind": "proposal",
+      "rung": "known",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the inventory-arithmetic kernel",
+      "produces": [
+        "P10.InventoryPartition",
+        "P10.FactorInterval"
+      ],
+      "brief": "Draft 2 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle."
+    },
+    {
+      "id": "P10-T002",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P10-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P10.InventoryPartition",
+      "title": "Prove that an inventory partitions exactly into its scopes",
+      "brief": "Prove the sealed statement P10.InventoryPartition. The paper is a short note for ledger users: state the inventory sum, the scope partition, additivity over disjoint activity sets, monotonicity and unit scaling, and give the worked example. Say plainly that this is arithmetic (the GHG Protocol's accounting identity), that it certifies no emission factor, no activity datum and no scope assignment, and that the Ledger's factor packs are inputs."
+    },
+    {
+      "id": "P10-T003",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P10-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P10.FactorInterval",
+      "title": "Prove the inventory interval implied by bounded emission factors",
+      "brief": "Prove the sealed statement P10.FactorInterval. The paper states the bound, its width and that both ends are attained, and gives the worked example. Say plainly that the bounds on each factor are inputs, that the interval is a worst case and not a confidence interval, and that correlated factor errors are not modelled."
+    },
+    {
+      "id": "P10-T004",
+      "kind": "proposal",
+      "rung": "extension",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P10-T002",
+        "P10-T003"
+      ],
+      "max_runs": 3,
+      "title": "Propose a sealed statement for allocating shared emissions without double counting",
+      "produces": [
+        "P10.SharedAllocation"
+      ],
+      "links": [
+        "P9",
+        "P12"
+      ],
+      "brief": "Draft one statement, in one module in proposals/, exactly as specified in the section 'P10.SharedAllocation' of inputs/context/EXTENSION.md. It must go beyond the project's sealed known-rung statements: say in the rationale which sealed statement it builds on and what it adds. Check each 'check before proposing' note by hand first. Mathlib only, every definition inside the statement's own namespace, no axiom. Include the sanity checks listed there as checked examples and describe the negative control in the rationale. Do not propose anything that restates a sealed statement."
+    },
+    {
+      "id": "P10-T005",
+      "kind": "formal",
+      "rung": "extension",
+      "complete_when": "proven",
+      "depends_on": [
+        "P10-T004"
+      ],
+      "max_runs": 5,
+      "statement_id": "P10.SharedAllocation",
+      "title": "Prove that shares summing to one allocate shared emissions exactly",
+      "links": [
+        "P9",
+        "P12"
+      ],
+      "brief": "Prove the sealed statement P10.SharedAllocation. The paper states when an allocation of shared emissions among reporters conserves the total, the exact double count when shares sum to more than one, builds on P10.InventoryPartition and cites its run, and says plainly that the choice of shares is an accounting convention the result does not settle."
+    }
+  ]
+}

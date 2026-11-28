@@ -1,0 +1,16 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P12/README.md",
+    "projects/P12/context/STATEMENT_PROPOSAL.md",
+    "projects/P12/context/EXTENSION.md"
+  ],
+  "id": "P12",
+  "mode": "research",
+  "priority": 3,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of the carbon-nitrogen accounting behind the Solar Wing nitrogen-delivery study: the ceiling a fixed C:N ratio puts on new carbon, when added nitrogen raises carbon gain and when it gives nothing, and the bound on ecosystem carbon held in pools of different C:N ratios, each sealed as a statement under the standing sealing policy and proved under the pinned Lean toolchain.",
+  "title": "Forest carbon and nitrogen: the stoichiometric ceiling on carbon gain"
+}

@@ -1,0 +1,80 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P9-T001",
+      "kind": "proposal",
+      "rung": "known",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the soil-carbon kernel",
+      "produces": [
+        "P9.SoilTurnover",
+        "P9.EquivalentSoilMass"
+      ],
+      "brief": "Draft 2 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle."
+    },
+    {
+      "id": "P9-T002",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P9-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P9.SoilTurnover",
+      "title": "Prove the steady state and geometric approach of one-pool soil carbon turnover",
+      "brief": "Prove the sealed statement P9.SoilTurnover. The paper states the yearly model C' = C + I - k C, the steady state I / k, the closed form, the monotone approach and the sensitivity of I / k, and gives one worked example with k = 1/2 and I = 1. Say plainly that a single pool with constant input and rate is an assumed model (Jenny 1941; Olson 1963), that real soils have several pools and changing inputs, and that the result is silent on any value of I or k."
+    },
+    {
+      "id": "P9-T003",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P9-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P9.EquivalentSoilMass",
+      "title": "Prove the fixed-depth overstatement of a soil carbon stock change",
+      "brief": "Prove the sealed statement P9.EquivalentSoilMass. The paper explains why a fixed-depth comparison overstates a stock gain when the soil is compacted (Ellert and Bettany 1995), states the exact overstatement c1 * d * (rho1 - rho0), gives one worked example, and says plainly that the uniform profile is an assumption: real profiles vary with depth and the result does not compute an equivalent-soil-mass correction for measured cores."
+    },
+    {
+      "id": "P9-T004",
+      "kind": "proposal",
+      "rung": "extension",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P9-T002",
+        "P9-T003"
+      ],
+      "max_runs": 3,
+      "title": "Propose a sealed statement for the reversal of soil carbon gains after a practice ends",
+      "produces": [
+        "P9.Reversal"
+      ],
+      "links": [
+        "P10"
+      ],
+      "brief": "Draft one statement, in one module in proposals/, exactly as specified in the section 'P9.Reversal' of inputs/context/EXTENSION.md. It must go beyond the project's sealed known-rung statements: say in the rationale which sealed statement it builds on and what it adds. Check each 'check before proposing' note by hand first. Mathlib only, every definition inside the statement's own namespace, no axiom. Include the sanity checks listed there as checked examples and describe the negative control in the rationale. Do not propose anything that restates a sealed statement."
+    },
+    {
+      "id": "P9-T005",
+      "kind": "formal",
+      "rung": "extension",
+      "complete_when": "proven",
+      "depends_on": [
+        "P9-T004"
+      ],
+      "max_runs": 5,
+      "statement_id": "P9.Reversal",
+      "title": "Prove how much of a soil carbon gain remains after a practice ends",
+      "links": [
+        "P10"
+      ],
+      "brief": "Prove the sealed statement P9.Reversal. The paper states how much of a practice-driven gain remains n years after the practice ends in the one-pool model, builds on P9.SoilTurnover and cites its run, and says plainly that the result is about the model and certifies no permanence period for any credit."
+    }
+  ]
+}

@@ -4,6 +4,7 @@
     {
       "id": "P6-T001",
       "kind": "proposal",
+      "rung": "known",
       "complete_when": "statements_sealed",
       "depends_on": [],
       "max_runs": 3,
@@ -22,6 +23,7 @@
     {
       "id": "P6-T002",
       "kind": "formal",
+      "rung": "known",
       "complete_when": "proven",
       "depends_on": [
         "P6-T001"
@@ -37,6 +39,7 @@
     {
       "id": "P6-T003",
       "kind": "formal",
+      "rung": "known",
       "complete_when": "proven",
       "depends_on": [
         "P6-T001"
@@ -52,6 +55,7 @@
     {
       "id": "P6-T004",
       "kind": "formal",
+      "rung": "known",
       "complete_when": "proven",
       "depends_on": [
         "P6-T001"
@@ -63,6 +67,41 @@
         "P3"
       ],
       "brief": "Prove the sealed statement P6.SerialParallel. The paper explains the weakest-link bound for a route and the gain from alternative routes, states the two-route equality case, and says plainly that the parallel formula assumes independent routes, which is a field assumption. Note that the serial bound is the same inequality as the upper bound of P3.CascadedRecovery and cite that run."
+    },
+    {
+      "id": "P6-T005",
+      "kind": "proposal",
+      "rung": "extension",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P6-T002",
+        "P6-T003"
+      ],
+      "max_runs": 3,
+      "title": "Propose a sealed statement joining corridor networks to the persistence threshold",
+      "produces": [
+        "P6.CorridorPersistence"
+      ],
+      "links": [
+        "P7"
+      ],
+      "brief": "Draft one statement, in one module in proposals/, exactly as specified in inputs/context/EXTENSION_T005.md. It joins this project's sealed corridor statements to the habitat threshold of P7.HabitatThreshold through a declared colonisation map, so it is an extension of both, not a restatement of either: say in the rationale which sealed parts it builds on and what it adds. Restate what you need from P6 and P7 self-contained; do not import their modules. Mathlib only, every definition inside the statement's own namespace, no axiom. Include the sanity checks listed there as checked examples and describe the negative control in the rationale. Say plainly that the colonisation map is an assumption the statement takes as a hypothesis, not a result."
+    },
+    {
+      "id": "P6-T006",
+      "kind": "formal",
+      "rung": "extension",
+      "complete_when": "proven",
+      "depends_on": [
+        "P6-T005"
+      ],
+      "max_runs": 5,
+      "statement_id": "P6.CorridorPersistence",
+      "title": "Prove that corridor losses can only raise the persistence threshold",
+      "links": [
+        "P7"
+      ],
+      "brief": "Prove the sealed statement P6.CorridorPersistence. The paper states the declared colonisation map, the three parts and the proof, cites the runs that proved P6.MinimalNetwork and P6.SingleFailureRobust, and cites P7.HabitatThreshold. It says plainly that how a real corridor changes colonisation is a field question the statement does not answer, and that a map depending only on the corridor count cannot see fragmentation, which is why part 3 is there."
     }
   ]
 }

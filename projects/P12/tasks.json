@@ -1,0 +1,80 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P12-T001",
+      "kind": "proposal",
+      "rung": "known",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the carbon-nitrogen kernel",
+      "produces": [
+        "P12.StoichiometricCeiling",
+        "P12.PoolStoichiometry"
+      ],
+      "brief": "Draft 2 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle."
+    },
+    {
+      "id": "P12-T002",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P12-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P12.StoichiometricCeiling",
+      "title": "Prove the stoichiometric ceiling on nitrogen-limited carbon gain",
+      "brief": "Prove the sealed statement P12.StoichiometricCeiling. The paper states the min model of carbon gain, the ceiling, the marginal bound and the two regimes, and gives the worked example. Say plainly that a fixed C:N ratio and a sharp min (Liebig's law) are assumptions, that real stands adjust their ratios, and that the result is silent on any value of r, N or the carbon potential."
+    },
+    {
+      "id": "P12-T003",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P12-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P12.PoolStoichiometry",
+      "title": "Prove the bound on carbon held in pools of different C:N ratio",
+      "brief": "Prove the sealed statement P12.PoolStoichiometry. The paper states the bound and the transfer identity and gives the worked example. Say plainly that moving nitrogen between pools is a bookkeeping operation in the model and that the result says nothing about how fast, or whether, nitrogen moves in a real forest."
+    },
+    {
+      "id": "P12-T004",
+      "kind": "proposal",
+      "rung": "extension",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P12-T002",
+        "P12-T003"
+      ],
+      "max_runs": 3,
+      "title": "Propose a sealed statement for the net carbon benefit of delivered nitrogen",
+      "produces": [
+        "P12.DeliveryNetBenefit"
+      ],
+      "links": [
+        "P10"
+      ],
+      "brief": "Draft one statement, in one module in proposals/, exactly as specified in the section 'P12.DeliveryNetBenefit' of inputs/context/EXTENSION.md. It must go beyond the project's sealed known-rung statements: say in the rationale which sealed statement it builds on and what it adds. Check each 'check before proposing' note by hand first. Mathlib only, every definition inside the statement's own namespace, no axiom. Include the sanity checks listed there as checked examples and describe the negative control in the rationale. Do not propose anything that restates a sealed statement."
+    },
+    {
+      "id": "P12-T005",
+      "kind": "formal",
+      "rung": "extension",
+      "complete_when": "proven",
+      "depends_on": [
+        "P12-T004"
+      ],
+      "max_runs": 5,
+      "statement_id": "P12.DeliveryNetBenefit",
+      "title": "Prove when delivered nitrogen gives a net carbon benefit",
+      "links": [
+        "P10"
+      ],
+      "brief": "Prove the sealed statement P12.DeliveryNetBenefit. The paper states when delivered nitrogen gives a positive net carbon benefit after delivery emissions, builds on P12.StoichiometricCeiling and cites its run, and says plainly that retention, the C:N ratio and the delivery emission factor are field inputs and that no Solar Wing aircraft or delivery is certified."
+    }
+  ]
+}

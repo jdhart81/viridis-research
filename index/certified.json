@@ -445,6 +445,21 @@
    "status": "active",
    "title": "A machine-checked raster bridge for Trees Cannot Cut"
   },
+  "P10": {
+   "priority": 1,
+   "status": "active",
+   "title": "Carbon accounting: inventory arithmetic and emission-factor uncertainty"
+  },
+  "P11": {
+   "priority": 3,
+   "status": "active",
+   "title": "Catchment water: the water balance and the Budyko bounds"
+  },
+  "P12": {
+   "priority": 3,
+   "status": "active",
+   "title": "Forest carbon and nitrogen: the stoichiometric ceiling on carbon gain"
+  },
   "P2": {
    "priority": 4,
    "status": "active",
@@ -479,6 +494,11 @@
    "priority": 3,
    "status": "active",
    "title": "Agroforestry accounting: land equivalent ratio and the shared light budget"
+  },
+  "P9": {
+   "priority": 2,
+   "status": "active",
+   "title": "Soil carbon: turnover, steady state and the equivalent-soil-mass correction"
   }
  },
  "proven": [

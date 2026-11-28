@@ -1,5 +1,9 @@
 # P2 · Re-certifying the live Viridis OS decision kernels
 
+**Mode: maintenance.** P2 is kernel upkeep, not new research: it re-proves what live kernels already apply, so its
+tasks stay on the known rung and are exempt from the engine's climb gate. It still takes its turn in the rotation like
+every other project.
+
 Seventeen decision kernels are live on viridisconservation.com. Their formal cores were checked by tools that can no
 longer be re-run: the retired Lean certifier droplet (the Comparator), historical Aristotle runs, and the old canon gate.
 P2 brings each kernel to this engine's standard. Each kernel's formal core is sealed as a statement, by Justin's decision,
