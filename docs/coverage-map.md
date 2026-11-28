@@ -22,7 +22,7 @@ rung, and P2, which is in `maintenance` mode, is exempt.
 
 ## Where each topic stands
 
-State of the record on 2026-11-27 (main at dc4deec plus this change). "Highest finished rung" is
+State of the record on 2026-11-28 (main at ae0e5a7 plus this change). "Highest finished rung" is
 the highest rung among the project's completed tasks; "next rung queued" is the lowest rung among
 its tasks that are not done.
 
@@ -34,7 +34,7 @@ its tasks that are not done.
 | P4 | Wildfire (field data) | Trees Cannot Cut | research | field | field | nothing queued | 1/1 | 0 |
 | P5 | Intelligence Bound audit | Canon corrections | research | known | known | nothing queued | 3/3 | 0 |
 | P6 | Habitat networks | HDFM | research | known, extension | known | extension | 4/6 | 1 |
-| P7 | Persistence thresholds | HDFM, restoration | research | known | known | known | 1/3 | 2 |
+| P7 | Persistence thresholds | HDFM, restoration | research | known | known | known | 2/3 | 1 |
 | P8 | Agroforestry | Agroforestry Designer | research | known | none | known | 0/3 | 1 |
 | P9 | Soil carbon | GSIP | research | known, extension | none | known | 0/5 | 1 |
 | P10 | Carbon accounting | Viridis GHG Ledger | research | known, extension | none | known | 0/5 | 1 |
