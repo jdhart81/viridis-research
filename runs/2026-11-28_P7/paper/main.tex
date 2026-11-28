@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[numbers]{natbib}
+\usepackage{hyperref}
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+  frame=single,extendedchars=true,
+  literate={ℝ}{{$\mathbb{R}$}}1 {∀}{{$\forall$}}1 {→}{{$\to$}}1 {≤}{{$\le$}}1
+    {↔}{{$\leftrightarrow$}}1 {∧}{{$\wedge$}}1 {·}{{$\cdot$}}1 {−}{{$-$}}1
+    {–}{{--}}1 {≥}{{$\ge$}}1 {¬}{{$\neg$}}1 {≠}{{$\ne$}}1 {↦}{{$\mapsto$}}1
+    {∈}{{$\in$}}1 {×}{{$\times$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1
+    {`}{{\textasciigrave}}1}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\title{The Levins extinction threshold under habitat loss:\\ a Lean proof of the sign of the growth term}
+\author{Justin Hart\\Viridis LLC}
+\date{28 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+In the Levins metapopulation model with habitat loss, the fraction $p$ of patches occupied
+changes at rate $c\,p\,(h-p)-e\,p$, where $c$ is the colonisation rate, $e$ the extinction rate
+and $h$ the fraction of patches still suitable. The classical conclusion
+\citep{Levins1969,Lande1987,NeeMay1992} is that a population persists only while $h$ exceeds the
+threshold $e/c$. Equivalently, the destroyed fraction $1-h$ must stay below $1-e/c$, the
+occupancy the species had in intact habitat. This paper continues project P7 of Viridis Research.
+We give a Lean~4 proof, over Mathlib, of the sealed statement \texttt{P7.HabitatThreshold}. The
+statement has five parts: a factorisation of the growth term through the equilibrium
+$p^*=h-e/c$; a negative sign at or below the threshold; the location and attracting sign pattern
+of $p^*$ above it; the Levins rule; and strict monotonicity of the threshold in $c$ and $e$. What
+the proof settles is the sign of the growth term in this model. It says nothing about solutions
+of the differential equation, nothing about whether any species follows the model, and nothing
+about any value of $c$, $e$ or $h$.
+\end{abstract}
+
+\section{Introduction}
+How much habitat does a population need? The Levins metapopulation model \citep{Levins1969},
+extended to habitat destruction \citep{Lande1987,NeeMay1992}, answers with a threshold: a species
+occupying a fraction $p$ of patches declines whenever the suitable fraction $h$ of patches falls
+to $e/c$ or below. Here $e$ is the per-patch extinction rate and $c$ the colonisation rate. In
+intact habitat ($h=1$) the equilibrium occupancy is $1-e/c$. The threshold can therefore be
+stated as the \emph{Levins rule}: the species persists exactly while the destroyed fraction $1-h$
+is less than the occupancy it had in intact habitat.
+
+The result is classical and the algebra is elementary. A habitat-loss kernel that relies on it
+should still state precisely which facts it uses and under which hypotheses, and those facts
+should be checked by machine. The previous session of project P7 (P7-T001) proposed the statement
+\texttt{P7.HabitatThreshold}, which has since been sealed (decision D-027). Tonight's task, P7-T002,
+is to prove it. We give a Lean proof that compiles under the pinned toolchain and depends only on
+the standard axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+
+\section{Background and related work}
+\paragraph{The model.} \citet{Levins1969} introduced the patch-occupancy model
+$dp/dt=c\,p\,(1-p)-e\,p$ for a population spread over many identical patches, each either occupied
+or empty. Colonisation of empty patches is proportional to the occupied fraction, and extinction
+is at a constant per-patch rate. \citet{Lande1987} studied extinction thresholds in demographic
+models of territorial populations, in which only a fraction $h$ of sites is suitable.
+\citet{NeeMay1992} added habitat destruction to the Levins model in the form
+\[ \frac{dp}{dt} = c\,p\,(h-p) - e\,p = c\,p\,(p^*-p),\qquad p^* = h - \frac{e}{c}, \]
+and observed that the equilibrium occupancy falls one-for-one with the destroyed fraction. The
+species is lost once $1-h$ reaches $1-e/c$.
+
+\paragraph{The companion statement.} P7 also includes \texttt{P7.SpeciesArea}, which bounds the
+fraction of species kept under a power-law species--area relationship \citep{Arrhenius1921}. It
+was proposed together with this statement, and its proof is task P7-T003. It is not treated here.
+
+\paragraph{Connectivity.} Corridor networks, the subject of project P6 of this programme, enter
+the Levins model only through the colonisation rate $c$. Better connectivity, if it raises $c$,
+lowers the threshold $e/c$ (part~5 below), and that is the only route by which a network appears
+in this statement. The paper makes no claim about how any corridor network changes $c$, by how
+much, or whether it does so at all. That is an empirical question about dispersal, and nothing
+proved here bears on it.
+
+\section{Formal development}
+The sealed module defines, over $\mathbb{R}$,
+\[ \mathrm{growth}(c,e,h,p)=c\,p\,(h-p)-e\,p,\qquad p^*(c,e,h)=h-e/c. \]
+
+\begin{theorem}[\texttt{P7.HabitatThreshold}]
+For all real $c,e,h$ with $c>0$ and $e>0$:
+\begin{enumerate}
+\item $\mathrm{growth}(p)=c\,p\,(p^*-p)$ for every real $p$;
+\item if $h\le e/c$, then $\mathrm{growth}(p)<0$ for every $p>0$;
+\item if $e/c<h$, then $0<p^*<h$, $\mathrm{growth}(p^*)=0$, $\mathrm{growth}(p)>0$ for
+$0<p<p^*$, and $\mathrm{growth}(p)<0$ for $p>p^*$;
+\item $e/c<h \iff 1-h<1-e/c$;
+\item if $c<c'$ then $e/c'<e/c$, and if $e<e'$ then $e/c<e'/c$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+(1) Since $c\neq0$, $c\,p\,(h-e/c-p)=c\,p\,(h-p)-e\,p$. (2) By (1), $\mathrm{growth}(p)$ is the
+product of $c\,p>0$ and $p^*-p$. The second factor is negative because $p^*=h-e/c\le0<p$.
+(3) $p^*>0$ is the hypothesis rearranged, and $p^*<h$ because $e/c>0$, which is where $e>0$ is
+used. At $p=p^*$ the second factor of (1) vanishes. For $0<p<p^*$ both factors are positive. For
+$p>p^*>0$ the first factor is positive and the second negative. (4) Both sides are the same linear
+inequality. (5) Division of a positive number by a larger positive number gives a smaller
+quotient, and division by a fixed positive number is strictly increasing.
+\end{proof}
+
+The Lean proof follows this sketch. One helper lemma proves the factorisation with
+\texttt{field\_simp} and \texttt{ring}. Parts~2 and~3 rewrite with it and close the sign goals with
+\texttt{mul\_pos} and \texttt{mul\_neg\_of\_pos\_of\_neg}, using \texttt{linarith} for the
+side conditions. Part~5 uses the Mathlib lemmas \texttt{div\_lt\_div\_of\_pos\_left} and
+\texttt{div\_lt\_div\_of\_pos\_right}. The complete candidate file is:
+
+\begin{lstlisting}
+import Mathlib
+import ViridisStatements.P7.HabitatThreshold
+
+namespace Candidate
+
+open ViridisStatements.P7.HabitatThreshold
+
+/-- Part 1: the growth term factorises through the equilibrium `p* = h - e/c`. -/
+theorem growth_factor (c e h : ℝ) (hc : 0 < c) (p : ℝ) :
+    growth c e h p = c * p * (pstar c e h - p) := by
+  unfold growth pstar
+  field_simp
+  ring
+
+/-- Part 2: at or below the threshold the growth term is negative for every `p > 0`. -/
+theorem below (c e h : ℝ) (hc : 0 < c) (hle : h ≤ e / c) (p : ℝ) (hp : 0 < p) :
+    growth c e h p < 0 := by
+  rw [growth_factor c e h hc p]
+  have hcp : 0 < c * p := mul_pos hc hp
+  have hneg : pstar c e h - p < 0 := by unfold pstar; linarith
+  exact mul_neg_of_pos_of_neg hcp hneg
+
+/-- Part 3: above the threshold, `0 < p* < h`, `p*` is an equilibrium, and the growth term
+points towards `p*` from both sides. -/
+theorem above (c e h : ℝ) (hc : 0 < c) (he : 0 < e) (hlt : e / c < h) :
+    0 < pstar c e h ∧ pstar c e h < h ∧ growth c e h (pstar c e h) = 0 ∧
+      (∀ p : ℝ, 0 < p → p < pstar c e h → 0 < growth c e h p) ∧
+      (∀ p : ℝ, pstar c e h < p → growth c e h p < 0) := by
+  have hec : 0 < e / c := div_pos he hc
+  have hps : 0 < pstar c e h := by unfold pstar; linarith
+  refine ⟨hps, ?_, ?_, ?_, ?_⟩
+  · unfold pstar; linarith
+  · rw [growth_factor c e h hc]; ring
+  · intro p hp hpp
+    rw [growth_factor c e h hc p]
+    exact mul_pos (mul_pos hc hp) (by linarith)
+  · intro p hpp
+    rw [growth_factor c e h hc p]
+    exact mul_neg_of_pos_of_neg (mul_pos hc (by linarith)) (by linarith)
+
+theorem main : ViridisStatements.P7.HabitatThreshold.Statement := by
+  refine ⟨?_, ?_, ?_, ?_, ?_⟩
+  · intro c e h hc _ p
+    exact growth_factor c e h hc p
+  · intro c e h hc _ hle p hp
+    exact below c e h hc hle p hp
+  · intro c e h hc he hlt
+    exact above c e h hc he hlt
+  · intro c e h _ _
+    constructor <;> intro H <;> linarith
+  · intro c e hc he
+    refine ⟨?_, ?_⟩
+    · intro c' hc'
+      exact div_lt_div_of_pos_left he hc hc'
+    · intro e' he'
+      exact div_lt_div_of_pos_right he' hc
+
+end Candidate
+\end{lstlisting}
+
+\section{Results}
+The candidate file \texttt{proofs/P7.HabitatThreshold.lean} passes all five stages of the
+programme's local checker \texttt{viridis-lean-check} (denylist, compilation, statement match,
+axioms, kernel replay). The only axioms reported are \texttt{propext}, \texttt{Classical.choice}
+and \texttt{Quot.sound}. It passed on the first attempt, and no automated prover was needed. The
+certification page at the front of this paper records the verifier's own result.
+
+We also observe how the hypotheses are used. The assumption $c>0$ is used in parts 1--3 and 5.
+The assumption $e>0$ is used only for $p^*<h$ in part~3 and for strictness in part~5. Part~4 is
+pure linear arithmetic and needs neither. The sealed module's negative controls show that the
+hypotheses $p>0$ in part~2 and $e>0$ in part~5 cannot be dropped.
+
+\section{What this settles and what it does not}
+\paragraph{Settled.} In the model $dp/dt=c\,p\,(h-p)-e\,p$ with $c,e>0$, the sign of the growth term
+is as the classical analysis says. At or below $h=e/c$ it pushes every positive occupancy down.
+Above it there is exactly one positive equilibrium $p^*=h-e/c$, and the growth term points
+towards $p^*$ from both sides. The threshold condition is the Levins rule, and the threshold
+moves in the stated directions with $c$ and $e$.
+
+\paragraph{Not settled.} The statement says nothing about solutions of the differential
+equation: not their existence, not convergence to $p^*$, not how fast occupancy declines below
+the threshold. Each of those would need a separate statement about trajectories. It does not
+claim that any real species follows the Levins model. The model assumes identical patches,
+global (mean-field) dispersal, constant rates, an infinite number of patches without demographic
+stochasticity, and habitat loss that removes patches at random. It gives no value of $c$, $e$ or
+$h$ for any species or landscape. Those are field inputs. It also does not address extinction
+debt, the time lag before a population above or below the threshold settles. The parameters $p$
+and $h$ are not even constrained to $[0,1]$ in the statement, since the algebra does not need it.
+
+\section{Limitations}
+The result is a classical one, restated and checked; it is not new mathematics. Its use for
+planning depends entirely on the modelling premises listed in \texttt{run.json} (mean-field Levins
+dynamics with constant rates, and random habitat loss), which no proof can establish.
+
+On the programme's frontier duty for premise \texttt{M-Nucleation} (classical nucleation for
+planted tree clusters), we again did not propose a test plan. A deciding test needs the size of
+each planted cluster at two or more times, across initial sizes that bracket the predicted
+critical size. The public data we could identify from the Costa Rica applied-nucleation
+experiment \citep{Zahawi2013} and from a New Jersey landfill experiment \citep{Corbin2016} either
+records recruitment rather than the size of each island over time, or uses a single planted plot
+size. Neither could come out contradicted on the premise's main content: a single sign change in
+cluster growth at a critical size. Details are in the notebook.
+
+\section{Reproducibility}
+The proof is \texttt{proofs/P7.HabitatThreshold.lean}. It targets the sealed module
+\texttt{ViridisStatements.P7.HabitatThreshold} (sha256
+\texttt{378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8}) and compiles under
+\texttt{leanprover/lean4:v4.28.0} with Mathlib commit
+\texttt{8f9d9cff6bd728b17a24e163c9402775d9e6a365}. Check it with
+\texttt{viridis-lean-check proofs/P7.HabitatThreshold.lean P7.HabitatThreshold}. No data or
+analysis code was used.
+
+\section{Changelog}
+\begin{itemize}
+\item 2026-11-27 (P7-T001): first version. Proposed \texttt{P7.HabitatThreshold} and
+\texttt{P7.SpeciesArea}, with sanity checks, negative controls and rationales. No proofs.
+\item 2026-11-28 (P7-T002): \texttt{P7.HabitatThreshold} sealed (D-027). Gave a Lean proof of it.
+Rewrote the paper around the proof and the scope of what it settles. Added the paragraph on
+corridor networks and $c$, and a premise review. The test plan for \texttt{M-Nucleation} is still
+not proposed (reasons updated). Material on \texttt{P7.SpeciesArea} is deferred to P7-T003.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{refs}
+\end{document}

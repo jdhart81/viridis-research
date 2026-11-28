@@ -1,0 +1,155 @@
+e 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 26.
+LaTeX Font Info:    ... okay on input line 26.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count304
+\scratchdimen=\dimen181
+\scratchbox=\box56
+\nofMPsegments=\count305
+\nofMParguments=\count306
+\everyMPshowfont=\toks31
+\MPscratchCnt=\count307
+\MPscratchDim=\dimen182
+\MPnumerator=\count308
+\makeMPintoPDFobject=\count309
+\everyMPtoPDFconversion=\toks32
+)
+\c@lstlisting=\count310
+Package hyperref Info: Link coloring OFF on input line 26.
+ (./main.out) (./main.out)
+\@outlinefile=\write3
+\openout3 = `main.out'.
+
+LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+) [1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (24.91417pt too wide) in paragraph at lines 109--114
+\OT1/cmr/m/n/10.95 and \OT1/cmtt/m/n/10.95 ring\OT1/cmr/m/n/10.95 . Parts 2 and
+ 3 rewrite with it and close the sign goals with \OT1/cmtt/m/n/10.95 mul[]pos \
+OT1/cmr/m/n/10.95 and \OT1/cmtt/m/n/10.95 mul[]neg[]of[]pos[]of[]neg\OT1/cmr/m/
+n/10.95 ,
+ []
+
+[2]
+LaTeX Font Info:    Trying to load font information for TS1+cmtt on input line 
+123.
+ (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd
+File: ts1cmtt.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+) [3]
+Overfull \hbox (119.31042pt too wide) in paragraph at lines 220--227
+\OT1/cmr/m/n/10.95 The proof is \OT1/cmtt/m/n/10.95 proofs/P7.HabitatThreshold.
+lean\OT1/cmr/m/n/10.95 . It tar-gets the sealed mod-ule \OT1/cmtt/m/n/10.95 Vir
+idisStatements.P7.HabitatThreshold
+ []
+
+
+Overfull \hbox (4.74113pt too wide) in paragraph at lines 220--227
+\OT1/cmr/m/n/10.95 (sha256 \OT1/cmtt/m/n/10.95 378845bc63602cb8290b25faa64b3dbf
+f5b76cabcc6e2f33706a1551f6b431e8\OT1/cmr/m/n/10.95 ) and com-piles
+ []
+
+
+Overfull \hbox (35.97913pt too wide) in paragraph at lines 220--227
+\OT1/cmr/m/n/10.95 un-der \OT1/cmtt/m/n/10.95 leanprover/lean4:v4.28.0 \OT1/cmr
+/m/n/10.95 with Math-lib com-mit \OT1/cmtt/m/n/10.95 8f9d9cff6bd728b17a24e163c9
+402775d9e6a365\OT1/cmr/m/n/10.95 .
+ []
+
+
+Overfull \hbox (0.78654pt too wide) in paragraph at lines 220--227
+\OT1/cmr/m/n/10.95 Check it with \OT1/cmtt/m/n/10.95 viridis-lean-check proofs/
+P7.HabitatThreshold.lean P7.HabitatThreshold\OT1/cmr/m/n/10.95 .
+ []
+
+[4] (./main.bbl) [5] (./main.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-22>
+ ***********
+Package rerunfilecheck Info: File `main.out' has not changed.
+(rerunfilecheck)             Checksum: 2845D8E4589D284E950F786C6A4695D8;1062.
+ ) 
+Here is how much of TeX's memory you used:
+ 12706 strings out of 476106
+ 187143 string characters out of 5793932
+ 2543975 words of memory out of 5000000
+ 34478 multiletter control sequences out of 15000+600000
+ 570513 words of font info for 85 fonts, out of 8000000 for 9000
+ 59 hyphenation exceptions out of 8191
+ 75i,6n,79p,541b,1984s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ </tmp/texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1095.600pk> </tmp/texmf-var/
+fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/sha
+re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy9.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dis
+t/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/font
+s/type1/public/amsfonts/cm/cmtt9.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (5 pages, 195929 bytes).
+PDF statistics:
+ 252 PDF objects out of 1000 (max. 8388607)
+ 212 compressed objects within 3 object streams
+ 91 named destinations out of 1000 (max. 500000)
+ 65 words of extra memory for PDF output out of 10000 (max. 10000000)
+

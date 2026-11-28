@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-28",
+  "engine_sha": "dc4deec1a28573f3c26b53f07b1c6d41535f286d",
+  "epistemic_problems": [],
+  "frontier_duty": {
+    "plan_ids": [],
+    "premise": "M-Nucleation",
+    "result": "not_registered"
+  },
+  "labels": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "f58d3802d99da8c744c2199495c6fa513b6f9e50d800bed27ad44e2d8fb5d55f",
+      "epistemic": {
+        "empirical": "NOT_APPLICABLE",
+        "formal": "PROVED_CONDITIONAL",
+        "premises": "UNCLASSIFIED",
+        "reason": "proved; its premises have not been reviewed",
+        "schema": "viridis-epistemic-v1",
+        "status": "CONDITIONALLY_PROVED"
+      },
+      "kind": "formal",
+      "label": "PROVEN",
+      "reason": "passed denylist, compile, statement match, axiom audit and kernel replay",
+      "statement_id": "P7.HabitatThreshold",
+      "statement_sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
+      "text": "For all real c > 0 and e > 0 and any real h, with growth(p) = c p (h - p) - e p and p* = h - e/c, the following hold. (1) growth(p) = c p (p* - p) for every p. (2) If h <= e/c, then growth(p) < 0 for every p > 0. (3) If e/c < h, then 0 < p* < h, growth(p*) = 0, growth > 0 on (0, p*) and growth < 0 for every p > p*. (4) e/c < h iff 1 - h < 1 - e/c. (5) e/c is strictly decreasing in c and strictly increasing in e.",
+      "trivial": false
+    }
+  },
+  "lean": {
+    "C1": {
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "candidate_sha256": "f58d3802d99da8c744c2199495c6fa513b6f9e50d800bed27ad44e2d8fb5d55f",
+      "durations": {
+        "check": 11.972,
+        "compile": 12.316,
+        "replay": 12.322
+      },
+      "messages": [],
+      "ok": true,
+      "stage": "passed",
+      "statement_id": "P7.HabitatThreshold",
+      "statement_sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8",
+      "violations": []
+    }
+  },
+  "mathlib_rev": "8f9d9cff6bd728b17a24e163c9402775d9e6a365",
+  "paper_built": true,
+  "pdf_pages": 7,
+  "plan_registrations": [],
+  "premise_reviews": [
+    {
+      "detail": "2 premise(s) recorded; the proof is reported as conditional (PV4)",
+      "result": "accepted",
+      "statement_id": "P7.HabitatThreshold"
+    }
+  ],
+  "project": "P7",
+  "proposals": [],
+  "reexecution": {},
+  "references": {
+    "all_resolved": true,
+    "dois": 6,
+    "entries": 6,
+    "resolved": [
+      "10.1086/284734",
+      "10.1093/besa/15.3.237",
+      "10.1111/1365-2664.12014",
+      "10.1890/15-0075",
+      "10.2307/2255763",
+      "10.2307/5506"
+    ],
+    "unchecked": [],
+    "unresolved": []
+  },
+  "run_dir": "runs/2026-11-28_P7",
+  "sandbox_image": "ubuntu:24.04@sha256:68ee22004a9109b44973313b02ff7b1de250f1de0f5ecb628d73f579aaff33ac",
+  "schema": "viridis-certification-v1",
+  "task": "P7-T002",
+  "tex_image": "viridis-tex:e09d6953e401368f",
+  "toolchain": "leanprover/lean4:v4.28.0"
+}

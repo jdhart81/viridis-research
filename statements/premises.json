@@ -195,6 +195,28 @@
         "runs/2026-11-26_P6"
       ],
       "sha256": "f7c925574028357c3a83fa7e362b3bc76effd0c355f54bcd57c298bf8bd82c81"
+    },
+    "P7.HabitatThreshold": {
+      "premises": [
+        {
+          "id": "M-LevinsMeanField",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "The fraction of occupied patches changes at rate c*p*(h-p) - e*p, with constant positive colonisation rate c and extinction rate e that do not depend on occupancy, patch identity or position (identical patches and mean-field, global dispersal)."
+        },
+        {
+          "id": "M-RandomHabitatLoss",
+          "kind": "modelling",
+          "tested_by": [],
+          "text": "Habitat destruction acts only by making a fraction 1-h of patches permanently unsuitable, placed at random, and leaves c and e on the remaining patches unchanged."
+        }
+      ],
+      "rationale": "The module is real algebra about its own definitions and says it makes no claim about any real species or any value of c, e or h. Its docstring and the project frame tie it to persistence of real metapopulations under habitat loss through the Levins model, a functional form that nature need not follow. So we list the model's form and the way habitat loss enters it as premises.",
+      "reviewed_by": "policy",
+      "runs": [
+        "runs/2026-11-28_P7"
+      ],
+      "sha256": "378845bc63602cb8290b25faa64b3dbff5b76cabcc6e2f33706a1551f6b431e8"
     }
   }
 }
