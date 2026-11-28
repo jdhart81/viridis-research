@@ -1,0 +1,16 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P11/README.md",
+    "projects/P11/context/STATEMENT_PROPOSAL.md",
+    "projects/P11/context/EXTENSION.md"
+  ],
+  "id": "P11",
+  "mode": "research",
+  "priority": 3,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of a catchment water kernel: the telescoping water balance that ties runoff to precipitation, evaporation and storage change, and the supply and energy limits that Fu's form of the Budyko curve obeys, each sealed as a statement under the standing sealing policy and proved under the pinned Lean toolchain.",
+  "title": "Catchment water: the water balance and the Budyko bounds"
+}

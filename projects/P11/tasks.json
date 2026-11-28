@@ -1,0 +1,80 @@
+{
+  "schema": "viridis-tasks-v1",
+  "tasks": [
+    {
+      "id": "P11-T001",
+      "kind": "proposal",
+      "rung": "known",
+      "complete_when": "statements_sealed",
+      "depends_on": [],
+      "max_runs": 3,
+      "title": "Propose sealed statements for the catchment water kernel",
+      "produces": [
+        "P11.WaterBalance",
+        "P11.BudykoFu"
+      ],
+      "brief": "Draft 2 statements, one module each in proposals/, exactly as specified in inputs/context/STATEMENT_PROPOSAL.md. Read README.md first: it says what this project does and does not claim. Check each 'check before proposing' note by hand before you write the Lean. Write the mathematics in Lean over Mathlib only, with every definition inside the statement's own namespace. Include the sanity checks listed there as checked examples, and describe the negative control in the rationale. The rationale file lists every hypothesis and says what the statement does not settle."
+    },
+    {
+      "id": "P11-T002",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P11-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P11.WaterBalance",
+      "title": "Prove the telescoping catchment water balance and its runoff bound",
+      "brief": "Prove the sealed statement P11.WaterBalance. The paper states the storage recursion, the telescoping sum, the closure and the runoff bound, and gives the worked example. Say plainly that the balance is an accounting identity, that it does not estimate any term, and that the runoff bound needs storage not to fall over the period."
+    },
+    {
+      "id": "P11-T003",
+      "kind": "formal",
+      "rung": "known",
+      "complete_when": "proven",
+      "depends_on": [
+        "P11-T001"
+      ],
+      "max_runs": 5,
+      "statement_id": "P11.BudykoFu",
+      "title": "Prove the supply and energy limits of Fu's Budyko curve",
+      "brief": "Prove the sealed statement P11.BudykoFu. The paper states Fu's equation, the three bounds and the w = 1 case, and gives the worked example with phi = 1 and w = 2. Credit Budyko 1974 and Fu 1981. Say plainly that the curve is an assumed empirical form, that w is a catchment parameter the result does not estimate, and that nothing here says how land cover changes w."
+    },
+    {
+      "id": "P11-T004",
+      "kind": "proposal",
+      "rung": "extension",
+      "complete_when": "statements_sealed",
+      "depends_on": [
+        "P11-T002",
+        "P11-T003"
+      ],
+      "max_runs": 3,
+      "title": "Propose a sealed statement for how Fu's curve moves with its parameter",
+      "produces": [
+        "P11.BudykoMonotone"
+      ],
+      "links": [
+        "P12"
+      ],
+      "brief": "Draft one statement, in one module in proposals/, exactly as specified in the section 'P11.BudykoMonotone' of inputs/context/EXTENSION.md. It must go beyond the project's sealed known-rung statements: say in the rationale which sealed statement it builds on and what it adds. Check each 'check before proposing' note by hand first. Mathlib only, every definition inside the statement's own namespace, no axiom. Include the sanity checks listed there as checked examples and describe the negative control in the rationale. Do not propose anything that restates a sealed statement."
+    },
+    {
+      "id": "P11-T005",
+      "kind": "formal",
+      "rung": "extension",
+      "complete_when": "proven",
+      "depends_on": [
+        "P11-T004"
+      ],
+      "max_runs": 5,
+      "statement_id": "P11.BudykoMonotone",
+      "title": "Prove how Fu's evaporative fraction moves with its parameter",
+      "links": [
+        "P12"
+      ],
+      "brief": "Prove the sealed statement P11.BudykoMonotone. The paper states how the evaporative fraction moves with w and with the aridity index, builds on P11.BudykoFu and cites its run, and says plainly that any link from forest cover to w is a field claim the result does not make."
+    }
+  ]
+}

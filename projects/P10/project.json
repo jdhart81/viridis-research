@@ -1,0 +1,16 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P10/README.md",
+    "projects/P10/context/STATEMENT_PROPOSAL.md",
+    "projects/P10/context/EXTENSION.md"
+  ],
+  "id": "P10",
+  "mode": "research",
+  "priority": 1,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of the arithmetic the Viridis GHG Ledger applies: an inventory as activity times factor summed over activities, its partition into scopes, its additivity and unit scaling, and the interval a total lies in when each emission factor is known only within bounds, each sealed as a statement under the standing sealing policy and proved under the pinned Lean toolchain.",
+  "title": "Carbon accounting: inventory arithmetic and emission-factor uncertainty"
+}

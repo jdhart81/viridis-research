@@ -4,6 +4,7 @@
     {
       "id": "P7-T001",
       "kind": "proposal",
+      "rung": "known",
       "complete_when": "statements_sealed",
       "depends_on": [],
       "max_runs": 3,
@@ -20,6 +21,7 @@
     {
       "id": "P7-T002",
       "kind": "formal",
+      "rung": "known",
       "complete_when": "proven",
       "depends_on": [
         "P7-T001"
@@ -35,6 +37,7 @@
     {
       "id": "P7-T003",
       "kind": "formal",
+      "rung": "known",
       "complete_when": "proven",
       "depends_on": [
         "P7-T001"

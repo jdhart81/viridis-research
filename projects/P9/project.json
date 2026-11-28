@@ -1,0 +1,16 @@
+{
+  "announceable": true,
+  "context": [
+    "projects/P9/README.md",
+    "projects/P9/context/STATEMENT_PROPOSAL.md",
+    "projects/P9/context/EXTENSION.md"
+  ],
+  "id": "P9",
+  "mode": "research",
+  "priority": 2,
+  "related_identifiers": [],
+  "schema": "viridis-project-v1",
+  "status": "active",
+  "summary": "Build the formal core of the soil-carbon accounting used by the Global Soil Intelligence Platform (GSIP): the steady state and geometric approach of a one-pool turnover model, and the overstatement that a fixed-depth stock comparison makes when bulk density changes, each sealed as a statement under the standing sealing policy and proved under the pinned Lean toolchain.",
+  "title": "Soil carbon: turnover, steady state and the equivalent-soil-mass correction"
+}

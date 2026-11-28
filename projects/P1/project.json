@@ -6,6 +6,7 @@
     "projects/P1/context/DualCorridor.lean"
   ],
   "id": "P1",
+  "mode": "research",
   "priority": 2,
   "related_identifiers": [
     {

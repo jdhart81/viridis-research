@@ -2,9 +2,11 @@
   "announceable": true,
   "context": [
     "projects/P6/README.md",
-    "projects/P6/context/STATEMENT_PROPOSAL.md"
+    "projects/P6/context/STATEMENT_PROPOSAL.md",
+    "projects/P6/context/EXTENSION_T005.md"
   ],
   "id": "P6",
+  "mode": "research",
   "priority": 3,
   "related_identifiers": [],
   "schema": "viridis-project-v1",

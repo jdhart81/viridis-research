@@ -7,6 +7,7 @@
       "depends_on": [],
       "id": "P1-T001",
       "kind": "formal",
+      "rung": "known",
       "max_runs": 14,
       "statement_id": "P1.BitQuad",
       "title": "Prove the bit-quad Euler formula (L1)"
@@ -18,6 +19,7 @@
       "depends_on": [],
       "id": "P1-T001N",
       "kind": "proposal",
+      "rung": "known",
       "max_runs": 3,
       "produces_prefix": "P1.",
       "title": "Narrower lemmas for L1 (only after a stall)"
@@ -30,6 +32,7 @@
       ],
       "id": "P1-T002",
       "kind": "proposal",
+      "rung": "extension",
       "max_runs": 3,
       "produces": [
         "P1.Insertion",
@@ -45,6 +48,7 @@
       ],
       "id": "P1-T003",
       "kind": "formal",
+      "rung": "extension",
       "max_runs": 21,
       "statement_id": "P1.Insertion",
       "title": "Prove the insertion invariant (L2)"
@@ -57,6 +61,7 @@
       ],
       "id": "P1-T004",
       "kind": "formal",
+      "rung": "extension",
       "max_runs": 21,
       "statement_id": "P1.Bridge",
       "title": "Prove the raster bridge (L3)"
